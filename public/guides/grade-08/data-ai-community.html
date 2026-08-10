@@ -1,130 +1,917 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ciencia de Datos e Inteligencia Artificial para Transformar mi Comunidad</title>
-    <style>
-      body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; max-width: 900px; margin: auto; background: #f7f8fb; color: #1c1e21; }
-      h1, h2, h3 { color: #111827; }
-      .badge { display: inline-block; background: #2563eb; color: white; border-radius: 999px; padding: 4px 12px; font-size: 0.9rem; margin-bottom: 16px; }
-      section { margin-bottom: 24px; }
-      ul { margin-left: 20px; }
-      .card { background: white; border-radius: 16px; padding: 18px; box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08); }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE FOR CHANGE - Proyecto 8° Tecnología</title>
+    <script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=_zksuTU64U8d5arfUUisl1CvvVLe0lI0Z8nS5yh6NO0UWN6zlqVQPUbdDMbWi8OiVK2CFZwibM-nhbFZn5k24HkriKpib5O_mb1EBNx7DafO6BkfyZCkFIPKXqMmtVvYqLTHPeIs0xI8Oe9zSBuWXMO4m20__qdHxQoS1PQFsWmZ1bbAg3EwexYWNwkC0SYYiCKfPBZR85QUYe-nenN8uiinpHTnXmXEH_StuVX_i8oi5rosS5Li_7wsFgKgAihntpFScD8dxFDvtDbYTRcAOQF8IBx-d_mk50d2Y_hGy3XkJxLwZAh-jyrXnGDDOhXJb3hMWYMlbFy-5uDWVTP0tkHH_VhXyIxS0Q8cUAjVGNU" charset="UTF-8"></script><style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #1a2a4a;
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #2f4f68;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2f4f68;
+            padding-bottom: 15px;
+        }
+
+        .emoji-big {
+            font-size: 48px;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #1a2a4a;
+            background: #e8edf3;
+            padding: 10px 18px;
+            border-left: 6px solid #2f4f68;
+            margin-top: 35px;
+            margin-bottom: 18px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #2f4f68;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1e2a3a;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin-left: 22px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1e2a3a;
+            margin-bottom: 5px;
+        }
+
+        .highlight-box {
+            background: #f7f9fc;
+            border-left: 5px solid #2f4f68;
+            padding: 18px 22px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box strong {
+            color: #1a2a4a;
+        }
+
+        .driving-question {
+            background: #e8f0fe;
+            border-left: 5px solid #1a5276;
+            padding: 18px 22px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0 25px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #c5cdd8;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #2f4f68;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f7f9fc;
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0 20px;
+        }
+
+        .role-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+        }
+
+        .role-card strong {
+            display: block;
+            font-size: 15px;
+            color: #1a2a4a;
+        }
+
+        .role-card span {
+            font-size: 13px;
+            color: #3a4a5a;
+        }
+
+        .project-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0 20px;
+        }
+
+        .option-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 12px 14px;
+            text-align: center;
+        }
+
+        .option-card strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .option-card span {
+            font-size: 13px;
+            color: #3a4a5a;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0 20px;
+        }
+
+        .concept-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 10px 14px;
+            text-align: center;
+        }
+
+        .concept-card strong {
+            display: block;
+            font-size: 15px;
+            color: #1a2a4a;
+        }
+
+        .concept-card span {
+            font-size: 12px;
+            color: #3a4a5a;
+        }
+
+        .rubric-table th:first-child {
+            width: 20%;
+        }
+        .rubric-table th {
+            text-align: center;
+            font-size: 13px;
+        }
+        .rubric-table td {
+            font-size: 13px;
+        }
+
+        .total-score {
+            margin-top: 20px;
+        }
+
+        .total-score table th {
+            text-align: center;
+        }
+        .total-score table td {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #dce3ec;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a2a4a;
+        }
+
+        .footer small {
+            display: block;
+            font-weight: normal;
+            font-size: 14px;
+            color: #5a6a7a;
+            margin-top: 6px;
+        }
+
+        .materias-integradas {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 10px 0 15px;
+        }
+
+        .materia-tag {
+            background: #2f4f68;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .timeline {
+            background: #f7f9fc;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border: 1px solid #dce3ec;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+
+        .timeline-item .emoji {
+            font-size: 20px;
+            min-width: 30px;
+        }
+
+        .timeline-item .content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 18px;
+            }
+            .role-grid, .project-options, .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 26px;
+            }
+            .subtitle {
+                font-size: 16px;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 6px 8px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <span class="badge">Proyecto de Octavo</span>
-    <h1>Ciencia de Datos e Inteligencia Artificial para Transformar mi Comunidad</h1>
+</head>
+<body>
 
-    <p><strong>Integración:</strong> Tecnología, Matemáticas y Ciencias Naturales</p>
+<div class="container">
 
-    <div class="card">
-      <h2>🎯 Objetivo del proyecto</h2>
-      <p>
-        Diseñar, desarrollar y presentar un <strong>proyecto de análisis de datos</strong> que utilice hojas de cálculo, visualizadores de datos e Inteligencia Artificial para recolectar, organizar, analizar y visualizar información que permita resolver un problema real en la escuela o comunidad.
-      </p>
-      <p>
-        El proyecto deberá promover los <strong>Objetivos de Desarrollo Sostenible (ODS)</strong>, especialmente ODS 4, ODS 9, ODS 11 y ODS 13.
-      </p>
+    <!-- ======== TÍTULO ======== -->
+    <span class="emoji-big">📊</span>
+    <h1>CODE FOR CHANGE</h1>
+    <p class="subtitle">Ciencia de Datos e Inteligencia Artificial para Transformar mi Comunidad</p>
+
+    <!-- ======== MATERIAS INTEGRADAS ======== -->
+    <div style="text-align:center; margin-bottom: 20px;">
+        <div class="materias-integradas">
+            <span class="materia-tag">💻 Tecnología</span>
+            <span class="materia-tag">➕ Matemáticas</span>
+            <span class="materia-tag">🔬 Ciencias Naturales</span>
+        </div>
     </div>
 
-    <section>
-      <h2>📋 Metodología</h2>
-      <p>
-        El trabajo se realizará mediante <strong>Aprendizaje Basado en Proyectos (ABP)</strong> y el enfoque <strong>STEM</strong>, con énfasis en pensamiento computacional y trabajo colaborativo.
-      </p>
-    </section>
+    <!-- ======== OBJETIVO ======== -->
+    <h2>🎯 OBJETIVO DEL PROYECTO</h2>
+    <p>
+        Diseñar, desarrollar y presentar un <strong>proyecto de análisis de datos</strong> que integre <strong>Tecnología, Matemáticas y Ciencias Naturales</strong>, utilizando herramientas como <strong>hojas de cálculo (Excel/Google Sheets), visualizadores de datos e Inteligencia Artificial</strong> para recolectar, organizar, analizar y visualizar información que permita resolver un problema real en la escuela o comunidad, promoviendo los <strong>Objetivos de Desarrollo Sostenible (ODS)</strong>.
+    </p>
 
-    <section>
-      <h2>📅 Cronograma</h2>
-      <ul>
-        <li><strong>Inicio:</strong> 10 de julio de 2026</li>
-        <li><strong>Finalización:</strong> 1 de septiembre de 2026</li>
-        <li><strong>Duración:</strong> Aproximadamente 8 semanas</li>
-      </ul>
-    </section>
+    <!-- ======== METODOLOGÍA ======== -->
+    <h2>📋 METODOLOGÍA</h2>
+    <p>
+        Los estudiantes trabajarán como <strong>equipos de investigación de datos</strong> cuya misión es recolectar información, analizarla con herramientas tecnológicas y proponer soluciones basadas en evidencia para mejorar su entorno.
+    </p>
+    <p>
+        El proyecto seguirá la metodología de <strong>Aprendizaje Basado en Proyectos (ABP)</strong> y el enfoque <strong>STEM</strong>, con énfasis en el <strong>pensamiento computacional</strong> y el <strong>aprendizaje colaborativo</strong>.
+    </p>
 
-    <section>
-      <h2>🔍 Paso 1: Identificar el problema</h2>
-      <p>Los estudiantes explorarán los ODS y elegirán un problema real en la escuela o comunidad que pueda resolverse con análisis de datos.</p>
-      <ul>
-        <li>ODS 4: Educación de calidad</li>
-        <li>ODS 9: Industria, innovación e infraestructura</li>
-        <li>ODS 11: Ciudades y comunidades sostenibles</li>
-        <li>ODS 13: Acción por el clima</li>
-      </ul>
-      <p><strong>Pregunta orientadora:</strong> ¿Cómo podemos usar la recolección, el análisis y la visualización de datos, junto con herramientas de IA, para identificar y proponer soluciones a un problema real en nuestra escuela o comunidad?</p>
-    </section>
+    <!-- ======== CRONOGRAMA ======== -->
+    <h2>📅 CRONOGRAMA DEL PROYECTO</h2>
+    <div class="timeline">
+        <div class="timeline-item">
+            <span class="emoji">📌</span>
+            <div class="content"><strong>Inicio:</strong> 10 de julio de 2026</div>
+        </div>
+        <div class="timeline-item">
+            <span class="emoji">📌</span>
+            <div class="content"><strong>Finalización:</strong> 1 de septiembre de 2026</div>
+        </div>
+        <div class="timeline-item">
+            <span class="emoji">⏳</span>
+            <div class="content"><strong>Duración:</strong> Aproximadamente 8 semanas</div>
+        </div>
+    </div>
 
-    <section>
-      <h2>👥 Paso 2: Formar equipos</h2>
-      <p>Se organizarán equipos de investigación con roles claros:</p>
-      <ul>
-        <li><strong>Recolector de Datos:</strong> diseña encuestas y recolecta información.</li>
-        <li><strong>Analista de Datos:</strong> limpia, procesa y analiza datos.</li>
-        <li><strong>Visualizador:</strong> crea gráficos y tableros.</li>
-        <li><strong>Investigador de IA:</strong> usa IA para encontrar patrones.</li>
-        <li><strong>Presentador:</strong> expone hallazgos y conclusiones.</li>
-      </ul>
-    </section>
+    <!-- ======== STEP 1 ======== -->
+    <h2>🔍 PASO 1: IDENTIFICAR EL PROBLEMA Y PREGUNTA ORIENTADORA</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Conocerán los Objetivos de Desarrollo Sostenible (ODS) - Enfoque en ODS 4 (Educación de Calidad), ODS 9 (Industria, Innovación e Infraestructura), ODS 11 (Ciudades y Comunidades Sostenibles), ODS 13 (Acción por el Clima).</li>
+        <li>Identificarán problemas en su escuela o comunidad que puedan resolverse mediante el análisis de datos.</li>
+        <li>Explorarán cómo la ciencia de datos y la inteligencia artificial pueden ayudar a tomar decisiones informadas.</li>
+        <li>Comprenderán la importancia de los datos para entender y mejorar la realidad.</li>
+    </ul>
 
-    <section>
-      <h2>📚 Paso 3: Investigar y planificar</h2>
-      <p>Los estudiantes investigarán:</p>
-      <ul>
-        <li>Qué es la ciencia de datos.</li>
-        <li>Cómo recolectar datos con encuestas.</li>
-        <li>Cómo limpiar y organizar datos en hojas de cálculo.</li>
-        <li>Cómo analizar datos con funciones, porcentajes y tablas dinámicas.</li>
-        <li>Cómo visualizar datos y presentar resultados.</li>
-      </ul>
-    </section>
+    <div class="driving-question">
+        <strong>❓ Pregunta Orientadora:</strong><br>
+        ¿Cómo podemos usar la recolección, el análisis y la visualización de datos, junto con herramientas de inteligencia artificial, para identificar y proponer soluciones a un problema real en nuestra escuela o comunidad, contribuyendo a los Objetivos de Desarrollo Sostenible?
+    </div>
 
-    <section>
-      <h2>🛠️ Paso 4: Diseñar el plan de recolección</h2>
-      <p>Cada equipo deberá:</p>
-      <ul>
-        <li>Crear una encuesta en Google Forms o Excel.</li>
-        <li>Definir a quién encuestar y cuántas personas.</li>
-        <li>Establecer un plan para limpiar los datos.</li>
-        <li>Organizar los datos en un formato claro.</li>
-      </ul>
-    </section>
+    <!-- ======== STEP 2 ======== -->
+    <h2>👥 PASO 2: FORMAR LOS EQUIPOS DE INVESTIGACIÓN</h2>
+    <p>El docente organizará equipos de trabajo colaborativo.</p>
+    <ul>
+        <li>Cada salón se dividirá en <strong>6 equipos de investigación</strong>.</li>
+        <li>Cada equipo estará conformado por <strong>4 a 5 estudiantes</strong>.</li>
+        <li>Cada miembro asumirá un rol y responsabilidad específica.</li>
+    </ul>
 
-    <section>
-      <h2>🛠️ Paso 5: Recolectar, organizar y analizar datos</h2>
-      <ul>
-        <li>Ingresar los datos en una hoja de cálculo.</li>
-        <li>Eliminar duplicados y corregir errores.</li>
-        <li>Usar tablas dinámicas y fórmulas (promedios, porcentajes).</li>
-        <li>Explorar herramientas de IA para identificar patrones.</li>
-      </ul>
-    </section>
+    <h3>Roles Sugeridos:</h3>
+    <div class="role-grid">
+        <div class="role-card">
+            <strong>📋 Recolector de Datos</strong>
+            <span>Diseña encuestas, recolecta y organiza datos</span>
+        </div>
+        <div class="role-card">
+            <strong>📊 Analista de Datos</strong>
+            <span>Limpia, procesa y analiza datos (tablas dinámicas, fórmulas)</span>
+        </div>
+        <div class="role-card">
+            <strong>📈 Visualizador</strong>
+            <span>Crea gráficos, tableros y visualizaciones</span>
+        </div>
+        <div class="role-card">
+            <strong>🤖 Investigador de IA</strong>
+            <span>Explora herramientas de IA y patrones en los datos</span>
+        </div>
+        <div class="role-card">
+            <strong>🎤 Presentador</strong>
+            <span>Lidera las presentaciones y explica los hallazgos</span>
+        </div>
+    </div>
 
-    <section>
-      <h2>📊 Paso 6: Crear tableros</h2>
-      <p>Los estudiantes crearán visualizaciones claras con gráficos y un tablero que comunique sus hallazgos.</p>
-    </section>
+    <!-- ======== STEP 3 ======== -->
+    <h2>📚 PASO 3: INVESTIGAR Y PLANIFICAR</h2>
+    <p>Los estudiantes investigarán:</p>
+    <ul>
+        <li>Ciencia de Datos: ¿Qué es y para qué sirve?</li>
+        <li>Recolección de datos: encuestas, fuentes confiables.</li>
+        <li>Limpieza y organización de datos en hojas de cálculo.</li>
+        <li>Análisis de datos: funciones avanzadas, tablas dinámicas.</li>
+        <li>Visualización de datos: gráficos, tableros dinámicos.</li>
+        <li>Inteligencia Artificial básica: reconocimiento de patrones.</li>
+        <li>Ética de los datos: privacidad, uso responsable.</li>
+        <li>Objetivos de Desarrollo Sostenible (ODS).</li>
+    </ul>
 
-    <section>
-      <h2>🧠 Paso 7: Aplicar IA</h2>
-      <p>Usar herramientas como ChatGPT, Gemini o Teachable Machine para analizar patrones y apoyarse en ideas basadas en datos.</p>
-    </section>
+    <p>Cada equipo creará:</p>
+    <ul>
+        <li>Un nombre para el proyecto.</li>
+        <li>Un mapa del proceso de investigación.</li>
+        <li>El diseño de la encuesta o método de recolección de datos.</li>
+        <li>Un plan de trabajo con fechas y responsabilidades.</li>
+    </ul>
 
-    <section>
-      <h2>💡 Paso 8: Proponer una solución</h2>
-      <p>La propuesta final debe estar sustentada en datos y alineada con al menos un ODS.</p>
-    </section>
+    <h3>Temáticas Sugeridas para el Proyecto:</h3>
+    <div class="project-options">
+        <div class="option-card">
+            <strong>♻️ Reciclaje en la Escuela</strong>
+            <span>¿Cuánto reciclamos? ¿Qué podemos mejorar?</span>
+        </div>
+        <div class="option-card">
+            <strong>🚰 Consumo de Agua</strong>
+            <span>¿Cuánta agua usamos? ¿Cómo ahorrar?</span>
+        </div>
+        <div class="option-card">
+            <strong>⚡ Uso de Energía</strong>
+            <span>¿Cuánta energía consumimos en el colegio?</span>
+        </div>
+        <div class="option-card">
+            <strong>🍎 Hábitos Alimenticios</strong>
+            <span>¿Cómo nos alimentamos? ¿Qué tan saludable es?</span>
+        </div>
+        <div class="option-card">
+            <strong>📱 Uso de Tecnología</strong>
+            <span>¿Cuánto tiempo pasamos frente a pantallas?</span>
+        </div>
+        <div class="option-card">
+            <strong>🌳 Áreas Verdes</strong>
+            <span>¿Cuántas áreas verdes hay en la comunidad?</span>
+        </div>
+    </div>
 
-    <section>
-      <h2>🎤 Paso 9: Preparar la presentación</h2>
-      <p>Presentar el problema, la metodología, el análisis, la propuesta y la conexión con los ODS.</p>
-    </section>
+    <!-- ======== STEP 4 ======== -->
+    <h2>✏️ PASO 4: DISEÑAR EL PLAN DE RECOLECCIÓN DE DATOS</h2>
+    <p>Los equipos diseñarán:</p>
+    <ul>
+        <li>Una <strong>encuesta</strong> usando Google Forms o una plantilla de Excel para recolectar datos.</li>
+        <li>Una <strong>estrategia de muestreo</strong>: ¿a quiénes van a encuestar y cuántas personas?</li>
+        <li>Un <strong>plan de limpieza de datos</strong>: ¿cómo van a organizar y depurar la información?</li>
+        <li>Un <strong>formato de registro</strong> para los datos recolectados.</li>
+    </ul>
+    <p>Los estudiantes producirán <strong>cuestionarios, formatos de registro y un plan de recolección</strong>.</p>
 
-    <section>
-      <h2>🏆 Paso 10: Feria STEM de Datos e Innovación</h2>
-      <p>Los equipos expondrán su proyecto, explicarán el uso de IA y mostrarán sus resultados.</p>
-    </section>
-  </body>
+    <!-- ======== STEP 5 ======== -->
+    <h2>🛠️ PASO 5: RECOLECTAR, ORGANIZAR Y ANALIZAR DATOS</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Aplicarán la encuesta a la comunidad escolar.</li>
+        <li>Ingresarán los datos en una hoja de cálculo (Excel o Google Sheets).</li>
+        <li>Realizarán <strong>limpieza de datos</strong>: eliminar duplicados, corregir errores, estandarizar formatos.</li>
+        <li>Utilizarán <strong>tablas dinámicas</strong> para resumir la información.</li>
+        <li>Aplicarán <strong>fórmulas avanzadas</strong> (promedios, conteos, porcentajes).</li>
+        <li>Explorarán herramientas de <strong>IA</strong> (ChatGPT, Gemini, Teachable Machine) para identificar patrones y tendencias.</li>
+        <li>Crearán visualizaciones con <strong>gráficos</strong> (barras, circulares, líneas, etc.).</li>
+    </ul>
+
+    <h3>Herramientas a Utilizar:</h3>
+    <div class="concept-grid">
+        <div class="concept-card">
+            <strong>📊 Hojas de Cálculo</strong>
+            <span>Excel / Google Sheets</span>
+        </div>
+        <div class="concept-card">
+            <strong>📋 Encuestas</strong>
+            <span>Google Forms</span>
+        </div>
+        <div class="concept-card">
+            <strong>📈 Visualización</strong>
+            <span>Chart.js / Google Data Studio</span>
+        </div>
+        <div class="concept-card">
+            <strong>🤖 Inteligencia Artificial</strong>
+            <span>ChatGPT, Gemini, Teachable Machine</span>
+        </div>
+        <div class="concept-card">
+            <strong>📝 Presentación</strong>
+            <span>Canva, PowerPoint</span>
+        </div>
+        <div class="concept-card">
+            <strong>📄 Documentación</strong>
+            <span>Google Docs, Word</span>
+        </div>
+    </div>
+
+    <!-- ======== STEP 6 ======== -->
+    <h2>📊 PASO 6: CREAR TABLEROS Y VISUALIZACIONES</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Crearán un <strong>tablero dinámico</strong> (dashboard) con gráficos y visualizaciones interactivas.</li>
+        <li>Utilizarán herramientas como <strong>Chart.js</strong> (para gráficos en páginas web) o <strong>Google Data Studio</strong>.</li>
+        <li>Seleccionarán los <strong>gráficos adecuados</strong> para cada tipo de dato (barras, líneas, circulares).</li>
+        <li>Interpretarán los gráficos y extraerán <strong>conclusiones</strong>.</li>
+    </ul>
+    <p>Los estudiantes producirán un <strong>tablero visual</strong> que comunique de manera clara los hallazgos.</p>
+
+    <!-- ======== STEP 7 ======== -->
+    <h2>🧠 PASO 7: APLICAR INTELIGENCIA ARTIFICIAL</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Explorarán herramientas de <strong>IA</strong> para identificar patrones en los datos.</li>
+        <li>Usarán <strong>ChatGPT o Gemini</strong> para hacer preguntas sobre los datos y obtener análisis adicionales.</li>
+        <li>Experimentarán con <strong>Teachable Machine</strong> para crear un modelo simple de clasificación.</li>
+        <li>Reflexionarán sobre el <strong>uso ético de la IA</strong> y la privacidad de los datos.</li>
+    </ul>
+
+    <div class="highlight-box">
+        <strong>💡 Integración con Matemáticas:</strong>
+        <ul style="margin-top:5px;">
+            <li><strong>Estadística básica:</strong> promedios, porcentajes, moda, mediana, media.</li>
+            <li><strong>Organización de datos:</strong> tablas de frecuencia, gráficos.</li>
+            <li><strong>Interpretación de gráficos:</strong> lectura y análisis de información visual.</li>
+        </ul>
+    </div>
+
+    <div class="highlight-box">
+        <strong>🌍 Integración con Ciencias Naturales:</strong>
+        <ul style="margin-top:5px;">
+            <li><strong>Impacto ambiental:</strong> análisis de consumo de recursos (agua, energía, residuos).</li>
+            <li><strong>Sostenibilidad:</strong> conexión con ODS y cuidado del planeta.</li>
+            <li><strong>Salud y bienestar:</strong> análisis de hábitos alimenticios y actividad física.</li>
+        </ul>
+    </div>
+
+    <!-- ======== STEP 8 ======== -->
+    <h2>💡 PASO 8: PROPONER UNA SOLUCIÓN</h2>
+    <p>Los equipos:</p>
+    <ul>
+        <li>Con base en el análisis de datos, formularán una <strong>propuesta de solución</strong> al problema identificado.</li>
+        <li>La propuesta debe estar <strong>fundamentada en datos</strong> (evidencia numérica y gráfica).</li>
+        <li>La solución debe estar alineada con al menos <strong>un ODS</strong>.</li>
+        <li>Diseñarán una <strong>estrategia de implementación</strong> de la solución.</li>
+    </ul>
+    <p>Los estudiantes producirán un <strong>documento de propuesta</strong> con argumentos basados en datos.</p>
+
+    <!-- ======== STEP 9 ======== -->
+    <h2>🎤 PASO 9: PREPARAR LA PRESENTACIÓN DEL PROYECTO</h2>
+    <p>Cada equipo preparará:</p>
+    <ul>
+        <li>Una presentación visual (Canva, PowerPoint) con:
+            <ul>
+                <li>Problema identificado</li>
+                <li>Metodología de recolección de datos</li>
+                <li>Análisis y visualizaciones (tablero, gráficos)</li>
+                <li>Exploración con IA</li>
+                <li>Propuesta de solución y conexión con ODS</li>
+                <li>Reflexión final</li>
+            </ul>
+        </li>
+        <li>Una <strong>demostración</strong> del tablero dinámico o visualizaciones.</li>
+        <li>Un <strong>pitch</strong> de 2 minutos resumiendo el proyecto.</li>
+    </ul>
+
+    <!-- ======== STEP 10 ======== -->
+    <h2>🏆 PASO 10: FERIA STEM DE DATOS E INNOVACIÓN</h2>
+    <p>Cada equipo participará en la <strong>Feria de Innovación Code for Change</strong>.</p>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Exhibirán su análisis de datos y tablero visual.</li>
+        <li>Demostrarán cómo usaron herramientas de IA.</li>
+        <li>Explicarán su propuesta de solución y su impacto en la comunidad.</li>
+        <li>Recibirán retroalimentación de docentes y compañeros.</li>
+    </ul>
+
+    <!-- ======== RESUMEN ======== -->
+    <h2>📌 RESUMEN DEL PROYECTO</h2>
+    <p>Al final del proyecto, cada equipo habrá desarrollado un <strong>análisis completo de datos</strong> que combina:</p>
+
+    <table>
+        <tr>
+            <th style="width:25%;">Componente</th>
+            <th style="width:75%;">Aplicación</th>
+        </tr>
+        <tr>
+            <td><strong>Tecnología</strong></td>
+            <td>Hojas de cálculo, herramientas de IA, visualizadores de datos</td>
+        </tr>
+        <tr>
+            <td><strong>Matemáticas</strong></td>
+            <td>Estadística, tablas dinámicas, porcentajes, gráficos</td>
+        </tr>
+        <tr>
+            <td><strong>Ciencias Naturales</strong></td>
+            <td>Sostenibilidad, impacto ambiental, ODS</td>
+        </tr>
+        <tr>
+            <td><strong>Ética</strong></td>
+            <td>Uso responsable de datos y privacidad</td>
+        </tr>
+    </table>
+
+    <!-- ======== RÚBRICA ======== -->
+    <h2>📊 RÚBRICA DE EVALUACIÓN</h2>
+
+    <table class="rubric-table">
+        <tr>
+            <th>Criterio</th>
+            <th>Excelente (4)</th>
+            <th>Bueno (3)</th>
+            <th>Aceptable (2)</th>
+            <th>Necesita Mejorar (1)</th>
+        </tr>
+        <tr>
+            <td><strong>1. Recolección de Datos</strong></td>
+            <td>Encuesta bien diseñada, datos completos y representativos.</td>
+            <td>Buena encuesta, mayoría de datos completos.</td>
+            <td>Encuesta básica, datos incompletos.</td>
+            <td>No hay encuesta o datos insuficientes.</td>
+        </tr>
+        <tr>
+            <td><strong>2. Organización y Limpieza</strong></td>
+            <td>Datos impecablemente organizados, sin errores.</td>
+            <td>Datos bien organizados, algunos errores menores.</td>
+            <td>Datos organizados, errores visibles.</td>
+            <td>Datos desorganizados o con muchos errores.</td>
+        </tr>
+        <tr>
+            <td><strong>3. Análisis de Datos</strong></td>
+            <td>Tablas dinámicas y fórmulas avanzadas utilizadas correctamente.</td>
+            <td>Tablas dinámicas y fórmulas utilizadas.</td>
+            <td>Algunas tablas y fórmulas, pero con errores.</td>
+            <td>No se utilizan tablas dinámicas ni fórmulas.</td>
+        </tr>
+        <tr>
+            <td><strong>4. Visualización (Tablero)</strong></td>
+            <td>Tablero dinámico, claro, interactivo y profesional.</td>
+            <td>Tablero claro y funcional.</td>
+            <td>Tablero básico, con algunos errores.</td>
+            <td>No hay tablero o es confuso.</td>
+        </tr>
+        <tr>
+            <td><strong>5. Uso de IA</strong></td>
+            <td>Exploración profunda de IA, patrones identificados.</td>
+            <td>Uso adecuado de IA, algunos patrones identificados.</td>
+            <td>Uso básico de IA, sin patrones claros.</td>
+            <td>No se utilizó IA.</td>
+        </tr>
+        <tr>
+            <td><strong>6. Propuesta de Solución</strong></td>
+            <td>Propuesta creativa, fundamentada en datos y alineada con ODS.</td>
+            <td>Propuesta clara, fundamentada en datos.</td>
+            <td>Propuesta básica, poca conexión con datos.</td>
+            <td>No hay propuesta o no se basa en datos.</td>
+        </tr>
+        <tr>
+            <td><strong>7. Documentación</strong></td>
+            <td>Documentación completa, clara y bien estructurada.</td>
+            <td>Documentación adecuada.</td>
+            <td>Documentación básica.</td>
+            <td>No hay documentación.</td>
+        </tr>
+        <tr>
+            <td><strong>8. Trabajo en Equipo</strong></td>
+            <td>Todos los miembros participaron activamente, excelente colaboración.</td>
+            <td>Mayoría participó, buena colaboración.</td>
+            <td>Algunos participaron, roles poco claros.</td>
+            <td>Mala colaboración, conflictos.</td>
+        </tr>
+        <tr>
+            <td><strong>9. Reflexión y ODS</strong></td>
+            <td>Reflexión profunda, conexión clara con ODS.</td>
+            <td>Reflexión adecuada, conexión con ODS.</td>
+            <td>Reflexión básica, conexión superficial.</td>
+            <td>No hay reflexión.</td>
+        </tr>
+        <tr>
+            <td><strong>10. Presentación</strong></td>
+            <td>Presentación clara, profesional y bien estructurada.</td>
+            <td>Presentación clara y organizada.</td>
+            <td>Presentación básica, falta claridad.</td>
+            <td>Presentación confusa o incompleta.</td>
+        </tr>
+    </table>
+
+    <!-- ======== PUNTUACIÓN TOTAL ======== -->
+    <div class="total-score">
+        <h2>📈 PUNTUACIÓN TOTAL</h2>
+        <table>
+            <tr>
+                <th style="width:33%;">Rango</th>
+                <th style="width:33%;">Calificación</th>
+                <th style="width:34%;">Equivalencia</th>
+            </tr>
+            <tr>
+                <td>36 - 40</td>
+                <td>Excelente</td>
+                <td>9.0 - 10.0</td>
+            </tr>
+            <tr>
+                <td>30 - 35</td>
+                <td>Bueno</td>
+                <td>8.0 - 8.9</td>
+            </tr>
+            <tr>
+                <td>24 - 29</td>
+                <td>Aceptable</td>
+                <td>7.0 - 7.9</td>
+            </tr>
+            <tr>
+                <td>18 - 23</td>
+                <td>Necesita Mejorar</td>
+                <td>6.0 - 6.9</td>
+            </tr>
+            <tr>
+                <td>0 - 17</td>
+                <td>Insuficiente</td>
+                <td>&lt; 6.0</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ======== RECURSOS ======== -->
+    <h2>📦 RECURSOS DEL PROYECTO</h2>
+    <table>
+        <tr>
+            <th style="width:25%;">Categoría</th>
+            <th style="width:75%;">Recursos</th>
+        </tr>
+        <tr>
+            <td><strong>Hojas de Cálculo</strong></td>
+            <td>Excel, Google Sheets</td>
+        </tr>
+        <tr>
+            <td><strong>Encuestas</strong></td>
+            <td>Google Forms</td>
+        </tr>
+        <tr>
+            <td><strong>IA</strong></td>
+            <td>ChatGPT, Gemini, Teachable Machine</td>
+        </tr>
+        <tr>
+            <td><strong>Visualización</strong></td>
+            <td>Chart.js, Google Data Studio, Power BI</td>
+        </tr>
+        <tr>
+            <td><strong>Presentación</strong></td>
+            <td>Canva, PowerPoint</td>
+        </tr>
+        <tr>
+            <td><strong>Documentación</strong></td>
+            <td>Google Docs, Word</td>
+        </tr>
+        <tr>
+            <td><strong>ODS</strong></td>
+            <td>Sitio web de Naciones Unidas ODS</td>
+        </tr>
+    </table>
+
+    <!-- ======== CONCEPTOS CLAVE ======== -->
+    <h2>🧠 CONCEPTOS CLAVE</h2>
+    <table>
+        <tr>
+            <th style="width:35%;">Concepto</th>
+            <th style="width:65%;">Aplicación en el Proyecto</th>
+        </tr>
+        <tr>
+            <td>Ciencia de Datos</td>
+            <td>Proceso de recolectar, analizar y visualizar datos.</td>
+        </tr>
+        <tr>
+            <td>Recolección de Datos</td>
+            <td>Encuestas y fuentes confiables.</td>
+        </tr>
+        <tr>
+            <td>Limpieza de Datos</td>
+            <td>Organizar, eliminar duplicados, corregir errores.</td>
+        </tr>
+        <tr>
+            <td>Tablas Dinámicas</td>
+            <td>Resumir y agrupar datos en hojas de cálculo.</td>
+        </tr>
+        <tr>
+            <td>Visualización</td>
+            <td>Gráficos y tableros para comunicar información.</td>
+        </tr>
+        <tr>
+            <td>Inteligencia Artificial</td>
+            <td>Herramientas que identifican patrones en los datos.</td>
+        </tr>
+        <tr>
+            <td>Ética de Datos</td>
+            <td>Privacidad, consentimiento y uso responsable.</td>
+        </tr>
+        <tr>
+            <td>ODS</td>
+            <td>Objetivos de Desarrollo Sostenible</td>
+        </tr>
+        <tr>
+            <td>Pensamiento Computacional</td>
+            <td>Descomposición, patrones, abstracción, algoritmos.</td>
+        </tr>
+        <tr>
+            <td>Impacto Ambiental</td>
+            <td>Relación entre datos y sostenibilidad.</td>
+        </tr>
+    </table>
+
+    <!-- ======== PRODUCTO FINAL ======== -->
+    <h2>✅ PRODUCTO FINAL</h2>
+    <p>Cada equipo entregará:</p>
+    <ol>
+        <li>✅ <strong>Encuesta diseñada</strong> y datos recolectados</li>
+        <li>✅ <strong>Hoja de cálculo</strong> con datos organizados y analizados</li>
+        <li>✅ <strong>Tablero dinámico</strong> con gráficos y visualizaciones</li>
+        <li>✅ <strong>Exploración de IA</strong> (evidencia de uso de herramientas)</li>
+        <li>✅ <strong>Propuesta de solución</strong> fundamentada en datos y alineada con ODS</li>
+        <li>✅ <strong>Documentación</strong> del proceso completo</li>
+        <li>✅ <strong>Presentación oral</strong> y demostración</li>
+        <li>✅ <strong>Autoevaluación y coevaluación</strong></li>
+        <li>✅ <strong>Portafolio STEM</strong> final</li>
+    </ol>
+
+    <!-- ======== BIBLIOGRAFÍA ======== -->
+    <h2>📚 REFERENCIAS Y RECURSOS</h2>
+    <table>
+        <tr>
+            <th style="width:35%;">Recurso</th>
+            <th style="width:65%;">Enlace</th>
+        </tr>
+        <tr>
+            <td>Google Sheets</td>
+            <td><a href="https://support.google.com/a/users/answer/9300027" target="_blank">https://support.google.com/a/users/answer/9300027</a></td>
+        </tr>
+        <tr>
+            <td>Excel</td>
+            <td><a href="https://support.microsoft.com/excel" target="_blank">https://support.microsoft.com/excel</a></td>
+        </tr>
+        <tr>
+            <td>Google Forms</td>
+            <td><a href="https://support.google.com/docs/answer/6281888" target="_blank">https://support.google.com/docs/answer/6281888</a></td>
+        </tr>
+        <tr>
+            <td>ChatGPT</td>
+            <td><a href="https://chat.openai.com" target="_blank">https://chat.openai.com</a></td>
+        </tr>
+        <tr>
+            <td>Google Gemini</td>
+            <td><a href="https://gemini.google.com" target="_blank">https://gemini.google.com</a></td>
+        </tr>
+        <tr>
+            <td>Teachable Machine</td>
+            <td><a href="https://teachablemachine.withgoogle.com" target="_blank">https://teachablemachine.withgoogle.com</a></td>
+        </tr>
+        <tr>
+            <td>Chart.js</td>
+            <td><a href="https://www.chartjs.org" target="_blank">https://www.chartjs.org</a></td>
+        </tr>
+        <tr>
+            <td>Google Data Studio</td>
+            <td><a href="https://lookerstudio.google.com" target="_blank">https://lookerstudio.google.com</a></td>
+        </tr>
+        <tr>
+            <td>ODS (Naciones Unidas)</td>
+            <td><a href="https://sdgs.un.org/goals" target="_blank">https://sdgs.un.org/goals</a></td>
+        </tr>
+        <tr>
+            <td>ISTE Standards</td>
+            <td><a href="https://iste.org" target="_blank">https://iste.org</a></td>
+        </tr>
+        <tr>
+            <td>PBLWorks</td>
+            <td><a href="https://www.pblworks.org" target="_blank">https://www.pblworks.org</a></td>
+        </tr>
+        <tr>
+            <td>STEM Teaching Tools</td>
+            <td><a href="https://stemteachingtools.org" target="_blank">https://stemteachingtools.org</a></td>
+        </tr>
+    </table>
+
+    <!-- ======== FOOTER ======== -->
+    <div class="footer">
+        "Los datos no son solo números: son historias que nos ayudan a entender el mundo y a construir un futuro mejor."
+        <small>Proyecto CODE FOR CHANGE - Tecnología 8° - Tercer Periodo 2026</small>
+        <br>
+        <small style="font-size:12px; color:#888;">Integración: Tecnología 🔹 Matemáticas 🔹 Ciencias Naturales</small>
+    </div>
+
+</div>
+
+</body>
 </html>
