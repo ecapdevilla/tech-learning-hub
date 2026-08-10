@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +41,7 @@ header.top{
   color:#fff;
   box-shadow:0 7px 24px rgba(0,0,0,.17);
   backdrop-filter:blur(10px);
+  flex-wrap:wrap;
 }
 .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.4px}
 .logo{
@@ -58,6 +58,7 @@ header.top{
 .lang-btn{background:#dce8f4;color:var(--navy)}
 .lang-btn.active{background:var(--yellow)}
 .print-btn{background:white;color:var(--navy)}
+.sequence-btn{background:var(--green);color:white}
 .wrap{max-width:1180px;margin:26px auto 60px;padding:0 16px}
 .hero{
   background:
@@ -204,11 +205,102 @@ body[data-lang="es"] .lang-es{display:block}
 .inline.lang-en,.inline.lang-es{display:none}
 body[data-lang="en"] .inline.lang-en{display:inline}
 body[data-lang="es"] .inline.lang-es{display:inline}
+
+/* ===== MODAL ESTILOS ===== */
+.modal-overlay {
+  display:none;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(6px);
+  z-index:1000;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  animation:fadeIn .3s ease;
+}
+.modal-overlay.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
+.modal-content{
+  background:#f0f2f5;
+  border-radius:24px;
+  max-width:1100px;
+  max-height:90vh;
+  width:100%;
+  overflow-y:auto;
+  padding:0;
+  box-shadow:0 30px 70px rgba(0,0,0,0.4);
+  position:relative;
+}
+.modal-close{
+  position:sticky;
+  top:12px;
+  right:12px;
+  float:right;
+  background:var(--red);
+  color:white;
+  border:0;
+  border-radius:50%;
+  width:44px;
+  height:44px;
+  font-size:24px;
+  font-weight:900;
+  cursor:pointer;
+  z-index:10;
+  margin:12px 12px 0 0;
+  box-shadow:0 4px 15px rgba(232,74,107,0.4);
+  transition:.2s;
+}
+.modal-close:hover{transform:scale(1.08)}
+.modal-body{
+  padding:20px 30px 30px;
+  max-height:calc(90vh - 80px);
+  overflow-y:auto;
+}
+.modal-body .container{
+  background:white;
+  padding:30px 40px;
+  border-radius:16px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
+}
+.modal-body h1{font-size:32px;color:#1a2a4a;text-align:center;margin-bottom:4px}
+.modal-body .subtitle{text-align:center;font-size:18px;color:#2f4f68;font-weight:600;margin-bottom:25px;border-bottom:3px solid #2f4f68;padding-bottom:12px}
+.modal-body .emoji-big{font-size:40px;display:block;text-align:center;margin-bottom:8px}
+.modal-body h2{font-size:20px;color:#1a2a4a;background:#e8edf3;padding:8px 16px;border-left:6px solid #2f4f68;margin-top:25px;margin-bottom:14px;border-radius:0 6px 6px 0}
+.modal-body h3{font-size:16px;color:#2f4f68;margin-top:18px;margin-bottom:8px;font-weight:600}
+.modal-body p{font-size:14px;line-height:1.7;color:#1e2a3a;margin-bottom:10px}
+.modal-body ul,.modal-body ol{margin-left:20px;margin-bottom:12px}
+.modal-body li{font-size:14px;line-height:1.7;color:#1e2a3a;margin-bottom:4px}
+.modal-body .highlight-box{background:#f7f9fc;border-left:5px solid #2f4f68;padding:14px 18px;margin:14px 0;border-radius:0 8px 8px 0}
+.modal-body .driving-question{background:#e8f0fe;border-left:5px solid #1a5276;padding:14px 18px;margin:14px 0;border-radius:0 8px 8px 0;font-style:italic;font-size:16px;font-weight:500}
+.modal-body .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 16px}
+.modal-body .role-card{background:#f7f9fc;border:1px solid #dce3ec;border-radius:8px;padding:10px 14px}
+.modal-body .role-card strong{display:block;font-size:14px;color:#1a2a4a}
+.modal-body .role-card span{font-size:13px;color:#3a4a5a}
+.modal-body .project-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 16px}
+.modal-body .option-card{background:#f7f9fc;border:1px solid #dce3ec;border-radius:8px;padding:10px 12px;text-align:center}
+.modal-body .option-card strong{display:block;font-size:16px;margin-bottom:2px}
+.modal-body .option-card span{font-size:12px;color:#3a4a5a}
+.modal-body .concept-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0 16px}
+.modal-body .concept-card{background:#f7f9fc;border:1px solid #dce3ec;border-radius:8px;padding:8px 12px;text-align:center}
+.modal-body .concept-card strong{display:block;font-size:14px;color:#1a2a4a}
+.modal-body .concept-card span{font-size:11px;color:#3a4a5a}
+.modal-body .rubric-table th:first-child{width:22%}
+.modal-body .rubric-table th{text-align:center;font-size:12px;background:#2f4f68;color:white;padding:8px}
+.modal-body .rubric-table td{font-size:12px;padding:8px}
+.modal-body .total-score table th{text-align:center}
+.modal-body .total-score table td{text-align:center;font-weight:500}
+.modal-body .footer{margin-top:30px;padding-top:20px;border-top:2px solid #dce3ec;text-align:center;font-size:16px;font-weight:600;color:#1a2a4a}
+.modal-body .footer small{display:block;font-weight:normal;font-size:13px;color:#5a6a7a;margin-top:4px}
+.modal-body table{font-size:13px}
+.modal-body th,.modal-body td{padding:8px 12px}
+
 @media(max-width:900px){
   .hero-grid,.mvc-grid,.social-grid,.challenge-grid{grid-template-columns:1fr 1fr}
   .meta{grid-template-columns:1fr 1fr}
   .project-map{grid-template-columns:repeat(2,1fr)}
   .timeline-row{grid-template-columns:1fr}
+  .modal-body .role-grid,.modal-body .project-options,.modal-body .concept-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
   header.top{position:relative;flex-direction:column;align-items:flex-start}
@@ -216,12 +308,16 @@ body[data-lang="es"] .inline.lang-es{display:inline}
   .hero-grid,.mvc-grid,.social-grid,.challenge-grid,.meta,.checks{grid-template-columns:1fr}
   .project-map{grid-template-columns:1fr}
   .folder-tree{font-size:13px;overflow:auto}
+  .modal-body{padding:10px 14px}
+  .modal-body .container{padding:16px 14px}
+  .modal-body .role-grid,.modal-body .project-options,.modal-body .concept-grid{grid-template-columns:1fr}
 }
 @media print{
   header.top{display:none}
   body{background:#fff}
   .hero,.section,.objective{box-shadow:none}
   .btn{display:none}
+  .modal-overlay{display:none!important}
 }
 </style>
 </head>
@@ -232,6 +328,7 @@ body[data-lang="es"] .inline.lang-es{display:inline}
   <div class="toolbar">
     <button id="btnEn" class="lang-btn active" onclick="setLang('en')">🇺🇸 English</button>
     <button id="btnEs" class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+    <button class="sequence-btn" onclick="openModal()">📋 Ver Secuencia Didáctica</button>
     <button class="print-btn" onclick="window.print()">🖨️ <span class="inline lang-en">Print</span><span class="inline lang-es">Imprimir</span></button>
   </div>
 </header>
@@ -263,7 +360,7 @@ body[data-lang="es"] .inline.lang-es{display:inline}
     <span class="lang-es">Aplicar bucles y arreglos para crear un simulador de dados o una tabla interactiva.</span>
   </div>
 </section>
- 
+
 <section class="section">
   <div class="section-head"><div class="section-number">0</div><h2>🚀 <span class="lang-en">CODE FOR CHANGE</span><span class="lang-es">CODE FOR CHANGE - Ingeniería de Soluciones Interactivas</span></h2></div>
   <div class="section-body">
@@ -379,6 +476,7 @@ body[data-lang="es"] .inline.lang-es{display:inline}
       </div>
     </div>
   </div>
+</section>
 
 <section class="section">
   <div class="section-head"><div class="section-number">1</div><h2><span class="lang-en">Didactic Sequence</span><span class="lang-es">Secuencia Didáctica</span></h2></div>
@@ -387,8 +485,8 @@ body[data-lang="es"] .inline.lang-es{display:inline}
       <div class="timeline-row">
         <div class="time">0–15 min</div>
         <div><h3>🌟 <span class="inline lang-en">Opening / Motivation</span><span class="inline lang-es">Apertura / Motivación</span></h3>
-          <ul class="lang-en"><li>Lasallian greeting.</li><li>Question: “How can we make a program repeat actions automatically?”</li><li>Live Dice Simulator demo.</li><li>Students predict what the computer is repeating.</li></ul>
-          <ul class="lang-es"><li>Saludo Lasallista.</li><li>Pregunta: “¿Cómo podemos hacer que un programa repita acciones automáticamente?”</li><li>Demostración en vivo del Simulador de Dados.</li><li>Los estudiantes predicen qué está repitiendo la computadora.</li></ul>
+          <ul class="lang-en"><li>Lasallian greeting.</li><li>Question: "How can we make a program repeat actions automatically?"</li><li>Live Dice Simulator demo.</li><li>Students predict what the computer is repeating.</li></ul>
+          <ul class="lang-es"><li>Saludo Lasallista.</li><li>Pregunta: "¿Cómo podemos hacer que un programa repita acciones automáticamente?"</li><li>Demostración en vivo del Simulador de Dados.</li><li>Los estudiantes predicen qué está repitiendo la computadora.</li></ul>
         </div>
       </div>
       <div class="timeline-row">
@@ -424,7 +522,7 @@ body[data-lang="es"] .inline.lang-es{display:inline}
       </div>
       <div class="timeline-row">
         <div class="time">112–120 min</div>
-        <div><h3>🙏 <span class="inline lang-en">Closure</span><span class="inline lang-es">Cierre</span></h3>
+        <div><h3>🙏 <span class="inline lang-en">Closure</span><span class="lang-es">Cierre</span></h3>
           <ul class="lang-en"><li>Quick showcase.</li><li>Reflection: difference between for and while.</li><li>Lasallian prayer.</li></ul>
           <ul class="lang-es"><li>Exhibición rápida.</li><li>Reflexión: diferencia entre for y while.</li><li>Oración Lasallista.</li></ul>
         </div>
@@ -762,6 +860,211 @@ document.getElementById(<span class="str">"resetBtn"</span>)
 
 </main>
 
+<!-- ===== MODAL CON SECUENCIA DIDÁCTICA ===== -->
+<div class="modal-overlay" id="sequenceModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-body">
+      <div class="container">
+
+        <span class="emoji-big">🚀</span>
+        <h1>CODE FOR CHANGE</h1>
+        <p class="subtitle">Ingeniería de Soluciones Interactivas para Desafíos Comunitarios</p>
+
+        <h2>🎯 OBJETIVO DEL PROYECTO</h2>
+        <p>Diseñar, desarrollar, documentar y presentar una <strong>aplicación web interactiva funcional</strong> (juego, simulador o herramienta de gestión de datos) utilizando <strong>JavaScript, HTML y CSS</strong> que resuelva un problema real en la escuela o comunidad, aplicando conceptos de <strong>Tecnología, Matemáticas, Español y Ciencias Sociales</strong>, y promoviendo los <strong>Objetivos de Desarrollo Sostenible (ODS)</strong>.</p>
+
+        <h2>📋 METODOLOGÍA</h2>
+        <p>Los estudiantes trabajarán como <strong>equipos de desarrollo de software</strong> cuya misión es crear una solución tecnológica que aborde una necesidad real de la comunidad a través de la programación interactiva.</p>
+        <p>El proyecto seguirá la metodología de <strong>Aprendizaje Basado en Proyectos (ABP)</strong> y el enfoque <strong>STEM</strong>.</p>
+
+        <h2>🔍 PASO 1: IDENTIFICAR EL PROBLEMA</h2>
+        <ul>
+          <li>Conocerán los Objetivos de Desarrollo Sostenible (ODS) - Enfoque en ODS 4 (Educación de Calidad), ODS 9 (Innovación), ODS 11 (Comunidades Sostenibles).</li>
+          <li>Identificarán desafíos en su escuela o comunidad que puedan resolverse con una aplicación interactiva.</li>
+          <li>Explorarán cómo la tecnología y la programación pueden mejorar la vida cotidiana.</li>
+          <li>Comprenderán la importancia del diseño centrado en el usuario.</li>
+        </ul>
+
+        <div class="driving-question">
+          <strong>❓ Pregunta Orientadora:</strong><br>
+          ¿Cómo podemos usar la programación (variables, condicionales, ciclos y funciones) para crear una aplicación interactiva que resuelva un problema real en nuestra escuela o comunidad?
+        </div>
+
+        <h2>👥 PASO 2: FORMAR LOS EQUIPOS DE DESARROLLO</h2>
+        <p>El docente organizará equipos de trabajo colaborativo.</p>
+        <ul>
+          <li>Cada salón se dividirá en <strong>6 equipos de desarrollo</strong>.</li>
+          <li>Cada equipo estará conformado por <strong>4 a 5 estudiantes</strong>.</li>
+          <li>Cada miembro asumirá un rol y responsabilidad específica.</li>
+        </ul>
+
+        <h3>Roles Sugeridos:</h3>
+        <div class="role-grid">
+          <div class="role-card"><strong>💻 Desarrollador Principal</strong><span>Responsable de la codificación, depuración y lógica del sistema.</span></div>
+          <div class="role-card"><strong>🎨 Diseñador de UI/UX</strong><span>Diseña la interfaz de usuario y la experiencia de usuario (HTML/CSS).</span></div>
+          <div class="role-card"><strong>📊 Gestor de Datos</strong><span>Gestiona las estructuras de datos (arrays, objetos) y el flujo de datos.</span></div>
+          <div class="role-card"><strong>📝 Líder de Documentación</strong><span>Documenta el código, escribe comentarios y prepara la guía de usuario.</span></div>
+          <div class="role-card"><strong>🎤 Presentador del Proyecto</strong><span>Lidera las presentaciones, el pitch y la promoción del producto.</span></div>
+        </div>
+
+        <h2>📚 PASO 3: INVESTIGAR Y PLANIFICAR</h2>
+        <ul>
+          <li>Estructuras de programación: variables, condicionales, ciclos y funciones.</li>
+          <li>Gestión de datos: arrays y objetos.</li>
+          <li>Diseño de interfaz de usuario: HTML y CSS.</li>
+          <li>Interacción con el usuario: eventos e interactividad.</li>
+          <li>Problemas reales que pueden resolverse con tecnología.</li>
+        </ul>
+
+        <h3>Opciones de Proyecto Disponibles:</h3>
+        <div class="project-options">
+          <div class="option-card"><strong>🎮 Juego Interactivo</strong><span>Juego de preguntas, adivinanza, piedra-papel-tijera, juego de clics</span></div>
+          <div class="option-card"><strong>🧮 Herramienta Educativa</strong><span>Calculadora, app de aprendizaje, asistente de estudio</span></div>
+          <div class="option-card"><strong>📋 Gestión de Datos</strong><span>Lista de tareas, sistema de inventario, organizador de clase</span></div>
+          <div class="option-card"><strong>📖 Historia Interactiva</strong><span>Elige tu propia aventura, juego narrativo, simulador de decisiones</span></div>
+          <div class="option-card"><strong>🌱 Proyecto Comunitario</strong><span>Aplicación que resuelve un problema específico de la comunidad</span></div>
+        </div>
+
+        <h2>✏️ PASO 4: DISEÑAR EL PROTOTIPO</h2>
+        <ul>
+          <li>Estructura de la aplicación (wireframes).</li>
+          <li>Interfaz de usuario (HTML/CSS).</li>
+          <li>Flujo de interacción del usuario.</li>
+          <li>Estructura lógica (JavaScript).</li>
+          <li>Estructura de datos (arrays/objetos).</li>
+        </ul>
+
+        <h2>🛠️ PASO 5: CONSTRUIR Y PROGRAMAR</h2>
+        <ul>
+          <li>Configurarán Visual Studio Code.</li>
+          <li>Crearán la estructura HTML.</li>
+          <li>Diseñarán los estilos CSS.</li>
+          <li>Escribirán código JavaScript con:</li>
+        </ul>
+
+        <div class="concept-grid">
+          <div class="concept-card"><strong>📦 Variables</strong><span>Almacenar y gestionar datos</span></div>
+          <div class="concept-card"><strong>🔀 Condicionales (if/else)</strong><span>Tomar decisiones</span></div>
+          <div class="concept-card"><strong>🔄 Ciclos (for/while)</strong><span>Repetir acciones</span></div>
+          <div class="concept-card"><strong>🧩 Funciones</strong><span>Bloques de código reutilizables</span></div>
+          <div class="concept-card"><strong>📊 Arrays</strong><span>Gestionar colecciones de datos</span></div>
+          <div class="concept-card"><strong>⚡ Eventos</strong><span>Responder a interacciones del usuario</span></div>
+        </div>
+
+        <h2>🧪 PASO 6: PROBAR Y RECOLECTAR DATOS</h2>
+        <ul>
+          <li>Realizarán pruebas con usuarios.</li>
+          <li>Identificarán errores y bugs.</li>
+          <li>Medirán tiempos de respuesta.</li>
+          <li>Registrarán comentarios de los usuarios.</li>
+        </ul>
+
+        <h2>🔧 PASO 7: MEJORAR EL DISEÑO</h2>
+        <ul>
+          <li>Analizarán los resultados de las pruebas.</li>
+          <li>Identificarán debilidades.</li>
+          <li>Depurarán y corregirán el código.</li>
+          <li>Mejorarán la interfaz de usuario.</li>
+        </ul>
+
+        <h2>🎤 PASO 8: PREPARAR LA PRESENTACIÓN DEL PRODUCTO</h2>
+        <ul>
+          <li>Demostración de la aplicación.</li>
+          <li>Explicación técnica (estructura del código).</li>
+          <li>Declaración de impacto y conexión con los ODS.</li>
+        </ul>
+
+        <h2>🏆 PASO 9: FERIA STEM DE INNOVACIÓN</h2>
+        <ul>
+          <li>Exhibirán su aplicación interactiva.</li>
+          <li>Demostrarán su funcionamiento.</li>
+          <li>Defenderán las decisiones de diseño.</li>
+        </ul>
+
+        <h2>📌 RESUMEN DEL PROYECTO</h2>
+        <table>
+          <tr><th style="width:25%;">Componente</th><th style="width:75%;">Aplicación</th></tr>
+          <tr><td><strong>Tecnología</strong></td><td>Programación con JavaScript, HTML, CSS</td></tr>
+          <tr><td><strong>Matemáticas</strong></td><td>Lógica, gestión de datos, algoritmos</td></tr>
+          <tr><td><strong>Español</strong></td><td>Documentación y comunicación escrita</td></tr>
+          <tr><td><strong>Ciencias Sociales</strong></td><td>Resolución de problemas comunitarios y ODS</td></tr>
+          <tr><td><strong>Ética</strong></td><td>Uso responsable de la tecnología</td></tr>
+        </table>
+
+        <h2>📊 RÚBRICA DE EVALUACIÓN</h2>
+        <table class="rubric-table">
+          <tr><th>Criterio</th><th>Excelente (4)</th><th>Bueno (3)</th><th>Aceptable (2)</th><th>Necesita Mejorar (1)</th></tr>
+          <tr><td><strong>1. Funcionalidad</strong></td><td>Funciona perfectamente sin errores.</td><td>Funciona con mínimos errores.</td><td>Funciona parcialmente.</td><td>No funciona o tiene errores graves.</td></tr>
+          <tr><td><strong>2. Uso de Variables</strong></td><td>Uso correcto y creativo.</td><td>Uso correcto.</td><td>Uso con errores.</td><td>No usa o usa incorrectamente.</td></tr>
+          <tr><td><strong>3. Uso de Condicionales</strong></td><td>Uso correcto y creativo.</td><td>Uso correcto.</td><td>Uso con errores.</td><td>No usa o usa incorrectamente.</td></tr>
+          <tr><td><strong>4. Uso de Ciclos</strong></td><td>Uso correcto y creativo.</td><td>Uso correcto.</td><td>Uso con errores.</td><td>No usa o usa incorrectamente.</td></tr>
+          <tr><td><strong>5. Uso de Funciones</strong></td><td>Uso correcto y creativo.</td><td>Uso correcto.</td><td>Uso con errores.</td><td>No usa o usa incorrectamente.</td></tr>
+          <tr><td><strong>6. Uso de Arrays</strong></td><td>Uso correcto y creativo.</td><td>Uso correcto.</td><td>Uso con errores.</td><td>No usa o usa incorrectamente.</td></tr>
+          <tr><td><strong>7. Interfaz de Usuario</strong></td><td>Atractiva, clara y fácil de usar.</td><td>Funcional y clara.</td><td>Básica.</td><td>Confusa o no existe.</td></tr>
+          <tr><td><strong>8. Documentación</strong></td><td>Completamente documentado.</td><td>Comentarios en la mayoría.</td><td>Comentarios insuficientes.</td><td>Sin comentarios.</td></tr>
+          <tr><td><strong>9. Trabajo en Equipo</strong></td><td>Participación activa de todos.</td><td>Mayoría participó.</td><td>Participación limitada.</td><td>Conflicto o baja participación.</td></tr>
+          <tr><td><strong>10. Resolución de Problemas y ODS</strong></td><td>Reflexión profunda y conexión clara con ODS.</td><td>Reflexión adecuada y conexión clara.</td><td>Reflexión básica.</td><td>Sin reflexión o conexión.</td></tr>
+        </table>
+
+        <div class="total-score">
+          <h2>📈 PUNTUACIÓN TOTAL</h2>
+          <table>
+            <tr><th style="width:33%;">Rango</th><th style="width:33%;">Calificación</th><th style="width:34%;">Equivalencia</th></tr>
+            <tr><td>36 - 40</td><td>Excelente</td><td>9.0 - 10.0</td></tr>
+            <tr><td>30 - 35</td><td>Bueno</td><td>8.0 - 8.9</td></tr>
+            <tr><td>24 - 29</td><td>Aceptable</td><td>7.0 - 7.9</td></tr>
+            <tr><td>18 - 23</td><td>Necesita Mejorar</td><td>6.0 - 6.9</td></tr>
+            <tr><td>0 - 17</td><td>Insuficiente</td><td>&lt; 6.0</td></tr>
+          </table>
+        </div>
+
+        <h2>📦 RECURSOS</h2>
+        <table>
+          <tr><th style="width:25%;">Categoría</th><th style="width:75%;">Recursos</th></tr>
+          <tr><td><strong>Programación</strong></td><td>Visual Studio Code, JavaScript, HTML, CSS</td></tr>
+          <tr><td><strong>Documentación</strong></td><td>MDN Web Docs, W3Schools, JavaScript.info</td></tr>
+          <tr><td><strong>Diseño</strong></td><td>Canva, Figma (opcional)</td></tr>
+          <tr><td><strong>Colaboración</strong></td><td>Google Docs, GitHub (opcional)</td></tr>
+          <tr><td><strong>ODS</strong></td><td>Sitio web de Naciones Unidas ODS</td></tr>
+        </table>
+
+        <h2>🧠 CONCEPTOS CLAVE</h2>
+        <table>
+          <tr><th style="width:35%;">Concepto</th><th style="width:65%;">Aplicación</th></tr>
+          <tr><td>Variables</td><td>Almacenar y gestionar datos del usuario</td></tr>
+          <tr><td>Condicionales</td><td>Toma de decisiones en la aplicación</td></tr>
+          <tr><td>Ciclos</td><td>Repetir acciones de manera eficiente</td></tr>
+          <tr><td>Funciones</td><td>Organizar y reutilizar código</td></tr>
+          <tr><td>Arrays</td><td>Gestionar colecciones de datos</td></tr>
+          <tr><td>Eventos</td><td>Responder a interacciones del usuario</td></tr>
+          <tr><td>HTML/CSS</td><td>Construir la interfaz de usuario</td></tr>
+          <tr><td>Resolución de Problemas</td><td>Abordar necesidades reales de la comunidad</td></tr>
+          <tr><td>ODS</td><td>Conectar la tecnología con objetivos globales</td></tr>
+        </table>
+
+        <h2>✅ PRODUCTO FINAL</h2>
+        <ol>
+          <li>✅ Aplicación web interactiva funcional</li>
+          <li>✅ Código bien documentado (comentarios)</li>
+          <li>✅ Interfaz de usuario (HTML/CSS)</li>
+          <li>✅ Capturas de pantalla y grabaciones</li>
+          <li>✅ Documentación del proyecto</li>
+          <li>✅ Informe de reflexión sobre los ODS</li>
+          <li>✅ Presentación oral y pitch</li>
+          <li>✅ Portafolio STEM final</li>
+        </ol>
+
+        <div class="footer">
+          "La programación no es solo escribir código; es cambiar vidas y construir un futuro mejor."
+          <small>Proyecto CODE FOR CHANGE - Tecnología 10° - Tercer Periodo 2026</small>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 function setLang(l){
   document.body.setAttribute('data-lang',l);
@@ -815,6 +1118,24 @@ function generateLiveTable(){
   }
 }
 generateLiveTable();
+
+// Modal functions
+function openModal(){
+  document.getElementById('sequenceModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  document.getElementById('sequenceModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+// Cerrar al hacer clic fuera del contenido
+document.getElementById('sequenceModal').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+// Cerrar con tecla ESC
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeModal();
+});
 </script>
 </body>
 </html>
