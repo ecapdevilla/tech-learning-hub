@@ -18,6 +18,7 @@ export default async function GradePage({ params }: Props) {
   const gradeLessons = lessons.filter(
     (lesson) => lesson.grade === gradeNumber
   );
+  const isGrade10 = gradeNumber === 10;
 
   return (
     <SiteLayout>
@@ -39,8 +40,10 @@ export default async function GradePage({ params }: Props) {
         <section className="lesson-list">
           <div className="section-heading compact">
             <div>
-              <span className="section-kicker">Current content</span>
-              <h2>Lessons & guides</h2>
+              <span className="section-kicker">
+                {isGrade10 ? "Grade 10 sequences" : "Current content"}
+              </span>
+              <h2>{isGrade10 ? "Didactic sequences" : "Lessons & guides"}</h2>
             </div>
           </div>
 
