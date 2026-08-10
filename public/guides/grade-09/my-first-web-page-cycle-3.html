@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Guía de Desarrollo Web | HTML + CSS + JavaScript</title>
+
+    <!-- ============================================================ -->
+    <!-- STYLES CSS                                                    -->
+    <!-- ============================================================ -->
+    <style>
+        /* ---------- RESET AND GLOBAL STYLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #1a1a2e;
+            padding: 20px;
+            line-height: 1.6;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* ---------- LANGUAGE SWITCHER ---------- */
+        .language-switcher {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #16213e;
+            padding: 12px 20px;
+            border-radius: 0 0 12px 12px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .language-switcher .label {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+
+        .language-switcher .btn-lang {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .language-switcher .btn-lang:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-lang-es {
+            background-color: #c0392b;
+            color: white;
+        }
+
+        .btn-lang-es:hover {
+            background-color: #a93226;
+        }
+
+        .btn-lang-en {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        .btn-lang-en:hover {
+            background-color: #1f618d;
+        }
+
+        .btn-lang-active {
+            outline: 3px solid #f7df1e;
+            outline-offset: 2px;
+        }
+
+        .lang-hint {
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        /* ---------- MAIN CONTAINER ---------- */
+        .contenedor {
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            transition: background-color 0.5s, box-shadow 0.5s;
+        }
+
+        /* ---------- HEADINGS ---------- */
+        h1 {
+            font-size: 2.5rem;
+            color: #16213e;
+            text-align: center;
+            margin-bottom: 8px;
+            transition: color 0.5s;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #0f3460;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 4px solid #e94560;
+            padding-bottom: 10px;
+            transition: color 0.5s, border-color 0.5s;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #e94560;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            transition: color 0.5s;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: #0f3460;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            transition: color 0.5s;
+        }
+
+        /* ---------- TEXT ---------- */
+        p {
+            font-size: 1.05rem;
+            color: #2d3436;
+            margin-bottom: 12px;
+            transition: color 0.5s;
+        }
+
+        .subtitulo {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e94560;
+            padding-bottom: 15px;
+            transition: color 0.5s, border-color 0.5s;
+        }
+
+        /* ---------- INFO BOXES ---------- */
+        .caja-info {
+            background-color: #f8f9fa;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 6px solid #e94560;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+
+        .caja-info h3 {
+            margin-top: 0;
+            color: #e94560;
+        }
+
+        /* ---------- CODE BOX ---------- */
+        .caja-ejemplo {
+            background-color: #2d2d2d;
+            color: #f0f0f0;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin: 10px 0;
+            overflow-x: auto;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .caja-ejemplo .etiqueta-html { color: #e34c26; }
+        .caja-ejemplo .etiqueta-css { color: #264de4; }
+        .caja-ejemplo .etiqueta-js { color: #f7df1e; }
+        .caja-ejemplo .comentario { color: #6a9955; }
+        .caja-ejemplo .texto { color: #ce9178; }
+        .caja-ejemplo .selector { color: #d7ba7d; }
+        .caja-ejemplo .propiedad { color: #9cdcfe; }
+        .caja-ejemplo .valor { color: #ce9178; }
+
+        /* ---------- TECHNOLOGY TAGS ---------- */
+        .etiqueta {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin: 2px 4px;
+            text-transform: uppercase;
+        }
+
+        .etiqueta-html {
+            background-color: #e34c26;
+            color: white;
+        }
+
+        .etiqueta-css {
+            background-color: #264de4;
+            color: white;
+        }
+
+        .etiqueta-js {
+            background-color: #f7df1e;
+            color: #1a1a2e;
+        }
+
+        .etiqueta-exito {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .etiqueta-aviso {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        /* ---------- TABLES ---------- */
+        .tabla-verificacion {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        .tabla-verificacion th {
+            background-color: #16213e;
+            color: white;
+            padding: 10px 15px;
+            text-align: left;
+        }
+
+        .tabla-verificacion td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+
+        .tabla-verificacion tr:hover td {
+            background-color: #f0f4f8;
+        }
+
+        .pendiente {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 6px 5px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background-color: #e94560;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #c73652;
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+
+        .btn-info {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-dark {
+            background-color: #2d2d2d;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background-color: #1a1a1a;
+        }
+
+        .btn-idioma-es {
+            background-color: #c0392b;
+            color: white;
+        }
+
+        .btn-idioma-es:hover {
+            background-color: #a93226;
+        }
+
+        .btn-idioma-en {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        .btn-idioma-en:hover {
+            background-color: #1f618d;
+        }
+
+        .btn-idioma-fr {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-idioma-fr:hover {
+            background-color: #1e8449;
+        }
+
+        /* ---------- MESSAGE BOX ---------- */
+        #cajaMensaje {
+            margin: 20px 0;
+            padding: 18px 25px;
+            border-radius: 12px;
+            background-color: #e8f4fd;
+            font-size: 1.1rem;
+            border: 2px dashed #3498db;
+            transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+            min-height: 60px;
+        }
+
+        /* ---------- LIVE DEMO ---------- */
+        .demo-interactiva {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 16px;
+            margin: 20px 0;
+            border: 2px solid #ddd;
+            text-align: center;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+
+        .demo-interactiva h3 {
+            color: #16213e;
+            margin-top: 0;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #e94560;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            transition: border-color 0.5s, color 0.5s;
+        }
+
+        /* ---------- DARK MODE ---------- */
+        body.modo-oscuro {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.modo-oscuro .contenedor {
+            background-color: #2d2d44;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        body.modo-oscuro h1,
+        body.modo-oscuro h2,
+        body.modo-oscuro h3,
+        body.modo-oscuro h4 {
+            color: #f0f0f0;
+        }
+
+        body.modo-oscuro .subtitulo {
+            color: #bbb;
+            border-color: #e94560;
+        }
+
+        body.modo-oscuro p {
+            color: #ddd;
+        }
+
+        body.modo-oscuro .caja-info {
+            background-color: #3a3a55;
+            border-color: #e94560;
+        }
+
+        body.modo-oscuro .caja-info h3 {
+            color: #e94560;
+        }
+
+        body.modo-oscuro .caja-ejemplo {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.modo-oscuro .tabla-verificacion td {
+            border-color: #444;
+        }
+
+        body.modo-oscuro .tabla-verificacion tr:hover td {
+            background-color: #3a3a55;
+        }
+
+        body.modo-oscuro #cajaMensaje {
+            background-color: #3a3a55;
+            border-color: #e94560;
+            color: #f0f0f0;
+        }
+
+        body.modo-oscuro .demo-interactiva {
+            background-color: #3a3a55;
+            border-color: #444;
+        }
+
+        body.modo-oscuro .footer {
+            border-color: #e94560;
+            color: #aaa;
+        }
+
+        body.modo-oscuro .language-switcher {
+            background-color: #0f0f1f;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .contenedor {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                margin: 4px 3px;
+            }
+
+            .tabla-verificacion {
+                font-size: 0.8rem;
+            }
+
+            .tabla-verificacion th,
+            .tabla-verificacion td {
+                padding: 6px 10px;
+            }
+
+            .language-switcher {
+                justify-content: center;
+                padding: 10px 15px;
+            }
+
+            .language-switcher .label {
+                font-size: 0.8rem;
+            }
+
+            .language-switcher .btn-lang {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ---------- UTILITIES ---------- */
+        .text-center {
+            text-align: center;
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* ---------- SISTEMA DE IDIOMAS CORREGIDO ---------- */
+        /* Los elementos con data-en/data-es NO se ocultan. JavaScript reemplaza
+           su contenido según el idioma seleccionado. Esto evita el error del
+           archivo original, donde un mismo elemento coincidía con [data-en]
+           y [data-es] y terminaba oculto al activar español. */
+        .block-es, .tr-es { display: none !important; }
+        .block-en { display: block !important; }
+        .tr-en { display: table-row !important; }
+
+        body.lang-es .block-es { display: block !important; }
+        body.lang-es .block-en { display: none !important; }
+        body.lang-es .tr-es { display: table-row !important; }
+        body.lang-es .tr-en { display: none !important; }
+
+        body.lang-en .block-en { display: block !important; }
+        body.lang-en .block-es { display: none !important; }
+        body.lang-en .tr-en { display: table-row !important; }
+        body.lang-en .tr-es { display: none !important; }
+
+        /* ---------- REDISEÑO VISUAL ---------- */
+        :root {
+            --bg: #eef3f9;
+            --surface: #ffffff;
+            --surface-soft: #f7f9fc;
+            --text: #172033;
+            --muted: #667085;
+            --primary: #2457d6;
+            --primary-dark: #183f9f;
+            --accent: #e94560;
+            --border: #e4e9f2;
+            --radius: 16px;
+            --shadow: 0 12px 35px rgba(25, 42, 70, .10);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #eaf1fb 0, var(--bg) 320px);
+            color: var(--text);
+            padding: 0 18px 28px;
+        }
+        .language-switcher {
+            top: 10px;
+            max-width: 1100px;
+            margin: 10px auto 20px;
+            border-radius: 14px;
+            background: rgba(18, 31, 55, .96);
+            backdrop-filter: blur(12px);
+        }
+        .contenedor {
+            max-width: 1100px;
+            padding: clamp(22px, 4vw, 48px);
+            border: 1px solid rgba(255,255,255,.8);
+            box-shadow: var(--shadow);
+        }
+        h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.04em; }
+        h2 {
+            font-size: clamp(1.35rem, 3vw, 1.8rem);
+            border-bottom-width: 3px;
+            scroll-margin-top: 90px;
+        }
+        .caja-info, .demo-interactiva {
+            border: 1px solid var(--border);
+            box-shadow: 0 6px 18px rgba(25, 42, 70, .05);
+        }
+        .caja-info { border-left: 5px solid var(--accent); }
+        .caja-ejemplo {
+            border: 1px solid #3c4354;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+            line-height: 1.65;
+        }
+        .tabla-verificacion {
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(25,42,70,.06);
+        }
+        .tabla-verificacion th { background: #17233d; }
+        .btn, .btn-lang { min-height: 42px; }
+        .btn:focus-visible, .btn-lang:focus-visible {
+            outline: 3px solid #ffd54a;
+            outline-offset: 3px;
+        }
+        code { overflow-wrap: anywhere; }
+        @media (max-width: 768px) {
+            body { padding: 0 8px 18px; }
+            .contenedor { border-radius: 14px; }
+            .language-switcher { top: 5px; margin-top: 5px; }
+            .tabla-verificacion { display: block; overflow-x: auto; white-space: normal; }
+        }
+    </style>
+</head>
+
+<body class="lang-es">
+
+    <!-- ============================================================ -->
+    <!-- LANGUAGE SWITCHER                                             -->
+    <!-- ============================================================ -->
+    <div class="language-switcher">
+        <span class="label" data-en="🌐 Language:" data-es="🌐 Idioma:">🌐 Language:</span>
+        <button class="btn-lang btn-lang-en btn-lang-active" id="btnLangEn" onclick="setLanguage('en')" aria-pressed="true">
+            🇺🇸 English
+        </button>
+        <button class="btn-lang btn-lang-es" id="btnLangEs" onclick="setLanguage('es')" aria-pressed="false">
+            🇪🇸 Español
+        </button>
+        <span class="lang-hint" data-en="(Click to switch)" data-es="(Haz clic para cambiar)">(Click to switch)</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT                                                 -->
+    <!-- ============================================================ -->
+    <div class="contenedor">
+
+        <!-- ========================================================== -->
+        <!-- HEADER                                                     -->
+        <!-- ========================================================== -->
+        <h1 id="tituloPrincipal" data-en="🚀 My First Web Page" data-es="🚀 Mi Primera Página Web">
+            🚀 My First Web Page
+        </h1>
+        <p class="subtitulo" id="subtituloPrincipal"
+           data-en="Complete learning guide · HTML + CSS + JavaScript"
+           data-es="Guía completa de aprendizaje · HTML + CSS + JavaScript">
+            Complete learning guide · HTML + CSS + JavaScript
+        </p>
+
+        <!-- ========================================================== -->
+        <!-- LEARNING OBJECTIVE                                         -->
+        <!-- ========================================================== -->
+        <div class="caja-info">
+            <h3 data-en="🎯 LEARNING OBJECTIVE" data-es="🎯 OBJETIVO DE APRENDIZAJE">🎯 LEARNING OBJECTIVE</h3>
+            <p data-en="<strong>'By the end of this class, I will create my own web page from scratch using <span class='etiqueta etiqueta-html'>HTML</span> for structure, <span class='etiqueta etiqueta-css'>CSS</span> for design, and <span class='etiqueta etiqueta-js'>JavaScript</span> for interaction, setting up my work environment in Visual Studio Code.'</strong>"
+               data-es="<strong>'Al finalizar esta clase, crearé mi propia página web desde cero, utilizando <span class='etiqueta etiqueta-html'>HTML</span> para la estructura, <span class='etiqueta etiqueta-css'>CSS</span> para el diseño y <span class='etiqueta etiqueta-js'>JavaScript</span> para la interacción, configurando mi entorno de trabajo en Visual Studio Code.'</strong>">
+                <strong>'By the end of this class, I will create my own web page from scratch using <span class="etiqueta etiqueta-html">HTML</span> for structure, <span class="etiqueta etiqueta-css">CSS</span> for design, and <span class="etiqueta etiqueta-js">JavaScript</span> for interaction, setting up my work environment in Visual Studio Code.'</strong>
+            </p>
+            <p style="margin-top:10px; font-size:0.95rem; color:#555;"
+               data-en="📌 <strong>In simple words:</strong> You will create a complete web page with title, text, colors, working buttons, and language switching."
+               data-es="📌 <strong>En palabras simples:</strong> Vas a crear una página web completa que tenga título, texto, colores, botones que funcionen y que pueda cambiar de idioma.">
+                📌 <strong>In simple words:</strong> You will create a complete web page with title, text, colors, working buttons, and language switching.
+            </p>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- TOPICS                                                     -->
+        <!-- ========================================================== -->
+        <h2 data-en="📚 TOPICS YOU WILL LEARN" data-es="📚 TEMAS QUE VAS A APRENDER">📚 TOPICS YOU WILL LEARN</h2>
+
+        <div class="caja-info">
+            <h3><span class="etiqueta etiqueta-html">HTML</span> <span data-en="Structure" data-es="Estructura">Structure</span></h3>
+            <p data-en="<strong>HTML</strong> (HyperText Markup Language) is the skeleton of your page. It defines headings, paragraphs, buttons, and all visible elements."
+               data-es="<strong>HTML</strong> (HyperText Markup Language) es el esqueleto de tu página. Define los títulos, párrafos, botones y todos los elementos visibles.">
+                <strong>HTML</strong> (HyperText Markup Language) is the skeleton of your page. It defines headings, paragraphs, buttons, and all visible elements.
+            </p>
+            <div class="caja-ejemplo">
+                <span class="comentario">&lt;!-- HTML Example --&gt;</span><br>
+                <span class="etiqueta-html">&lt;h1&gt;</span>My Title<span class="etiqueta-html">&lt;/h1&gt;</span><br>
+                <span class="etiqueta-html">&lt;p&gt;</span>This is a paragraph<span class="etiqueta-html">&lt;/p&gt;</span><br>
+                <span class="etiqueta-html">&lt;button&gt;</span>Click me<span class="etiqueta-html">&lt;/button&gt;</span>
+            </div>
+        </div>
+
+        <div class="caja-info">
+            <h3><span class="etiqueta etiqueta-css">CSS</span> <span data-en="Design" data-es="Diseño">Design</span></h3>
+            <p data-en="<strong>CSS</strong> (Cascading Style Sheets) is the clothing of your page. It controls colors, fonts, sizes, borders, and element positioning."
+               data-es="<strong>CSS</strong> (Cascading Style Sheets) es la ropa de tu página. Controla colores, fuentes, tamaños, bordes y la posición de los elementos.">
+                <strong>CSS</strong> (Cascading Style Sheets) is the clothing of your page. It controls colors, fonts, sizes, borders, and element positioning.
+            </p>
+            <div class="caja-ejemplo">
+                <span class="comentario">/* CSS Example */</span><br>
+                <span class="selector">h1</span> {<br>
+                &nbsp;&nbsp;<span class="propiedad">color</span>: <span class="valor">blue</span>;<br>
+                &nbsp;&nbsp;<span class="propiedad">font-size</span>: <span class="valor">30px</span>;<br>
+                &nbsp;&nbsp;<span class="propiedad">text-align</span>: <span class="valor">center</span>;<br>
+                }
+            </div>
+        </div>
+
+        <div class="caja-info">
+            <h3><span class="etiqueta etiqueta-js">JavaScript</span> <span data-en="Interaction" data-es="Interacción">Interaction</span></h3>
+            <p data-en="<strong>JavaScript</strong> is the brain of your page. It makes buttons work, content change, and the page react to user actions."
+               data-es="<strong>JavaScript</strong> es el cerebro de tu página. Hace que los botones funcionen, que el contenido cambie y que la página reaccione a las acciones del usuario.">
+                <strong>JavaScript</strong> is the brain of your page. It makes buttons work, content change, and the page react to user actions.
+            </p>
+            <div class="caja-ejemplo">
+                <span class="comentario">// JavaScript Example</span><br>
+                <span class="etiqueta-js">function</span> greet() {<br>
+                &nbsp;&nbsp;<span class="etiqueta-js">alert</span>(<span class="texto">"Hello!"</span>);<br>
+                }
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- WORK SCHEDULE                                              -->
+        <!-- ========================================================== -->
+        <h2 data-en="⏰ WORK SCHEDULE (2 Hours)" data-es="⏰ PLAN DE TRABAJO (2 Horas)">⏰ WORK SCHEDULE (2 Hours)</h2>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Time" data-es="Tiempo">Time</th>
+                    <th data-en="Activity" data-es="Actividad">Activity</th>
+                    <th data-en="Duration" data-es="Duración">Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>0 - 10 min</td>
+                    <td>🔧 Visual Studio Code Setup</td>
+                    <td>10 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>0 - 10 min</td>
+                    <td>🔧 Configuración de Visual Studio Code</td>
+                    <td>10 min</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>10 - 25 min</td>
+                    <td>📄 Basic HTML Structure</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>10 - 25 min</td>
+                    <td>📄 Estructura HTML básica</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>25 - 40 min</td>
+                    <td>🎨 CSS Styling</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>25 - 40 min</td>
+                    <td>🎨 Estilos CSS</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>40 - 55 min</td>
+                    <td>💻 Introductory JavaScript</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>40 - 55 min</td>
+                    <td>💻 JavaScript introductorio</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>55 - 75 min</td>
+                    <td>🔘 Creating Interactive Buttons</td>
+                    <td>20 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>55 - 75 min</td>
+                    <td>🔘 Creación de botones interactivos</td>
+                    <td>20 min</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>75 - 95 min</td>
+                    <td>🌍 Language Button (Star Project)</td>
+                    <td>20 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>75 - 95 min</td>
+                    <td>🌍 Botón de idioma (proyecto estrella)</td>
+                    <td>20 min</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>95 - 110 min</td>
+                    <td>🔍 Identification Activity</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>95 - 110 min</td>
+                    <td>🔍 Actividad de identificación</td>
+                    <td>15 min</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>110 - 120 min</td>
+                    <td>✅ Self-Assessment and Closing</td>
+                    <td>10 min</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>110 - 120 min</td>
+                    <td>✅ Autoevaluación y cierre</td>
+                    <td>10 min</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 1: SETUP                                           -->
+        <!-- ========================================================== -->
+        <h2 data-en="🔧 ACTIVITY 1: SETUP (10 minutes)" data-es="🔧 ACTIVIDAD 1: CONFIGURACIÓN (10 minutos)">🔧 ACTIVITY 1: SETUP (10 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your mission: Get Visual Studio Code ready" data-es="📌 Tu misión: Dejar listo Visual Studio Code">📌 Your mission: Get Visual Studio Code ready</h3>
+            <p data-en="Follow these steps in order. Check each one when you complete it."
+               data-es="Sigue estos pasos en orden. Marca cada uno cuando lo completes.">
+                Follow these steps in order. Check each one when you complete it.
+            </p>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Step" data-es="Paso">Step</th>
+                    <th data-en="Action" data-es="Acción">Action</th>
+                    <th data-en="Done?" data-es="¿Listo?">Done?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>1</td>
+                    <td>Open Visual Studio Code</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>1</td>
+                    <td>Abre Visual Studio Code</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>2</td>
+                    <td>Go to Extensions (Ctrl+Shift+X)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>2</td>
+                    <td>Ve a Extensiones (Ctrl+Shift+X)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>3</td>
+                    <td>Search and install: <strong>"Live Server"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>3</td>
+                    <td>Busca e instala: <strong>"Live Server"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>4</td>
+                    <td>Search and install: <strong>"Prettier"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>4</td>
+                    <td>Busca e instala: <strong>"Prettier"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>5</td>
+                    <td>Search and install: <strong>"HTML CSS Support"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>5</td>
+                    <td>Busca e instala: <strong>"HTML CSS Support"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>6</td>
+                    <td>Create a folder on your desktop called <strong>"MyWeb"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>6</td>
+                    <td>Crea una carpeta en tu escritorio llamada <strong>"MiWeb"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>7</td>
+                    <td>Open the folder in VS Code (File > Open Folder)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>7</td>
+                    <td>Abre la carpeta en VS Code (Archivo > Abrir carpeta)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>8</td>
+                    <td>Create a file called <strong>"index.html"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>8</td>
+                    <td>Crea un archivo llamado <strong>"index.html"</strong></td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">✅ Verification: You should see the name "index.html" in the left panel of VS Code.</span>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 2: HTML STRUCTURE                                 -->
+        <!-- ========================================================== -->
+        <h2 data-en="📄 ACTIVITY 2: HTML STRUCTURE (15 minutes)" data-es="📄 ACTIVIDAD 2: ESTRUCTURA HTML (15 minutos)">📄 ACTIVITY 2: HTML STRUCTURE (15 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your mission: Create the skeleton of your page" data-es="📌 Tu misión: Crear el esqueleto de tu página">📌 Your mission: Create the skeleton of your page</h3>
+            <p data-en="Copy the code below into your <strong>index.html</strong> file. Then modify the parts indicated."
+               data-es="Copia el código de abajo en tu archivo <strong>index.html</strong>. Luego modifica las partes que se indican.">
+                Copy the code below into your <strong>index.html</strong> file. Then modify the parts indicated.
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">&lt;!-- COPY THIS CODE INTO YOUR FILE --&gt;</span><br><br>
+            <span class="etiqueta-html">&lt;!DOCTYPE html&gt;</span><br>
+            <span class="etiqueta-html">&lt;html&gt;</span><br>
+            <span class="etiqueta-html">&lt;head&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;title&gt;</span>My First Web Page<span class="etiqueta-html">&lt;/title&gt;</span><br>
+            <span class="etiqueta-html">&lt;/head&gt;</span><br>
+            <span class="etiqueta-html">&lt;body&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;h1&gt;</span>Welcome to my web page<span class="etiqueta-html">&lt;/h1&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;p&gt;</span>This is my first page created with HTML.<span class="etiqueta-html">&lt;/p&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;p&gt;</span>I am learning to program and this is exciting.<span class="etiqueta-html">&lt;/p&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button&gt;</span>Click here<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            <br>
+            <span class="etiqueta-html">&lt;/body&gt;</span><br>
+            <span class="etiqueta-html">&lt;/html&gt;</span>
+        </div>
+
+        <div class="caja-info">
+            <h3 data-en="✏️ NOW MODIFY THESE PARTS:" data-es="✏️ AHORA MODIFICA ESTAS PARTES:">✏️ NOW MODIFY THESE PARTS:</h3>
+            <p data-en="<strong>1. Change the tab title:</strong><br><code>&lt;title&gt;My page - [YOUR NAME]&lt;/title&gt;</code>"
+               data-es="<strong>1. Cambia el título de la pestaña:</strong><br><code>&lt;title&gt;Mi página - [TU NOMBRE]&lt;/title&gt;</code>">
+                <strong>1. Change the tab title:</strong><br>
+                <code>&lt;title&gt;My page - [YOUR NAME]&lt;/title&gt;</code>
+            </p>
+            <p data-en="<strong>2. Change the main heading:</strong><br><code>&lt;h1&gt;Hello, I am [YOUR NAME]&lt;/h1&gt;</code>"
+               data-es="<strong>2. Cambia el encabezado principal:</strong><br><code>&lt;h1&gt;Hola, soy [TU NOMBRE]&lt;/h1&gt;</code>">
+                <strong>2. Change the main heading:</strong><br>
+                <code>&lt;h1&gt;Hello, I am [YOUR NAME]&lt;/h1&gt;</code>
+            </p>
+            <p data-en="<strong>3. Change the paragraphs with information about you:</strong><br><code>&lt;p&gt;I like [your hobby] and [another thing you like].&lt;/p&gt;</code>"
+               data-es="<strong>3. Cambia los párrafos con información sobre ti:</strong><br><code>&lt;p&gt;Me gusta [tu hobby] y [otra cosa que te guste].&lt;/p&gt;</code>">
+                <strong>3. Change the paragraphs with information about you:</strong><br>
+                <code>&lt;p&gt;I like [your hobby] and [another thing you like].&lt;/p&gt;</code>
+            </p>
+            <p data-en="<strong>4. Change the button text:</strong><br><code>&lt;button&gt;Press me!&lt;/button&gt;</code>"
+               data-es="<strong>4. Cambia el texto del botón:</strong><br><code>&lt;button&gt;¡Presióname!&lt;/button&gt;</code>">
+                <strong>4. Change the button text:</strong><br>
+                <code>&lt;button&gt;Press me!&lt;/button&gt;</code>
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">💡 SAVE: Ctrl + S  |  VIEW: Right-click the file and choose "Open with Live Server"</span>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Element" data-es="Elemento">Element</th>
+                    <th data-en="Do you have it?" data-es="¿Lo tienes?">Do you have it?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>Tab title with your name</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Título con tu nombre en la pestaña</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>&lt;h1&gt; heading with your name</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Encabezado &lt;h1&gt; con tu nombre</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Two paragraphs with information about you</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Dos párrafos con información sobre ti</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Button with custom text</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón con texto personalizado</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 3: CSS STYLES                                     -->
+        <!-- ========================================================== -->
+        <h2 data-en="🎨 ACTIVITY 3: CSS STYLES (15 minutes)" data-es="🎨 ACTIVIDAD 3: ESTILOS CSS (15 minutos)">🎨 ACTIVITY 3: CSS STYLES (15 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your mission: Give color and design to your page" data-es="📌 Tu misión: Darle color y diseño a tu página">📌 Your mission: Give color and design to your page</h3>
+            <p data-en="Add this code inside the <strong>&lt;head&gt;</strong> tag, after <strong>&lt;title&gt;</strong>."
+               data-es="Agrega este código dentro de la etiqueta <strong>&lt;head&gt;</strong>, después de <strong>&lt;title&gt;</strong>.">
+                Add this code inside the <strong>&lt;head&gt;</strong> tag, after <strong>&lt;title&gt;</strong>.
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">&lt;!-- COPY THIS INSIDE &lt;head&gt; --&gt;</span><br><br>
+            <span class="etiqueta-html">&lt;style&gt;</span><br>
+            <br>
+            <span class="comentario">/* Styles for the whole page */</span><br>
+            <span class="selector">body</span> {<br>
+            &nbsp;&nbsp;<span class="propiedad">background-color</span>: <span class="valor">#f0f4f8</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">font-family</span>: <span class="valor">Arial, sans-serif</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">padding</span>: <span class="valor">20px</span>;<br>
+            }<br>
+            <br>
+            <span class="comentario">/* Styles for the title */</span><br>
+            <span class="selector">h1</span> {<br>
+            &nbsp;&nbsp;<span class="propiedad">color</span>: <span class="valor">#16213e</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">text-align</span>: <span class="valor">center</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">font-size</span>: <span class="valor">2.5rem</span>;<br>
+            }<br>
+            <br>
+            <span class="comentario">/* Styles for paragraphs */</span><br>
+            <span class="selector">p</span> {<br>
+            &nbsp;&nbsp;<span class="propiedad">color</span>: <span class="valor">#2d3436</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">font-size</span>: <span class="valor">1.1rem</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">line-height</span>: <span class="valor">1.8</span>;<br>
+            }<br>
+            <br>
+            <span class="comentario">/* Styles for the button */</span><br>
+            <span class="selector">button</span> {<br>
+            &nbsp;&nbsp;<span class="propiedad">background-color</span>: <span class="valor">#e94560</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">color</span>: <span class="valor">white</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">border</span>: <span class="valor">none</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">padding</span>: <span class="valor">12px 30px</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">border-radius</span>: <span class="valor">30px</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">cursor</span>: <span class="valor">pointer</span>;<br>
+            }<br>
+            <br>
+            <span class="comentario">/* Changes when hovering */</span><br>
+            <span class="selector">button:hover</span> {<br>
+            &nbsp;&nbsp;<span class="propiedad">background-color</span>: <span class="valor">#c73652</span>;<br>
+            &nbsp;&nbsp;<span class="propiedad">transform</span>: <span class="valor">scale(1.05)</span>;<br>
+            }<br>
+            <br>
+            <span class="etiqueta-html">&lt;/style&gt;</span>
+        </div>
+
+        <div class="caja-info">
+            <h3 data-en="✏️ NOW CHANGE THE COLORS:" data-es="✏️ AHORA CAMBIA LOS COLORES:">✏️ NOW CHANGE THE COLORS:</h3>
+            <p data-en="<strong>Background color:</strong> <code>#f0f4f8</code> → change to <code>lightblue</code>, <code>pink</code> or <code>#ff6b6b</code>"
+               data-es="<strong>Color de fondo:</strong> <code>#f0f4f8</code> → cámbialo por <code>lightblue</code>, <code>pink</code> o <code>#ff6b6b</code>">
+                <strong>Background color:</strong> <code>#f0f4f8</code> → change to <code>lightblue</code>, <code>pink</code> or <code>#ff6b6b</code>
+            </p>
+            <p data-en="<strong>Title color:</strong> <code>#16213e</code> → change to <code>red</code>, <code>purple</code> or <code>#2ecc71</code>"
+               data-es="<strong>Color del título:</strong> <code>#16213e</code> → cámbialo por <code>red</code>, <code>purple</code> o <code>#2ecc71</code>">
+                <strong>Title color:</strong> <code>#16213e</code> → change to <code>red</code>, <code>purple</code> or <code>#2ecc71</code>
+            </p>
+            <p data-en="<strong>Button color:</strong> <code>#e94560</code> → change to <code>blue</code>, <code>green</code> or <code>#f39c12</code>"
+               data-es="<strong>Color del botón:</strong> <code>#e94560</code> → cámbialo por <code>blue</code>, <code>green</code> o <code>#f39c12</code>">
+                <strong>Button color:</strong> <code>#e94560</code> → change to <code>blue</code>, <code>green</code> or <code>#f39c12</code>
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">💡 SAVE: Ctrl + S  |  REFRESH: F5 in the browser</span>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Element" data-es="Elemento">Element</th>
+                    <th data-en="Did you apply it?" data-es="¿Lo aplicaste?">Did you apply it?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>Page background with color</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Fondo de página con color</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Title with custom color</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Título con color personalizado</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Paragraphs with style</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Párrafos con estilo</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Button with color and rounded borders</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón con color y bordes redondeados</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Button changes on hover</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón cambia al pasar el mouse</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 4: INTRODUCTORY JAVASCRIPT                        -->
+        <!-- ========================================================== -->
+        <h2 data-en="💻 ACTIVITY 4: INTRODUCTORY JAVASCRIPT (15 minutes)" data-es="💻 ACTIVIDAD 4: JAVASCRIPT INTRODUCTORIO (15 minutos)">💻 ACTIVITY 4: INTRODUCTORY JAVASCRIPT (15 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your mission: Give life to your page" data-es="📌 Tu misión: Darle vida a tu página">📌 Your mission: Give life to your page</h3>
+            <p data-en="Add this code just <strong>BEFORE &lt;/body&gt;</strong>."
+               data-es="Agrega este código justo <strong>ANTES de &lt;/body&gt;</strong>.">
+                Add this code just <strong>BEFORE &lt;/body&gt;</strong>.
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">&lt;!-- COPY THIS BEFORE &lt;/body&gt; --&gt;</span><br><br>
+            <span class="etiqueta-html">&lt;script&gt;</span><br>
+            <br>
+            <span class="comentario">// Message in the console</span><br>
+            <span class="etiqueta-js">console</span>.<span class="etiqueta-js">log</span>(<span class="texto">"🚀 My page is ready!"</span>);<br>
+            <br>
+            <span class="comentario">// Welcome popup message</span><br>
+            <span class="etiqueta-js">alert</span>(<span class="texto">"Hello! Welcome to my first web page."</span>);<br>
+            <br>
+            <span class="comentario">// Message with your name</span><br>
+            <span class="etiqueta-js">console</span>.<span class="etiqueta-js">log</span>(<span class="texto">"👋 Hello, I am [YOUR NAME] and I am learning JavaScript!"</span>);<br>
+            <br>
+            <span class="etiqueta-html">&lt;/script&gt;</span>
+        </div>
+
+        <div class="caja-info">
+            <h3 data-en="✏️ MODIFY THESE PARTS:" data-es="✏️ MODIFICA ESTAS PARTES:">✏️ MODIFY THESE PARTS:</h3>
+            <p data-en="<strong>1. Change the welcome message:</strong><br><code>alert('Hello! Welcome to my first web page.');</code><br>→ Change to: <code>alert('Hello! I am [YOUR NAME] and this is my page.');</code>"
+               data-es="<strong>1. Cambia el mensaje de bienvenida:</strong><br><code>alert('Hello! Welcome to my first web page.');</code><br>→ Cámbialo por: <code>alert('Hello! I am [YOUR NAME] and this is my page.');</code>">
+                <strong>1. Change the welcome message:</strong><br>
+                <code>alert('Hello! Welcome to my first web page.');</code><br>
+                → Change to: <code>alert('Hello! I am [YOUR NAME] and this is my page.');</code>
+            </p>
+            <p data-en="<strong>2. Add your name:</strong><br><code>console.log('👋 Hello, I am [YOUR NAME] and I am learning JavaScript!');</code><br>→ Replace <strong>[YOUR NAME]</strong> with your real name."
+               data-es="<strong>2. Agrega tu nombre:</strong><br><code>console.log('👋 Hello, I am [YOUR NAME] and I am learning JavaScript!');</code><br>→ Reemplaza <strong>[YOUR NAME]</strong> con tu nombre real.">
+                <strong>2. Add your name:</strong><br>
+                <code>console.log('👋 Hello, I am [YOUR NAME] and I am learning JavaScript!');</code><br>
+                → Replace <strong>[YOUR NAME]</strong> with your real name.
+            </p>
+            <p data-en="<strong>3. Add an extra message:</strong><br><code>console.log('🎯 Today is a great day to learn programming');</code>"
+               data-es="<strong>3. Agrega un mensaje adicional:</strong><br><code>console.log('🎯 Today is a great day to learn programming');</code>">
+                <strong>3. Add an extra message:</strong><br>
+                <code>console.log('🎯 Today is a great day to learn programming');</code>
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">🔍 OPEN THE CONSOLE: Press F12 → "Console" tab</span>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Element" data-es="Elemento">Element</th>
+                    <th data-en="Do you have it?" data-es="¿Lo tienes?">Do you have it?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>Console message with your name</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Mensaje en consola con tu nombre</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Custom popup message (alert)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Mensaje emergente (alert) personalizado</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Opened console with F12</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Abriste la consola con F12</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Saw your messages in the console</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Viste tus mensajes en la consola</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 5: INTERACTIVE BUTTONS                            -->
+        <!-- ========================================================== -->
+        <h2 data-en="🔘 ACTIVITY 5: INTERACTIVE BUTTONS (20 minutes)" data-es="🔘 ACTIVIDAD 5: BOTONES INTERACTIVOS (20 minutos)">🔘 ACTIVITY 5: INTERACTIVE BUTTONS (20 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your mission: Create buttons that work" data-es="📌 Tu misión: Crear botones que funcionen">📌 Your mission: Create buttons that work</h3>
+            <p data-en="Replace ALL the content inside <strong>&lt;body&gt;</strong> with this code."
+               data-es="Reemplaza TODO el contenido dentro de <strong>&lt;body&gt;</strong> con este código.">
+                Replace ALL the content inside <strong>&lt;body&gt;</strong> with this code.
+            </p>
+        </div>
+
+        <!-- LIVE DEMO -->
+        <div class="demo-interactiva">
+            <h3 data-en="🧪 TEST THE BUTTONS LIVE" data-es="🧪 PRUEBA LOS BOTONES EN VIVO">🧪 TEST THE BUTTONS LIVE</h3>
+            <p id="mensajeDemo" style="font-size:1.2rem; font-weight:bold; color:#16213e;">
+                <span data-en="Click a button to change this message" data-es="Haz clic en un botón para cambiar este mensaje">Click a button to change this message</span>
+            </p>
+            <div class="flex-center">
+                <button class="btn btn-primary" onclick="cambiarMensajeDemo('Hello from JavaScript! 🚀')">
+                    🟥 JS Greeting
+                </button>
+                <button class="btn btn-success" onclick="cambiarMensajeDemo('I am learning to code! 💻')">
+                    🟩 Motivational
+                </button>
+                <button class="btn btn-warning" onclick="cambiarMensajeDemo('Buttons are fun! 🎮')">
+                    🟨 Fun Message
+                </button>
+                <button class="btn btn-info" onclick="mostrarAlertaDemo()">
+                    🔔 Show Alert
+                </button>
+                <button class="btn btn-dark" onclick="cambiarColorFondoDemo()">
+                    🌙 Change Color
+                </button>
+            </div>
+            <p style="margin-top:15px; font-size:0.9rem; color:#888;">
+                💡 <span data-en="These buttons are an example. You will create your own." data-es="Estos botones son un ejemplo. Tú crearás los tuyos propios.">These buttons are an example. You will create your own.</span>
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">&lt;!-- CODE TO COPY INTO YOUR FILE --&gt;</span><br><br>
+            <span class="etiqueta-html">&lt;body&gt;</span><br>
+            <span class="etiqueta-html">&lt;div&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;h1</span> <span class="propiedad">id</span>=<span class="valor">"tituloPrincipal"</span><span class="etiqueta-html">&gt;</span>Hello, I am [YOUR NAME]!<span class="etiqueta-html">&lt;/h1&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;p</span> <span class="propiedad">id</span>=<span class="valor">"mensajeTexto"</span><span class="etiqueta-html">&gt;</span>This text will change when you press a button.<span class="etiqueta-html">&lt;/p&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="comentario">&lt;!-- BUTTONS --&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button</span> <span class="propiedad">onclick</span>=<span class="valor">"cambiarMensaje('Hello from JavaScript!')"</span><span class="etiqueta-html">&gt;</span>JS Greeting<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button</span> <span class="propiedad">onclick</span>=<span class="valor">"cambiarMensaje('I am learning to code!')"</span><span class="etiqueta-html">&gt;</span>Motivational<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button</span> <span class="propiedad">onclick</span>=<span class="valor">"mostrarAlerta()"</span><span class="etiqueta-html">&gt;</span>Show Alert<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button</span> <span class="propiedad">onclick</span>=<span class="valor">"cambiarColorFondo()"</span><span class="etiqueta-html">&gt;</span>Change Color<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            <br>
+            <span class="etiqueta-html">&lt;/div&gt;</span><br>
+            <br>
+            <span class="comentario">&lt;!-- JAVASCRIPT --&gt;</span><br>
+            <span class="etiqueta-html">&lt;script&gt;</span><br>
+            <br>
+            <span class="comentario">// Function 1: Change the message</span><br>
+            <span class="etiqueta-js">function</span> <span class="selector">cambiarMensaje</span>(texto) {<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> elemento = <span class="etiqueta-js">document</span>.<span class="etiqueta-js">getElementById</span>(<span class="texto">'mensajeTexto'</span>);<br>
+            &nbsp;&nbsp;elemento.<span class="propiedad">textContent</span> = texto;<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">console</span>.<span class="etiqueta-js">log</span>(<span class="texto">"📝 Message changed to: "</span> + texto);<br>
+            }<br>
+            <br>
+            <span class="comentario">// Function 2: Show alert</span><br>
+            <span class="etiqueta-js">function</span> <span class="selector">mostrarAlerta</span>() {<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">alert</span>(<span class="texto">"🔔 You clicked the alert button!"</span>);<br>
+            }<br>
+            <br>
+            <span class="comentario">// Function 3: Change background color</span><br>
+            <span class="etiqueta-js">function</span> <span class="selector">cambiarColorFondo</span>() {<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> colores = [<span class="texto">'#f0f4f8'</span>, <span class="texto">'#ff6b6b'</span>, <span class="texto">'#4ecdc4'</span>, <span class="texto">'#ffe66d'</span>];<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> aleatorio = colores[<span class="etiqueta-js">Math</span>.<span class="etiqueta-js">floor</span>(<span class="etiqueta-js">Math</span>.<span class="etiqueta-js">random</span>() * colores.<span class="propiedad">length</span>)];<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">document</span>.<span class="propiedad">body</span>.<span class="propiedad">style</span>.<span class="propiedad">backgroundColor</span> = aleatorio;<br>
+            }<br>
+            <br>
+            <span class="etiqueta-html">&lt;/script&gt;</span><br>
+            <span class="etiqueta-html">&lt;/body&gt;</span>
+        </div>
+
+        <div class="caja-info">
+            <h3 data-en="✏️ MODIFY THESE PARTS:" data-es="✏️ MODIFICA ESTAS PARTES:">✏️ MODIFY THESE PARTS:</h3>
+            <p data-en="<strong>1. Your name in the title:</strong><br><code>&lt;h1 id='tituloPrincipal'&gt;Hello, I am [YOUR NAME]!&lt;/h1&gt;</code>"
+               data-es="<strong>1. Tu nombre en el título:</strong><br><code>&lt;h1 id='tituloPrincipal'&gt;Hello, I am [YOUR NAME]!&lt;/h1&gt;</code>">
+                <strong>1. Your name in the title:</strong><br>
+                <code>&lt;h1 id='tituloPrincipal'&gt;Hello, I am [YOUR NAME]!&lt;/h1&gt;</code>
+            </p>
+            <p data-en="<strong>2. The button messages:</strong><br>Change the texts between quotes with your own messages."
+               data-es="<strong>2. Los mensajes de los botones:</strong><br>Cambia los textos entre comillas por tus propios mensajes.">
+                <strong>2. The button messages:</strong><br>
+                Change the texts between quotes with your own messages.
+            </p>
+            <p data-en="<strong>3. The alert message:</strong><br><code>alert('🔔 [YOUR NAME] says hello!');</code>"
+               data-es="<strong>3. El mensaje de la alerta:</strong><br><code>alert('🔔 [YOUR NAME] says hello!');</code>">
+                <strong>3. The alert message:</strong><br>
+                <code>alert('🔔 [YOUR NAME] says hello!');</code>
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">💡 SAVE: Ctrl + S  |  TEST: Click each button</span>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Button" data-es="Botón">Button</th>
+                    <th data-en="Does it work?" data-es="¿Funciona?">Does it work?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>"JS Greeting" button changes the message</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón "JS Greeting" cambia el mensaje</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>"Motivational" button changes the message</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón "Motivational" cambia el mensaje</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>"Show Alert" button shows a message</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón "Show Alert" muestra un mensaje</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>"Change Color" button changes the background</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón "Change Color" cambia el fondo</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 6: LANGUAGE BUTTON                                 -->
+        <!-- ========================================================== -->
+        <h2 data-en="🌍 ACTIVITY 6: LANGUAGE BUTTON (STAR PROJECT) (20 minutes)" data-es="🌍 ACTIVIDAD 6: BOTÓN DE IDIOMA (PROYECTO ESTRELLA) (20 minutos)">🌍 ACTIVITY 6: LANGUAGE BUTTON (STAR PROJECT) (20 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your mission: Create a translator for your page" data-es="📌 Tu misión: Crear un traductor para tu página">📌 Your mission: Create a translator for your page</h3>
+            <p data-en="Replace ALL the code inside <strong>&lt;body&gt;</strong> with this complete code. This is the star project of the class."
+               data-es="Reemplaza TODO el código dentro de <strong>&lt;body&gt;</strong> con este código completo. Este es el proyecto estrella de la clase.">
+                Replace ALL the code inside <strong>&lt;body&gt;</strong> with this complete code. This is the star project of the class.
+            </p>
+        </div>
+
+        <!-- LIVE DEMO - LANGUAGE -->
+        <div class="demo-interactiva">
+            <h3 data-en="🌍 TEST THE LANGUAGE BUTTON LIVE" data-es="🌍 PRUEBA EL BOTÓN DE IDIOMA EN VIVO">🌍 TEST THE LANGUAGE BUTTON LIVE</h3>
+
+            <h2 id="tituloDemoIdioma" style="color:#16213e;" data-en="My Web Page" data-es="Mi Página Web">My Web Page</h2>
+            <p id="descripcionDemoIdioma" style="font-size:1.1rem;"
+               data-en="This is my first interactive web page."
+               data-es="Esta es mi primera página interactiva.">
+                This is my first interactive web page.
+            </p>
+
+            <div id="cajaMensajeIdioma" style="background:#e8f4fd; padding:15px; border-radius:10px; margin:15px 0;"
+                 data-en="💬 <strong>Message:</strong> Click a button to change the language."
+                 data-es="💬 <strong>Mensaje:</strong> Haz clic en un botón para cambiar el idioma.">
+                💬 <strong>Message:</strong> Click a button to change the language.
+            </div>
+
+            <div class="flex-center">
+                <button class="btn btn-idioma-es" onclick="cambiarIdiomaDemo('es')">
+                    🇪🇸 Español
+                </button>
+                <button class="btn btn-idioma-en" onclick="cambiarIdiomaDemo('en')">
+                    🇺🇸 English
+                </button>
+                <button class="btn btn-idioma-fr" onclick="cambiarIdiomaDemo('fr')">
+                    🇫🇷 Français
+                </button>
+            </div>
+            <p style="margin-top:15px; font-size:0.9rem; color:#888;">
+                💡 <span data-en="This is an example. You will create yours with your own texts." data-es="Este es un ejemplo. Tú crearás el tuyo con tus propios textos.">This is an example. You will create yours with your own texts.</span>
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">&lt;!-- COMPLETE LANGUAGE BUTTON CODE --&gt;</span><br><br>
+            <span class="etiqueta-html">&lt;body&gt;</span><br>
+            <span class="etiqueta-html">&lt;div&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="comentario">&lt;!-- TITLES AND TEXTS --&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;h1</span> <span class="propiedad">id</span>=<span class="valor">"tituloPrincipal"</span><span class="etiqueta-html">&gt;</span>🌐 My Web Page<span class="etiqueta-html">&lt;/h1&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;p</span> <span class="propiedad">id</span>=<span class="valor">"descripcion1"</span><span class="etiqueta-html">&gt;</span>This is my first interactive web page.<span class="etiqueta-html">&lt;/p&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;p</span> <span class="propiedad">id</span>=<span class="valor">"descripcion2"</span><span class="etiqueta-html">&gt;</span>I am learning to program and this is amazing.<span class="etiqueta-html">&lt;/p&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="comentario">&lt;!-- MESSAGE BOX --&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;div</span> <span class="propiedad">id</span>=<span class="valor">"cajaMensaje"</span><span class="etiqueta-html">&gt;</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;💬 <span class="etiqueta-html">&lt;strong&gt;</span>Message:<span class="etiqueta-html">&lt;/strong&gt;</span> Click a button to change the language.<br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;/div&gt;</span><br>
+            <br>
+            &nbsp;&nbsp;<span class="comentario">&lt;!-- LANGUAGE BUTTONS --&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button</span> <span class="propiedad">onclick</span>=<span class="valor">"cambiarIdioma('es')"</span><span class="etiqueta-html">&gt;</span>🇪🇸 Español<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button</span> <span class="propiedad">onclick</span>=<span class="valor">"cambiarIdioma('en')"</span><span class="etiqueta-html">&gt;</span>🇺🇸 English<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            &nbsp;&nbsp;<span class="etiqueta-html">&lt;button</span> <span class="propiedad">onclick</span>=<span class="valor">"cambiarIdioma('fr')"</span><span class="etiqueta-html">&gt;</span>🇫🇷 Français<span class="etiqueta-html">&lt;/button&gt;</span><br>
+            <br>
+            <span class="etiqueta-html">&lt;/div&gt;</span><br>
+            <br>
+            <span class="comentario">&lt;!-- JAVASCRIPT --&gt;</span><br>
+            <span class="etiqueta-html">&lt;script&gt;</span><br>
+            <br>
+            <span class="etiqueta-js">function</span> <span class="selector">cambiarIdioma</span>(idioma) {<br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> titulo = <span class="etiqueta-js">document</span>.<span class="etiqueta-js">getElementById</span>(<span class="texto">'tituloPrincipal'</span>);<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> desc1 = <span class="etiqueta-js">document</span>.<span class="etiqueta-js">getElementById</span>(<span class="texto">'descripcion1'</span>);<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> desc2 = <span class="etiqueta-js">document</span>.<span class="etiqueta-js">getElementById</span>(<span class="texto">'descripcion2'</span>);<br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> mensaje = <span class="etiqueta-js">document</span>.<span class="etiqueta-js">getElementById</span>(<span class="texto">'cajaMensaje'</span>);<br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-js">const</span> textos = {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;es: {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;titulo: <span class="texto">'🌐 Mi Página Web'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desc1: <span class="texto">'Esta es mi primera página web interactiva.'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desc2: <span class="texto">'Estoy aprendiendo a programar y esto es increíble.'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mensaje: <span class="texto">'💬 &lt;strong&gt;Mensaje:&lt;/strong&gt; Haz clic en un botón para cambiar el idioma.'</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;en: {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;titulo: <span class="texto">'🌐 My Web Page'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desc1: <span class="texto">'This is my first interactive web page.'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desc2: <span class="texto">'I am learning to program and this is amazing.'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mensaje: <span class="texto">'💬 &lt;strong&gt;Message:&lt;/strong&gt; Click a button to change the language.'</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;fr: {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;titulo: <span class="texto">'🌐 Ma Page Web'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desc1: <span class="texto">'Ceci est ma première page web interactive.'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desc2: <span class="texto">'J\'apprends à programmer et c\'est incroyable.'</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mensaje: <span class="texto">'💬 &lt;strong&gt;Message:&lt;/strong&gt; Cliquez sur un bouton pour changer la langue.'</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+            &nbsp;&nbsp;};<br>
+            <br>
+            &nbsp;&nbsp;<span class="etiqueta-js">if</span> (textos[idioma]) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;titulo.<span class="propiedad">textContent</span> = textos[idioma].titulo;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;desc1.<span class="propiedad">textContent</span> = textos[idioma].desc1;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;desc2.<span class="propiedad">textContent</span> = textos[idioma].desc2;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mensaje.<span class="propiedad">innerHTML</span> = textos[idioma].mensaje;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="etiqueta-js">console</span>.<span class="etiqueta-js">log</span>(<span class="texto">"🌍 Language changed to: "</span> + idioma);<br>
+            &nbsp;&nbsp;}<br>
+            }<br>
+            <br>
+            <span class="etiqueta-html">&lt;/script&gt;</span><br>
+            <span class="etiqueta-html">&lt;/body&gt;</span>
+        </div>
+
+        <div class="caja-info">
+            <h3 data-en="✏️ CUSTOMIZE YOUR LANGUAGE BUTTON:" data-es="✏️ PERSONALIZA TU BOTÓN DE IDIOMA:">✏️ CUSTOMIZE YOUR LANGUAGE BUTTON:</h3>
+            <p data-en="<strong>1. Change the Spanish texts:</strong> Write whatever you want in your language."
+               data-es="<strong>1. Cambia los textos en español:</strong> Escribe lo que quieras en tu idioma.">
+                <strong>1. Change the Spanish texts:</strong> Write whatever you want in your language.
+            </p>
+            <p data-en="<strong>2. Change the English texts:</strong> Write the English translation."
+               data-es="<strong>2. Cambia los textos en inglés:</strong> Escribe la traducción al inglés.">
+                <strong>2. Change the English texts:</strong> Write the English translation.
+            </p>
+            <p data-en="<strong>3. Add a new language:</strong> Copy the structure of <code>fr</code> and add, for example, <code>de</code> (German)."
+               data-es="<strong>3. Agrega un nuevo idioma:</strong> Copia la estructura de <code>fr</code> y agrega, por ejemplo, <code>de</code> (alemán).">
+                <strong>3. Add a new language:</strong> Copy the structure of <code>fr</code> and add, for example, <code>de</code> (German).
+            </p>
+        </div>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">💡 SAVE: Ctrl + S  |  TEST: Click each language button</span>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Element" data-es="Elemento">Element</th>
+                    <th data-en="Does it work?" data-es="¿Funciona?">Does it work?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>"Español" button changes everything to Spanish</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón "Español" cambia todo al español</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>"English" button changes everything to English</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón "English" cambia todo al inglés</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>"Français" button changes everything to French</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botón "Français" cambia todo al francés</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>You customized the texts in each language</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Personalizaste los textos en cada idioma</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 7: IDENTIFY TECHNOLOGIES                          -->
+        <!-- ========================================================== -->
+        <h2 data-en="🔍 ACTIVITY 7: IDENTIFY TECHNOLOGIES (15 minutes)" data-es="🔍 ACTIVIDAD 7: IDENTIFICAR TECNOLOGÍAS (15 minutos)">🔍 ACTIVITY 7: IDENTIFY TECHNOLOGIES (15 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your mission: Show that you can differentiate HTML, CSS and JavaScript" data-es="📌 Tu misión: Demostrar que sabes diferenciar HTML, CSS y JavaScript">📌 Your mission: Show that you can differentiate HTML, CSS and JavaScript</h3>
+            <p data-en="Look at each code and write if it is <span class='etiqueta etiqueta-html'>HTML</span>, <span class='etiqueta etiqueta-css'>CSS</span> or <span class='etiqueta etiqueta-js'>JavaScript</span>."
+               data-es="Mira cada código y escribe si es <span class='etiqueta etiqueta-html'>HTML</span>, <span class='etiqueta etiqueta-css'>CSS</span> o <span class='etiqueta etiqueta-js'>JavaScript</span>.">
+                Look at each code and write if it is <span class="etiqueta etiqueta-html">HTML</span>, <span class="etiqueta etiqueta-css">CSS</span> or <span class="etiqueta etiqueta-js">JavaScript</span>.
+            </p>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Code" data-es="Código">Code</th>
+                    <th data-en="HTML, CSS or JS?" data-es="¿HTML, CSS o JS?">HTML, CSS or JS?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>&lt;h1&gt;Hello world&lt;/h1&gt;</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>color: blue;</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>console.log("Hello")</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;p&gt;Text&lt;/p&gt;</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>background-color: red;</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>function greet() { }</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;button&gt;Click&lt;/button&gt;</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>font-size: 20px;</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>alert("Hello")</code></td>
+                    <td>__________________</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;div&gt;Content&lt;/div&gt;</code></td>
+                    <td>__________________</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="caja-ejemplo">
+            <span class="comentario">💡 TIP: HTML uses &lt;tags&gt;, CSS uses property: value;, JavaScript uses functions and console.log()</span>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- ACTIVITY 8: CREATE YOUR PERSONAL PAGE                      -->
+        <!-- ========================================================== -->
+        <h2 data-en="🏆 ACTIVITY 8: CREATE YOUR PERSONAL PAGE (20 minutes)" data-es="🏆 ACTIVIDAD 8: CREA TU PÁGINA PERSONAL (20 minutos)">🏆 ACTIVITY 8: CREATE YOUR PERSONAL PAGE (20 minutes)</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Your final mission: Create your own web page about yourself" data-es="📌 Tu misión final: Crear tu propia página web sobre ti mismo/a">📌 Your final mission: Create your own web page about yourself</h3>
+            <p data-en="Use everything you learned to create a page that represents you. It must have ALL these elements:"
+               data-es="Usa todo lo que aprendiste para crear una página que te represente. Debe tener TODOS estos elementos:">
+                Use everything you learned to create a page that represents you. It must have ALL these elements:
+            </p>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Element" data-es="Elemento">Element</th>
+                    <th data-en="Do you have it?" data-es="¿Lo tienes?">Do you have it?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>Title with your name</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Título con tu nombre</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>A paragraph describing who you are</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Un párrafo con tu descripción (quién eres)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>A paragraph with your hobbies or interests</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Un párrafo con tus hobbies o gustos</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Different background color</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Color de fondo diferente al original</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Different text color</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Color de texto diferente</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>A button that says "Greet"</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Un botón que diga "Saludar"</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>When clicking "Greet", it shows a message</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Al hacer clic en "Saludar", muestra un mensaje</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Language buttons (Spanish/English)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Botones para cambiar idioma (Español/Inglés)</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Language buttons change all texts</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Los botones de idioma cambian todos los textos</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Console message with your name</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>Mensaje en la consola con tu nombre</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Your page looks organized and nice</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>La página se ve ordenada y bonita</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- SELF-ASSESSMENT                                            -->
+        <!-- ========================================================== -->
+        <h2 data-en="✅ SELF-ASSESSMENT" data-es="✅ AUTOEVALUACIÓN">✅ SELF-ASSESSMENT</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 Answer honestly" data-es="📌 Responde con honestidad">📌 Answer honestly</h3>
+            <p data-en="Check 'Yes' or 'No' for each question."
+               data-es="Marca 'Sí' o 'No' para cada pregunta.">
+                Check 'Yes' or 'No' for each question.
+            </p>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="Question" data-es="Pregunta">Question</th>
+                    <th data-en="Yes" data-es="Sí">Yes</th>
+                    <th data-en="No" data-es="No">No</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>Did I set up VS Code without help?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Configuré VS Code sin ayuda?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Do I understand what HTML is?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Entiendo qué es HTML?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Do I understand what CSS is?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Entiendo qué es CSS?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Do I understand what JavaScript is?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Entiendo qué es JavaScript?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Was I able to create my own complete page?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Pude crear mi propia página completa?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Was I able to make the language button work?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Pude hacer funcionar el botón de idioma?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Can I differentiate HTML, CSS and JavaScript?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Puedo diferenciar HTML, CSS y JavaScript?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-en">
+                    <td>Did I open the console and see the messages?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+                <tr class="tr-es">
+                    <td>¿Abrí la consola y vi los mensajes?</td>
+                    <td>☐</td>
+                    <td>☐</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="caja-info">
+            <h3 data-en="📝 FINAL REFLECTION" data-es="📝 REFLEXIÓN FINAL">📝 FINAL REFLECTION</h3>
+            <p data-en="<strong>1. What was the easiest thing to learn today?</strong><br><span style='color:#888;'>(Write your answer here) ____________________________</span>"
+               data-es="<strong>1. ¿Qué fue lo más fácil de aprender hoy?</strong><br><span style='color:#888;'>(Escribe tu respuesta aquí) ____________________________</span>">
+                <strong>1. What was the easiest thing to learn today?</strong><br>
+                <span style="color:#888;">(Write your answer here) ____________________________</span>
+            </p>
+            <p data-en="<strong>2. What was the most difficult?</strong><br><span style='color:#888;'>(Write your answer here) ____________________________</span>"
+               data-es="<strong>2. ¿Qué fue lo más difícil?</strong><br><span style='color:#888;'>(Escribe tu respuesta aquí) ____________________________</span>">
+                <strong>2. What was the most difficult?</strong><br>
+                <span style="color:#888;">(Write your answer here) ____________________________</span>
+            </p>
+            <p data-en="<strong>3. Why do you think JavaScript is important for web pages?</strong><br><span style='color:#888;'>(Write your answer here) ____________________________</span>"
+               data-es="<strong>3. ¿Para qué crees que sirve JavaScript en una página web?</strong><br><span style='color:#888;'>(Escribe tu respuesta aquí) ____________________________</span>">
+                <strong>3. Why do you think JavaScript is important for web pages?</strong><br>
+                <span style="color:#888;">(Write your answer here) ____________________________</span>
+            </p>
+            <p data-en="<strong>4. Did you achieve the class objective?</strong><br>☐ Yes, I achieved it completely<br>☐ I achieved it partially<br>☐ I need more practice"
+               data-es="<strong>4. ¿Lograste el objetivo de la clase?</strong><br>☐ Sí, lo logré completamente<br>☐ Lo logré parcialmente<br>☐ Necesito más práctica">
+                <strong>4. Did you achieve the class objective?</strong><br>
+                ☐ Yes, I achieved it completely<br>
+                ☐ I achieved it partially<br>
+                ☐ I need more practice
+            </p>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- SUMMARY OF EVIDENCES                                       -->
+        <!-- ========================================================== -->
+        <h2 data-en="📋 SUMMARY OF EVIDENCES" data-es="📋 RESUMEN DE EVIDENCIAS">📋 SUMMARY OF EVIDENCES</h2>
+
+        <div class="caja-info">
+            <h3 data-en="📌 What you must show to the teacher" data-es="📌 Lo que debes mostrar al profesor">📌 What you must show to the teacher</h3>
+        </div>
+
+        <table class="tabla-verificacion">
+            <thead>
+                <tr>
+                    <th data-en="#" data-es="N°">#</th>
+                    <th data-en="Evidence" data-es="Evidencia">Evidence</th>
+                    <th data-en="Ready?" data-es="¿Listo?">Ready?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-en">
+                    <td>1</td>
+                    <td>VS Code with installed extensions</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>1</td>
+                    <td>VS Code con extensiones instaladas</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>2</td>
+                    <td>index.html file created</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>2</td>
+                    <td>Archivo index.html creado</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>3</td>
+                    <td>Title with your name</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>3</td>
+                    <td>Título con tu nombre</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>4</td>
+                    <td>Colors changed</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>4</td>
+                    <td>Colores cambiados</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>5</td>
+                    <td>Working buttons</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>5</td>
+                    <td>Botones funcionando</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>6</td>
+                    <td>Language button working</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>6</td>
+                    <td>Botón de idioma funcionando</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>7</td>
+                    <td>Console open with messages</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>7</td>
+                    <td>Consola abierta con mensajes</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>8</td>
+                    <td>Complete personal page</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>8</td>
+                    <td>Página personal completa</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>9</td>
+                    <td>Correct identification of HTML/CSS/JS</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>9</td>
+                    <td>Identificación correcta de HTML/CSS/JS</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-en">
+                    <td>10</td>
+                    <td>Final reflection written</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+                <tr class="tr-es">
+                    <td>10</td>
+                    <td>Reflexión final escrita</td>
+                    <td><span class="pendiente">☐</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ========================================================== -->
+        <!-- CLOSING                                                    -->
+        <!-- ========================================================== -->
+        <div class="footer">
+            <h2 style="border-bottom: none; color: #e94560; font-size: 1.5rem;" data-en="🎉 CONGRATULATIONS!" data-es="🎉 ¡FELICITACIONES!">🎉 CONGRATULATIONS!</h2>
+            <p style="font-size: 1.1rem;"
+               data-en="<strong>If you completed all the activities, you have achieved the class objective!</strong>"
+               data-es="<strong>Si completaste todas las actividades, ¡has logrado el objetivo de la clase!</strong>">
+                <strong>If you completed all the activities, you have achieved the class objective!</strong>
+            </p>
+            <p style="font-size: 1rem; color: #555;"
+               data-en="You created your own web page from scratch using <span class='etiqueta etiqueta-html'>HTML</span>, <span class='etiqueta etiqueta-css'>CSS</span> and <span class='etiqueta etiqueta-js'>JavaScript</span>."
+               data-es="Creaste tu propia página web desde cero, usando <span class='etiqueta etiqueta-html'>HTML</span>, <span class='etiqueta etiqueta-css'>CSS</span> y <span class='etiqueta etiqueta-js'>JavaScript</span>.">
+                You created your own web page from scratch using <span class="etiqueta etiqueta-html">HTML</span>, <span class="etiqueta etiqueta-css">CSS</span> and <span class="etiqueta etiqueta-js">JavaScript</span>.
+            </p>
+
+            <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 12px;">
+                <p style="font-size: 0.95rem;" data-en="<strong>📌 REMEMBER:</strong>" data-es="<strong>📌 RECUERDA:</strong>">
+                    <strong>📌 REMEMBER:</strong>
+                </p>
+                <p style="font-size: 0.95rem;">
+                    <span class="etiqueta etiqueta-html">HTML</span> <span data-en="= Structure (the skeleton)" data-es="= Estructura (el esqueleto)">= Structure (the skeleton)</span><br>
+                    <span class="etiqueta etiqueta-css">CSS</span> <span data-en="= Design (the clothing)" data-es="= Diseño (la ropa)">= Design (the clothing)</span><br>
+                    <span class="etiqueta etiqueta-js">JavaScript</span> <span data-en="= Interaction (the movement)" data-es="= Interacción (el movimiento)">= Interaction (the movement)</span>
+                </p>
+            </div>
+
+            <p style="font-size: 1rem; font-weight: bold; color: #16213e;"
+               data-en="🙏 'We give thanks for what we learned today and ask for wisdom to continue growing in our knowledge.'"
+               data-es="🙏 'Damos gracias por lo aprendido hoy y pedimos sabiduría para seguir creciendo en nuestro conocimiento.'">
+                🙏 'We give thanks for what we learned today and ask for wisdom to continue growing in our knowledge.'
+            </p>
+
+            <p style="margin-top: 20px; font-size: 0.85rem; color: #aaa;"
+               data-en="✨ Created with ❤️ for the Introduction to Web Programming class · Cycle 3 · August 2026"
+               data-es="✨ Creado con ❤️ para la clase de Introducción a la Programación Web · Cycle 3 · Agosto 2026">
+                ✨ Created with ❤️ for the Introduction to Web Programming class · Cycle 3 · August 2026
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT                                                   -->
+    <!-- ============================================================ -->
+    <script>
+        // =============================================================
+        // LANGUAGE SWITCHER
+        // =============================================================
+
+        function setLanguage(lang) {
+            const idioma = lang === 'es' ? 'es' : 'en';
+            const body = document.body;
+            const btnEn = document.getElementById('btnLangEn');
+            const btnEs = document.getElementById('btnLangEs');
+
+            body.classList.toggle('lang-es', idioma === 'es');
+            body.classList.toggle('lang-en', idioma === 'en');
+            document.documentElement.lang = idioma;
+
+            // Traduce todos los elementos bilingües sin ocultarlos.
+            document.querySelectorAll('[data-en][data-es]').forEach((elemento) => {
+                const contenido = elemento.getAttribute('data-' + idioma);
+                if (contenido !== null) elemento.innerHTML = contenido;
+            });
+
+            btnEn.classList.toggle('btn-lang-active', idioma === 'en');
+            btnEs.classList.toggle('btn-lang-active', idioma === 'es');
+            btnEn.setAttribute('aria-pressed', String(idioma === 'en'));
+            btnEs.setAttribute('aria-pressed', String(idioma === 'es'));
+
+            document.title = idioma === 'es'
+                ? '🚀 Guía de Desarrollo Web | HTML + CSS + JavaScript'
+                : '🚀 Web Development Guide | HTML + CSS + JavaScript';
+
+            try { localStorage.setItem('idiomaGuiaWeb', idioma); } catch (_) {}
+            console.log('🌐 Idioma activo: ' + (idioma === 'es' ? 'Español' : 'English'));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let idiomaGuardado = 'es';
+            try { idiomaGuardado = localStorage.getItem('idiomaGuiaWeb') || 'es'; } catch (_) {}
+            setLanguage(idiomaGuardado);
+        });
+
+        // =============================================================
+        // CONSOLE MESSAGES
+        // =============================================================
+        console.log("🚀 Complete learning guide loaded!");
+        console.log("📌 Follow each activity step by step.");
+        console.log("🎯 Objective: Create your own web page.");
+        console.log("👤 Created by: [YOUR NAME]");
+        console.log("📅 Date: " + new Date().toLocaleString());
+        console.log("");
+        console.log("💡 TIP: Use the language switcher at the top to switch between English and Spanish.");
+        console.log("");
+
+        // =============================================================
+        // DEMO FUNCTIONS - Activity 5
+        // =============================================================
+
+        function cambiarMensajeDemo(nuevoTexto) {
+            const elemento = document.getElementById('mensajeDemo');
+            if (elemento) {
+                elemento.textContent = nuevoTexto;
+                console.log("📝 Demo: Message changed to: " + nuevoTexto);
+            }
+        }
+
+        function mostrarAlertaDemo() {
+            alert("🔔 You clicked the demo alert button!");
+            console.log("🔔 Demo: Alert shown");
+        }
+
+        function cambiarColorFondoDemo() {
+            const colores = ['#f0f4f8', '#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#ffd93d', '#74b9ff', '#fd79a8'];
+            const aleatorio = colores[Math.floor(Math.random() * colores.length)];
+            document.body.style.backgroundColor = aleatorio;
+            console.log("🎨 Demo: Background changed to: " + aleatorio);
+            cambiarMensajeDemo("🎨 Background color changed to " + aleatorio);
+        }
+
+        // =============================================================
+        // DEMO LANGUAGE FUNCTIONS - Activity 6
+        // =============================================================
+
+        function cambiarIdiomaDemo(idioma) {
+            const titulo = document.getElementById('tituloDemoIdioma');
+            const descripcion = document.getElementById('descripcionDemoIdioma');
+            const mensaje = document.getElementById('cajaMensajeIdioma');
+
+            const textos = {
+                es: {
+                    titulo: '🌟 Mi Página Web',
+                    descripcion: 'Esta es mi primera página interactiva. ¡Aprendiendo a programar!',
+                    mensaje: '💬 <strong>Mensaje:</strong> Haz clic en un botón para cambiar el idioma.'
+                },
+                en: {
+                    titulo: '🌟 My Web Page',
+                    descripcion: 'This is my first interactive web page. Learning to code!',
+                    mensaje: '💬 <strong>Message:</strong> Click a button to change the language.'
+                },
+                fr: {
+                    titulo: '🌟 Ma Page Web',
+                    descripcion: 'Ceci est ma première page web interactive. J\'apprends à programmer!',
+                    mensaje: '💬 <strong>Message:</strong> Cliquez sur un bouton pour changer la langue.'
+                }
+            };
+
+            if (textos[idioma]) {
+                titulo.textContent = textos[idioma].titulo;
+                descripcion.textContent = textos[idioma].descripcion;
+                mensaje.innerHTML = textos[idioma].mensaje;
+                console.log("🌍 Demo: Language changed to: " + idioma);
+            } else {
+                console.warn("⚠️ Demo: Language not supported: " + idioma);
+            }
+        }
+
+        // =============================================================
+        // DARK MODE TOGGLE (double-click on title)
+        // =============================================================
+
+        function alternarModoOscuro() {
+            document.body.classList.toggle('modo-oscuro');
+            const esOscuro = document.body.classList.contains('modo-oscuro');
+            const msg = esOscuro ? '🌙 Dark mode activated' : '☀️ Light mode activated';
+            console.log(msg);
+            alert(msg);
+            return msg;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const titulo = document.getElementById('tituloPrincipal');
+            if (titulo) {
+                titulo.addEventListener('dblclick', function() {
+                    alternarModoOscuro();
+                });
+                console.log("💡 Tip: Double-click the title to activate dark mode.");
+            }
+        });
+
+        // =============================================================
+        // IDENTIFY TECHNOLOGY FUNCTION
+        // =============================================================
+
+        function identificarTecnologia(codigo) {
+            if (codigo.includes('<') || codigo.includes('</')) {
+                console.log("🟥 This is HTML (has tags)");
+                return "HTML";
+            } else if (codigo.includes('color:') || codigo.includes('background') || codigo.includes('font') ||
+                codigo.includes('border') || codigo.includes('margin') || codigo.includes('padding')) {
+                console.log("🟦 This is CSS (has style properties)");
+                return "CSS";
+            } else if (codigo.includes('console.log') || codigo.includes('function') || codigo.includes('alert') ||
+                codigo.includes('document.') || codigo.includes('window.')) {
+                console.log("🟨 This is JavaScript (has functions or JS commands)");
+                return "JavaScript";
+            } else {
+                console.log("❓ I'm not sure. Maybe it's plain text?");
+                return "Unknown";
+            }
+        }
+
+        console.log("");
+        console.log("🎯 PRACTICE FROM THE CONSOLE!");
+        console.log("   Type: identificarTecnologia('<h1>Hello</h1>')");
+        console.log("   Type: identificarTecnologia('color: red;')");
+        console.log("   Type: identificarTecnologia('console.log(\"Hello\")')");
+        console.log("   Type: alternarModoOscuro()  (toggles dark/light mode)");
+        console.log("");
+
+        // =============================================================
+        // PROGRESS TRACKER
+        // =============================================================
+
+        let actividadesCompletadas = {
+            act1: false,
+            act2: false,
+            act3: false,
+            act4: false,
+            act5: false,
+            act6: false,
+            act7: false,
+            act8: false
+        };
+
+        function completarActividad(actividad) {
+            if (actividadesCompletadas[actividad] !== undefined) {
+                actividadesCompletadas[actividad] = true;
+                let completadas = 0;
+                for (let key in actividadesCompletadas) {
+                    if (actividadesCompletadas[key]) completadas++;
+                }
+                console.log("✅ Activity " + actividad + " completed! (" + completadas + "/8)");
+                if (completadas === 8) {
+                    console.log("🎉 CONGRATULATIONS! You completed all activities.");
+                }
+                return "✅ Activity " + actividad + " marked as completed";
+            } else {
+                return "⚠️ Invalid activity. Use: act1, act2, act3, act4, act5, act6, act7, act8";
+            }
+        }
+
+        console.log("📊 To track your progress, use:");
+        console.log("   completarActividad('act1')  (setup)");
+        console.log("   completarActividad('act2')  (HTML)");
+        console.log("   completarActividad('act3')  (CSS)");
+        console.log("   completarActividad('act4')  (JavaScript)");
+        console.log("   completarActividad('act5')  (Buttons)");
+        console.log("   completarActividad('act6')  (Language)");
+        console.log("   completarActividad('act7')  (Identify)");
+        console.log("   completarActividad('act8')  (Personal page)");
+        console.log("");
+        console.log("🎯 GET TO WORK! Open VS Code and start.");
+        console.log("====================================================");
+    </script>
+
+</body>
+</html>

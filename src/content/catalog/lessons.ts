@@ -34,6 +34,22 @@ export const lessons: LessonSummary[] = [
     tags: ["Algorithms", "Scratch", "Prototype", "Teamwork"],
   },
   {
+    id: "grade-09-cycle-3-my-first-web-page",
+    grade: 9,
+    cycle: 3,
+    title: {
+      en: "My First Web Page",
+      es: "Mi Primera Página Web",
+    },
+    objective: {
+      en: "Create a web page from scratch using HTML for structure, CSS for design and JavaScript for interaction.",
+      es: "Crear una página web desde cero usando HTML para la estructura, CSS para el diseño y JavaScript para la interacción.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-09/my-first-web-page-cycle-3.html",
+    tags: ["HTML", "CSS", "JavaScript", "VS Code"],
+  },
+  {
     id: "grade-10-cycle-3-loops-arrays",
     grade: 10,
     cycle: 3,

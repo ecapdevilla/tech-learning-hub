@@ -28,7 +28,7 @@ export const grades: Grade[] = [
   {
     id: 9,
     label: "9th Grade",
-    description: "Programming and interactive systems",
+    description: "HTML, CSS and JavaScript web development",
     level: "secondary",
   },
   {
