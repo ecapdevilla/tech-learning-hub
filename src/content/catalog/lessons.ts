@@ -82,6 +82,22 @@ export const lessons: LessonSummary[] = [
     tags: ["HTML", "CSS", "JavaScript", "MVC"],
   },
   {
+    id: "grade-10-cycle-3-code-for-change",
+    grade: 10,
+    cycle: 3,
+    title: {
+      en: "Code for Change",
+      es: "Code for Change",
+    },
+    objective: {
+      en: "Design and present an interactive web app that solves a real school or community problem using JavaScript, HTML, and CSS.",
+      es: "Diseñar, desarrollar y presentar una aplicación web interactiva que resuelva un problema real de la escuela o comunidad usando JavaScript, HTML y CSS.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-10/code-for-change.html",
+    tags: ["HTML", "CSS", "JavaScript", "ODS", "STEM"],
+  },
+  {
     id: "grade-11-cycle-3-esp32-wifi",
     grade: 11,
     cycle: 3,

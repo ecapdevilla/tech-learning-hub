@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODE FOR CHANGE · Grade 10 · Interactive Solutions</title>
+<style>
+:root{--navy:#0f2740;--navy2:#173e63;--blue:#2563eb;--sky:#eef6ff;--green:#19a463;--yellow:#f7c948;--red:#e84a6b;--purple:#6f5bd3;--ink:#1f3347;--muted:#66788a;--line:#d9e4ee;--bg:#edf3f8;--white:#ffffff;--code:#0b1420;--shadow:0 16px 44px rgba(15,39,64,.10)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at top right,#dcecff 0,transparent 26%),linear-gradient(180deg,#f4f8fb,#edf3f8);color:var(--ink);line-height:1.62}header.top{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 20px;background:rgba(15,39,64,.97);color:#fff;box-shadow:0 7px 24px rgba(0,0,0,.17);backdrop-filter:blur(10px)}.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.4px}.logo{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--yellow),var(--red));color:var(--navy);font-size:20px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{border:0;border-radius:999px;padding:8px 14px;font-weight:850;cursor:pointer;transition:.2s}.toolbar button:hover{transform:translateY(-1px)}.lang-btn{background:#dce8f4;color:var(--navy)}.lang-btn.active{background:var(--yellow)}.print-btn{background:white;color:var(--navy)}.wrap{max-width:1180px;margin:26px auto 60px;padding:0 16px}.hero{background:radial-gradient(circle at 85% 15%,rgba(247,201,72,.30),transparent 24%),linear-gradient(135deg,var(--navy),var(--navy2) 62%,#1f69c7);border-radius:30px;color:#fff;padding:38px 40px;box-shadow:var(--shadow)}.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;align-items:center}.kicker{display:inline-flex;gap:8px;align-items:center;border:1px solid #ffffff2e;background:#ffffff12;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:.8px}.hero h1{font-size:clamp(36px,5vw,58px);line-height:1.03;margin:13px 0 9px}.hero p{font-size:19px;color:#e6f1fb;max-width:780px;margin:0}.hero-icon{text-align:center;font-size:104px;filter:drop-shadow(0 14px 15px #0004)}.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}.meta-card{background:#ffffff12;border:1px solid #ffffff26;border-radius:17px;padding:13px 14px}.meta-card small{display:block;color:#bdd8ee;text-transform:uppercase;font-weight:900;letter-spacing:.7px}.meta-card strong{display:block;margin-top:3px}.objective{margin-top:20px;background:#fff;border:1px solid #dce6ef;border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}.objective-head{background:linear-gradient(90deg,#eaf4ff,#fff7da);color:var(--navy);padding:14px 21px;font-size:22px;font-weight:950}.objective-body{padding:22px 24px;font-size:21px;font-weight:850;color:var(--navy)}.section{margin-top:24px;background:#fff;border:1px solid #dce6ef;border-radius:22px;overflow:hidden;box-shadow:0 8px 28px rgba(15,39,64,.07)}.section-head{display:flex;align-items:center;gap:11px;padding:15px 21px;background:linear-gradient(90deg,#f0f6fb,#fff);border-bottom:1px solid #e3ebf2}.section-number{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:950}.section-head h2{margin:0;font-size:23px;color:var(--navy)}.section-body{padding:22px}.timeline{display:grid;gap:12px}.timeline-row{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:15px;border:1px solid var(--line);border-radius:17px;background:#fbfdff}.time{background:var(--navy);color:#fff;border-radius:13px;padding:9px;text-align:center;font-weight:900;height:max-content}.timeline-row h3{margin:0 0 5px;color:var(--navy)}.timeline-row ul{margin:5px 0 0;padding-left:20px}.code{background:var(--code);color:#eef6ff;border-radius:16px;padding:16px 18px;overflow:auto;font:14px/1.68 Consolas,"Courier New",monospace;margin-top:12px;border:1px solid #1c2d40}.tip{border-left:6px solid var(--yellow);background:#fff8dc;border-radius:12px;padding:14px 16px;margin:14px 0}.tip.green{border-left-color:var(--green);background:#ecfbf3}.tip.blue{border-left-color:var(--blue);background:#eef6ff}.footer{text-align:center;margin-top:28px;color:#657789;padding:18px}.lang-en,.lang-es{display:none}body[data-lang="en"] .lang-en{display:block}body[data-lang="es"] .lang-es{display:block}.inline.lang-en,.inline.lang-es{display:none}body[data-lang="en"] .inline.lang-en{display:inline}body[data-lang="es"] .inline.lang-es{display:inline}@media(max-width:900px){.hero-grid,.timeline-row{grid-template-columns:1fr}.meta{grid-template-columns:1fr 1fr}}@media(max-width:620px){header.top{position:relative;flex-direction:column;align-items:flex-start}.hero{padding:24px 20px}.meta{grid-template-columns:1fr}.section-head{flex-direction:column;align-items:flex-start}}@media print{header.top{display:none}body{background:#fff}.hero,.section,.objective{box-shadow:none}}
+</style>
+</head>
+<body data-lang="es">
+
+<header class="top">
+  <div class="brand"><div class="logo">C4C</div><span>GRADE 10 · CODE FOR CHANGE</span></div>
+  <div class="toolbar">
+    <button id="btnEn" class="lang-btn" onclick="setLang('en')">🇺🇸 English</button>
+    <button id="btnEs" class="lang-btn active" onclick="setLang('es')">🇪🇸 Español</button>
+    <button class="print-btn" onclick="window.print()">🖨️ <span class="inline lang-en">Print</span><span class="inline lang-es">Imprimir</span></button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">GRADE 10 · TECHNOLOGY / PROGRAMMING · CYCLE 3</div>
+      <h1>CODE FOR CHANGE</h1>
+      <p class="lang-en">Design, build and showcase a web app that solves a real school or community challenge, using JavaScript, HTML and CSS.</p>
+      <p class="lang-es">Diseñar, desarrollar y presentar una aplicación web que resuelva un desafío real de la escuela o comunidad, usando JavaScript, HTML y CSS.</p>
+      <div class="meta">
+        <div class="meta-card"><small class="lang-en">Project</small><small class="lang-es">Proyecto</small><strong>Interactive Web App</strong></div>
+        <div class="meta-card"><small class="lang-en">Skills</small><small class="lang-es">Competencias</small><strong>JavaScript · HTML · CSS · ODS</strong></div>
+        <div class="meta-card"><small class="lang-en">Approach</small><small class="lang-es">Enfoque</small><strong>ABP · STEM · Teamwork</strong></div>
+        <div class="meta-card"><small class="lang-en">Duration</small><small class="lang-es">Duración</small><strong>120 min</strong></div>
+      </div>
+    </div>
+    <div class="hero-icon">🚀</div>
+  </div>
+</section>
+
+<section class="objective">
+  <div class="objective-head">🎯 <span class="lang-en">PROJECT OBJECTIVE</span><span class="lang-es">OBJETIVO DEL PROYECTO</span></div>
+  <div class="objective-body">
+    <span class="lang-en">Design, develop, document and present a functional interactive web application using JavaScript, HTML and CSS to solve a real school or community problem.</span>
+    <span class="lang-es">Diseñar, desarrollar, documentar y presentar una aplicación web interactiva funcional usando JavaScript, HTML y CSS para resolver un problema real de la escuela o la comunidad.</span>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">1</div><h2>🚀 <span class="lang-en">CODE FOR CHANGE</span><span class="lang-es">CODE FOR CHANGE</span></h2></div>
+  <div class="section-body">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="time">📌</div>
+        <div>
+          <h3><span class="inline lang-en">Project Overview</span><span class="inline lang-es">Resumen del Proyecto</span></h3>
+          <p class="lang-es"><strong>Ingeniería de Soluciones Interactivas para Desafíos Comunitarios.</strong></p>
+          <p class="lang-en">Students will work in teams to design and build an interactive web solution that addresses a real need in the school or community.</p>
+          <p class="lang-es">Los estudiantes trabajarán en equipos para diseñar y construir una solución web interactiva que atienda una necesidad real en la escuela o comunidad.</p>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">2</div>
+        <div>
+          <h3><span class="inline lang-en">Methodology</span><span class="inline lang-es">Metodología</span></h3>
+          <ul class="lang-es">
+            <li>Aprendizaje Basado en Proyectos (ABP) con enfoque STEM.</li>
+            <li>Equipos de 4 a 5 estudiantes con roles definidos.</li>
+            <li>Trabajo colaborativo para resolver problemas reales.</li>
+          </ul>
+          <ul class="lang-en">
+            <li>Project-Based Learning (PBL) with a STEM approach.</li>
+            <li>Teams of 4-5 students with defined roles.</li>
+            <li>Collaborative work to solve real challenges.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">3</div>
+        <div>
+          <h3><span class="inline lang-en">Step 1</span><span class="inline lang-es">Paso 1: Identificar el Problema</span></h3>
+          <ul class="lang-es">
+            <li>Conocer los ODS: Educación de Calidad, Innovación y Comunidades Sostenibles.</li>
+            <li>Identificar un desafío escolar o comunitario que pueda resolver la tecnología.</li>
+            <li>Formular la pregunta: ¿Cómo usar variables, condicionales, ciclos y funciones para resolverlo?</li>
+          </ul>
+          <ul class="lang-en">
+            <li>Learn the SDGs: Quality Education, Innovation, and Sustainable Communities.</li>
+            <li>Identify a school or community challenge that technology can solve.</li>
+            <li>Ask: How can we use variables, conditionals, loops, and functions to solve it?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">4</div>
+        <div>
+          <h3><span class="inline lang-en">Step 2</span><span class="inline lang-es">Paso 2: Formar los Equipos</span></h3>
+          <p class="lang-es"><strong>Roles sugeridos:</strong> Desarrollador Principal, Diseñador UI/UX, Gestor de Datos, Líder de Documentación y Presentador.</p>
+          <p class="lang-en"><strong>Suggested roles:</strong> Lead Developer, UI/UX Designer, Data Manager, Documentation Lead, and Presenter.</p>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">5</div>
+        <div>
+          <h3><span class="inline lang-en">Step 3</span><span class="inline lang-es">Paso 3: Investigar y Planificar</span></h3>
+          <ul class="lang-es">
+            <li>Investigar variables, condicionales, ciclos, funciones, arrays y eventos.</li>
+            <li>Crear bocetos, wireframes y un diagrama de flujo.</li>
+            <li>Elegir el tipo de proyecto: juego, herramienta educativa o gestor de datos.</li>
+          </ul>
+          <ul class="lang-en">
+            <li>Research variables, conditionals, loops, functions, arrays, and events.</li>
+            <li>Create sketches, wireframes, and a flowchart.</li>
+            <li>Choose the project type: game, educational tool, or data manager.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">6</div>
+        <div>
+          <h3><span class="inline lang-en">Step 4</span><span class="inline lang-es">Paso 4: Diseñar el Prototipo</span></h3>
+          <p class="lang-es">Diseñar la interfaz y la lógica: HTML/CSS para pantalla, JavaScript para comportamiento y datos.</p>
+          <p class="lang-en">Design the interface and logic: HTML/CSS for layout, JavaScript for behavior and data.</p>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">7</div>
+        <div>
+          <h3><span class="inline lang-en">Step 5</span><span class="inline lang-es">Paso 5: Construir y Programar</span></h3>
+          <ul class="lang-es">
+            <li>Configurar VS Code y crear HTML, CSS y JavaScript.</li>
+            <li>Usar variables, condicionales, ciclos, funciones, arrays y eventos.</li>
+            <li>Agregar validación, contenido dinámico y feedback interactivo.</li>
+          </ul>
+          <ul class="lang-en">
+            <li>Set up VS Code and create HTML, CSS, and JavaScript files.</li>
+            <li>Use variables, conditionals, loops, functions, arrays, and events.</li>
+            <li>Add validation, dynamic content, and interactive feedback.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">8</div>
+        <div>
+          <h3><span class="inline lang-en">Step 6</span><span class="inline lang-es">Paso 6: Probar y Recolectar Datos</span></h3>
+          <p class="lang-es">Probar con usuarios, corregir bugs, medir tiempos y registrar retroalimentación.</p>
+          <p class="lang-en">Test with users, fix bugs, measure performance, and collect feedback.</p>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">9</div>
+        <div>
+          <h3><span class="inline lang-en">Step 7</span><span class="inline lang-es">Paso 7: Mejorar el Diseño</span></h3>
+          <p class="lang-es">Depurar, optimizar la interfaz y documentar mejoras en la bitácora de desarrollo.</p>
+          <p class="lang-en">Debug, optimize the interface, and document improvements in the development log.</p>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">10</div>
+        <div>
+          <h3><span class="inline lang-en">Step 8</span><span class="inline lang-es">Paso 8: Preparar la Presentación</span></h3>
+          <ul class="lang-es">
+            <li>Demostración, explicación técnica, impacto en la comunidad y conexión con los ODS.</li>
+          </ul>
+          <ul class="lang-en">
+            <li>Demo, technical explanation, community impact, and SDG connection.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">🏆</div>
+        <div>
+          <h3><span class="inline lang-en">Step 9</span><span class="inline lang-es">Paso 9: Feria STEM de Innovación</span></h3>
+          <p class="lang-es">Exhibir la aplicación, defender decisiones de diseño y recibir retroalimentación.</p>
+          <p class="lang-en">Showcase the app, justify design decisions, and gather feedback.</p>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="time">📌</div>
+        <div>
+          <h3><span class="inline lang-en">Final Deliverables</span><span class="inline lang-es">Producto Final</span></h3>
+          <p class="lang-es">Aplicación funcional, código documentado, capturas/grabaciones, informe ODS y presentación.</p>
+          <p class="lang-en">Functional app, documented code, screenshots/video, SDG report, and presentation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">2</div><h2><span class="lang-en">Evaluation Rubric</span><span class="lang-es">Rúbrica de Evaluación</span></h2></div>
+  <div class="section-body">
+    <p class="lang-es">La evaluación considera funcionalidad, uso de variables, condicionales, ciclos, funciones, arrays, interfaz, documentación, trabajo en equipo y conexión con ODS.</p>
+    <p class="lang-en">Evaluation considers functionality, use of variables, conditionals, loops, functions, arrays, UI, documentation, teamwork, and SDG connection.</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+function setLang(lang) {
+  document.body.dataset.lang = lang;
+  document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+  document.getElementById('btnEs').classList.toggle('active', lang === 'es');
+}
+</script>
+
+</body>
+</html>
