@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 11 · Cycle 3 · ESP32 WiFi with Wokwi</title>
+<style>
+:root{
+  --navy:#0d2942;--navy2:#154d74;--blue:#2474d8;--cyan:#16b8aa;--green:#22a56a;
+  --yellow:#f5c84c;--red:#e45370;--purple:#745dd3;--ink:#20364b;--muted:#6b7f91;
+  --line:#d7e3ed;--bg:#edf4f8;--white:#fff;--code:#0b1521;--soft:#f8fbfd;
+  --shadow:0 16px 42px rgba(13,41,66,.11);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);line-height:1.64;
+  background:radial-gradient(circle at 92% 2%,#d7f3fb 0,transparent 24%),linear-gradient(#f6fafc,#edf4f8)
+}
+.topbar{
+  position:sticky;top:0;z-index:100;background:rgba(13,41,66,.97);color:#fff;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 20px;
+  box-shadow:0 7px 24px rgba(0,0,0,.17);backdrop-filter:blur(10px)
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.4px}
+.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#5ee3d3,#f5c84c);color:var(--navy);font-size:22px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}.tools button{border:0;border-radius:999px;padding:8px 14px;font-weight:850;cursor:pointer}
+.lang-btn{background:#dce9f4;color:var(--navy)}.lang-btn.active{background:var(--yellow)}.print-btn{background:#fff;color:var(--navy)}
+.wrap{max-width:1200px;margin:26px auto 60px;padding:0 16px}
+.hero{
+  color:#fff;border-radius:30px;padding:38px 40px;box-shadow:var(--shadow);
+  background:radial-gradient(circle at 85% 12%,rgba(94,227,211,.22),transparent 23%),
+             radial-gradient(circle at 95% 1%,rgba(245,200,76,.23),transparent 18%),
+             linear-gradient(135deg,var(--navy),var(--navy2) 65%,#1680b9)
+}
+.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;align-items:center}
+.kicker{display:inline-flex;padding:6px 12px;border:1px solid #ffffff30;background:#ffffff12;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:.8px}
+.hero h1{font-size:clamp(35px,5vw,58px);line-height:1.03;margin:13px 0 9px}.hero p{font-size:19px;color:#e6f5ff;max-width:820px;margin:0}.hero-icon{text-align:center;font-size:108px;filter:drop-shadow(0 14px 16px #0004)}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}.meta-card{background:#ffffff12;border:1px solid #ffffff28;border-radius:17px;padding:13px}.meta-card small{display:block;color:#c0e1f1;text-transform:uppercase;font-weight:900;letter-spacing:.7px}.meta-card strong{display:block;margin-top:3px}
+.objective{margin-top:20px;background:#fff;border:1px solid #dce6ef;border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+.objective-head{padding:14px 21px;background:linear-gradient(90deg,#eaf6ff,#eafbf6,#fff7d9);color:var(--navy);font-size:22px;font-weight:950}
+.objective-body{padding:22px 24px;font-size:21px;font-weight:850;color:var(--navy)}
+.virtual-banner{margin-top:16px;border:2px solid #99dfd4;background:#ebfbf8;border-radius:18px;padding:15px 18px;text-align:center;color:#115b55;font-weight:900;font-size:18px}
+.section{margin-top:24px;background:#fff;border:1px solid #dce6ef;border-radius:22px;overflow:hidden;box-shadow:0 8px 28px rgba(13,41,66,.07)}
+.section-head{display:flex;align-items:center;gap:11px;padding:15px 21px;background:linear-gradient(90deg,#f0f7fc,#fff);border-bottom:1px solid #e3ebf2}
+.section-number{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:950}.section-head h2{margin:0;font-size:23px;color:var(--navy)}
+.section-body{padding:22px}
+.timeline{display:grid;gap:12px}.timeline-row{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:15px;border:1px solid var(--line);border-radius:17px;background:#fbfdff}.time{background:var(--navy);color:#fff;border-radius:13px;padding:9px;text-align:center;font-weight:900;height:max-content}.timeline-row h3{margin:0 0 5px;color:var(--navy)}.timeline-row ul{margin:5px 0 0;padding-left:20px}
+.checkpoint{display:flex;gap:12px;align-items:flex-start;border:1px solid #b9dfc9;background:#f0fbf5;border-radius:15px;padding:13px 15px;margin:12px 0}.checkpoint .cp{font-size:23px}.checkpoint strong{color:#176a48}
+.warning{display:flex;gap:12px;align-items:flex-start;border:1px solid #f0c1ca;background:#fff2f5;border-radius:15px;padding:13px 15px;margin:12px 0}.warning strong{color:#9c2c47}
+.tip{border-left:6px solid var(--yellow);background:#fff8da;border-radius:12px;padding:14px 16px;margin:14px 0}.tip.blue{border-color:var(--blue);background:#eef6ff}.tip.green{border-color:var(--green);background:#ecfbf3}.tip.red{border-color:var(--red);background:#fff0f3}
+.screen-guide{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.screen-card{border:1px solid var(--line);border-radius:17px;padding:16px;background:#fbfdff}.screen-card .icon{font-size:34px}.screen-card h3{margin:5px 0;color:var(--navy)}.screen-card p{margin:0;color:#596f82}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;align-items:center}.flow-card{text-align:center;border:1px solid var(--line);border-radius:16px;padding:14px;background:#fbfdff;min-height:115px;display:flex;flex-direction:column;justify-content:center}.flow-icon{font-size:32px}.flow-card strong{display:block;color:var(--navy)}.flow-arrow{text-align:center;font-size:24px;color:var(--blue);font-weight:950}
+.step{border:1px solid var(--line);border-radius:18px;background:#fbfdff;padding:18px;margin:14px 0}.step-head{display:flex;align-items:center;gap:11px}.step-badge{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-weight:950}.step h3{margin:0;color:var(--navy)}.step p{margin:8px 0;color:#536b80}
+.what-see{margin:12px 0 0;padding:12px 14px;border-radius:13px;background:#eef8ff;border:1px solid #c9e4f7}.what-see strong{color:#145b8b}
+.code{background:var(--code);color:#eef6ff;border-radius:16px;padding:16px 18px;overflow:auto;font:14px/1.68 Consolas,"Courier New",monospace;margin-top:12px;border:1px solid #1c2d40;white-space:pre}
+.kw{color:#ff79c6}.str{color:#f1fa8c}.num{color:#bd93f9}.com{color:#728197}.fn{color:#8be9fd}
+.wiring{overflow:auto;border:1px solid var(--line);border-radius:15px}table{width:100%;border-collapse:collapse;background:#fff}th{background:var(--navy);color:#fff;padding:10px}td{padding:10px;border-bottom:1px solid #e7edf2;text-align:center}tr:nth-child(even) td{background:#f8fbfe}
+.dashboard{border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#f9fcff,#eff9f6);padding:19px}.dashboard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#fff;border:1px solid var(--line);border-radius:17px;padding:16px;text-align:center}.metric .value{font-size:34px;font-weight:950;color:var(--navy)}.metric .label{font-size:13px;color:var(--muted);font-weight:800;text-transform:uppercase}
+.btn{border:0;border-radius:999px;padding:10px 17px;font-weight:900;cursor:pointer;color:#fff;background:var(--blue);margin:4px;box-shadow:0 5px 13px rgba(36,116,216,.22)}.btn.green{background:var(--green)}.btn.red{background:var(--red)}.btn.gray{background:#667a8c}
+.packet{margin-top:13px;background:#0c1723;color:#d9ebf6;border-radius:14px;padding:13px;font:14px/1.6 Consolas,monospace;min-height:72px}
+.challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.challenge{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fbfdff}.challenge strong{display:block;color:var(--navy);margin-bottom:5px}
+.social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.social{text-align:center;border:1px solid var(--line);border-radius:16px;padding:16px;background:#fbfdff}.social .emoji{font-size:34px}.social strong{display:block;color:var(--navy)}
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.check{padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:#fbfdff}
+.question{border-radius:17px;padding:17px;background:linear-gradient(90deg,#fff7d8,#fffdf5);border:1px solid #eed67d;color:#5f4b0f;font-size:18px;font-weight:800}
+.footer{text-align:center;margin-top:28px;color:#657789;padding:18px}
+.lang-en,.lang-es{display:none}body[data-lang="en"] .lang-en{display:block}body[data-lang="es"] .lang-es{display:block}.inline.lang-en,.inline.lang-es{display:none}body[data-lang="en"] .inline.lang-en{display:inline}body[data-lang="es"] .inline.lang-es{display:inline}
+@media(max-width:900px){.hero-grid,.screen-guide,.dashboard-grid,.challenge-grid,.social-grid{grid-template-columns:1fr 1fr}.meta{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg)}.timeline-row{grid-template-columns:1fr}}
+@media(max-width:620px){.topbar{position:relative;flex-direction:column;align-items:flex-start}.hero{padding:24px 20px}.hero-grid,.screen-guide,.dashboard-grid,.challenge-grid,.social-grid,.meta,.checks{grid-template-columns:1fr}}
+@media print{.topbar{display:none}body{background:#fff}.hero,.section,.objective{box-shadow:none}.btn{display:none}}
+</style>
+</head>
+<body data-lang="en">
+
+<header class="topbar">
+  <div class="brand"><div class="logo">📡</div><span>GRADE 11 · CYCLE 3 · WOKWI</span></div>
+  <div class="tools">
+    <button id="btnEn" class="lang-btn active" onclick="setLang('en')">🇺🇸 English</button>
+    <button id="btnEs" class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+    <button class="print-btn" onclick="window.print()">🖨️ <span class="inline lang-en">Print</span><span class="inline lang-es">Imprimir</span></button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">GRADE 11 · TECHNOLOGY / PROGRAMMING · CYCLE 3</div>
+      <h1>ESP32 · WiFi · Sensor Data</h1>
+      <p class="lang-en">Build a 100% virtual IoT simulation in Wokwi and send data from a virtual sensor through WiFi.</p>
+      <p class="lang-es">Construye una simulación IoT 100% virtual en Wokwi y envía datos desde un sensor virtual a través de WiFi.</p>
+      <div class="meta">
+        <div class="meta-card"><small class="lang-en">Dates</small><small class="lang-es">Fechas</small><strong>Aug 4–6 & 10–12</strong></div>
+        <div class="meta-card"><small class="lang-en">Duration</small><small class="lang-es">Duración</small><strong>2 hours</strong></div>
+        <div class="meta-card"><small>SIMULATOR</small><strong>Wokwi</strong></div>
+        <div class="meta-card"><small>HARDWARE</small><strong>100% Virtual</strong></div>
+      </div>
+    </div>
+    <div class="hero-icon">🧠📡</div>
+  </div>
+</section>
+
+<section class="objective">
+  <div class="objective-head">🎯 <span class="lang-en">CLASS OBJECTIVE</span><span class="lang-es">OBJETIVO DE LA CLASE</span></div>
+  <div class="objective-body">
+    <span class="lang-en">Implement wireless communication (WiFi) with Wokwi and send/receive data.</span>
+    <span class="lang-es">Implementar comunicación inalámbrica (WiFi) con Wokwi y enviar/recibir datos.</span>
+  </div>
+</section>
+
+<div class="virtual-banner">
+  <span class="lang-en">💻 NO PHYSICAL ESP32 OR SENSOR IS REQUIRED — EVERYTHING WILL BE SIMULATED IN THE BROWSER.</span>
+  <span class="lang-es">💻 NO SE NECESITA ESP32 NI SENSOR FÍSICO — TODO SE SIMULARÁ EN EL NAVEGADOR.</span>
+</div>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">1</div><h2><span class="lang-en">Didactic Sequence</span><span class="lang-es">Secuencia Didáctica</span></h2></div>
+  <div class="section-body">
+    <div class="timeline">
+      <div class="timeline-row"><div class="time">0–15 min</div><div><h3>🌟 <span class="inline lang-en">Opening / Motivation</span><span class="inline lang-es">Apertura / Motivación</span></h3><ul class="lang-en"><li>Lasallian greeting.</li><li>Question: “How can a robot send data to a web page?”</li><li>Observe the virtual ESP32, virtual sensor and WiFi data flow.</li></ul><ul class="lang-es"><li>Saludo Lasallista.</li><li>Pregunta: “¿Cómo puede un robot enviar datos a una página web?”</li><li>Observar el ESP32 virtual, el sensor virtual y el flujo de datos WiFi.</li></ul></div></div>
+      <div class="timeline-row"><div class="time">15–35 min</div><div><h3>🧪 <span class="inline lang-en">Learn the Wokwi workspace</span><span class="inline lang-es">Conocer el espacio de Wokwi</span></h3><p class="lang-en">Create the simulation, identify the virtual board, add the sensor and run the first test.</p><p class="lang-es">Crear la simulación, identificar la placa virtual, agregar el sensor y ejecutar la primera prueba.</p></div></div>
+      <div class="timeline-row"><div class="time">35–55 min</div><div><h3>📡 WiFi</h3><p class="lang-en">Connect the virtual ESP32 to Wokwi-GUEST and verify it in Serial Monitor.</p><p class="lang-es">Conectar el ESP32 virtual a Wokwi-GUEST y verificarlo en el Serial Monitor.</p></div></div>
+      <div class="timeline-row"><div class="time">55–80 min</div><div><h3>🌡️ <span class="inline lang-en">Sensor Data</span><span class="inline lang-es">Datos del Sensor</span></h3><p class="lang-en">Add the virtual DHT22, read temperature/humidity and change its values live.</p><p class="lang-es">Agregar el DHT22 virtual, leer temperatura/humedad y cambiar sus valores en vivo.</p></div></div>
+      <div class="timeline-row"><div class="time">80–100 min</div><div><h3>📨 HTTP Data</h3><p class="lang-en">Prepare and observe sensor data ready to travel over the network.</p><p class="lang-es">Preparar y observar los datos del sensor listos para viajar por la red.</p></div></div>
+      <div class="timeline-row"><div class="time">100–112 min</div><div><h3>🚀 <span class="inline lang-en">Challenge</span><span class="inline lang-es">Desafío</span></h3><p class="lang-en">Send multiple values in one data packet.</p><p class="lang-es">Enviar múltiples valores en un mismo paquete de datos.</p></div></div>
+      <div class="timeline-row"><div class="time">112–120 min</div><div><h3>🙏 <span class="inline lang-en">Closure</span><span class="inline lang-es">Cierre</span></h3><ul class="lang-en"><li>Quick showcase.</li><li>Reflection: advantages of wireless communication.</li><li>Lasallian prayer.</li></ul><ul class="lang-es"><li>Exhibición rápida.</li><li>Reflexión: ventajas de la comunicación inalámbrica.</li><li>Oración Lasallista.</li></ul></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">2</div><h2><span class="lang-en">Before Coding: Learn the Wokwi Screen</span><span class="lang-es">Antes de Programar: Conocer la Pantalla de Wokwi</span></h2></div>
+  <div class="section-body">
+    <div class="screen-guide">
+      <div class="screen-card"><div class="icon">🧩</div><h3><span class="lang-en">Diagram Area</span><span class="lang-es">Área del Diagrama</span></h3><p class="lang-en">Here you see the virtual ESP32, sensors and wires.</p><p class="lang-es">Aquí verás el ESP32 virtual, los sensores y los cables.</p></div>
+      <div class="screen-card"><div class="icon">💻</div><h3><span class="lang-en">Code Editor</span><span class="lang-es">Editor de Código</span></h3><p class="lang-en">Here you write or paste the Arduino code.</p><p class="lang-es">Aquí escribes o pegas el código Arduino.</p></div>
+      <div class="screen-card"><div class="icon">▶️</div><h3><span class="lang-en">Start Simulation</span><span class="lang-es">Iniciar Simulación</span></h3><p class="lang-en">The green play button starts the virtual ESP32.</p><p class="lang-es">El botón verde de reproducción inicia el ESP32 virtual.</p></div>
+      <div class="screen-card"><div class="icon">🖥️</div><h3>Serial Monitor</h3><p class="lang-en">Shows text printed by Serial.print() and Serial.println().</p><p class="lang-es">Muestra el texto enviado con Serial.print() y Serial.println().</p></div>
+      <div class="screen-card"><div class="icon">➕</div><h3><span class="lang-en">Add Part</span><span class="lang-es">Agregar Componente</span></h3><p class="lang-en">Use the + button to add a DHT22 or other virtual component.</p><p class="lang-es">Usa el botón + para agregar un DHT22 u otro componente virtual.</p></div>
+      <div class="screen-card"><div class="icon">📚</div><h3>Library Manager</h3><p class="lang-en">Use it when a project needs an additional Arduino library.</p><p class="lang-es">Úsalo cuando el proyecto necesite una librería Arduino adicional.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">3</div><h2><span class="lang-en">Step 1 · Create Your First Virtual ESP32</span><span class="lang-es">Paso 1 · Crear tu Primer ESP32 Virtual</span></h2></div>
+  <div class="section-body">
+    <div class="step">
+      <div class="step-head"><div class="step-badge">1</div><h3><span class="lang-en">Open Wokwi</span><span class="lang-es">Abrir Wokwi</span></h3></div>
+      <ol class="lang-en"><li>Open the Wokwi website in Chrome or Edge.</li><li>Choose <strong>ESP32</strong> or create a new ESP32 project.</li><li>Wait until the project workspace opens.</li></ol>
+      <ol class="lang-es"><li>Abre el sitio de Wokwi en Chrome o Edge.</li><li>Selecciona <strong>ESP32</strong> o crea un nuevo proyecto ESP32.</li><li>Espera a que aparezca el espacio de trabajo.</li></ol>
+      <div class="what-see"><strong><span class="inline lang-en">You should see:</span><span class="inline lang-es">Debes ver:</span></strong> <span class="lang-en">a virtual ESP32 board and a code editor with a file called sketch.ino.</span><span class="lang-es">una placa ESP32 virtual y un editor con un archivo llamado sketch.ino.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">2</div><h3><span class="lang-en">Run a first test</span><span class="lang-es">Ejecutar una primera prueba</span></h3></div>
+      <p class="lang-en">Delete the existing code and paste:</p><p class="lang-es">Borra el código existente y pega:</p>
+      <div class="code"><span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="num">115200</span>);
+  Serial.println(<span class="str">"Hello from my virtual ESP32!"</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+}</div>
+      <ol class="lang-en"><li>Click the green <strong>Start Simulation</strong> button.</li><li>Wait for the virtual ESP32 to start.</li><li>Look at the Serial Monitor.</li></ol>
+      <ol class="lang-es"><li>Haz clic en el botón verde <strong>Start Simulation</strong>.</li><li>Espera a que arranque el ESP32 virtual.</li><li>Mira el Serial Monitor.</li></ol>
+      <div class="checkpoint"><div class="cp">✅</div><div><strong><span class="inline lang-en">Checkpoint:</span><span class="inline lang-es">Punto de control:</span></strong> <span class="lang-en">Serial Monitor must show: Hello from my virtual ESP32!</span><span class="lang-es">El Serial Monitor debe mostrar: Hello from my virtual ESP32!</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">4</div><h2><span class="lang-en">Step 2 · Connect the Virtual ESP32 to WiFi</span><span class="lang-es">Paso 2 · Conectar el ESP32 Virtual a WiFi</span></h2></div>
+  <div class="section-body">
+    <div class="step">
+      <div class="step-head"><div class="step-badge">1</div><h3><span class="lang-en">Replace the code</span><span class="lang-es">Reemplazar el código</span></h3></div>
+      <div class="code"><span class="kw">#include</span> &lt;WiFi.h&gt;
+
+<span class="kw">const char</span>* ssid = <span class="str">"Wokwi-GUEST"</span>;
+<span class="kw">const char</span>* password = <span class="str">""</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="num">115200</span>);
+
+  Serial.print(<span class="str">"Connecting to WiFi"</span>);
+
+  WiFi.begin(ssid, password, <span class="num">6</span>);
+
+  <span class="kw">while</span> (WiFi.status() != WL_CONNECTED) {
+    delay(<span class="num">100</span>);
+    Serial.print(<span class="str">"."</span>);
+  }
+
+  Serial.println();
+  Serial.println(<span class="str">"WiFi connected!"</span>);
+  Serial.print(<span class="str">"IP address: "</span>);
+  Serial.println(WiFi.localIP());
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+}</div>
+      <ol class="lang-en"><li>Stop the previous simulation if it is running.</li><li>Paste the new code into <strong>sketch.ino</strong>.</li><li>Click <strong>Start Simulation</strong>.</li><li>Watch the dots in Serial Monitor while the ESP32 connects.</li></ol>
+      <ol class="lang-es"><li>Detén la simulación anterior si está ejecutándose.</li><li>Pega el nuevo código en <strong>sketch.ino</strong>.</li><li>Haz clic en <strong>Start Simulation</strong>.</li><li>Observa los puntos en el Serial Monitor mientras el ESP32 se conecta.</li></ol>
+      <div class="checkpoint"><div class="cp">✅</div><div><strong><span class="inline lang-en">Checkpoint:</span><span class="inline lang-es">Punto de control:</span></strong> <span class="lang-en">You must see “WiFi connected!” and an IP address.</span><span class="lang-es">Debes ver “WiFi connected!” y una dirección IP.</span></div></div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-card"><div class="flow-icon">🧠</div><strong>ESP32</strong></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card"><div class="flow-icon">📡</div><strong>Wokwi-GUEST</strong></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card"><div class="flow-icon">🌐</div><strong>Network</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">5</div><h2><span class="lang-en">Step 3 · Add the Virtual DHT22 Sensor</span><span class="lang-es">Paso 3 · Agregar el Sensor Virtual DHT22</span></h2></div>
+  <div class="section-body">
+    <div class="step">
+      <div class="step-head"><div class="step-badge">1</div><h3><span class="lang-en">Add the sensor</span><span class="lang-es">Agregar el sensor</span></h3></div>
+      <ol class="lang-en"><li>Stop the simulation.</li><li>Go to the diagram area.</li><li>Click the <strong>+</strong> Add Part button.</li><li>Search for <strong>DHT22</strong>.</li><li>Click the DHT22 to add it to the virtual circuit.</li><li>Drag it next to the ESP32.</li></ol>
+      <ol class="lang-es"><li>Detén la simulación.</li><li>Ve al área del diagrama.</li><li>Haz clic en el botón <strong>+</strong> Add Part.</li><li>Busca <strong>DHT22</strong>.</li><li>Haz clic sobre DHT22 para agregarlo al circuito virtual.</li><li>Arrástralo al lado del ESP32.</li></ol>
+      <div class="what-see"><strong><span class="inline lang-en">You should see:</span><span class="inline lang-es">Debes ver:</span></strong> <span class="lang-en">the ESP32 and a blue DHT22 sensor in the same diagram.</span><span class="lang-es">el ESP32 y un sensor DHT22 azul dentro del mismo diagrama.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">2</div><h3><span class="lang-en">Connect the virtual wires</span><span class="lang-es">Conectar los cables virtuales</span></h3></div>
+      <div class="wiring">
+        <table><thead><tr><th>DHT22</th><th>ESP32</th><th><span class="lang-en">Purpose</span><span class="lang-es">Función</span></th></tr></thead>
+        <tbody>
+          <tr><td>VCC</td><td>3V3</td><td><span class="lang-en">Power</span><span class="lang-es">Alimentación</span></td></tr>
+          <tr><td>SDA / DATA</td><td>GPIO 15</td><td><span class="lang-en">Sensor data</span><span class="lang-es">Datos del sensor</span></td></tr>
+          <tr><td>GND</td><td>GND</td><td><span class="lang-en">Ground</span><span class="lang-es">Tierra</span></td></tr>
+        </tbody></table>
+      </div>
+      <ol class="lang-en"><li>Click the DHT22 <strong>VCC</strong> pin and then ESP32 <strong>3V3</strong>.</li><li>Connect <strong>SDA</strong> to <strong>GPIO 15</strong>.</li><li>Connect <strong>GND</strong> to <strong>GND</strong>.</li></ol>
+      <ol class="lang-es"><li>Haz clic en el pin <strong>VCC</strong> del DHT22 y luego en <strong>3V3</strong> del ESP32.</li><li>Conecta <strong>SDA</strong> con <strong>GPIO 15</strong>.</li><li>Conecta <strong>GND</strong> con <strong>GND</strong>.</li></ol>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">3</div><h3><span class="lang-en">Add the sensor library</span><span class="lang-es">Agregar la librería del sensor</span></h3></div>
+      <ol class="lang-en"><li>Open the Library Manager in the code area.</li><li>Search for <strong>DHT sensor library for ESPx</strong>.</li><li>Add/install the library to the project.</li></ol>
+      <ol class="lang-es"><li>Abre el Library Manager en el área de código.</li><li>Busca <strong>DHT sensor library for ESPx</strong>.</li><li>Agrega/instala la librería al proyecto.</li></ol>
+      <div class="checkpoint"><div class="cp">✅</div><div><strong><span class="inline lang-en">Checkpoint:</span><span class="inline lang-es">Punto de control:</span></strong> <span class="lang-en">The project now has ESP32 + DHT22 + the DHT library.</span><span class="lang-es">El proyecto ahora tiene ESP32 + DHT22 + la librería DHT.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">6</div><h2><span class="lang-en">Step 4 · Read Temperature and Humidity</span><span class="lang-es">Paso 4 · Leer Temperatura y Humedad</span></h2></div>
+  <div class="section-body">
+    <div class="step">
+      <div class="step-head"><div class="step-badge">1</div><h3>sketch.ino</h3></div>
+      <div class="code"><span class="kw">#include</span> &lt;DHTesp.h&gt;
+
+DHTesp dhtSensor;
+
+<span class="kw">const int</span> DHT_PIN = <span class="num">15</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="num">115200</span>);
+  dhtSensor.setup(DHT_PIN, DHTesp::DHT22);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  TempAndHumidity data = dhtSensor.getTempAndHumidity();
+
+  Serial.print(<span class="str">"Temperature: "</span>);
+  Serial.print(data.temperature);
+  Serial.println(<span class="str">" °C"</span>);
+
+  Serial.print(<span class="str">"Humidity: "</span>);
+  Serial.print(data.humidity);
+  Serial.println(<span class="str">" %"</span>);
+
+  Serial.println(<span class="str">"--------------------"</span>);
+
+  delay(<span class="num">2000</span>);
+}</div>
+      <ol class="lang-en"><li>Paste the code.</li><li>Start the simulation.</li><li>Look at Serial Monitor.</li><li>Wait a few seconds.</li></ol>
+      <ol class="lang-es"><li>Pega el código.</li><li>Inicia la simulación.</li><li>Mira el Serial Monitor.</li><li>Espera unos segundos.</li></ol>
+      <div class="what-see"><strong><span class="inline lang-en">Expected output:</span><span class="inline lang-es">Salida esperada:</span></strong><br>Temperature: 24.00 °C<br>Humidity: 40.00 %</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">2</div><h3><span class="lang-en">Change the virtual sensor</span><span class="lang-es">Cambiar el sensor virtual</span></h3></div>
+      <ol class="lang-en"><li>Keep the simulation running.</li><li>Click directly on the DHT22 sensor.</li><li>A small control window appears.</li><li>Move the temperature slider.</li><li>Move the humidity slider.</li><li>Watch Serial Monitor again.</li></ol>
+      <ol class="lang-es"><li>Mantén la simulación ejecutándose.</li><li>Haz clic directamente sobre el sensor DHT22.</li><li>Aparecerá una pequeña ventana de control.</li><li>Mueve el control de temperatura.</li><li>Mueve el control de humedad.</li><li>Observa nuevamente el Serial Monitor.</li></ol>
+      <div class="checkpoint"><div class="cp">✅</div><div><strong><span class="inline lang-en">Checkpoint:</span><span class="inline lang-es">Punto de control:</span></strong> <span class="lang-en">The numbers in Serial Monitor must change when you move the sensor controls.</span><span class="lang-es">Los números del Serial Monitor deben cambiar cuando mueves los controles del sensor.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">7</div><h2><span class="lang-en">Step 5 · Combine WiFi + Sensor</span><span class="lang-es">Paso 5 · Combinar WiFi + Sensor</span></h2></div>
+  <div class="section-body">
+    <div class="code"><span class="kw">#include</span> &lt;WiFi.h&gt;
+<span class="kw">#include</span> &lt;DHTesp.h&gt;
+
+<span class="kw">const char</span>* ssid = <span class="str">"Wokwi-GUEST"</span>;
+<span class="kw">const char</span>* password = <span class="str">""</span>;
+
+<span class="kw">const int</span> DHT_PIN = <span class="num">15</span>;
+
+DHTesp dhtSensor;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="num">115200</span>);
+
+  dhtSensor.setup(DHT_PIN, DHTesp::DHT22);
+
+  Serial.print(<span class="str">"Connecting to WiFi"</span>);
+  WiFi.begin(ssid, password, <span class="num">6</span>);
+
+  <span class="kw">while</span> (WiFi.status() != WL_CONNECTED) {
+    delay(<span class="num">100</span>);
+    Serial.print(<span class="str">"."</span>);
+  }
+
+  Serial.println();
+  Serial.println(<span class="str">"WiFi connected!"</span>);
+  Serial.print(<span class="str">"IP: "</span>);
+  Serial.println(WiFi.localIP());
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  TempAndHumidity data = dhtSensor.getTempAndHumidity();
+
+  Serial.println(<span class="str">"===== DATA PACKET ====="</span>);
+  Serial.print(<span class="str">"Temperature: "</span>);
+  Serial.println(data.temperature);
+
+  Serial.print(<span class="str">"Humidity: "</span>);
+  Serial.println(data.humidity);
+
+  Serial.println(<span class="str">"Ready to send through WiFi"</span>);
+  Serial.println();
+
+  delay(<span class="num">2000</span>);
+}</div>
+    <div class="checkpoint"><div class="cp">✅</div><div><strong><span class="inline lang-en">Checkpoint:</span><span class="inline lang-es">Punto de control:</span></strong> <span class="lang-en">You must see WiFi connected, an IP address and repeated sensor data packets.</span><span class="lang-es">Debes ver WiFi conectado, una dirección IP y paquetes repetidos con datos del sensor.</span></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">8</div><h2><span class="lang-en">Step 6 · Understand the HTTP Data Packet</span><span class="lang-es">Paso 6 · Comprender el Paquete de Datos HTTP</span></h2></div>
+  <div class="section-body">
+    <div class="flow">
+      <div class="flow-card"><div class="flow-icon">🌡️</div><strong>DHT22</strong><span class="lang-en">24 °C / 40%</span><span class="lang-es">24 °C / 40%</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card"><div class="flow-icon">🧠</div><strong>ESP32</strong><span class="lang-en">Reads values</span><span class="lang-es">Lee valores</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card"><div class="flow-icon">📡</div><strong>WiFi</strong><span class="lang-en">Transfers data</span><span class="lang-es">Transfiere datos</span></div>
+    </div>
+
+    <div class="tip blue">
+      <span class="lang-en">A simple data message can look like this:</span>
+      <span class="lang-es">Un mensaje sencillo de datos puede verse así:</span>
+    </div>
+    <div class="code">{
+  "temperature": 24.0,
+  "humidity": 40.0
+}</div>
+
+    <div class="dashboard">
+      <div class="dashboard-grid">
+        <div class="metric"><div class="label">WiFi</div><div id="wifiValue" class="value">OFF</div></div>
+        <div class="metric"><div class="label"><span class="lang-en">Temperature</span><span class="lang-es">Temperatura</span></div><div id="tempValue" class="value">24.0 °C</div></div>
+        <div class="metric"><div class="label"><span class="lang-en">Humidity</span><span class="lang-es">Humedad</span></div><div id="humValue" class="value">40.0 %</div></div>
+      </div>
+      <div style="text-align:center;margin-top:14px">
+        <button class="btn green" onclick="connectDemo()">📡 <span class="inline lang-en">Connect</span><span class="inline lang-es">Conectar</span></button>
+        <button class="btn red" onclick="changeSensor()">🌡️ <span class="inline lang-en">Change Sensor</span><span class="inline lang-es">Cambiar Sensor</span></button>
+        <button class="btn" onclick="sendPacket()">📨 <span class="inline lang-en">Send Packet</span><span class="inline lang-es">Enviar Paquete</span></button>
+        <button class="btn gray" onclick="resetDemo()">↺ Reset</button>
+      </div>
+      <div id="packet" class="packet">ESP32 &gt; waiting...</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">9</div><h2><span class="lang-en">Step 7 · Optional Web Server Extension</span><span class="lang-es">Paso 7 · Extensión Opcional con Servidor Web</span></h2></div>
+  <div class="section-body">
+    <div class="warning"><div>⚠️</div><div><strong><span class="inline lang-en">Important:</span><span class="inline lang-es">Importante:</span></strong> <span class="lang-en">Opening an HTTP server running inside the simulated ESP32 directly from your browser requires Wokwi's IoT Gateway. If your classroom account/setup does not have that access, complete the core lesson using WiFi + Serial Monitor + the data dashboard above.</span><span class="lang-es">Abrir directamente desde el navegador un servidor HTTP que corre dentro del ESP32 simulado requiere el IoT Gateway de Wokwi. Si la cuenta o configuración del aula no tiene ese acceso, completa la clase principal usando WiFi + Serial Monitor + el dashboard de datos anterior.</span></div></div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">+</div><h3><span class="lang-en">Web server code extension</span><span class="lang-es">Extensión de código para servidor web</span></h3></div>
+      <div class="code">WiFiServer server(<span class="num">80</span>);
+
+<span class="com">// inside setup()</span>
+server.begin();
+
+<span class="com">// inside loop()</span>
+WiFiClient client = server.available();
+
+<span class="kw">if</span> (client) {
+  TempAndHumidity data = dhtSensor.getTempAndHumidity();
+
+  client.println(<span class="str">"HTTP/1.1 200 OK"</span>);
+  client.println(<span class="str">"Content-Type: text/html"</span>);
+  client.println();
+
+  client.println(<span class="str">"&lt;h1&gt;ESP32 Dashboard&lt;/h1&gt;"</span>);
+  client.println(<span class="str">"&lt;p&gt;Temperature: "</span> + String(data.temperature) + <span class="str">" C&lt;/p&gt;"</span>);
+  client.println(<span class="str">"&lt;p&gt;Humidity: "</span> + String(data.humidity) + <span class="str">" %&lt;/p&gt;"</span>);
+
+  client.stop();
+}</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">10</div><h2><span class="lang-en">Individual Practice</span><span class="lang-es">Práctica Individual</span></h2></div>
+  <div class="section-body">
+    <div class="challenge-grid">
+      <div class="challenge"><strong>Task 1</strong><span class="lang-en">Change the virtual temperature to 32 °C and record what appears in Serial Monitor.</span><span class="lang-es">Cambia la temperatura virtual a 32 °C y registra lo que aparece en el Serial Monitor.</span></div>
+      <div class="challenge"><strong>Task 2</strong><span class="lang-en">Change humidity to 70% and verify the new value.</span><span class="lang-es">Cambia la humedad a 70% y verifica el nuevo valor.</span></div>
+      <div class="challenge"><strong>Task 3</strong><span class="lang-en">Add a warning when temperature is above 30 °C.</span><span class="lang-es">Agrega una alerta cuando la temperatura sea mayor a 30 °C.</span></div>
+    </div>
+    <div class="code"><span class="kw">if</span> (data.temperature &gt; <span class="num">30</span>) {
+  Serial.println(<span class="str">"WARNING: HIGH TEMPERATURE!"</span>);
+}</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">11</div><h2><span class="lang-en">Challenge · Multiple Sensor Values</span><span class="lang-es">Desafío · Múltiples Valores de Sensores</span></h2></div>
+  <div class="section-body">
+    <div class="question"><span class="lang-en">🚀 Can one ESP32 send several values in the same message?</span><span class="lang-es">🚀 ¿Puede un ESP32 enviar varios valores dentro del mismo mensaje?</span></div>
+    <div class="code"><span class="kw">float</span> temperature = data.temperature;
+<span class="kw">float</span> humidity = data.humidity;
+<span class="kw">int</span> lightLevel = random(<span class="num">0</span>, <span class="num">101</span>);
+
+Serial.println(<span class="str">"===== MULTI-SENSOR PACKET ====="</span>);
+
+Serial.print(<span class="str">"Temperature: "</span>);
+Serial.println(temperature);
+
+Serial.print(<span class="str">"Humidity: "</span>);
+Serial.println(humidity);
+
+Serial.print(<span class="str">"Light: "</span>);
+Serial.println(lightLevel);</div>
+    <div class="checks">
+      <div class="check">☐ <span class="lang-en">Temperature is displayed.</span><span class="lang-es">Se muestra temperatura.</span></div>
+      <div class="check">☐ <span class="lang-en">Humidity is displayed.</span><span class="lang-es">Se muestra humedad.</span></div>
+      <div class="check">☐ <span class="lang-en">Light level is displayed.</span><span class="lang-es">Se muestra nivel de luz.</span></div>
+      <div class="check">☐ <span class="lang-en">The packet repeats automatically.</span><span class="lang-es">El paquete se repite automáticamente.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">12</div><h2><span class="lang-en">Final Checklist</span><span class="lang-es">Lista Final de Verificación</span></h2></div>
+  <div class="section-body">
+    <div class="checks">
+      <div class="check">☐ <span class="lang-en">I created a virtual ESP32 project.</span><span class="lang-es">Creé un proyecto ESP32 virtual.</span></div>
+      <div class="check">☐ <span class="lang-en">I used Serial Monitor.</span><span class="lang-es">Usé el Serial Monitor.</span></div>
+      <div class="check">☐ <span class="lang-en">I connected to Wokwi-GUEST.</span><span class="lang-es">Me conecté a Wokwi-GUEST.</span></div>
+      <div class="check">☐ <span class="lang-en">I added a virtual DHT22.</span><span class="lang-es">Agregué un DHT22 virtual.</span></div>
+      <div class="check">☐ <span class="lang-en">I connected the virtual wires correctly.</span><span class="lang-es">Conecté correctamente los cables virtuales.</span></div>
+      <div class="check">☐ <span class="lang-en">I changed temperature/humidity in the simulator.</span><span class="lang-es">Cambié temperatura/humedad en el simulador.</span></div>
+      <div class="check">☐ <span class="lang-en">I combined WiFi and sensor data.</span><span class="lang-es">Combiné WiFi y datos del sensor.</span></div>
+      <div class="check">☐ <span class="lang-en">I created a multi-value data packet.</span><span class="lang-es">Creé un paquete con múltiples valores.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">13</div><h2><span class="lang-en">Socio-emotional Competencies</span><span class="lang-es">Competencias Socioemocionales</span></h2></div>
+  <div class="section-body">
+    <div class="social-grid">
+      <div class="social"><div class="emoji">🎨</div><strong class="lang-en">Creativity</strong><strong class="lang-es">Creatividad</strong><span class="lang-en">Explore new ways to present sensor data.</span><span class="lang-es">Explorar nuevas formas de presentar los datos.</span></div>
+      <div class="social"><div class="emoji">💬</div><strong class="lang-en">Communication</strong><strong class="lang-es">Comunicación</strong><span class="lang-en">Explain each step and share results.</span><span class="lang-es">Explicar cada paso y compartir resultados.</span></div>
+      <div class="social"><div class="emoji">🧠</div><strong class="lang-en">Critical Thinking</strong><strong class="lang-es">Pensamiento Crítico</strong><span class="lang-en">Identify connection or code errors and correct them.</span><span class="lang-es">Identificar errores de conexión o código y corregirlos.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">14</div><h2><span class="lang-en">Closure</span><span class="lang-es">Cierre</span></h2></div>
+  <div class="section-body">
+    <div class="question"><span class="lang-en">💭 Reflection: <strong>What are the advantages of wireless communication?</strong></span><span class="lang-es">💭 Reflexión: <strong>¿Cuáles son las ventajas de la comunicación inalámbrica?</strong></span></div>
+    <p style="text-align:center;font-size:20px;margin-top:20px">🙏 <strong>Lasallian Prayer / Oración Lasallista</strong></p>
+  </div>
+</section>
+
+<div class="footer">Grade 11 · CYCLE 3 · 100% Virtual · ESP32 · Wokwi · WiFi · Sensor Data</div>
+
+</main>
+
+<script>
+function setLang(l){
+  document.body.setAttribute('data-lang',l);
+  document.documentElement.lang=l;
+  document.getElementById('btnEn').classList.toggle('active',l==='en');
+  document.getElementById('btnEs').classList.toggle('active',l==='es');
+}
+let connected=false,temp=24,hum=40,count=0;
+function renderDemo(){
+  document.getElementById('wifiValue').textContent=connected?'ON':'OFF';
+  document.getElementById('tempValue').textContent=temp.toFixed(1)+' °C';
+  document.getElementById('humValue').textContent=hum.toFixed(1)+' %';
+}
+function connectDemo(){
+  connected=true;
+  document.getElementById('packet').textContent='ESP32 > Connected to Wokwi-GUEST | IP received';
+  renderDemo();
+}
+function changeSensor(){
+  temp=20+Math.random()*15;
+  hum=30+Math.random()*50;
+  document.getElementById('packet').textContent='DHT22 > values changed';
+  renderDemo();
+}
+function sendPacket(){
+  if(!connected){document.getElementById('packet').textContent='ERROR > Connect WiFi first';return;}
+  count++;
+  document.getElementById('packet').textContent='HTTP DATA #'+count+' > '+JSON.stringify({temperature:+temp.toFixed(1),humidity:+hum.toFixed(1)});
+}
+function resetDemo(){
+  connected=false;temp=24;hum=40;count=0;
+  document.getElementById('packet').textContent='ESP32 > waiting...';
+  renderDemo();
+}
+renderDemo();
+</script>
+</body>
+</html>

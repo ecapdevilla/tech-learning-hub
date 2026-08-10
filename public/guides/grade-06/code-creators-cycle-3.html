@@ -1,0 +1,685 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODE CREATORS - Guía bilingüe de trabajo</title>
+  <style>
+    :root{
+      --navy:#17324d;
+      --blue:#2f6da3;
+      --light:#eef5fb;
+      --green:#2e7d5b;
+      --yellow:#fff7d6;
+      --rose:#f9eef2;
+      --text:#1f2d3a;
+      --border:#cbd7e2;
+      --white:#ffffff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Arial,sans-serif;
+      background:#edf1f5;
+      color:var(--text);
+      line-height:1.6;
+    }
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:var(--navy);
+      color:white;
+      padding:12px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      box-shadow:0 2px 10px rgba(0,0,0,.2);
+    }
+    .topbar strong{font-size:17px}
+    .lang-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    button{
+      border:0;
+      border-radius:8px;
+      padding:9px 14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .lang-btn{background:white;color:var(--navy)}
+    .lang-btn.active{background:#ffd166;color:#28323c}
+    .print-btn{background:#dce9f5;color:var(--navy)}
+    .container{
+      max-width:1100px;
+      margin:25px auto;
+      background:white;
+      padding:34px 44px;
+      border-radius:14px;
+      box-shadow:0 8px 28px rgba(0,0,0,.12);
+    }
+    h1{text-align:center;color:var(--navy);margin-bottom:4px;font-size:38px}
+    .subtitle{text-align:center;font-size:20px;color:#496579;margin-bottom:22px}
+    .hero{
+      background:linear-gradient(135deg,#eaf3fb,#f9fbfd);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:20px;
+      margin-bottom:24px;
+      font-size:17px;
+    }
+    h2{
+      color:var(--navy);
+      background:var(--light);
+      border-left:6px solid var(--blue);
+      padding:10px 14px;
+      border-radius:0 8px 8px 0;
+      margin-top:30px;
+    }
+    h3{color:var(--blue);margin-top:23px}
+    .box{
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:16px 18px;
+      margin:14px 0;
+      background:#fbfdff;
+    }
+    .important{background:var(--yellow);border-left:6px solid #d2a100}
+    .green{background:#eef9f4;border-left:6px solid var(--green)}
+    .rose{background:var(--rose);border-left:6px solid #9a4f69}
+    .question{
+      background:#eef4ff;
+      border-left:6px solid #3f67ad;
+      font-size:18px;
+      font-style:italic;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:15px 0 24px;
+      font-size:14px;
+    }
+    th,td{
+      border:1px solid var(--border);
+      padding:10px;
+      vertical-align:top;
+    }
+    th{background:var(--navy);color:white}
+    tr:nth-child(even){background:#f7fafc}
+    ul,ol{padding-left:24px}
+    .time{
+      display:inline-block;
+      background:var(--navy);
+      color:white;
+      padding:3px 10px;
+      border-radius:20px;
+      font-size:13px;
+      font-weight:700;
+      margin-right:5px;
+    }
+    .worksheet{
+      border:2px dashed #7d93a6;
+      border-radius:10px;
+      padding:18px;
+      margin:20px 0;
+      page-break-inside:avoid;
+    }
+    .line{
+      display:block;
+      border-bottom:1px solid #777;
+      min-height:28px;
+      margin:8px 0 14px;
+    }
+    .line-lg{
+      display:block;
+      border-bottom:1px solid #777;
+      min-height:46px;
+      margin:8px 0 14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    .grid3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+    .card{
+      border:1px solid var(--border);
+      border-radius:9px;
+      padding:14px;
+      background:#fafcfe;
+    }
+    .badge{
+      display:inline-block;
+      background:#dfeaf4;
+      color:var(--navy);
+      padding:4px 10px;
+      border-radius:14px;
+      margin:3px;
+      font-size:13px;
+      font-weight:600;
+    }
+    .board{
+      background:#263238;
+      color:white;
+      border-radius:10px;
+      padding:18px 22px;
+      font-family:Consolas,monospace;
+      line-height:1.8;
+    }
+    .challenge{
+      border:2px solid #7ea0bd;
+      border-radius:12px;
+      padding:16px;
+      margin:16px 0;
+      background:#f7fbff;
+    }
+    .es,.en{display:none}
+    body.lang-es .es{display:block}
+    body.lang-en .en{display:block}
+    body.lang-both .es, body.lang-both .en{display:block}
+    body.lang-both .en{
+      margin-top:5px;
+      padding-top:5px;
+      border-top:1px dashed #c6d1da;
+      color:#294967;
+    }
+    .small{font-size:13px;color:#5a6b78}
+    .footer{
+      text-align:center;
+      border-top:2px solid var(--border);
+      margin-top:35px;
+      padding-top:20px;
+      color:var(--navy);
+      font-weight:700;
+    }
+    @media(max-width:800px){
+      .container{margin:0;padding:20px 16px;border-radius:0}
+      .topbar{position:relative;align-items:flex-start;flex-direction:column}
+      .grid,.grid3{grid-template-columns:1fr}
+      table{font-size:12px}
+      th,td{padding:7px}
+      h1{font-size:29px}
+    }
+    @media print{
+      .topbar{display:none}
+      body{background:white}
+      .container{box-shadow:none;margin:0;max-width:none;padding:14px}
+      h2{break-after:avoid}
+      .worksheet,.challenge{break-inside:avoid}
+    }
+  </style>
+</head>
+<body class="lang-both">
+
+  <div class="topbar">
+    <strong>🎮 CODE CREATORS · Grade 6</strong>
+    <div class="lang-buttons">
+      <button class="lang-btn" onclick="setLanguage('es',this)">Español</button>
+      <button class="lang-btn" onclick="setLanguage('en',this)">English</button>
+      <button class="lang-btn active" onclick="setLanguage('both',this)">Bilingüe</button>
+      <button class="print-btn" onclick="window.print()">🖨️ Imprimir</button>
+    </div>
+  </div>
+
+  <main class="container">
+    <h1>🎮 CODE CREATORS</h1>
+    <p class="subtitle">
+      <span class="es">Diseñamos una solución interactiva para nuestra comunidad</span>
+      <span class="en">We design an interactive solution for our community</span>
+    </p>
+
+    <section class="hero">
+      <div class="es">
+        Hoy trabajaremos como un equipo creador de tecnología. No necesitamos computadores para comenzar:
+        observaremos nuestro entorno, elegiremos un problema, aprenderemos conceptos básicos de programación,
+        diseñaremos una solución y construiremos un prototipo en papel que después podremos llevar a Scratch.
+      </div>
+      <div class="en">
+        Today we will work as a technology creation team. We do not need computers to begin:
+        we will observe our environment, choose a problem, learn basic programming concepts,
+        design a solution, and build a paper prototype that we can later develop in Scratch.
+      </div>
+    </section>
+
+    <h2>
+      <span class="es">🎯 Meta de la sesión</span>
+      <span class="en">🎯 Lesson goal</span>
+    </h2>
+
+    <div class="grid">
+      <div class="card">
+        <strong>🔎 <span class="es">Observar</span><span class="en">Observe</span></strong>
+        <div class="es">Reconocer un problema real de la escuela o la comunidad.</div>
+        <div class="en">Recognize a real problem in the school or community.</div>
+      </div>
+      <div class="card">
+        <strong>🧠 <span class="es">Comprender</span><span class="en">Understand</span></strong>
+        <div class="es">Explicar algoritmo, variable, condicional, ciclo, lista y evento.</div>
+        <div class="en">Explain algorithm, variable, conditional, loop, list, and event.</div>
+      </div>
+      <div class="card">
+        <strong>✏️ <span class="es">Diseñar</span><span class="en">Design</span></strong>
+        <div class="es">Crear la idea de un juego, historia o herramienta interactiva.</div>
+        <div class="en">Create the idea for a game, story, or interactive tool.</div>
+      </div>
+      <div class="card">
+        <strong>🤝 <span class="es">Construir juntos</span><span class="en">Build together</span></strong>
+        <div class="es">Escuchar, proponer, organizar tareas y llegar a acuerdos.</div>
+        <div class="en">Listen, propose, organize tasks, and reach agreements.</div>
+      </div>
+    </div>
+
+    <h2>
+      <span class="es">⏱️ Ruta de trabajo de 2 horas</span>
+      <span class="en">⏱️ Two-hour work plan</span>
+    </h2>
+
+    <table>
+      <tr>
+        <th><span class="es">Tiempo</span><span class="en">Time</span></th>
+        <th><span class="es">Actividad</span><span class="en">Activity</span></th>
+        <th><span class="es">Producto</span><span class="en">Product</span></th>
+      </tr>
+      <tr>
+        <td>0–10 min</td>
+        <td><span class="es">Activación de ideas y pregunta inicial.</span><span class="en">Idea activation and opening question.</span></td>
+        <td><span class="es">Lista de problemas cercanos.</span><span class="en">List of nearby problems.</span></td>
+      </tr>
+      <tr>
+        <td>10–25 min</td>
+        <td><span class="es">Equipos, roles y acuerdos.</span><span class="en">Teams, roles, and agreements.</span></td>
+        <td><span class="es">Equipo organizado.</span><span class="en">Organized team.</span></td>
+      </tr>
+      <tr>
+        <td>25–50 min</td>
+        <td><span class="es">Conceptos básicos con ejemplos y retos.</span><span class="en">Basic concepts with examples and challenges.</span></td>
+        <td><span class="es">Tabla de conceptos resuelta.</span><span class="en">Completed concept table.</span></td>
+      </tr>
+      <tr>
+        <td>50–65 min</td>
+        <td><span class="es">Programamos un robot humano.</span><span class="en">We program a human robot.</span></td>
+        <td><span class="es">Algoritmo probado y mejorado.</span><span class="en">Tested and improved algorithm.</span></td>
+      </tr>
+      <tr>
+        <td>65–90 min</td>
+        <td><span class="es">Elegimos problema y solución.</span><span class="en">We choose a problem and solution.</span></td>
+        <td><span class="es">Ficha de proyecto.</span><span class="en">Project worksheet.</span></td>
+      </tr>
+      <tr>
+        <td>90–110 min</td>
+        <td><span class="es">Diseñamos el prototipo en papel.</span><span class="en">We design the paper prototype.</span></td>
+        <td><span class="es">Pantallas, reglas y flujo.</span><span class="en">Screens, rules, and flow.</span></td>
+      </tr>
+      <tr>
+        <td>110–120 min</td>
+        <td><span class="es">Presentación, retroalimentación y cierre.</span><span class="en">Presentation, feedback, and closure.</span></td>
+        <td><span class="es">Idea explicada y mejorada.</span><span class="en">Explained and improved idea.</span></td>
+      </tr>
+    </table>
+
+    <h2>
+      <span class="es">1. Activación: la tecnología comienza con una necesidad</span>
+      <span class="en">1. Activation: technology begins with a need</span>
+    </h2>
+
+    <div class="box question">
+      <div class="es">
+        ¿Qué situación de nuestra escuela, barrio o comunidad podría mejorar con ayuda de una herramienta, un juego o una historia interactiva?
+      </div>
+      <div class="en">
+        What situation in our school, neighborhood, or community could improve with the help of a tool, game, or interactive story?
+      </div>
+    </div>
+
+    <div class="challenge">
+      <h3><span class="es">Piensa, conversa y comparte</span><span class="en">Think, discuss, and share</span></h3>
+      <ol>
+        <li><span class="es">Piensa individualmente durante un minuto.</span><span class="en">Think individually for one minute.</span></li>
+        <li><span class="es">Comenta tu idea con un compañero.</span><span class="en">Share your idea with a classmate.</span></li>
+        <li><span class="es">Escriban dos problemas que conozcan.</span><span class="en">Write two problems you know.</span></li>
+        <li><span class="es">Compartan una idea con el grupo.</span><span class="en">Share one idea with the class.</span></li>
+      </ol>
+    </div>
+
+    <div class="grid3">
+      <div class="card">♻️ <strong><span class="es">Residuos</span><span class="en">Waste</span></strong><br><span class="es">Basura, reciclaje, separación incorrecta.</span><span class="en">Trash, recycling, incorrect separation.</span></div>
+      <div class="card">💧 <strong><span class="es">Agua</span><span class="en">Water</span></strong><br><span class="es">Desperdicio o poca conciencia.</span><span class="en">Waste or lack of awareness.</span></div>
+      <div class="card">⚡ <strong><span class="es">Energía</span><span class="en">Energy</span></strong><br><span class="es">Luces encendidas sin necesidad.</span><span class="en">Lights left on unnecessarily.</span></div>
+      <div class="card">🌳 <strong><span class="es">Naturaleza</span><span class="en">Nature</span></strong><br><span class="es">Daño a plantas o animales.</span><span class="en">Damage to plants or animals.</span></div>
+      <div class="card">📚 <strong><span class="es">Aprendizaje</span><span class="en">Learning</span></strong><br><span class="es">Dificultad para practicar un tema.</span><span class="en">Difficulty practicing a topic.</span></div>
+      <div class="card">🤝 <strong><span class="es">Convivencia</span><span class="en">Community life</span></strong><br><span class="es">Falta de respeto, colaboración o empatía.</span><span class="en">Lack of respect, collaboration, or empathy.</span></div>
+    </div>
+
+    <h2>
+      <span class="es">2. Nuestro equipo creador</span>
+      <span class="en">2. Our creation team</span>
+    </h2>
+
+    <p>
+      <span class="es">Cada equipo estará conformado por 4 o 5 estudiantes. Todos aportan y cada rol ayuda a organizar el trabajo.</span>
+      <span class="en">Each team will have 4 or 5 students. Everyone contributes, and each role helps organize the work.</span>
+    </p>
+
+    <div>
+      <span class="badge">🧩 Programmer / Programador</span>
+      <span class="badge">🎨 Designer / Diseñador</span>
+      <span class="badge">📝 Documenter / Documentador</span>
+      <span class="badge">📊 Data manager / Gestor de datos</span>
+      <span class="badge">🎤 Presenter / Presentador</span>
+    </div>
+
+    <div class="worksheet">
+      <h3><span class="es">Organización del equipo</span><span class="en">Team organization</span></h3>
+      <strong><span class="es">Nombre del equipo:</span><span class="en">Team name:</span></strong><span class="line"></span>
+      <strong><span class="es">Integrantes y roles:</span><span class="en">Members and roles:</span></strong>
+      <span class="line-lg"></span>
+      <strong><span class="es">Nuestros tres acuerdos:</span><span class="en">Our three agreements:</span></strong>
+      <ol>
+        <li><span class="line"></span></li>
+        <li><span class="line"></span></li>
+        <li><span class="line"></span></li>
+      </ol>
+    </div>
+
+    <h2>
+      <span class="es">3. Pensar como un programa</span>
+      <span class="en">3. Thinking like a program</span>
+    </h2>
+
+    <table>
+      <tr>
+        <th><span class="es">Concepto</span><span class="en">Concept</span></th>
+        <th><span class="es">Qué significa</span><span class="en">Meaning</span></th>
+        <th><span class="es">Ejemplo cotidiano</span><span class="en">Everyday example</span></th>
+      </tr>
+      <tr>
+        <td><strong>Algorithm / Algoritmo</strong></td>
+        <td><span class="es">Pasos ordenados para alcanzar un resultado.</span><span class="en">Ordered steps to reach a result.</span></td>
+        <td><span class="es">Preparar un sándwich.</span><span class="en">Making a sandwich.</span></td>
+      </tr>
+      <tr>
+        <td><strong>Variable / Variable</strong></td>
+        <td><span class="es">Dato que puede cambiar durante una actividad.</span><span class="en">Data that can change during an activity.</span></td>
+        <td><span class="es">Puntos, vidas, tiempo, nombre.</span><span class="en">Score, lives, time, name.</span></td>
+      </tr>
+      <tr>
+        <td><strong>Conditional / Condicional</strong></td>
+        <td><span class="es">Regla que permite tomar una decisión.</span><span class="en">A rule that allows a decision.</span></td>
+        <td><span class="es">Si termino la tarea, entonces puedo jugar.</span><span class="en">If I finish my homework, then I can play.</span></td>
+      </tr>
+      <tr>
+        <td><strong>Loop / Ciclo</strong></td>
+        <td><span class="es">Acción que se repite varias veces.</span><span class="en">An action repeated several times.</span></td>
+        <td><span class="es">Repetir diez saltos.</span><span class="en">Repeat ten jumps.</span></td>
+      </tr>
+      <tr>
+        <td><strong>List / Lista</strong></td>
+        <td><span class="es">Grupo ordenado de varios datos.</span><span class="en">An ordered group of data.</span></td>
+        <td><span class="es">Lista de tareas o estudiantes.</span><span class="en">Task list or student list.</span></td>
+      </tr>
+      <tr>
+        <td><strong>Event / Evento</strong></td>
+        <td><span class="es">Situación que inicia una acción.</span><span class="en">A situation that starts an action.</span></td>
+        <td><span class="es">Al presionar una tecla, el personaje salta.</span><span class="en">When a key is pressed, the character jumps.</span></td>
+      </tr>
+    </table>
+
+    <div class="challenge">
+      <h3><span class="es">Reto 1. Identifica el concepto</span><span class="en">Challenge 1. Identify the concept</span></h3>
+      <p><span class="es">Escribe al lado: algoritmo, variable, condicional, ciclo, lista o evento.</span><span class="en">Write: algorithm, variable, conditional, loop, list, or event.</span></p>
+      <ol>
+        <li><span class="es">El puntaje aumenta de 10 a 20.</span><span class="en">The score increases from 10 to 20.</span> __________________</li>
+        <li><span class="es">Si la respuesta es correcta, gana un punto.</span><span class="en">If the answer is correct, gain one point.</span> __________________</li>
+        <li><span class="es">Repetir cinco veces el movimiento.</span><span class="en">Repeat the movement five times.</span> __________________</li>
+        <li><span class="es">Guardar los nombres de los participantes.</span><span class="en">Store the participants' names.</span> __________________</li>
+        <li><span class="es">Al hacer clic en la bandera, inicia el juego.</span><span class="en">When the flag is clicked, the game starts.</span> __________________</li>
+        <li><span class="es">Primero saluda, luego explica y finalmente pregunta.</span><span class="en">First greet, then explain, and finally ask.</span> __________________</li>
+      </ol>
+    </div>
+
+    <div class="challenge">
+      <h3><span class="es">Reto 2. Completa las reglas</span><span class="en">Challenge 2. Complete the rules</span></h3>
+      <p><strong>If / Si</strong> ____________________, <strong>then / entonces</strong> ____________________.</p>
+      <p><strong>Repeat / Repetir</strong> ____________________ <strong>times / veces</strong>: ____________________.</p>
+      <p><strong>Variable / Variable:</strong> ____________________ <strong>stores / guarda</strong> ____________________.</p>
+      <p><strong>List / Lista:</strong> ____________________ <strong>contains / contiene</strong> ____________________.</p>
+    </div>
+
+    <h2>
+      <span class="es">4. Programamos un robot humano</span>
+      <span class="en">4. We program a human robot</span>
+    </h2>
+
+    <div class="box important">
+      <div class="es">
+        Una persona será el robot. El robot solamente puede seguir instrucciones exactas.
+        El equipo debe guiarlo desde un punto del salón hasta otro sin tocar obstáculos.
+      </div>
+      <div class="en">
+        One person will be the robot. The robot can only follow exact instructions.
+        The team must guide the robot from one point in the classroom to another without touching obstacles.
+      </div>
+    </div>
+
+    <ol>
+      <li><span class="es">Escriban entre 5 y 8 instrucciones.</span><span class="en">Write between 5 and 8 instructions.</span></li>
+      <li><span class="es">Prueben el algoritmo.</span><span class="en">Test the algorithm.</span></li>
+      <li><span class="es">Marquen la instrucción que causó un error.</span><span class="en">Mark the instruction that caused an error.</span></li>
+      <li><span class="es">Corrijan y vuelvan a probar.</span><span class="en">Correct it and test again.</span></li>
+      <li><span class="es">Agreguen una condición y una repetición.</span><span class="en">Add one condition and one repetition.</span></li>
+    </ol>
+
+    <div class="worksheet">
+      <h3><span class="es">Nuestro algoritmo para el robot</span><span class="en">Our robot algorithm</span></h3>
+      <ol>
+        <li><span class="line"></span></li>
+        <li><span class="line"></span></li>
+        <li><span class="line"></span></li>
+        <li><span class="line"></span></li>
+        <li><span class="line"></span></li>
+        <li><span class="line"></span></li>
+      </ol>
+      <strong><span class="es">Condición:</span><span class="en">Condition:</span></strong><span class="line"></span>
+      <strong><span class="es">Repetición:</span><span class="en">Repetition:</span></strong><span class="line"></span>
+      <strong><span class="es">¿Qué mejoramos?</span><span class="en">What did we improve?</span></strong><span class="line-lg"></span>
+    </div>
+
+    <h2>
+      <span class="es">5. Elegimos un problema y diseñamos una solución</span>
+      <span class="en">5. We choose a problem and design a solution</span>
+    </h2>
+
+    <div class="box question">
+      <div class="es">
+        ¿Cómo podemos usar una idea interactiva para enseñar, orientar o ayudar a las personas frente a un problema real?
+      </div>
+      <div class="en">
+        How can we use an interactive idea to teach, guide, or help people with a real problem?
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">🎮 <strong>Quiz game / Juego de preguntas</strong><br><span class="es">Preguntas, respuestas, puntos y retroalimentación.</span><span class="en">Questions, answers, points, and feedback.</span></div>
+      <div class="card">🎯 <strong>Skill game / Juego de habilidad</strong><br><span class="es">Mover, atrapar, clasificar o evitar objetos.</span><span class="en">Move, catch, sort, or avoid objects.</span></div>
+      <div class="card">📖 <strong>Interactive story / Historia interactiva</strong><br><span class="es">El usuario toma decisiones y cambia el final.</span><span class="en">The user makes decisions and changes the ending.</span></div>
+      <div class="card">📋 <strong>Organizer / Organizador</strong><br><span class="es">Guarda tareas, datos, nombres o compromisos.</span><span class="en">Stores tasks, data, names, or commitments.</span></div>
+    </div>
+
+    <div class="worksheet">
+      <h3><span class="es">Ficha del proyecto</span><span class="en">Project worksheet</span></h3>
+      <strong><span class="es">Nombre provisional:</span><span class="en">Working title:</span></strong><span class="line"></span>
+      <strong><span class="es">Problema seleccionado:</span><span class="en">Selected problem:</span></strong><span class="line-lg"></span>
+      <strong><span class="es">Personas afectadas:</span><span class="en">People affected:</span></strong><span class="line"></span>
+      <strong><span class="es">Causa principal del problema:</span><span class="en">Main cause of the problem:</span></strong><span class="line-lg"></span>
+      <strong><span class="es">Consecuencia del problema:</span><span class="en">Consequence of the problem:</span></strong><span class="line-lg"></span>
+      <strong><span class="es">Tipo de proyecto:</span><span class="en">Project type:</span></strong>
+      <p>☐ Game / Juego &nbsp; ☐ Story / Historia &nbsp; ☐ Organizer / Organizador &nbsp; ☐ Other / Otro</p>
+      <strong><span class="es">Nuestra solución:</span><span class="en">Our solution:</span></strong><span class="line-lg"></span>
+      <strong><span class="es">¿Qué aprenderá o hará el usuario?</span><span class="en">What will the user learn or do?</span></strong><span class="line-lg"></span>
+      <strong><span class="es">Mensaje final:</span><span class="en">Final message:</span></strong><span class="line"></span>
+    </div>
+
+    <h2>
+      <span class="es">6. Planeamos la lógica del proyecto</span>
+      <span class="en">6. We plan the project logic</span>
+    </h2>
+
+    <div class="board">
+      START / INICIO<br>
+      ↓<br>
+      SHOW INSTRUCTIONS / MOSTRAR INSTRUCCIONES<br>
+      ↓<br>
+      USER ACTION / ACCIÓN DEL USUARIO<br>
+      ↓<br>
+      IF... THEN... / SI... ENTONCES...<br>
+      ↓<br>
+      UPDATE DATA / ACTUALIZAR DATOS<br>
+      ↓<br>
+      REPEAT OR FINISH / REPETIR O FINALIZAR
+    </div>
+
+    <div class="worksheet">
+      <h3><span class="es">La lógica de nuestra creación</span><span class="en">The logic of our creation</span></h3>
+      <p><strong>Event / Evento inicial:</strong></p><span class="line"></span>
+      <p><strong>Instructions / Instrucciones al usuario:</strong></p><span class="line-lg"></span>
+      <p><strong>User action / Acción del usuario:</strong></p><span class="line"></span>
+      <p><strong>If–then rule / Regla si–entonces:</strong></p><span class="line-lg"></span>
+      <p><strong>Variable 1:</strong> ____________________ <strong><span class="es">guarda</span><span class="en">stores</span></strong> ____________________</p>
+      <p><strong>Variable 2:</strong> ____________________ <strong><span class="es">guarda</span><span class="en">stores</span></strong> ____________________</p>
+      <p><strong>Loop / Ciclo:</strong></p><span class="line"></span>
+      <p><strong>List / Lista:</strong></p><span class="line"></span>
+      <p><strong>Ending / Final:</strong></p><span class="line-lg"></span>
+    </div>
+
+    <h2>
+      <span class="es">7. Diseñamos el prototipo en papel</span>
+      <span class="en">7. We design the paper prototype</span>
+    </h2>
+
+    <p>
+      <span class="es">El prototipo es una primera versión visual. No tiene que ser perfecto; debe permitir entender cómo funcionará el proyecto.</span>
+      <span class="en">A prototype is a first visual version. It does not have to be perfect; it must help others understand how the project will work.</span>
+    </p>
+
+    <div class="grid">
+      <div class="worksheet">
+        <h3>Screen 1 / Pantalla 1</h3>
+        <p><span class="es">Inicio, título e instrucciones.</span><span class="en">Start, title, and instructions.</span></p>
+        <div style="height:240px;border:2px solid #7d93a6;border-radius:8px;"></div>
+      </div>
+      <div class="worksheet">
+        <h3>Screen 2 / Pantalla 2</h3>
+        <p><span class="es">Acción principal del usuario.</span><span class="en">Main user action.</span></p>
+        <div style="height:240px;border:2px solid #7d93a6;border-radius:8px;"></div>
+      </div>
+      <div class="worksheet">
+        <h3>Screen 3 / Pantalla 3</h3>
+        <p><span class="es">Respuesta correcta, error o cambio.</span><span class="en">Correct answer, error, or change.</span></p>
+        <div style="height:240px;border:2px solid #7d93a6;border-radius:8px;"></div>
+      </div>
+      <div class="worksheet">
+        <h3>Screen 4 / Pantalla 4</h3>
+        <p><span class="es">Resultado final y mensaje.</span><span class="en">Final result and message.</span></p>
+        <div style="height:240px;border:2px solid #7d93a6;border-radius:8px;"></div>
+      </div>
+    </div>
+
+    <h2>
+      <span class="es">8. Revisamos nuestra idea antes de presentarla</span>
+      <span class="en">8. We review our idea before presenting it</span>
+    </h2>
+
+    <div class="challenge">
+      <p>☐ <span class="es">Nuestro problema es real y se entiende.</span><span class="en">Our problem is real and understandable.</span></p>
+      <p>☐ <span class="es">La solución puede ayudar o enseñar algo.</span><span class="en">The solution can help or teach something.</span></p>
+      <p>☐ <span class="es">Tenemos un inicio, una acción y un final.</span><span class="en">We have a beginning, an action, and an ending.</span></p>
+      <p>☐ <span class="es">Usamos al menos una variable.</span><span class="en">We use at least one variable.</span></p>
+      <p>☐ <span class="es">Usamos una regla si–entonces.</span><span class="en">We use an if–then rule.</span></p>
+      <p>☐ <span class="es">Identificamos algo que se repite.</span><span class="en">We identified something that repeats.</span></p>
+      <p>☐ <span class="es">Todas las personas del equipo aportaron.</span><span class="en">Everyone in the team contributed.</span></p>
+    </div>
+
+    <h2>
+      <span class="es">9. Presentamos y mejoramos</span>
+      <span class="en">9. We present and improve</span>
+    </h2>
+
+    <div class="rose box">
+      <div class="es">
+        Cada equipo dispone de un minuto para explicar:
+        <ol>
+          <li>Cuál es el problema.</li>
+          <li>Cuál es la solución.</li>
+          <li>Cómo funcionará.</li>
+          <li>Qué conceptos de programación utilizará.</li>
+        </ol>
+      </div>
+      <div class="en">
+        Each team has one minute to explain:
+        <ol>
+          <li>What the problem is.</li>
+          <li>What the solution is.</li>
+          <li>How it will work.</li>
+          <li>Which programming concepts it will use.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="worksheet">
+      <h3><span class="es">Retroalimentación de otro equipo</span><span class="en">Feedback from another team</span></h3>
+      <strong><span class="es">Una fortaleza:</span><span class="en">One strength:</span></strong><span class="line"></span>
+      <strong><span class="es">Una pregunta:</span><span class="en">One question:</span></strong><span class="line"></span>
+      <strong><span class="es">Una sugerencia respetuosa:</span><span class="en">One respectful suggestion:</span></strong><span class="line"></span>
+      <strong><span class="es">Mejora que realizaremos:</span><span class="en">Improvement we will make:</span></strong><span class="line-lg"></span>
+    </div>
+
+    <h2>
+      <span class="es">10. Cierre individual</span>
+      <span class="en">10. Individual closure</span>
+    </h2>
+
+    <div class="worksheet">
+      <h3>Exit Ticket / Tiquete de salida</h3>
+      <p><strong>Today I learned… / Hoy aprendí…</strong></p><span class="line-lg"></span>
+      <p><strong>The easiest concept was… / El concepto más fácil fue…</strong></p><span class="line"></span>
+      <p><strong>The concept I need to practice is… / El concepto que necesito practicar es…</strong></p><span class="line"></span>
+      <p><strong>Our project helps because… / Nuestro proyecto ayuda porque…</strong></p><span class="line-lg"></span>
+      <p><strong>I contributed by… / Yo aporté…</strong></p><span class="line"></span>
+    </div>
+
+    <h2>
+      <span class="es">📌 Conceptos que deben quedar claros</span>
+      <span class="en">📌 Concepts that must be clear</span>
+    </h2>
+
+    <div class="board">
+      ALGORITHM = ORDERED STEPS / ALGORITMO = PASOS ORDENADOS<br>
+      VARIABLE = CHANGING DATA / VARIABLE = DATO QUE CAMBIA<br>
+      CONDITIONAL = IF–THEN / CONDICIONAL = SI–ENTONCES<br>
+      LOOP = REPEAT / CICLO = REPETIR<br>
+      LIST = GROUP OF DATA / LISTA = GRUPO DE DATOS<br>
+      EVENT = ACTION TRIGGER / EVENTO = INICIO DE UNA ACCIÓN<br>
+      PROTOTYPE = FIRST DESIGN / PROTOTIPO = PRIMER DISEÑO
+    </div>
+
+    <div class="footer">
+      <div class="es">“Una buena solución tecnológica comienza cuando observamos, escuchamos, pensamos y creamos juntos.”</div>
+      <div class="en">“A good technological solution begins when we observe, listen, think, and create together.”</div>
+      <div class="small">CODE CREATORS · Tecnología 6° · Tercer Periodo 2026</div>
+    </div>
+  </main>
+
+  <script>
+    function setLanguage(lang, button){
+      document.body.classList.remove('lang-es','lang-en','lang-both');
+      document.body.classList.add('lang-' + lang);
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    }
+  </script>
+</body>
+</html>

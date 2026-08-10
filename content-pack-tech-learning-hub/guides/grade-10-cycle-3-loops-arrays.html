@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CYCLE 3 · Loops & Arrays · MVC Project</title>
+<style>
+:root{
+  --navy:#0f2740;
+  --navy2:#173e63;
+  --blue:#2563eb;
+  --sky:#eef6ff;
+  --green:#19a463;
+  --yellow:#f7c948;
+  --red:#e84a6b;
+  --purple:#6f5bd3;
+  --ink:#1f3347;
+  --muted:#66788a;
+  --line:#d9e4ee;
+  --bg:#edf3f8;
+  --white:#ffffff;
+  --code:#0b1420;
+  --shadow:0 16px 44px rgba(15,39,64,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,"Segoe UI",Arial,sans-serif;
+  background:
+    radial-gradient(circle at top right,#dcecff 0,transparent 26%),
+    linear-gradient(180deg,#f4f8fb,#edf3f8);
+  color:var(--ink);
+  line-height:1.62;
+}
+header.top{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:10px 20px;
+  background:rgba(15,39,64,.97);
+  color:#fff;
+  box-shadow:0 7px 24px rgba(0,0,0,.17);
+  backdrop-filter:blur(10px);
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.4px}
+.logo{
+  width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--yellow),var(--red));
+  color:var(--navy);font-size:20px
+}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar button{
+  border:0;border-radius:999px;padding:8px 14px;
+  font-weight:850;cursor:pointer;transition:.2s
+}
+.toolbar button:hover{transform:translateY(-1px)}
+.lang-btn{background:#dce8f4;color:var(--navy)}
+.lang-btn.active{background:var(--yellow)}
+.print-btn{background:white;color:var(--navy)}
+.wrap{max-width:1180px;margin:26px auto 60px;padding:0 16px}
+.hero{
+  background:
+    radial-gradient(circle at 85% 15%,rgba(247,201,72,.30),transparent 24%),
+    linear-gradient(135deg,var(--navy),var(--navy2) 62%,#1f69c7);
+  border-radius:30px;
+  color:#fff;
+  padding:38px 40px;
+  box-shadow:var(--shadow);
+}
+.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;align-items:center}
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;
+  border:1px solid #ffffff2e;background:#ffffff12;
+  padding:6px 12px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:.8px
+}
+.hero h1{font-size:clamp(36px,5vw,58px);line-height:1.03;margin:13px 0 9px}
+.hero p{font-size:19px;color:#e6f1fb;max-width:780px;margin:0}
+.hero-icon{text-align:center;font-size:104px;filter:drop-shadow(0 14px 15px #0004)}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.meta-card{
+  background:#ffffff12;border:1px solid #ffffff26;border-radius:17px;padding:13px 14px
+}
+.meta-card small{display:block;color:#bdd8ee;text-transform:uppercase;font-weight:900;letter-spacing:.7px}
+.meta-card strong{display:block;margin-top:3px}
+.objective{
+  margin-top:20px;background:#fff;border:1px solid #dce6ef;border-radius:22px;overflow:hidden;box-shadow:var(--shadow)
+}
+.objective-head{
+  background:linear-gradient(90deg,#eaf4ff,#fff7da);
+  color:var(--navy);padding:14px 21px;font-size:22px;font-weight:950
+}
+.objective-body{padding:22px 24px;font-size:21px;font-weight:850;color:var(--navy)}
+.section{
+  margin-top:24px;background:#fff;border:1px solid #dce6ef;border-radius:22px;overflow:hidden;
+  box-shadow:0 8px 28px rgba(15,39,64,.07)
+}
+.section-head{
+  display:flex;align-items:center;gap:11px;
+  padding:15px 21px;background:linear-gradient(90deg,#f0f6fb,#fff);
+  border-bottom:1px solid #e3ebf2
+}
+.section-number{
+  width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+  background:var(--navy);color:#fff;font-weight:950
+}
+.section-head h2{margin:0;font-size:23px;color:var(--navy)}
+.section-body{padding:22px}
+.timeline{display:grid;gap:12px}
+.timeline-row{
+  display:grid;grid-template-columns:120px 1fr;gap:16px;
+  padding:15px;border:1px solid var(--line);border-radius:17px;background:#fbfdff
+}
+.time{
+  background:var(--navy);color:#fff;border-radius:13px;
+  padding:9px;text-align:center;font-weight:900;height:max-content
+}
+.timeline-row h3{margin:0 0 5px;color:var(--navy)}
+.timeline-row ul{margin:5px 0 0;padding-left:20px}
+.mvc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mvc-card{
+  border:1px solid var(--line);border-radius:18px;padding:18px;background:#fbfdff
+}
+.mvc-card.model{border-top:5px solid var(--green)}
+.mvc-card.view{border-top:5px solid var(--blue)}
+.mvc-card.controller{border-top:5px solid var(--red)}
+.mvc-icon{font-size:34px}
+.mvc-card h3{margin:5px 0;color:var(--navy)}
+.folder-shell{
+  background:#0d1724;border-radius:20px;overflow:hidden;border:1px solid #24364a;
+  box-shadow:0 10px 26px #0002
+}
+.folder-title{
+  padding:10px 15px;background:#162537;color:#dbe8f4;font-size:13px;font-weight:850;
+  display:flex;align-items:center;gap:8px
+}
+.folder-tree{
+  padding:20px 24px;color:#e9f1f8;font:16px/1.95 Consolas,"Courier New",monospace;
+  white-space:pre
+}
+.file{color:#8be9fd}.folder-name{color:#f7c948}.comment{color:#7890a8}
+.project-map{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px
+}
+.map-card{
+  text-align:center;border:1px solid var(--line);border-radius:15px;padding:12px 8px;background:#fbfdff
+}
+.map-card strong{display:block;color:var(--navy);font-size:14px}
+.map-card span{font-size:12px;color:var(--muted)}
+.step{
+  border:1px solid var(--line);background:#fbfdff;border-radius:18px;padding:18px;margin:14px 0
+}
+.step-head{display:flex;align-items:center;gap:11px}
+.step-badge{
+  width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-weight:950
+}
+.step h3{margin:0;color:var(--navy)}
+.step p{margin:8px 0;color:#52697d}
+.code{
+  background:var(--code);color:#eef6ff;border-radius:16px;padding:16px 18px;
+  overflow:auto;font:14px/1.68 Consolas,"Courier New",monospace;margin-top:12px;
+  border:1px solid #1c2d40
+}
+.kw{color:#ff79c6}.str{color:#f1fa8c}.num{color:#bd93f9}.com{color:#728197}.fn{color:#8be9fd}
+.tip{
+  border-left:6px solid var(--yellow);background:#fff8dc;border-radius:12px;padding:14px 16px;margin:14px 0
+}
+.tip.green{border-left-color:var(--green);background:#ecfbf3}
+.tip.blue{border-left-color:var(--blue);background:#eef6ff}
+.demo{
+  border:1px solid var(--line);background:#f8fbfe;border-radius:18px;padding:18px
+}
+.center{text-align:center}
+.btn{
+  border:0;border-radius:999px;padding:10px 17px;font-weight:900;cursor:pointer;
+  color:#fff;background:var(--blue);margin:4px;box-shadow:0 5px 13px rgba(37,99,235,.22)
+}
+.btn.red{background:var(--red)}.btn.green{background:var(--green)}.btn.gray{background:#65788b}
+.dice{
+  width:150px;height:150px;margin:16px auto;display:grid;place-items:center;
+  border-radius:26px;background:#fff;border:2px solid var(--line);font-size:92px;
+  box-shadow:0 12px 27px rgba(15,39,64,.08)
+}
+.history{margin-top:10px;padding:11px;border:1px dashed #b7c7d6;border-radius:13px;background:#fff;color:#51687c}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:15px;margin-top:12px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th{background:var(--navy);color:#fff;padding:10px}
+td{padding:9px;border-bottom:1px solid #e7edf2;text-align:center}
+tr:nth-child(even) td{background:#f8fbfe}
+.challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.challenge{
+  border:1px solid var(--line);border-radius:16px;padding:15px;background:#fbfdff
+}
+.challenge strong{display:block;color:var(--navy);margin-bottom:5px}
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.check{padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:#fbfdff}
+.social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.social{text-align:center;border:1px solid var(--line);border-radius:16px;padding:15px;background:#fbfdff}
+.social .emoji{font-size:32px}.social strong{display:block;color:var(--navy)}
+.footer{text-align:center;margin-top:28px;color:#657789;padding:18px}
+.lang-en,.lang-es{display:none}
+body[data-lang="en"] .lang-en{display:block}
+body[data-lang="es"] .lang-es{display:block}
+.inline.lang-en,.inline.lang-es{display:none}
+body[data-lang="en"] .inline.lang-en{display:inline}
+body[data-lang="es"] .inline.lang-es{display:inline}
+@media(max-width:900px){
+  .hero-grid,.mvc-grid,.social-grid,.challenge-grid{grid-template-columns:1fr 1fr}
+  .meta{grid-template-columns:1fr 1fr}
+  .project-map{grid-template-columns:repeat(2,1fr)}
+  .timeline-row{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  header.top{position:relative;flex-direction:column;align-items:flex-start}
+  .hero{padding:24px 20px}
+  .hero-grid,.mvc-grid,.social-grid,.challenge-grid,.meta,.checks{grid-template-columns:1fr}
+  .project-map{grid-template-columns:1fr}
+  .folder-tree{font-size:13px;overflow:auto}
+}
+@media print{
+  header.top{display:none}
+  body{background:#fff}
+  .hero,.section,.objective{box-shadow:none}
+  .btn{display:none}
+}
+</style>
+</head>
+<body data-lang="en">
+
+<header class="top">
+  <div class="brand"><div class="logo">MVC</div><span>CYCLE 3 · LOOPS & ARRAYS</span></div>
+  <div class="toolbar">
+    <button id="btnEn" class="lang-btn active" onclick="setLang('en')">🇺🇸 English</button>
+    <button id="btnEs" class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+    <button class="print-btn" onclick="window.print()">🖨️ <span class="inline lang-en">Print</span><span class="inline lang-es">Imprimir</span></button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">GRADE 10 · TECHNOLOGY / PROGRAMMING · CYCLE 3</div>
+      <h1>Loops & Arrays</h1>
+      <p class="lang-en">Build a Dice Simulator and an Interactive Multiplication Table with HTML, CSS and JavaScript.</p>
+      <p class="lang-es">Construye un Simulador de Dados y una Tabla de Multiplicar Interactiva con HTML, CSS y JavaScript.</p>
+      <div class="meta">
+        <div class="meta-card"><small class="lang-en">Dates</small><small class="lang-es">Fechas</small><strong>Aug 4–6 & 10–12</strong></div>
+        <div class="meta-card"><small class="lang-en">Duration</small><small class="lang-es">Duración</small><strong>2 hours</strong></div>
+        <div class="meta-card"><small>STACK</small><strong>HTML · CSS · JS</strong></div>
+        <div class="meta-card"><small>PROJECT</small><strong>MVC</strong></div>
+      </div>
+    </div>
+    <div class="hero-icon">🎲</div>
+  </div>
+</section>
+
+<section class="objective">
+  <div class="objective-head">🎯 <span class="lang-en">CLASS OBJECTIVE</span><span class="lang-es">OBJETIVO DE LA CLASE</span></div>
+  <div class="objective-body">
+    <span class="lang-en">Apply loops and arrays to create a dice simulator or interactive table.</span>
+    <span class="lang-es">Aplicar bucles y arreglos para crear un simulador de dados o una tabla interactiva.</span>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">1</div><h2><span class="lang-en">Didactic Sequence</span><span class="lang-es">Secuencia Didáctica</span></h2></div>
+  <div class="section-body">
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="time">0–15 min</div>
+        <div><h3>🌟 <span class="inline lang-en">Opening / Motivation</span><span class="inline lang-es">Apertura / Motivación</span></h3>
+          <ul class="lang-en"><li>Lasallian greeting.</li><li>Question: “How can we make a program repeat actions automatically?”</li><li>Live Dice Simulator demo.</li><li>Students predict what the computer is repeating.</li></ul>
+          <ul class="lang-es"><li>Saludo Lasallista.</li><li>Pregunta: “¿Cómo podemos hacer que un programa repita acciones automáticamente?”</li><li>Demostración en vivo del Simulador de Dados.</li><li>Los estudiantes predicen qué está repitiendo la computadora.</li></ul>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="time">15–35 min</div>
+        <div><h3>🔁 Loops: for & while</h3>
+          <ul class="lang-en"><li>Explore repetition with a fixed number of turns.</li><li>Explore repetition that depends on a condition.</li><li>Compare both with short examples.</li></ul>
+          <ul class="lang-es"><li>Explorar repeticiones con una cantidad fija.</li><li>Explorar repeticiones que dependen de una condición.</li><li>Comparar ambos con ejemplos cortos.</li></ul>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="time">35–50 min</div>
+        <div><h3>📦 Arrays</h3>
+          <p><code>let numbers = [1, 2, 3, 4, 5];</code></p>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="time">50–80 min</div>
+        <div><h3>🎲 <span class="inline lang-en">Guided Project</span><span class="inline lang-es">Proyecto Guiado</span></h3>
+          <p class="lang-en">Build the Dice Simulator step by step.</p><p class="lang-es">Construir el Simulador de Dados paso a paso.</p>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="time">80–100 min</div>
+        <div><h3>✏️ <span class="inline lang-en">Individual Practice</span><span class="inline lang-es">Práctica Individual</span></h3>
+          <p class="lang-en">Build the Multiplication Table Generator.</p><p class="lang-es">Construir el Generador de Tablas de Multiplicar.</p>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="time">100–112 min</div>
+        <div><h3>📊 <span class="inline lang-en">Challenge</span><span class="inline lang-es">Desafío</span></h3>
+          <p class="lang-en">Add a histogram of dice results.</p><p class="lang-es">Agregar un histograma de resultados del dado.</p>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="time">112–120 min</div>
+        <div><h3>🙏 <span class="inline lang-en">Closure</span><span class="inline lang-es">Cierre</span></h3>
+          <ul class="lang-en"><li>Quick showcase.</li><li>Reflection: difference between for and while.</li><li>Lasallian prayer.</li></ul>
+          <ul class="lang-es"><li>Exhibición rápida.</li><li>Reflexión: diferencia entre for y while.</li><li>Oración Lasallista.</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">2</div><h2><span class="lang-en">Project Structure</span><span class="lang-es">Estructura del Proyecto</span></h2></div>
+  <div class="section-body">
+    <div class="folder-shell">
+      <div class="folder-title">📁 dice-simulator-mvc</div>
+      <div class="folder-tree"><span class="folder-name">dice-simulator-mvc/</span>
+│
+├── <span class="file">index.html</span>        <span class="comment">← interface / interfaz</span>
+├── <span class="file">styles.css</span>        <span class="comment">← visual design / diseño visual</span>
+│
+└── <span class="folder-name">js/</span>
+    ├── <span class="file">model.js</span>      <span class="comment">← data / datos</span>
+    ├── <span class="file">view.js</span>       <span class="comment">← screen updates / actualización de pantalla</span>
+    └── <span class="file">controller.js</span> <span class="comment">← actions / acciones</span></div>
+    </div>
+
+    <div class="project-map">
+      <div class="map-card"><strong>index.html</strong><span>Page / Página</span></div>
+      <div class="map-card"><strong>styles.css</strong><span>Design / Diseño</span></div>
+      <div class="map-card"><strong>model.js</strong><span>Data / Datos</span></div>
+      <div class="map-card"><strong>view.js</strong><span>Display / Vista</span></div>
+      <div class="map-card"><strong>controller.js</strong><span>Actions / Acciones</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">3</div><h2><span class="lang-en">Create the Project</span><span class="lang-es">Crear el Proyecto</span></h2></div>
+  <div class="section-body">
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">1</div><h3><span class="lang-en">Create the folder and files</span><span class="lang-es">Crear la carpeta y los archivos</span></h3></div>
+      <ol class="lang-en"><li>Create a folder called <strong>dice-simulator-mvc</strong>.</li><li>Create <strong>index.html</strong>.</li><li>Create <strong>styles.css</strong>.</li><li>Create a folder called <strong>js</strong>.</li><li>Inside <strong>js</strong>, create <strong>model.js</strong>, <strong>view.js</strong> and <strong>controller.js</strong>.</li></ol>
+      <ol class="lang-es"><li>Crea una carpeta llamada <strong>dice-simulator-mvc</strong>.</li><li>Crea <strong>index.html</strong>.</li><li>Crea <strong>styles.css</strong>.</li><li>Crea una carpeta llamada <strong>js</strong>.</li><li>Dentro de <strong>js</strong>, crea <strong>model.js</strong>, <strong>view.js</strong> y <strong>controller.js</strong>.</li></ol>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">2</div><h3>index.html</h3></div>
+      <div class="code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Dice Simulator&lt;/title&gt;
+  &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;main class="app"&gt;
+    &lt;h1&gt;🎲 Dice Simulator&lt;/h1&gt;
+
+    &lt;div id="dice" class="dice"&gt;🎲&lt;/div&gt;
+
+    &lt;div class="buttons"&gt;
+      &lt;button id="rollBtn"&gt;Roll Dice&lt;/button&gt;
+      &lt;button id="roll10Btn"&gt;Roll 10 Times&lt;/button&gt;
+      &lt;button id="resetBtn"&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;History&lt;/h2&gt;
+    &lt;p id="history"&gt;[]&lt;/p&gt;
+  &lt;/main&gt;
+
+  &lt;script src="js/model.js"&gt;&lt;/script&gt;
+  &lt;script src="js/view.js"&gt;&lt;/script&gt;
+  &lt;script src="js/controller.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">3</div><h3>styles.css</h3></div>
+      <div class="code">body {
+  font-family: Arial, sans-serif;
+  background: #eef3f8;
+  margin: 0;
+  padding: 40px;
+}
+
+.app {
+  max-width: 700px;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.dice {
+  font-size: 90px;
+  margin: 25px 0;
+}
+
+button {
+  padding: 12px 22px;
+  margin: 5px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+#history {
+  background: #f6f8fb;
+  padding: 15px;
+  border-radius: 12px;
+}</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">4</div><h3>js/model.js</h3></div>
+      <div class="code"><span class="kw">const</span> DiceModel = {
+  rolls: [],
+
+  rollDice() {
+    <span class="kw">const</span> value =
+      Math.floor(Math.random() * <span class="num">6</span>) + <span class="num">1</span>;
+
+    <span class="kw">this</span>.rolls.push(value);
+
+    <span class="kw">return</span> value;
+  },
+
+  reset() {
+    <span class="kw">this</span>.rolls = [];
+  }
+};</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">5</div><h3>js/view.js</h3></div>
+      <div class="code"><span class="kw">const</span> DiceView = {
+
+  showDice(value) {
+    document.getElementById(<span class="str">"dice"</span>)
+      .textContent = value;
+  },
+
+  showHistory(rolls) {
+    document.getElementById(<span class="str">"history"</span>)
+      .textContent = <span class="str">"["</span> + rolls.join(<span class="str">", "</span>) + <span class="str">"]"</span>;
+  }
+};</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">6</div><h3>js/controller.js</h3></div>
+      <div class="code"><span class="kw">function</span> <span class="fn">rollOnce</span>() {
+
+  <span class="kw">const</span> value = DiceModel.rollDice();
+
+  DiceView.showDice(value);
+  DiceView.showHistory(DiceModel.rolls);
+}
+
+
+document.getElementById(<span class="str">"rollBtn"</span>)
+  .addEventListener(<span class="str">"click"</span>, rollOnce);
+
+
+document.getElementById(<span class="str">"roll10Btn"</span>)
+  .addEventListener(<span class="str">"click"</span>, () =&gt; {
+
+    <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; <span class="num">10</span>; i++) {
+      rollOnce();
+    }
+
+  });
+
+
+document.getElementById(<span class="str">"resetBtn"</span>)
+  .addEventListener(<span class="str">"click"</span>, () =&gt; {
+
+    DiceModel.reset();
+
+    DiceView.showDice(<span class="str">"🎲"</span>);
+    DiceView.showHistory([]);
+
+  });</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">7</div><h3><span class="lang-en">Test the project</span><span class="lang-es">Probar el proyecto</span></h3></div>
+      <div class="checks">
+        <div class="check">☐ <span class="lang-en">Roll Dice generates 1–6.</span><span class="lang-es">Roll Dice genera valores del 1 al 6.</span></div>
+        <div class="check">☐ <span class="lang-en">History stores every result.</span><span class="lang-es">El historial guarda cada resultado.</span></div>
+        <div class="check">☐ <span class="lang-en">Roll 10 Times adds ten results.</span><span class="lang-es">Roll 10 Times agrega diez resultados.</span></div>
+        <div class="check">☐ <span class="lang-en">Reset clears the history.</span><span class="lang-es">Reset limpia el historial.</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">4</div><h2><span class="lang-en">Live Example</span><span class="lang-es">Ejemplo en Vivo</span></h2></div>
+  <div class="section-body">
+    <div class="demo center">
+      <div id="demoDice" class="dice">🎲</div>
+      <button class="btn" onclick="demoRoll()">🎲 <span class="inline lang-en">Roll</span><span class="inline lang-es">Lanzar</span></button>
+      <button class="btn red" onclick="demoRoll10()">🔁 ×10</button>
+      <button class="btn gray" onclick="demoReset()">↺ <span class="inline lang-en">Reset</span><span class="inline lang-es">Reiniciar</span></button>
+      <div class="history"><strong>rolls = </strong><span id="demoHistory">[]</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">5</div><h2><span class="lang-en">Individual Practice · Multiplication Table</span><span class="lang-es">Práctica Individual · Tabla de Multiplicar</span></h2></div>
+  <div class="section-body">
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">1</div><h3><span class="lang-en">Add this HTML</span><span class="lang-es">Agregar este HTML</span></h3></div>
+      <div class="code">&lt;section&gt;
+  &lt;h2&gt;Multiplication Table&lt;/h2&gt;
+
+  &lt;input id="numberInput" type="number" value="5"&gt;
+
+  &lt;button id="generateBtn"&gt;Generate&lt;/button&gt;
+
+  &lt;div id="tableResult"&gt;&lt;/div&gt;
+&lt;/section&gt;</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><div class="step-badge">2</div><h3><span class="lang-en">Add the table generator</span><span class="lang-es">Agregar el generador de tablas</span></h3></div>
+      <div class="code"><span class="kw">function</span> <span class="fn">generateTable</span>(number) {
+
+  <span class="kw">const</span> results = [];
+
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i &lt;= <span class="num">10</span>; i++) {
+
+    results.push(
+      number + <span class="str">" × "</span> + i + <span class="str">" = "</span> + (number * i)
+    );
+
+  }
+
+  <span class="kw">return</span> results;
+}</div>
+    </div>
+
+    <div class="demo">
+      <div class="center">
+        <input id="multNumber" type="number" value="5" min="1" max="20" style="padding:10px;border:1px solid #b9c7d3;border-radius:11px;width:100px">
+        <button class="btn green" onclick="generateLiveTable()">⚙️ <span class="inline lang-en">Generate</span><span class="inline lang-es">Generar</span></button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>×</th><th>=</th></tr></thead>
+          <tbody id="multBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">6</div><h2><span class="lang-en">Challenge · Histogram</span><span class="lang-es">Desafío · Histograma</span></h2></div>
+  <div class="section-body">
+    <div class="tip blue">
+      <span class="lang-en">Use the dice history to count how many times each value from 1 to 6 appears.</span>
+      <span class="lang-es">Usa el historial del dado para contar cuántas veces aparece cada valor del 1 al 6.</span>
+    </div>
+
+    <div class="code"><span class="kw">const</span> counts = [<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>];
+
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; DiceModel.rolls.length; i++) {
+
+  <span class="kw">const</span> value = DiceModel.rolls[i];
+
+  counts[value - <span class="num">1</span>]++;
+
+}</div>
+
+    <div class="challenge-grid">
+      <div class="challenge"><strong>Challenge 1</strong><span class="lang-en">Show the count for each number.</span><span class="lang-es">Mostrar el conteo de cada número.</span></div>
+      <div class="challenge"><strong>Challenge 2</strong><span class="lang-en">Create six visual bars.</span><span class="lang-es">Crear seis barras visuales.</span></div>
+      <div class="challenge"><strong>Challenge 3</strong><span class="lang-en">Update the bars after every roll.</span><span class="lang-es">Actualizar las barras después de cada lanzamiento.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">7</div><h2><span class="lang-en">Socio-emotional Competencies</span><span class="lang-es">Competencias Socioemocionales</span></h2></div>
+  <div class="section-body">
+    <div class="social-grid">
+      <div class="social"><div class="emoji">🤝</div><strong class="lang-en">Collaboration</strong><strong class="lang-es">Colaboración</strong><span class="lang-en">Share ideas and support classmates.</span><span class="lang-es">Compartir ideas y apoyar a los compañeros.</span></div>
+      <div class="social"><div class="emoji">🧩</div><strong class="lang-en">Perseverance</strong><strong class="lang-es">Perseverancia</strong><span class="lang-en">Test, correct and try again.</span><span class="lang-es">Probar, corregir e intentar nuevamente.</span></div>
+      <div class="social"><div class="emoji">💬</div><strong class="lang-en">Communication</strong><strong class="lang-es">Comunicación</strong><span class="lang-en">Explain decisions clearly.</span><span class="lang-es">Explicar las decisiones con claridad.</span></div>
+      <div class="social"><div class="emoji">🧘</div><strong class="lang-en">Self-regulation</strong><strong class="lang-es">Autorregulación</strong><span class="lang-en">Stay focused when debugging.</span><span class="lang-es">Mantener la concentración al corregir errores.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">8</div><h2><span class="lang-en">Final Evidence</span><span class="lang-es">Evidencia Final</span></h2></div>
+  <div class="section-body">
+    <div class="checks">
+      <div class="check">☐ index.html</div>
+      <div class="check">☐ styles.css</div>
+      <div class="check">☐ js/model.js</div>
+      <div class="check">☐ js/view.js</div>
+      <div class="check">☐ js/controller.js</div>
+      <div class="check">☐ <span class="lang-en">Dice Simulator working</span><span class="lang-es">Simulador de Dados funcionando</span></div>
+      <div class="check">☐ <span class="lang-en">Multiplication Table working</span><span class="lang-es">Tabla de Multiplicar funcionando</span></div>
+      <div class="check">☐ <span class="lang-en">Histogram challenge attempted</span><span class="lang-es">Desafío de Histograma intentado</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><div class="section-number">9</div><h2><span class="lang-en">Closure</span><span class="lang-es">Cierre</span></h2></div>
+  <div class="section-body">
+    <div class="tip green">
+      <span class="lang-en"><strong>Reflection:</strong> What is the difference between a <code>for</code> loop and a <code>while</code> loop?</span>
+      <span class="lang-es"><strong>Reflexión:</strong> ¿Cuál es la diferencia entre un bucle <code>for</code> y un bucle <code>while</code>?</span>
+    </div>
+    <p class="center" style="font-size:20px">🙏 <strong>Lasallian Prayer / Oración Lasallista</strong></p>
+  </div>
+</section>
+
+<div class="footer">Grade 10 · CYCLE 3 · Loops & Arrays · HTML · CSS · JavaScript · MVC</div>
+
+</main>
+
+<script>
+function setLang(l){
+  document.body.setAttribute('data-lang',l);
+  document.documentElement.lang=l;
+  document.getElementById('btnEn').classList.toggle('active',l==='en');
+  document.getElementById('btnEs').classList.toggle('active',l==='es');
+}
+
+const DemoModel = {
+  rolls: [],
+  rollDice(){
+    const value = Math.floor(Math.random()*6)+1;
+    this.rolls.push(value);
+    return value;
+  },
+  reset(){ this.rolls=[]; }
+};
+
+const DemoView = {
+  showDice(value){
+    const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];
+    document.getElementById('demoDice').textContent =
+      value ? faces[value-1] : '🎲';
+  },
+  showHistory(values){
+    document.getElementById('demoHistory').textContent =
+      '['+values.join(', ')+']';
+  }
+};
+
+function demoRoll(){
+  const value=DemoModel.rollDice();
+  DemoView.showDice(value);
+  DemoView.showHistory(DemoModel.rolls);
+}
+function demoRoll10(){
+  for(let i=0;i<10;i++){ demoRoll(); }
+}
+function demoReset(){
+  DemoModel.reset();
+  DemoView.showDice(0);
+  DemoView.showHistory([]);
+}
+
+function generateLiveTable(){
+  const n=Math.max(1,Math.min(20,parseInt(document.getElementById('multNumber').value)||1));
+  const body=document.getElementById('multBody');
+  body.innerHTML='';
+  for(let i=1;i<=10;i++){
+    body.innerHTML += `<tr><td>${n}</td><td>${i}</td><td><strong>${n*i}</strong></td></tr>`;
+  }
+}
+generateLiveTable();
+</script>
+</body>
+</html>
