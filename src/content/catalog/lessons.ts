@@ -34,6 +34,22 @@ export const lessons: LessonSummary[] = [
     tags: ["Algorithms", "Scratch", "Prototype", "Teamwork"],
   },
   {
+    id: "grade-08-cycle-3-data-ai-community",
+    grade: 8,
+    cycle: 3,
+    title: {
+      en: "Data Science & AI for Community Change",
+      es: "Ciencia de Datos e Inteligencia Artificial para Transformar mi Comunidad",
+    },
+    objective: {
+      en: "Build a data analysis project that uses spreadsheets, visualization and AI to solve a real school or community problem.",
+      es: "Desarrollar un proyecto de análisis de datos que use hojas de cálculo, visualizaciones e IA para resolver un problema real en la escuela o comunidad.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-08/data-ai-community.html",
+    tags: ["Data", "AI", "Spreadsheets", "Sustainability"],
+  },
+  {
     id: "grade-09-cycle-3-my-first-web-page",
     grade: 9,
     cycle: 3,
