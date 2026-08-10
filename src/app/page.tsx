@@ -1,6 +1,12 @@
 import Link from "next/link";
-import { grades } from "@/content/grades/grades";
-import { GradeCard } from "@/modules/grades/components/GradeCard";
+import {
+  primaryGrades,
+  secondaryGrades,
+} from "@/content/grades/grades";
+import { GradeSection } from "@/modules/grades/components/GradeSection";
+import { HeroCopy } from "@/modules/grades/components/HeroCopy";
+import { HeroVisual } from "@/modules/grades/components/HeroVisual";
+import { HomeFeatures } from "@/shared/components/layout/HomeFeatures";
 import { SiteLayout } from "@/shared/components/layout/SiteLayout";
 
 export default function Home() {
@@ -9,99 +15,61 @@ export default function Home() {
       <section className="hero-section">
         <div className="page-shell hero-grid">
           <div>
-            <span className="eyebrow">Technology · Programming · Innovation</span>
-
-            <h1>
-              Learn.
-              <br />
-              Practice.
-              <br />
-              <span>Create.</span>
-            </h1>
-
-            <p className="hero-copy">
-              A learning space for guides, interactive activities,
-              programming challenges and digital resources.
-            </p>
+            <HeroCopy
+              eyebrow="Technology · Programming · Innovation"
+              title="Create."
+              description="A digital learning space where students can explore, build, practice and connect technology with real-world challenges."
+            />
 
             <div className="hero-actions">
-              <a href="#grades" className="primary-button">
-                Choose your grade
+              <a href="#learning-levels" className="primary-button">
+                Start learning
               </a>
-
-              <Link href="/explore" className="secondary-button">
-                Explore resources
+              <Link href="/resources" className="secondary-button">
+                Open resource library
               </Link>
             </div>
           </div>
 
-          <div className="hero-visual">
-            <div className="visual-card visual-one">💻</div>
-            <div className="visual-card visual-two">🤖</div>
-            <div className="visual-card visual-three">🌐</div>
-            <div className="visual-card visual-four">📡</div>
-          </div>
+          <HeroVisual />
         </div>
       </section>
 
-      <section id="grades" className="page-shell section-block">
-        <div className="section-heading">
+      <section
+        id="learning-levels"
+        className="page-shell learning-levels"
+      >
+        <div className="welcome-strip">
+          <span>🚀</span>
           <div>
-            <span className="section-kicker">Learning paths</span>
-            <h2>Select your grade</h2>
-          </div>
-
-          <p>
-            Review your current lessons or explore another grade to reinforce
-            concepts and discover new topics.
-          </p>
-        </div>
-
-        <div className="grades-grid">
-          {grades.map((grade) => (
-            <GradeCard key={grade.id} grade={grade} />
-          ))}
-        </div>
-      </section>
-
-      <section className="page-shell feature-grid">
-        <Link href="/explore" className="feature-card">
-          <span className="feature-icon">🔎</span>
-          <div>
-            <span className="section-kicker">Explore</span>
-            <h3>Learn beyond your grade</h3>
+            <strong>Choose your path</strong>
             <p>
-              Search lessons, labs and concepts from different grade levels.
-            </p>
-          </div>
-        </Link>
-
-        <Link href="/resources" className="feature-card">
-          <span className="feature-icon">📚</span>
-          <div>
-            <span className="section-kicker">Resources</span>
-            <h3>Guides and materials</h3>
-            <p>
-              Access class guides, downloadable resources and support material.
-            </p>
-          </div>
-        </Link>
-
-        <div className="feature-card sdg-card">
-          <span className="feature-icon">🌎</span>
-          <div>
-            <span className="section-kicker">Global Goals</span>
-            <h3>Sustainable Development Goals</h3>
-            <p>
-              Connect technology projects with real-world challenges.
+              Start with your grade or explore another level to reinforce
+              previous concepts and discover what comes next.
             </p>
           </div>
         </div>
+
+        <GradeSection
+          kicker="Primary School"
+          title="Learn by playing and creating"
+          description="Visual, interactive and age-appropriate experiences that introduce computational thinking."
+          grades={primaryGrades}
+        />
+
+        <GradeSection
+          kicker="Secondary School"
+          title="Build, code and solve"
+          description="Progressive learning paths in programming, web development, digital systems and IoT."
+          grades={secondaryGrades}
+        />
+
+        <HomeFeatures />
       </section>
 
       <footer className="site-footer">
         <div className="page-shell">
-          Tech Learning Hub · Technology & Programming
+          Tech Learning Hub · Learn · Practice · Create
         </div>
       </footer>
     </SiteLayout>

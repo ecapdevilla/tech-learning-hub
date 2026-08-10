@@ -2,6 +2,22 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-02-cycle-3-algorithms",
+    grade: 2,
+    cycle: 3,
+    title: {
+      en: "Little Programmers",
+      es: "Pequeños Programadores",
+    },
+    objective: {
+      en: "Understand algorithms through ordered steps, routes and games.",
+      es: "Comprender algoritmos mediante pasos ordenados, rutas y juegos.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-02/algorithms-games.html",
+    tags: ["Algorithms", "Games", "Sequences", "Arrows"],
+  },
+  {
     id: "grade-06-cycle-3-code-creators",
     grade: 6,
     cycle: 3,
