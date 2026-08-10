@@ -1,23 +1,29 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { grades } from "@/content/grades/grades";
-import { lessons } from "@/content/catalog/lessons";
 import { SiteLayout } from "@/shared/components/layout/SiteLayout";
+import { createGradeService } from "@/modules/grades/services";
+import { createLessonService } from "@/modules/lessons/services";
+import { gradeRepositoryLocal, lessonRepositoryLocal } from "@/infrastructure/repositories";
+import { isGradeId } from "@/modules/grades/types/grade";
 
 type Props = {
   params: Promise<{ grade: string }>;
 };
 
+const gradeService = createGradeService(gradeRepositoryLocal);
+const lessonService = createLessonService(lessonRepositoryLocal);
+
 export default async function GradePage({ params }: Props) {
   const { grade } = await params;
   const gradeNumber = Number(grade);
-  const gradeData = grades.find((item) => item.id === gradeNumber);
+
+  if (!isGradeId(gradeNumber)) notFound();
+
+  const gradeData = gradeService.getGradeById(gradeNumber);
 
   if (!gradeData) notFound();
 
-  const gradeLessons = lessons.filter(
-    (lesson) => lesson.grade === gradeNumber
-  );
+  const gradeLessons = lessonService.getLessonsByGrade(gradeNumber);
   const isGrade10 = gradeNumber === 10;
 
   return (

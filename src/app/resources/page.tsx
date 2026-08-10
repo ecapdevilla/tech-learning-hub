@@ -1,9 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { lessons } from "@/content/catalog/lessons";
 import { SiteLayout } from "@/shared/components/layout/SiteLayout";
+import { createLessonService } from "@/modules/lessons/services";
+import { lessonRepositoryLocal } from "@/infrastructure/repositories";
+
+const lessonService = createLessonService(lessonRepositoryLocal);
 
 export default function ResourcesPage() {
+  const lessons = lessonService.getLessons();
+
   return (
     <SiteLayout>
       <section className="page-shell simple-page">
