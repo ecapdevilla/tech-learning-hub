@@ -1,22 +1,22 @@
 import type { Grade } from "@/modules/grades/types/grade";
 
-export const grades: Grade[
+export const grades: Grade[] = [
+  {
+    id: 5,
+    label: "5th Grade",
+    description: "Functions, parameters and reusable programming logic",
+    level: "primary",
+  },
   {
     id: 3,
     label: "3rd Grade",
     description: "Sensors, conditionals and loops through interactive missions",
     level: "primary",
-  },] = [
+  },
   {
     id: 2,
     label: "2nd Grade",
     description: "Algorithms through movement, games and sequences",
-    level: "primary",
-  },
-  {
-    id: 5,
-    label: "5th Grade",
-    description: "Functions, parameters and reusable programming logic",
     level: "primary",
   },
   {

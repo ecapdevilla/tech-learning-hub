@@ -1,9 +1,4 @@
-export const gradeIds = [2, 6, 7, 8, 9, 10, 11] as const;
-export type GradeId = 8;
-
-export function isGradeId(value: unknown): value is GradeId {
-  return typeof value === "number" && !Number.isNaN(value) && gradeIds.includes(value as GradeId);
-}
+export type GradeId = 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 export type SchoolLevel = "primary" | "secondary";
 
@@ -13,3 +8,19 @@ export type Grade = {
   description: string;
   level: SchoolLevel;
 };
+
+const validGradeIds: GradeId[] = [
+  2,
+  3,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+];
+
+export function isGradeId(value: number): value is GradeId {
+  return validGradeIds.includes(value as GradeId);
+}
