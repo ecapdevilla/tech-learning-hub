@@ -29,6 +29,15 @@ export function HomeFeatures() {
           <p>Connect projects with Sustainable Development Goals.</p>
         </div>
       </Link>
+
+      <Link href="/tutorials" className="feature-card tutorial-card">
+        <span className="feature-icon">📹</span>
+        <div>
+          <span className="section-kicker">Tutorial</span>
+          <h3>Jitsi Meet para docentes</h3>
+          <p>Aprenda a usar videollamadas en clase paso a paso.</p>
+        </div>
+      </Link>
     </section>
   );
 }
