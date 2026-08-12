@@ -2,16 +2,32 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-09-cycle-3-web-thinking-lab-blue",
+    grade: 9,
+    cycle: 3,
+    title: {
+      en: "Web Thinking Lab · 9th Blue",
+      es: "Laboratorio de Pensamiento Web · 9th Blue",
+    },
+    objective: {
+      en: "Understand how a web page is created from scratch using HTML for structure, CSS for design and JavaScript for interaction.",
+      es: "Comprender cómo se crea una página web desde cero usando HTML para la estructura, CSS para el diseño y JavaScript para la interacción.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-09/web-thinking-lab-blue.html",
+    tags: ["HTML", "CSS", "JavaScript", "Classroom", "Paper Programming"],
+  },
+  {
     id: "grade-05-cycle-3-robolab-functions",
     grade: 5,
     cycle: 3,
     title: {
       en: "RoboLab: Function Factory",
-      es: "RoboLab: Fábrica de Funciones",
+      es: "RoboLab: FÃ¡brica de Funciones",
     },
     objective: {
       en: "Create and reuse functions, use simple parameters and understand returned results.",
-      es: "Crear y reutilizar funciones, usar parámetros sencillos y comprender resultados retornados.",
+      es: "Crear y reutilizar funciones, usar parÃ¡metros sencillos y comprender resultados retornados.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-05/robolab-functions.html",
@@ -39,7 +55,7 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "Little Programmers",
-      es: "Pequeâ”œâ–’os Programadores",
+      es: "PequeÃ¢â€Å“Ã¢â€“â€™os Programadores",
     },
     objective: {
       en: "Understand algorithms through ordered steps, routes and games.",
@@ -55,11 +71,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "Code Creators",
-      es: "Creadores de Câ”œâ”‚digo",
+      es: "Creadores de CÃ¢â€Å“Ã¢â€â€šdigo",
     },
     objective: {
       en: "Design an interactive solution through algorithms and programming concepts.",
-      es: "Diseâ”œâ–’ar una soluciâ”œâ”‚n interactiva mediante algoritmos y conceptos de programaciâ”œâ”‚n.",
+      es: "DiseÃ¢â€Å“Ã¢â€“â€™ar una soluciÃ¢â€Å“Ã¢â€â€šn interactiva mediante algoritmos y conceptos de programaciÃ¢â€Å“Ã¢â€â€šn.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-06/code-creators-cycle-3.html",
@@ -75,7 +91,7 @@ export const lessons: LessonSummary[] = [
     },
     objective: {
       en: "Build a data analysis project that uses spreadsheets, visualization and AI to solve a real school or community problem.",
-      es: "Desarrollar un proyecto de anâ”œÃ­lisis de datos que use hojas de câ”œÃ­lculo, visualizaciones e IA para resolver un problema real en la escuela o comunidad.",
+      es: "Desarrollar un proyecto de anÃ¢â€Å“ÃƒÂ­lisis de datos que use hojas de cÃ¢â€Å“ÃƒÂ­lculo, visualizaciones e IA para resolver un problema real en la escuela o comunidad.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-08/data-ai-community.html",
@@ -87,11 +103,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "My First Web Page",
-      es: "Mi Primera Pâ”œÃ­gina Web",
+      es: "Mi Primera PÃ¢â€Å“ÃƒÂ­gina Web",
     },
     objective: {
       en: "Create a web page from scratch using HTML for structure, CSS for design and JavaScript for interaction.",
-      es: "Crear una pâ”œÃ­gina web desde cero usando HTML para la estructura, CSS para el diseâ”œâ–’o y JavaScript para la interacciâ”œâ”‚n.",
+      es: "Crear una pÃ¢â€Å“ÃƒÂ­gina web desde cero usando HTML para la estructura, CSS para el diseÃ¢â€Å“Ã¢â€“â€™o y JavaScript para la interacciÃ¢â€Å“Ã¢â€â€šn.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-09/my-first-web-page-cycle-3.html",
@@ -123,7 +139,7 @@ export const lessons: LessonSummary[] = [
     },
     objective: {
       en: "Design and present an interactive web app that solves a real school or community problem using JavaScript, HTML, and CSS.",
-      es: "Diseâ”œâ–’ar, desarrollar y presentar una aplicaciâ”œâ”‚n web interactiva que resuelva un problema real de la escuela o comunidad usando JavaScript, HTML y CSS.",
+      es: "DiseÃ¢â€Å“Ã¢â€“â€™ar, desarrollar y presentar una aplicaciÃ¢â€Å“Ã¢â€â€šn web interactiva que resuelva un problema real de la escuela o comunidad usando JavaScript, HTML y CSS.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-10/code-for-change.html",
@@ -135,11 +151,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "ESP32 WiFi Communication",
-      es: "Comunicaciâ”œâ”‚n WiFi con ESP32",
+      es: "ComunicaciÃ¢â€Å“Ã¢â€â€šn WiFi con ESP32",
     },
     objective: {
       en: "Implement wireless communication with Wokwi and send/receive data.",
-      es: "Implementar comunicaciâ”œâ”‚n inalâ”œÃ­mbrica con Wokwi y enviar/recibir datos.",
+      es: "Implementar comunicaciÃ¢â€Å“Ã¢â€â€šn inalÃ¢â€Å“ÃƒÂ­mbrica con Wokwi y enviar/recibir datos.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-11/esp32-wifi-wokwi.html",

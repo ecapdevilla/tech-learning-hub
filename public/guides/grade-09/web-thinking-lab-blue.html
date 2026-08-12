@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>9th Blue | Web Thinking Lab</title>
+<style>
+:root{
+  --ink:#152238;--blue:#1f5eff;--blue2:#163b82;--soft:#eef4ff;
+  --gold:#ffbd2e;--green:#14866d;--red:#d94b59;--line:#dbe3ef;--card:#fff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb;color:var(--ink);line-height:1.58}
+header{background:linear-gradient(125deg,#10264d,#1f5eff);color:white;padding:44px 20px}
+.wrap{max-width:1080px;margin:auto}
+.badge,.time{display:inline-block;padding:6px 11px;border-radius:99px;font-weight:800}
+.badge{background:#ffffff20;border:1px solid #ffffff55}
+.time{background:#e9fff7;color:#08644f}
+h1{font-size:clamp(2rem,5vw,3.7rem);margin:12px 0 6px}
+.lead{font-size:1.16rem;max-width:850px}
+nav{position:sticky;top:0;background:#fffffff0;backdrop-filter:blur(8px);padding:10px 20px;box-shadow:0 3px 15px #0001;z-index:3}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px}
+button{border:0;border-radius:10px;padding:10px 15px;font-weight:800;cursor:pointer}
+.lang-btn{background:var(--blue);color:white}
+main{padding:25px 20px 55px}
+section{background:white;margin:18px auto;padding:26px;border-radius:18px;box-shadow:0 8px 30px #14213d12}
+h2{margin-top:0;color:#173f87}
+h3{color:#1b4da5}
+.objective{border-left:7px solid var(--gold);background:#fffaf0}
+.copy{border:2px dashed #a8b8d8;padding:16px;border-radius:12px;background:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
+.term{background:var(--soft);padding:15px;border-radius:13px}
+.term strong{color:#174cbd}
+.challenge{border-left:6px solid var(--blue);padding:14px 16px;background:#f7f9ff;margin:12px 0;border-radius:8px}
+.code{font-family:Consolas,monospace;background:#142033;color:#eaf2ff;padding:16px;border-radius:12px;white-space:pre-wrap;overflow:auto}
+.role{display:inline-block;margin:3px;background:#edf2ff;padding:5px 9px;border-radius:8px;font-weight:700}
+.note{background:#fff8dc;border-left:5px solid var(--gold);padding:13px;border-radius:8px}
+.check{background:#f6fbff;border:1px solid var(--line);padding:14px;border-radius:12px;margin-top:12px}
+.score{width:100%;border-collapse:collapse}
+.score th,.score td{border:1px solid var(--line);padding:9px;text-align:left}
+.score th{background:#173f87;color:white}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+footer{text-align:center;padding:25px;color:#64748b}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+@media print{nav,button{display:none}section{box-shadow:none;border:1px solid #ddd}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="badge">9th BLUE · 120 MINUTES · CLASSROOM EDITION</span>
+    <h1 data-en="Web Thinking Lab" data-es="Laboratorio de Pensamiento Web">Web Thinking Lab</h1>
+    <p class="lead"
+      data-en="HTML + CSS + JavaScript — Today the computer is your mind, your notebook is the screen, and your team is the browser."
+      data-es="HTML + CSS + JavaScript — Hoy el computador es tu mente, el cuaderno es la pantalla y tu equipo es el navegador.">
+      HTML + CSS + JavaScript — Today the computer is your mind, your notebook is the screen, and your team is the browser.
+    </p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <strong>Tech Learning Hub · 9th Blue</strong>
+    <button id="langBtn" class="lang-btn">Español</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="objective">
+  <span class="time">0–10 min</span>
+  <h2 data-en="🎯 Learning Objective — Write it in your notebook"
+      data-es="🎯 Objetivo de aprendizaje — Escríbelo en tu cuaderno">
+      🎯 Learning Objective — Write it in your notebook
+  </h2>
+
+  <div class="copy"
+    data-en="By the end of this class, I will understand how a web page is created from scratch, using HTML for structure, CSS for design, and JavaScript for interaction, so I can plan and explain how my own interactive web page should work."
+    data-es="Al finalizar esta clase, comprenderé cómo se crea una página web desde cero, utilizando HTML para la estructura, CSS para el diseño y JavaScript para la interacción, de manera que pueda planear y explicar cómo debería funcionar mi propia página web interactiva.">
+    By the end of this class, I will understand how a web page is created from scratch, using HTML for structure, CSS for design, and JavaScript for interaction, so I can plan and explain how my own interactive web page should work.
+  </div>
+
+  <p data-en="After copying it, underline HTML, CSS and JavaScript. Then write one sentence about what you think each one controls."
+     data-es="Después de copiarlo, subraya HTML, CSS y JavaScript. Luego escribe una oración sobre lo que crees que controla cada uno.">
+     After copying it, underline HTML, CSS and JavaScript. Then write one sentence about what you think each one controls.
+  </p>
+</section>
+
+<section>
+  <span class="time">10–25 min</span>
+  <h2 data-en="🧠 Diagnostic: What do you already know?"
+      data-es="🧠 Diagnóstico: ¿qué sabes ya?">
+      🧠 Diagnostic: What do you already know?
+  </h2>
+
+  <p data-en="Answer individually. Mistakes are useful because they show where our learning begins."
+     data-es="Responde individualmente. Los errores son útiles porque muestran desde dónde comienza nuestro aprendizaje.">
+     Answer individually. Mistakes are useful because they show where our learning begins.
+  </p>
+
+  <ol>
+    <li data-en="What is a web page?" data-es="¿Qué es una página web?">What is a web page?</li>
+    <li data-en="What do you think HTML does?" data-es="¿Qué crees que hace HTML?">What do you think HTML does?</li>
+    <li data-en="Where do colors and visual styles come from?" data-es="¿De dónde salen los colores y estilos visuales?">Where do colors and visual styles come from?</li>
+    <li data-en="What makes a button react when clicked?" data-es="¿Qué hace que un botón reaccione al hacer clic?">What makes a button react when clicked?</li>
+    <li data-en="Draw a simple website with a title, paragraph and button." data-es="Dibuja un sitio sencillo con título, párrafo y botón.">Draw a simple website with a title, paragraph and button.</li>
+  </ol>
+
+  <div class="note"
+    data-en="Share one answer with a partner. If your answers are different, do not erase yours yet: compare the reasoning first."
+    data-es="Comparte una respuesta con un compañero. Si son diferentes, no borres todavía la tuya: primero compara el razonamiento.">
+    Share one answer with a partner. If your answers are different, do not erase yours yet: compare the reasoning first.
+  </div>
+</section>
+
+<section>
+  <span class="time">25–45 min</span>
+  <h2 data-en="📘 Essential vocabulary — Build your mini dictionary"
+      data-es="📘 Vocabulario esencial — Construye tu minidiccionario">
+      📘 Essential vocabulary — Build your mini dictionary
+  </h2>
+
+  <p data-en="Copy the term, its meaning, and add one example of your own."
+     data-es="Copia el término, su significado y agrega un ejemplo propio.">
+     Copy the term, its meaning, and add one example of your own.
+  </p>
+
+  <div class="grid">
+    <div class="term"><strong>HTML</strong><br><span data-en="Structure and content. Think: skeleton." data-es="Estructura y contenido. Piensa: esqueleto.">Structure and content. Think: skeleton.</span></div>
+    <div class="term"><strong>CSS</strong><br><span data-en="Appearance and design. Think: clothes and style." data-es="Apariencia y diseño. Piensa: ropa y estilo.">Appearance and design. Think: clothes and style.</span></div>
+    <div class="term"><strong>JavaScript</strong><br><span data-en="Behavior and interaction. Think: actions." data-es="Comportamiento e interacción. Piensa: acciones.">Behavior and interaction. Think: actions.</span></div>
+    <div class="term"><strong>Tag</strong><br><span data-en="HTML instruction such as &lt;h1&gt; or &lt;button&gt;." data-es="Instrucción HTML como &lt;h1&gt; o &lt;button&gt;.">HTML instruction such as &lt;h1&gt; or &lt;button&gt;.</span></div>
+    <div class="term"><strong>Selector</strong><br><span data-en="Tells CSS which element to style." data-es="Le indica a CSS qué elemento debe estilizar.">Tells CSS which element to style.</span></div>
+    <div class="term"><strong>Variable</strong><br><span data-en="A named place that stores a value." data-es="Un lugar con nombre que guarda un valor.">A named place that stores a value.</span></div>
+    <div class="term"><strong>Function</strong><br><span data-en="A reusable group of instructions." data-es="Un grupo reutilizable de instrucciones.">A reusable group of instructions.</span></div>
+    <div class="term"><strong>Event</strong><br><span data-en="Something that happens: click, key press, etc." data-es="Algo que sucede: clic, tecla, etc.">Something that happens: click, key press, etc.</span></div>
+  </div>
+
+  <div class="check">
+    <strong data-en="Notebook task:" data-es="Trabajo en el cuaderno:">Notebook task:</strong>
+    <span data-en="Create three columns: HTML / CSS / JavaScript. Write two examples in each column."
+          data-es="Crea tres columnas: HTML / CSS / JavaScript. Escribe dos ejemplos en cada columna.">
+      Create three columns: HTML / CSS / JavaScript. Write two examples in each column.
+    </span>
+  </div>
+</section>
+
+<section>
+  <span class="time">45–65 min</span>
+  <h2 data-en="🔎 Think like the browser"
+      data-es="🔎 Piensa como el navegador">
+      🔎 Think like the browser
+  </h2>
+
+  <p data-en="Read the code. Do not execute it. Predict the result first, then explain why."
+     data-es="Lee el código. No lo ejecutes. Predice primero el resultado y después explica por qué.">
+     Read the code. Do not execute it. Predict the result first, then explain why.
+  </p>
+
+  <div class="challenge">
+    <b>Mission 1 — HTML</b>
+    <div class="code">&lt;h1&gt;My School&lt;/h1&gt;
+&lt;p&gt;Welcome to my website&lt;/p&gt;
+&lt;button&gt;Explore&lt;/button&gt;</div>
+    <p data-en="Draw exactly what the browser should show."
+       data-es="Dibuja exactamente lo que debería mostrar el navegador.">
+       Draw exactly what the browser should show.
+    </p>
+  </div>
+
+  <div class="challenge">
+    <b>Mission 2 — CSS</b>
+    <div class="code">h1 { color: blue; }
+button { background: yellow; }</div>
+    <p data-en="Which elements change? What does NOT change?"
+       data-es="¿Qué elementos cambian? ¿Qué NO cambia?">
+       Which elements change? What does NOT change?
+    </p>
+  </div>
+
+  <div class="challenge">
+    <b>Mission 3 — JavaScript</b>
+    <div class="code">let language = "es";
+
+if (language === "es") {
+  message = "Hola";
+} else {
+  message = "Hello";
+}</div>
+    <p data-en="What value will message contain? Explain the decision."
+       data-es="¿Qué valor tendrá message? Explica la decisión.">
+       What value will message contain? Explain the decision.
+    </p>
+  </div>
+
+  <div class="challenge">
+    <b>Mission 4 — Predict the event</b>
+    <div class="code">button.addEventListener("click", function () {
+  title.textContent = "Welcome!";
+});</div>
+    <p data-en="What must happen before the title changes?"
+       data-es="¿Qué debe ocurrir antes de que cambie el título?">
+       What must happen before the title changes?
+    </p>
+  </div>
+</section>
+
+<section>
+  <span class="time">65–75 min</span>
+  <h2 data-en="🐞 Debugging on Paper"
+      data-es="🐞 Depuración en papel">
+      🐞 Debugging on Paper
+  </h2>
+
+  <p data-en="A programmer does not only write code. A programmer also finds and corrects problems."
+     data-es="Un programador no solo escribe código. También encuentra y corrige problemas.">
+     A programmer does not only write code. A programmer also finds and corrects problems.
+  </p>
+
+  <div class="two">
+    <div class="challenge">
+      <b>Bug A</b>
+      <div class="code">&lt;h1&gt;Hello&lt;/h2&gt;</div>
+      <p data-en="What looks inconsistent?" data-es="¿Qué se ve inconsistente?">What looks inconsistent?</p>
+    </div>
+
+    <div class="challenge">
+      <b>Bug B</b>
+      <div class="code">if (language = "es") {
+  message = "Hola";
+}</div>
+      <p data-en="What would you check in this condition?"
+         data-es="¿Qué revisarías en esta condición?">
+         What would you check in this condition?
+      </p>
+    </div>
+  </div>
+
+  <div class="check">
+    <strong data-en="Notebook rule:" data-es="Regla para el cuaderno:">Notebook rule:</strong>
+    <span data-en="Do not write only the correction. Explain why you believe it is a problem."
+          data-es="No escribas solamente la corrección. Explica por qué crees que existe un problema.">
+      Do not write only the correction. Explain why you believe it is a problem.
+    </span>
+  </div>
+</section>
+
+<section>
+  <span class="time">75–105 min</span>
+  <h2 data-en="🏆 Team Challenge: Build a Website Without a Computer"
+      data-es="🏆 Reto por equipos: Construye un sitio web sin computador">
+      🏆 Team Challenge: Build a Website Without a Computer
+  </h2>
+
+  <p data-en="Teams of 4–5. Design on paper an interactive bilingual website. Every member must contribute."
+     data-es="Equipos de 4–5. Diseñen en papel un sitio web interactivo bilingüe. Todos deben aportar.">
+     Teams of 4–5. Design on paper an interactive bilingual website. Every member must contribute.
+  </p>
+
+  <p>
+    <span class="role">Architect</span>
+    <span class="role">Designer</span>
+    <span class="role">Logic Developer</span>
+    <span class="role">Tester</span>
+    <span class="role">Presenter</span>
+  </p>
+
+  <h3>Phase 1 · Idea — 5 min</h3>
+  <p data-en="Choose ONE useful page: school event, environmental campaign, sports club, study helper, cultural project, or your own idea. Define the user and purpose."
+     data-es="Elijan UNA página útil: evento escolar, campaña ambiental, club deportivo, ayuda de estudio, proyecto cultural o una idea propia. Definan el usuario y el propósito.">
+     Choose ONE useful page: school event, environmental campaign, sports club, study helper, cultural project, or your own idea. Define the user and purpose.
+  </p>
+
+  <h3>Phase 2 · HTML blueprint — 8 min</h3>
+  <p data-en="Draw the page and label at least: heading, paragraph, image area, two buttons and one information section. Beside each, write the HTML tag you would use."
+     data-es="Dibujen la página y señalen como mínimo: título, párrafo, área de imagen, dos botones y una sección informativa. Al lado escriban la etiqueta HTML que usarían.">
+     Draw the page and label at least: heading, paragraph, image area, two buttons and one information section. Beside each, write the HTML tag you would use.
+  </p>
+
+  <h3>Phase 3 · CSS design rules — 6 min</h3>
+  <p data-en="Choose background, text colors, button style and spacing. Write four CSS-style rules describing your choices."
+     data-es="Elijan fondo, colores de texto, estilo de botones y espacios. Escriban cuatro reglas tipo CSS que describan sus decisiones.">
+     Choose background, text colors, button style and spacing. Write four CSS-style rules describing your choices.
+  </p>
+
+  <h3>Phase 4 · JavaScript behavior — 7 min</h3>
+  <p data-en="Create two interactions. Required: an English ↔ Spanish language button. Add another action: change message, show information, count points, change theme, etc. Write the logic in steps or pseudocode."
+     data-es="Creen dos interacciones. Obligatoria: botón de idioma English ↔ Español. Agreguen otra acción: cambiar mensaje, mostrar información, contar puntos, cambiar tema, etc. Escriban la lógica en pasos o pseudocódigo.">
+     Create two interactions. Required: an English ↔ Spanish language button. Add another action: change message, show information, count points, change theme, etc. Write the logic in steps or pseudocode.
+  </p>
+
+  <h3>Phase 5 · Human Browser Test — 4 min</h3>
+  <p data-en="The Tester acts as the browser. Another member gives instructions. The Tester may do ONLY what the written instructions say. Find and correct at least one ambiguity or bug."
+     data-es="El Tester actúa como navegador. Otro integrante da instrucciones. El Tester SOLO puede hacer lo que indiquen las instrucciones escritas. Encuentren y corrijan al menos una ambigüedad o error.">
+     The Tester acts as the browser. Another member gives instructions. The Tester may do ONLY what the written instructions say. Find and correct at least one ambiguity or bug.
+  </p>
+</section>
+
+<section>
+  <span class="time">105–115 min</span>
+  <h2 data-en="🎤 Lightning presentations"
+      data-es="🎤 Presentaciones relámpago">
+      🎤 Lightning presentations
+  </h2>
+
+  <p data-en="Each team has about 90 seconds: purpose → HTML → CSS → JavaScript → bug corrected."
+     data-es="Cada equipo tiene aproximadamente 90 segundos: propósito → HTML → CSS → JavaScript → error corregido.">
+     Each team has about 90 seconds: purpose → HTML → CSS → JavaScript → bug corrected.
+  </p>
+
+  <table class="score">
+    <tr><th>Evidence</th><th>Points</th></tr>
+    <tr><td>Clear purpose and page sketch</td><td>5</td></tr>
+    <tr><td>HTML structure makes sense</td><td>5</td></tr>
+    <tr><td>CSS design decisions are explained</td><td>5</td></tr>
+    <tr><td>Two logical interactions</td><td>5</td></tr>
+    <tr><td>Team participation and explanation</td><td>5</td></tr>
+  </table>
+</section>
+
+<section>
+  <span class="time">115–120 min</span>
+  <h2 data-en="📝 Exit Ticket — Individual"
+      data-es="📝 Ticket de salida — Individual">
+      📝 Exit Ticket — Individual
+  </h2>
+
+  <ol>
+    <li data-en="Complete: HTML is responsible for..." data-es="Completa: HTML se encarga de...">Complete: HTML is responsible for...</li>
+    <li data-en="Complete: CSS is responsible for..." data-es="Completa: CSS se encarga de...">Complete: CSS is responsible for...</li>
+    <li data-en="Complete: JavaScript is responsible for..." data-es="Completa: JavaScript se encarga de...">Complete: JavaScript is responsible for...</li>
+    <li data-en="What did your team change after testing its idea?" data-es="¿Qué cambió tu equipo después de probar su idea?">What did your team change after testing its idea?</li>
+    <li data-en="Write one question you still have before building this page on a computer." data-es="Escribe una pregunta que aún tengas antes de construir esta página en un computador.">Write one question you still have before building this page on a computer.</li>
+  </ol>
+
+  <div class="note">
+    <b data-en="Final idea:" data-es="Idea final:">Final idea:</b>
+    <span data-en="A strong programmer does not begin by typing. A strong programmer first understands the problem, plans, predicts, tests and improves."
+          data-es="Un buen programador no comienza escribiendo código. Primero comprende el problema, planea, predice, prueba y mejora.">
+      A strong programmer does not begin by typing. A strong programmer first understands the problem, plans, predicts, tests and improves.
+    </span>
+  </div>
+</section>
+
+</main>
+
+<footer>Tech Learning Hub · 9th Blue · Classroom Learning Guide</footer>
+
+<script>
+let lang = "en";
+const btn = document.getElementById("langBtn");
+
+function applyLanguage() {
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll("[data-en]").forEach((el) => {
+    el.textContent = el.dataset[lang];
+  });
+
+  btn.textContent = lang === "en" ? "Español" : "English";
+}
+
+btn.addEventListener("click", () => {
+  lang = lang === "en" ? "es" : "en";
+  applyLanguage();
+});
+</script>
+</body>
+</html>
