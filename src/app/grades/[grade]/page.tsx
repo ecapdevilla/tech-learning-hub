@@ -87,6 +87,16 @@ export default async function GradePage({ params }: Props) {
                       Open guide
                     </a>
                   )}
+                  {/* Add Grade 6 Scratch classroom quick link */}
+                  {gradeData.id === 6 && (
+                    <a
+                      href="/guides/grade-06/scratch-classroom.html"
+                      className="secondary-button lesson-button"
+                      style={{ marginLeft: 8 }}
+                    >
+                      Scratch classroom
+                    </a>
+                  )}
                 </article>
               ))}
             </div>
