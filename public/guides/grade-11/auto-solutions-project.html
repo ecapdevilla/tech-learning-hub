@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTO-SOLUTIONS - Proyecto 11° Tecnología</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #1a2a4a;
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #2f4f68;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2f4f68;
+            padding-bottom: 15px;
+        }
+
+        .emoji-big {
+            font-size: 48px;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #1a2a4a;
+            background: #e8edf3;
+            padding: 10px 18px;
+            border-left: 6px solid #2f4f68;
+            margin-top: 35px;
+            margin-bottom: 18px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #2f4f68;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1e2a3a;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin-left: 22px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1e2a3a;
+            margin-bottom: 5px;
+        }
+
+        .highlight-box {
+            background: #f7f9fc;
+            border-left: 5px solid #2f4f68;
+            padding: 18px 22px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box strong {
+            color: #1a2a4a;
+        }
+
+        .driving-question {
+            background: #e8f0fe;
+            border-left: 5px solid #1a5276;
+            padding: 18px 22px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0 25px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #c5cdd8;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #2f4f68;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f7f9fc;
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0 20px;
+        }
+
+        .role-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+        }
+
+        .role-card strong {
+            display: block;
+            font-size: 15px;
+            color: #1a2a4a;
+        }
+
+        .role-card span {
+            font-size: 13px;
+            color: #3a4a5a;
+        }
+
+        .project-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0 20px;
+        }
+
+        .option-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 12px 14px;
+            text-align: center;
+        }
+
+        .option-card strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .option-card span {
+            font-size: 13px;
+            color: #3a4a5a;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0 20px;
+        }
+
+        .concept-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 10px 14px;
+            text-align: center;
+        }
+
+        .concept-card strong {
+            display: block;
+            font-size: 15px;
+            color: #1a2a4a;
+        }
+
+        .concept-card span {
+            font-size: 12px;
+            color: #3a4a5a;
+        }
+
+        .rubric-table th:first-child {
+            width: 22%;
+        }
+        .rubric-table th {
+            text-align: center;
+            font-size: 13px;
+        }
+        .rubric-table td {
+            font-size: 13px;
+        }
+
+        .total-score {
+            margin-top: 20px;
+        }
+
+        .total-score table th {
+            text-align: center;
+        }
+        .total-score table td {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #dce3ec;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a2a4a;
+        }
+
+        .footer small {
+            display: block;
+            font-weight: normal;
+            font-size: 14px;
+            color: #5a6a7a;
+            margin-top: 6px;
+        }
+
+        .materias-integradas {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 10px 0 15px;
+        }
+
+        .materia-tag {
+            background: #2f4f68;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .microcontroller-tag {
+            display: inline-block;
+            background: #1a5276;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 18px;
+            }
+            .role-grid, .project-options, .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 26px;
+            }
+            .subtitle {
+                font-size: 16px;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 6px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ======== TÍTULO ======== -->
+    <span class="emoji-big">🤖</span>
+    <h1>AUTO-SOLUTIONS</h1>
+    <p class="subtitle">Ingeniería de Sistemas Robóticos con Interfaz Web</p>
+
+    <!-- ======== MATERIAS INTEGRADAS ======== -->
+    <div style="text-align:center; margin-bottom: 20px;">
+        <div class="materias-integradas">
+            <span class="materia-tag">💻 Tecnología</span>
+            <span class="materia-tag">➕ Matemáticas</span>
+            <span class="materia-tag">🔬 Ciencias Naturales</span>
+        </div>
+    </div>
+
+    <!-- ======== OBJETIVO ======== -->
+    <h2>🎯 OBJETIVO DEL PROYECTO</h2>
+    <p>
+        Diseñar, simular, documentar y presentar un <strong>sistema robótico funcional</strong> que integre <strong>sensores, actuadores, comunicación inalámbrica (WiFi) y una interfaz web</strong> para monitoreo y control, utilizando <strong>Wokwi</strong> (simulador), <strong>JavaScript, HTML y CSS</strong>, que resuelva un problema real en la escuela o comunidad, aplicando conceptos de <strong>Tecnología, Matemáticas y Ciencias Naturales</strong>, y promoviendo los <strong>Objetivos de Desarrollo Sostenible (ODS)</strong>.
+    </p>
+
+    <!-- ======== METODOLOGÍA ======== -->
+    <h2>📋 METODOLOGÍA</h2>
+    <p>
+        Los estudiantes trabajarán como <strong>equipos de ingeniería robótica</strong> cuya misión es desarrollar una solución automatizada que integre hardware (simulado), software y ética, para abordar una necesidad real de la comunidad.
+    </p>
+    <p>
+        El proyecto seguirá la metodología de <strong>Aprendizaje Basado en Proyectos (ABP)</strong>, el enfoque <strong>STEM</strong> y el <strong>Proceso de Diseño en Ingeniería</strong>.
+    </p>
+
+    <!-- ======== STEP 1 ======== -->
+    <h2>🔍 PASO 1: IDENTIFICAR EL PROBLEMA</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Conocerán los Objetivos de Desarrollo Sostenible (ODS) - Enfoque en ODS 3 (Salud y Bienestar), ODS 6 (Agua Limpia y Saneamiento), ODS 9 (Industria, Innovación e Infraestructura), ODS 11 (Ciudades y Comunidades Sostenibles), ODS 13 (Acción por el Clima).</li>
+        <li>Identificarán problemas en su escuela o comunidad que puedan resolverse con un sistema automatizado (riego inteligente, seguridad, monitoreo ambiental).</li>
+        <li>Explorarán cómo la integración de robótica y web puede mejorar la calidad de vida.</li>
+        <li>Analizarán las implicaciones éticas y ambientales de la automatización.</li>
+    </ul>
+
+    <div class="driving-question">
+        <strong>❓ Pregunta Orientadora:</strong><br>
+        ¿Cómo podemos integrar un sistema robótico con una interfaz web para crear una solución automatizada que aborde un problema real de nuestra comunidad, considerando las implicaciones éticas, ambientales y sociales, y alineándonos con los Objetivos de Desarrollo Sostenible?
+    </div>
+
+    <!-- ======== STEP 2 ======== -->
+    <h2>👥 PASO 2: FORMAR LOS EQUIPOS DE INGENIERÍA</h2>
+    <p>El docente organizará equipos de trabajo colaborativo.</p>
+    <ul>
+        <li>Cada salón se dividirá en <strong>6 equipos de ingeniería</strong>.</li>
+        <li>Cada equipo estará conformado por <strong>4 a 5 estudiantes</strong>.</li>
+        <li>Cada miembro asumirá un rol y responsabilidad específica.</li>
+    </ul>
+
+    <h3>Roles Sugeridos:</h3>
+    <div class="role-grid">
+        <div class="role-card">
+            <strong>⚙️ Ingeniero de Hardware</strong>
+            <span>Responsable de sensores, actuadores y simulación en Wokwi</span>
+        </div>
+        <div class="role-card">
+            <strong>💻 Ingeniero de Software</strong>
+            <span>Responsable de la programación y lógica del sistema</span>
+        </div>
+        <div class="role-card">
+            <strong>🌐 Desarrollador Web</strong>
+            <span>Responsable de la interfaz web (HTML/CSS/JS)</span>
+        </div>
+        <div class="role-card">
+            <strong>📝 Documentador</strong>
+            <span>Responsable de la documentación (APA) y bitácora</span>
+        </div>
+        <div class="role-card">
+            <strong>🎤 Líder de Innovación</strong>
+            <span>Lidera presentaciones y conexión con ODS</span>
+        </div>
+    </div>
+
+    <!-- ======== STEP 3 ======== -->
+    <h2>📚 PASO 3: INVESTIGAR Y PLANIFICAR</h2>
+    <p>Los estudiantes investigarán:</p>
+    <ul>
+        <li>Sensores: ultrasónico, temperatura (DHT11), humedad del suelo, PIR, luz.</li>
+        <li>Actuadores: servomotores, LEDs, zumbadores, motores DC.</li>
+        <li>Microcontroladores: ESP32 (simulado en Wokwi).</li>
+        <li>Comunicación inalámbrica: WiFi.</li>
+        <li>Interfaz web: HTML, CSS, JavaScript, Chart.js.</li>
+        <li>Almacenamiento local: localStorage o JSON.</li>
+        <li>Ética y sostenibilidad en automatización.</li>
+        <li>Conceptos de ciencias naturales relacionados (ciclo del agua, energía, residuos).</li>
+    </ul>
+
+    <p>Cada equipo creará:</p>
+    <ul>
+        <li>Un nombre para el proyecto.</li>
+        <li>Diagrama de arquitectura del sistema (robot + web).</li>
+        <li>Diseño de la interfaz web (wireframes).</li>
+        <li>Selección de sensores y actuadores.</li>
+        <li>Plan de desarrollo.</li>
+    </ul>
+
+    <h3>Opciones de Proyecto Disponibles:</h3>
+    <div class="project-options">
+        <div class="option-card">
+            <strong>💧 Riego Inteligente</strong>
+            <span>Automatización con sensor de humedad y control web</span>
+        </div>
+        <div class="option-card">
+            <strong>🔐 Sistema de Seguridad</strong>
+            <span>Alarma con sensor PIR y notificaciones web</span>
+        </div>
+        <div class="option-card">
+            <strong>♻️ Clasificación de Residuos</strong>
+            <span>Sistema con sensores y reporte web</span>
+        </div>
+        <div class="option-card">
+            <strong>🌡️ Monitoreo Ambiental</strong>
+            <span>Sensores de temperatura, humedad y calidad del aire</span>
+        </div>
+        <div class="option-card">
+            <strong>🌱 Huerta Escolar</strong>
+            <span>Monitoreo de cultivos con datos en tiempo real</span>
+        </div>
+    </div>
+
+    <!-- ======== STEP 4 ======== -->
+    <h2>✏️ PASO 4: DISEÑAR EL PROTOTIPO</h2>
+    <p>Los equipos diseñarán:</p>
+    <ul>
+        <li>Arquitectura del sistema (robot + web).</li>
+        <li>Circuito electrónico en Wokwi.</li>
+        <li>Interfaz web (wireframes).</li>
+        <li>Flujo de comunicación (robot → web).</li>
+        <li>Estructura de datos (JSON/localStorage).</li>
+    </ul>
+    <p>Los estudiantes producirán <strong>diagramas, wireframes y documentos de planificación</strong>.</p>
+
+    <!-- ======== STEP 5 ======== -->
+    <h2>🛠️ PASO 5: CONSTRUIR Y PROGRAMAR</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Configurarán el simulador Wokwi.</li>
+        <li>Conectarán sensores y actuadores.</li>
+        <li>Programarán el microcontrolador (ESP32).</li>
+        <li>Crearán la interfaz web (HTML/CSS/JS).</li>
+        <li>Implementarán comunicación WiFi.</li>
+        <li>Conectarán el sistema completo (robot + web).</li>
+    </ul>
+
+    <h3>Componentes del Sistema:</h3>
+    <div class="concept-grid">
+        <div class="concept-card">
+            <strong>📡 Sensores</strong>
+            <span>Ultrasónico, DHT11, humedad, PIR</span>
+        </div>
+        <div class="concept-card">
+            <strong>⚡ Actuadores</strong>
+            <span>Servomotor, LED, zumbador</span>
+        </div>
+        <div class="concept-card">
+            <strong>🌐 WiFi</strong>
+            <span>Comunicación con la interfaz web</span>
+        </div>
+        <div class="concept-card">
+            <strong>📊 Interfaz Web</strong>
+            <span>Dashboard, gráficos, control</span>
+        </div>
+    </div>
+
+    <h3>Características Posibles:</h3>
+    <ul>
+        <li>✅ Monitoreo de sensores en tiempo real (datos en web).</li>
+        <li>✅ Control de actuadores desde la web (ON/OFF).</li>
+        <li>✅ Gráficos dinámicos (Chart.js).</li>
+        <li>✅ Almacenamiento de datos (localStorage).</li>
+        <li>✅ Autenticación básica (login).</li>
+        <li>✅ Alertas y notificaciones.</li>
+        <li>✅ Conexión con ODS y sostenibilidad.</li>
+    </ul>
+
+    <!-- ======== STEP 6 ======== -->
+    <h2>🧪 PASO 6: PROBAR Y RECOLECTAR DATOS</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Probarán el sistema completo (simulación).</li>
+        <li>Medirán tiempos de respuesta y precisión de sensores.</li>
+        <li>Registrarán datos en tablas y gráficos.</li>
+        <li>Compararán diferentes configuraciones.</li>
+        <li>Recibirán retroalimentación de usuarios.</li>
+    </ul>
+
+    <h3>Integración con Matemáticas y Ciencias Naturales:</h3>
+    <ul>
+        <li><strong>Matemáticas:</strong> Lógica de programación, estructuras de datos, gráficos, estadística básica, mediciones, ángulos, distancias.</li>
+        <li><strong>Ciencias Naturales:</strong> Ciclo del agua, energía, residuos, biodiversidad, ecosistemas, cambio climático (según el proyecto elegido).</li>
+    </ul>
+    <p>Los estudiantes determinarán cuál sistema es el más eficiente y sostenible.</p>
+
+    <!-- ======== STEP 7 ======== -->
+    <h2>🔧 PASO 7: MEJORAR EL DISEÑO</h2>
+    <p>Los equipos:</p>
+    <ul>
+        <li>Analizarán los resultados de las pruebas.</li>
+        <li>Corregirán errores en programación y simulación.</li>
+        <li>Optimizarán el código.</li>
+        <li>Mejorarán la interfaz web.</li>
+        <li>Agregarán nuevas funcionalidades.</li>
+        <li>Documentarán las mejoras con comentarios.</li>
+    </ul>
+    <p>Los estudiantes documentarán todas las mejoras en su <strong>bitácora de ingeniería</strong>.</p>
+
+    <!-- ======== STEP 8 ======== -->
+    <h2>🎤 PASO 8: PREPARAR LA PRESENTACIÓN DEL PRODUCTO</h2>
+    <p>Cada equipo preparará:</p>
+    <ul>
+        <li>Demostración del sistema robótico (simulación).</li>
+        <li>Demostración de la interfaz web.</li>
+        <li>Explicación de la arquitectura (robot + web).</li>
+        <li>Explicación del código y componentes.</li>
+        <li>Conexión con ODS y sostenibilidad.</li>
+        <li>Reflexión ética sobre automatización.</li>
+    </ul>
+    <p>Los equipos explicarán cómo su sistema contribuye al bienestar de la comunidad escolar y al cuidado del planeta.</p>
+
+    <!-- ======== STEP 9 ======== -->
+    <h2>🏆 PASO 9: FERIA STEM DE INNOVACIÓN</h2>
+    <p>Cada equipo participará en la <strong>Feria de Innovación Auto-Solutions</strong>.</p>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Exhibirán su sistema robótico simulado.</li>
+        <li>Demostrarán la interfaz web.</li>
+        <li>Explicarán la integración robot-web.</li>
+        <li>Explicarán cómo ayuda a la comunidad y al medio ambiente.</li>
+        <li>Recibirán retroalimentación de docentes y compañeros.</li>
+    </ul>
+
+    <!-- ======== RESUMEN ======== -->
+    <h2>📌 RESUMEN DEL PROYECTO</h2>
+    <p>Al final del proyecto, cada equipo habrá desarrollado un <strong>sistema robótico funcional con interfaz web</strong> que combina:</p>
+
+    <table>
+        <tr>
+            <th style="width:25%;">Componente</th>
+            <th style="width:75%;">Aplicación</th>
+        </tr>
+        <tr>
+            <td><strong>Tecnología</strong></td>
+            <td>Robótica (sensores, actuadores, ESP32), Web (HTML/CSS/JS)</td>
+        </tr>
+        <tr>
+            <td><strong>Matemáticas</strong></td>
+            <td>Lógica, estructuras de datos, gráficos, estadística, mediciones</td>
+        </tr>
+        <tr>
+            <td><strong>Ciencias Naturales</strong></td>
+            <td>Ciclo del agua, energía, residuos, biodiversidad, cambio climático</td>
+        </tr>
+        <tr>
+            <td><strong>Ética</strong></td>
+            <td>Responsabilidad ambiental y social en automatización</td>
+        </tr>
+    </table>
+
+    <!-- ======== RÚBRICA ======== -->
+    <h2>📊 RÚBRICA DE EVALUACIÓN</h2>
+
+    <table class="rubric-table">
+        <tr>
+            <th>Criterio</th>
+            <th>Excelente (4)</th>
+            <th>Bueno (3)</th>
+            <th>Aceptable (2)</th>
+            <th>Necesita Mejorar (1)</th>
+        </tr>
+        <tr>
+            <td><strong>1. Funcionalidad del Sistema</strong></td>
+            <td>El sistema simulado funciona perfectamente. Robot y web integrados correctamente.</td>
+            <td>El sistema funciona con mínimos errores. Mayoría de funcionalidades implementadas.</td>
+            <td>El sistema funciona parcialmente. Algunas funcionalidades no operan correctamente.</td>
+            <td>El sistema no funciona o tiene errores graves.</td>
+        </tr>
+        <tr>
+            <td><strong>2. Uso de Sensores y Actuadores</strong></td>
+            <td>Utiliza múltiples sensores y actuadores correctamente y de manera creativa.</td>
+            <td>Utiliza sensores y actuadores correctamente.</td>
+            <td>Utiliza algunos sensores y actuadores, pero con errores.</td>
+            <td>No utiliza o utiliza incorrectamente sensores y actuadores.</td>
+        </tr>
+        <tr>
+            <td><strong>3. Comunicación WiFi</strong></td>
+            <td>Implementa comunicación WiFi correctamente. El robot envía y recibe datos.</td>
+            <td>Implementa comunicación WiFi correctamente.</td>
+            <td>Implementa comunicación WiFi con algunos errores.</td>
+            <td>No implementa comunicación WiFi correctamente.</td>
+        </tr>
+        <tr>
+            <td><strong>4. Interfaz Web</strong></td>
+            <td>La interfaz es atractiva, responsive y funcional. Incluye gráficos y autenticación.</td>
+            <td>La interfaz es funcional y clara.</td>
+            <td>La interfaz es básica. Con errores menores.</td>
+            <td>La interfaz es confusa o no existe.</td>
+        </tr>
+        <tr>
+            <td><strong>5. Gestión de Datos</strong></td>
+            <td>Gestiona datos eficientemente (localStorage/JSON). Incluye históricos y análisis.</td>
+            <td>Gestiona datos correctamente.</td>
+            <td>Gestiona datos de manera limitada.</td>
+            <td>No gestiona datos correctamente.</td>
+        </tr>
+        <tr>
+            <td><strong>6. Documentación (APA)</strong></td>
+            <td>Documentación completa en formato APA. Claridad y profundidad excelentes.</td>
+            <td>Documentación adecuada en formato APA.</td>
+            <td>Documentación básica con algunos errores de formato.</td>
+            <td>Documentación incompleta o sin formato APA.</td>
+        </tr>
+        <tr>
+            <td><strong>7. Trabajo en Equipo</strong></td>
+            <td>Todos los miembros participaron activamente. Excelente comunicación.</td>
+            <td>La mayoría de los miembros participaron. Buena comunicación.</td>
+            <td>Algunos miembros participaron. Roles no claros.</td>
+            <td>Participación limitada. Conflicto en el equipo.</td>
+        </tr>
+        <tr>
+            <td><strong>8. Reflexión Ética y ODS</strong></td>
+            <td>Reflexión profunda sobre impacto ético y ambiental. Conexión clara con los ODS.</td>
+            <td>Reflexión adecuada. Conexión clara con los ODS.</td>
+            <td>Reflexión básica. Conexión superficial con los ODS.</td>
+            <td>No hay reflexión o conexión con los ODS.</td>
+        </tr>
+        <tr>
+            <td><strong>9. Presentación</strong></td>
+            <td>Presentación clara, organizada y profesional.</td>
+            <td>Presentación clara y organizada.</td>
+            <td>Presentación básica. Falta claridad.</td>
+            <td>Presentación confusa o incompleta.</td>
+        </tr>
+        <tr>
+            <td><strong>10. Utilidad del Proyecto</strong></td>
+            <td>La solución resuelve un problema real de manera efectiva, sostenible y ética.</td>
+            <td>La solución resuelve un problema real.</td>
+            <td>La solución aborda un problema de manera básica.</td>
+            <td>La solución no resuelve ningún problema.</td>
+        </tr>
+    </table>
+
+    <!-- ======== PUNTUACIÓN TOTAL ======== -->
+    <div class="total-score">
+        <h2>📈 PUNTUACIÓN TOTAL</h2>
+        <table>
+            <tr>
+                <th style="width:33%;">Rango</th>
+                <th style="width:33%;">Calificación</th>
+                <th style="width:34%;">Equivalencia</th>
+            </tr>
+            <tr>
+                <td>36 - 40</td>
+                <td>Excelente</td>
+                <td>9.0 - 10.0</td>
+            </tr>
+            <tr>
+                <td>30 - 35</td>
+                <td>Bueno</td>
+                <td>8.0 - 8.9</td>
+            </tr>
+            <tr>
+                <td>24 - 29</td>
+                <td>Aceptable</td>
+                <td>7.0 - 7.9</td>
+            </tr>
+            <tr>
+                <td>18 - 23</td>
+                <td>Necesita Mejorar</td>
+                <td>6.0 - 6.9</td>
+            </tr>
+            <tr>
+                <td>0 - 17</td>
+                <td>Insuficiente</td>
+                <td>&lt; 6.0</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ======== RECURSOS ======== -->
+    <h2>📦 RECURSOS</h2>
+    <table>
+        <tr>
+            <th style="width:25%;">Categoría</th>
+            <th style="width:75%;">Recursos</th>
+        </tr>
+        <tr>
+            <td><strong>Simulación</strong></td>
+            <td>Wokwi (https://wokwi.com)</td>
+        </tr>
+        <tr>
+            <td><strong>Programación</strong></td>
+            <td>Visual Studio Code, JavaScript, HTML, CSS, Arduino</td>
+        </tr>
+        <tr>
+            <td><strong>Documentación</strong></td>
+            <td>MDN Web Docs, W3Schools, Guía APA</td>
+        </tr>
+        <tr>
+            <td><strong>Gráficos</strong></td>
+            <td>Chart.js</td>
+        </tr>
+        <tr>
+            <td><strong>Diseño</strong></td>
+            <td>Canva, Figma (opcional)</td>
+        </tr>
+        <tr>
+            <td><strong>Colaboración</strong></td>
+            <td>Google Docs, GitHub (opcional)</td>
+        </tr>
+        <tr>
+            <td><strong>ODS</strong></td>
+            <td>Sitio web de Naciones Unidas ODS</td>
+        </tr>
+        <tr>
+            <td><strong>Ciencias Naturales</strong></td>
+            <td>Material sobre ciclo del agua, energía, residuos, biodiversidad</td>
+        </tr>
+    </table>
+
+    <!-- ======== CONCEPTOS CLAVE ======== -->
+    <h2>🧠 CONCEPTOS CLAVE</h2>
+    <table>
+        <tr>
+            <th style="width:35%;">Concepto</th>
+            <th style="width:65%;">Aplicación</th>
+        </tr>
+        <tr>
+            <td>Microcontrolador (ESP32)</td>
+            <td>Procesamiento y comunicación del robot</td>
+        </tr>
+        <tr>
+            <td>Sensores</td>
+            <td>Detección de condiciones del entorno</td>
+        </tr>
+        <tr>
+            <td>Actuadores</td>
+            <td>Acción sobre el entorno (movimiento, luz, sonido)</td>
+        </tr>
+        <tr>
+            <td>WiFi</td>
+            <td>Comunicación inalámbrica robot-web</td>
+        </tr>
+        <tr>
+            <td>Interfaz Web</td>
+            <td>Monitoreo y control desde el navegador</td>
+        </tr>
+        <tr>
+            <td>localStorage</td>
+            <td>Almacenamiento de datos en el navegador</td>
+        </tr>
+        <tr>
+            <td>Ética en IA/Robótica</td>
+            <td>Responsabilidad en automatización</td>
+        </tr>
+        <tr>
+            <td>ODS</td>
+            <td>Conexión con objetivos globales</td>
+        </tr>
+        <tr>
+            <td>Sostenibilidad</td>
+            <td>Impacto ambiental y social de la automatización</td>
+        </tr>
+        <tr>
+            <td>Documentación APA</td>
+            <td>Presentación formal de resultados</td>
+        </tr>
+    </table>
+
+    <!-- ======== PRODUCTO FINAL ======== -->
+    <h2>✅ PRODUCTO FINAL</h2>
+    <p>Cada equipo entregará:</p>
+    <ol>
+        <li>✅ Sistema robótico simulado en Wokwi (funcional)</li>
+        <li>✅ Interfaz web funcional (dashboard con gráficos)</li>
+        <li>✅ Código documentado con comentarios</li>
+        <li>✅ Diagrama de arquitectura del sistema</li>
+        <li>✅ Capturas de pantalla y grabaciones del sistema</li>
+        <li>✅ Documentación en formato APA (artículo científico)</li>
+        <li>✅ Reflexión ética y conexión con ODS</li>
+        <li>✅ Presentación oral y demostración</li>
+        <li>✅ Portafolio STEM final</li>
+    </ol>
+
+    <!-- ======== FOOTER ======== -->
+    <div class="footer">
+        "La automatización no es solo tecnología; es una herramienta para construir un futuro más sostenible y ético para todos."
+        <small>Proyecto AUTO-SOLUTIONS - Tecnología 11° - Tercer Periodo 2026</small>
+        <br>
+        <small style="font-size:12px; color:#888;">Integración: Tecnología 🔹 Matemáticas 🔹 Ciencias Naturales</small>
+    </div>
+
+</div>
+
+</body>
+</html>

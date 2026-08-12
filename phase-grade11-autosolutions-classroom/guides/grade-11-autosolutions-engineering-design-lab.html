@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11th Grade | AUTO-SOLUTIONS Engineering Design Lab</title>
+<style>
+:root{--navy:#10233f;--blue:#1769ff;--cyan:#0aa6c2;--soft:#eef5ff;--gold:#f6b51b;--green:#138a67;--ink:#17243a;--line:#d9e3f0}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f3f6fa;color:var(--ink);line-height:1.6}
+.hero{background:linear-gradient(125deg,#0c203c,#1257c7 60%,#08a0b9);color:white;padding:48px 20px}.wrap{max-width:1100px;margin:auto}
+.kicker{display:inline-block;background:#ffffff20;border:1px solid #ffffff55;border-radius:99px;padding:6px 12px;font-weight:800}
+h1{font-size:clamp(2.1rem,5vw,4rem);margin:12px 0 4px}.hero p{max-width:880px;font-size:1.12rem}
+nav{position:sticky;top:0;z-index:5;background:#fffffff2;backdrop-filter:blur(10px);box-shadow:0 3px 18px #0002}
+.navin{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 20px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn,.project{border:0;border-radius:10px;padding:10px 14px;font-weight:800;text-decoration:none;cursor:pointer}
+.btn{background:var(--blue);color:white}.project{background:#fff1bf;color:#163f7a;border:1px solid #e7c653}
+main{padding:24px 20px 55px}section{background:white;border-radius:18px;padding:26px;margin:18px auto;box-shadow:0 8px 28px #10233f12}
+h2{margin-top:0;color:#16458f}.time{display:inline-block;background:#e7fff7;color:#087057;border-radius:99px;padding:5px 10px;font-weight:800}
+.objective{border-left:7px solid var(--gold)}.copy{border:2px dashed #9bb0d1;background:#fbfdff;border-radius:12px;padding:16px}
+.notebook{background:#fff9df;border-left:6px solid var(--gold);padding:15px;border-radius:9px;margin:14px 0}.mission{border-left:6px solid var(--blue);background:#f5f8ff;padding:15px;border-radius:9px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{border:1px solid var(--line);background:#f8fbff;border-radius:13px;padding:14px}
+.card strong{color:#164ba8}.flow{font-weight:800;text-align:center;background:#eaf4ff;border-radius:12px;padding:18px;font-size:1.08rem}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}th{background:#153f80;color:white}
+.code{font-family:Consolas,monospace;background:#142033;color:#eaf2ff;padding:15px;border-radius:10px;white-space:pre-wrap}
+.role{display:inline-block;background:#eaf0ff;padding:5px 9px;border-radius:8px;margin:3px;font-weight:700}
+.exit{background:#eefcf7;border-left:6px solid var(--green)}footer{text-align:center;color:#66758a;padding:24px}
+@media print{nav{display:none}section{box-shadow:none;border:1px solid #ddd}}@media(max-width:650px){.navin{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+<span class="kicker">11th Grade · Cycle 3 · 120 minutes · Classroom / Notebook</span>
+<h1>AUTO-SOLUTIONS</h1>
+<h3 data-en="Engineering Design Lab — From a Real Problem to a Smart System" data-es="Laboratorio de Diseño de Ingeniería — De un problema real a un sistema inteligente">Engineering Design Lab — From a Real Problem to a Smart System</h3>
+<p data-en="Today you will not build the robot yet. You will think and work like an engineering team: identify a problem, design the logic, select sensors and actuators, plan the data flow and sketch the web interface."
+data-es="Hoy todavía no construirás el robot. Trabajarás como un equipo de ingeniería: identificarás un problema, diseñarás la lógica, seleccionarás sensores y actuadores, planearás el flujo de datos y bosquejarás la interfaz web.">Today you will not build the robot yet. You will think and work like an engineering team: identify a problem, design the logic, select sensors and actuators, plan the data flow and sketch the web interface.</p>
+</div></header>
+<nav><div class="wrap navin"><strong>Tech Learning Hub · 11th</strong><div class="actions">
+<a class="project" href="/guides/grade-11/auto-solutions-project.html" target="_blank" data-en="🤖 Open AUTO-SOLUTIONS Project" data-es="🤖 Abrir proyecto AUTO-SOLUTIONS">🤖 Open AUTO-SOLUTIONS Project</a>
+<button id="lang" class="btn">Español</button></div></div></nav>
+
+<main class="wrap">
+<section class="objective">
+<span class="time">0–12 min</span>
+<h2 data-en="🎯 Learning Objective — Write it in your notebook" data-es="🎯 Objetivo de aprendizaje — Escríbelo en tu cuaderno">🎯 Learning Objective — Write it in your notebook</h2>
+<div class="copy" data-en="Design the initial proposal for a smart automated system that responds to a real school or community problem by integrating sensors, actuators, WiFi communication and a web interface, while considering sustainability and the Sustainable Development Goals (SDGs)."
+data-es="Diseñar la propuesta inicial de un sistema automatizado inteligente que responda a un problema real de la escuela o comunidad, integrando sensores, actuadores, comunicación WiFi y una interfaz web, considerando la sostenibilidad y los Objetivos de Desarrollo Sostenible (ODS).">Design the initial proposal for a smart automated system that responds to a real school or community problem by integrating sensors, actuators, WiFi communication and a web interface, while considering sustainability and the Sustainable Development Goals (SDGs).</div>
+<div class="notebook"><b>✍️ NOTEBOOK / CUADERNO:</b> <span data-en="Copy the objective. Underline: problem, sensors, actuators, WiFi, web interface and SDGs." data-es="Copia el objetivo. Subraya: problema, sensores, actuadores, WiFi, interfaz web y ODS.">Copy the objective. Underline: problem, sensors, actuators, WiFi, web interface and SDGs.</span></div>
+</section>
+
+<section>
+<span class="time">12–27 min</span><h2 data-en="🧠 Activate Your Engineering Thinking" data-es="🧠 Activa tu pensamiento de ingeniería">🧠 Activate Your Engineering Thinking</h2>
+<p data-en="Answer individually before discussing with anyone." data-es="Responde individualmente antes de discutir con alguien.">Answer individually before discussing with anyone.</p>
+<ol>
+<li data-en="What problem at school or in your community could technology help solve?" data-es="¿Qué problema de la escuela o comunidad podría ayudar a resolver la tecnología?">What problem at school or in your community could technology help solve?</li>
+<li data-en="What information would a machine need to detect?" data-es="¿Qué información necesitaría detectar una máquina?">What information would a machine need to detect?</li>
+<li data-en="What action should the system perform automatically?" data-es="¿Qué acción debería realizar automáticamente el sistema?">What action should the system perform automatically?</li>
+<li data-en="What information should a user see on a web page?" data-es="¿Qué información debería ver un usuario en una página web?">What information should a user see on a web page?</li>
+<li data-en="What could go wrong if the system makes a bad decision?" data-es="¿Qué podría ocurrir si el sistema toma una mala decisión?">What could go wrong if the system makes a bad decision?</li>
+</ol>
+<div class="notebook" data-en="Now improve one answer after comparing ideas with a partner. Write what you changed and why." data-es="Ahora mejora una respuesta después de comparar ideas con un compañero. Escribe qué cambiaste y por qué.">Now improve one answer after comparing ideas with a partner. Write what you changed and why.</div>
+</section>
+
+<section>
+<span class="time">27–42 min</span><h2 data-en="📘 Essential Engineering Vocabulary" data-es="📘 Vocabulario esencial de ingeniería">📘 Essential Engineering Vocabulary</h2>
+<div class="grid">
+<div class="card"><strong>Sensor</strong><br><span data-en="Detects or measures a condition in the environment." data-es="Detecta o mide una condición del entorno.">Detects or measures a condition in the environment.</span></div>
+<div class="card"><strong>Actuator</strong><br><span data-en="Performs a physical action: movement, light or sound." data-es="Realiza una acción física: movimiento, luz o sonido.">Performs a physical action.</span></div>
+<div class="card"><strong>ESP32</strong><br><span data-en="Microcontroller that processes information and can communicate through WiFi." data-es="Microcontrolador que procesa información y puede comunicarse mediante WiFi.">Microcontroller that processes information.</span></div>
+<div class="card"><strong>WiFi</strong><br><span data-en="Wireless communication used to exchange data." data-es="Comunicación inalámbrica utilizada para intercambiar datos.">Wireless communication used to exchange data.</span></div>
+<div class="card"><strong>Web Interface</strong><br><span data-en="Screen where users monitor information or control the system." data-es="Pantalla donde los usuarios monitorean información o controlan el sistema.">Screen where users monitor information.</span></div>
+<div class="card"><strong>Automation</strong><br><span data-en="A system performs actions according to programmed rules." data-es="Un sistema realiza acciones de acuerdo con reglas programadas.">A system performs actions according to programmed rules.</span></div>
+<div class="card"><strong>Data</strong><br><span data-en="Values collected, processed and communicated by the system." data-es="Valores recolectados, procesados y comunicados por el sistema.">Values collected by the system.</span></div>
+<div class="card"><strong>SDG / ODS</strong><br><span data-en="A Sustainable Development Goal connected to a global challenge." data-es="Un Objetivo de Desarrollo Sostenible relacionado con un desafío global.">A Sustainable Development Goal.</span></div>
+</div>
+<div class="notebook" data-en="Create a two-column mini-dictionary: TERM | MEANING IN YOUR OWN WORDS. Add one example for Sensor and one for Actuator." data-es="Crea un minidiccionario de dos columnas: TÉRMINO | SIGNIFICADO CON TUS PALABRAS. Agrega un ejemplo de Sensor y uno de Actuador.">Create a two-column mini-dictionary: TERM | MEANING IN YOUR OWN WORDS.</div>
+</section>
+
+<section>
+<span class="time">42–57 min</span><h2 data-en="🔄 How Does a Smart System Think?" data-es="🔄 ¿Cómo piensa un sistema inteligente?">🔄 How Does a Smart System Think?</h2>
+<div class="flow">ENVIRONMENT → SENSOR → ESP32 / LOGIC → DECISION → ACTUATOR → WiFi → WEB INTERFACE → USER</div>
+<p data-en="Copy the flow. Under every element, write its job using no more than eight words." data-es="Copia el flujo. Debajo de cada elemento escribe su función usando máximo ocho palabras.">Copy the flow. Under every element, write its job using no more than eight words.</p>
+<div class="mission"><b>Reasoning Challenge:</b><br><span data-en="A soil moisture sensor reports 18%. The team decided that values below 30% mean the soil is dry. What decision should the system make? What actuator could respond? What should the web interface display?"
+data-es="Un sensor de humedad del suelo reporta 18%. El equipo decidió que valores menores de 30% significan suelo seco. ¿Qué decisión debe tomar el sistema? ¿Qué actuador podría responder? ¿Qué debería mostrar la interfaz web?">A soil moisture sensor reports 18%. The team decided that values below 30% mean the soil is dry. What decision should the system make?</span></div>
+</section>
+
+<section>
+<span class="time">57–70 min</span><h2 data-en="🧩 Logic Before Code" data-es="🧩 Lógica antes del código">🧩 Logic Before Code</h2>
+<p data-en="Complete these decisions in your notebook. Focus on INPUT → CONDITION → ACTION." data-es="Completa estas decisiones en tu cuaderno. Concéntrate en ENTRADA → CONDICIÓN → ACCIÓN.">Complete these decisions in your notebook.</p>
+<table><tr><th>Situation</th><th>Input</th><th>Condition</th><th>Action</th></tr>
+<tr><td>Smart irrigation</td><td>Soil moisture</td><td>Moisture &lt; 30%</td><td>?</td></tr>
+<tr><td>Security system</td><td>PIR / movement</td><td>Movement detected</td><td>?</td></tr>
+<tr><td>Environmental monitor</td><td>Temperature</td><td>Temperature &gt; chosen limit</td><td>?</td></tr>
+<tr><td>Waste system</td><td>Sensor reading</td><td>Container condition detected</td><td>?</td></tr></table>
+<div class="code">READ sensor
+IF condition is true
+    PERFORM action
+    SEND status to web interface
+ELSE
+    KEEP monitoring
+END IF</div>
+<div class="notebook" data-en="Choose ONE row and rewrite the pseudocode using its real sensor, condition and action." data-es="Elige UNA fila y reescribe el pseudocódigo usando su sensor, condición y acción reales.">Choose ONE row and rewrite the pseudocode.</div>
+</section>
+
+<section>
+<span class="time">70–103 min</span><h2 data-en="🏆 Team Mission — AUTO-SOLUTIONS Design Sprint" data-es="🏆 Misión por equipos — Sprint de Diseño AUTO-SOLUTIONS">🏆 Team Mission — AUTO-SOLUTIONS Design Sprint</h2>
+<p data-en="Teams of 4–5. Your notebook pages become the first engineering document of your project." data-es="Equipos de 4–5. Las páginas del cuaderno se convierten en el primer documento de ingeniería de su proyecto.">Teams of 4–5. Your notebook pages become the first engineering document of your project.</p>
+<p><span class="role">Hardware Engineer</span><span class="role">Software Engineer</span><span class="role">Web Developer</span><span class="role">Documenter</span><span class="role">Innovation Leader</span></p>
+<div class="grid">
+<div class="card"><strong>💧 Smart Irrigation</strong><br>Soil moisture + automated control</div>
+<div class="card"><strong>🔐 Security System</strong><br>Movement detection + alerts</div>
+<div class="card"><strong>♻️ Waste System</strong><br>Sensors + web reporting</div>
+<div class="card"><strong>🌡️ Environmental Monitor</strong><br>Temperature / humidity data</div>
+<div class="card"><strong>🌱 School Garden</strong><br>Crop monitoring + data</div>
+</div>
+<h3>1. Problem — 5 min</h3><p data-en="Write: Who has the problem? What happens? Why does it matter? Which SDG could connect to it?" data-es="Escriban: ¿Quién tiene el problema? ¿Qué ocurre? ¿Por qué importa? ¿Con qué ODS podría relacionarse?">Write: Who has the problem? What happens? Why does it matter? Which SDG could connect to it?</p>
+<h3>2. System Architecture — 7 min</h3><p data-en="Draw your complete system using arrows: environment → sensor → ESP32 → decision → actuator → WiFi → web → user." data-es="Dibujen su sistema completo usando flechas: entorno → sensor → ESP32 → decisión → actuador → WiFi → web → usuario.">Draw your complete system using arrows.</p>
+<h3>3. Decision Rules — 6 min</h3><p data-en="Write at least TWO IF/THEN rules. Include the sensor value or event and the expected actuator response." data-es="Escriban al menos DOS reglas SI/ENTONCES. Incluyan el valor/evento del sensor y la respuesta esperada del actuador.">Write at least TWO IF/THEN rules.</p>
+<h3>4. Web Dashboard Wireframe — 8 min</h3><p data-en="Draw the future web interface. It must show project name, sensor value, system status, alert area and at least one control or information element." data-es="Dibujen la futura interfaz web. Debe mostrar nombre del proyecto, valor del sensor, estado del sistema, área de alertas y al menos un control o elemento informativo.">Draw the future web interface.</p>
+<h3>5. Ethics & Sustainability Check — 7 min</h3><p data-en="Answer: What benefit does the system create? What risk could it create? How can the design reduce energy/resource waste? What should always remain under human control?" data-es="Respondan: ¿Qué beneficio crea el sistema? ¿Qué riesgo podría crear? ¿Cómo puede reducir desperdicio de energía/recursos? ¿Qué debería permanecer siempre bajo control humano?">Answer the ethics and sustainability questions.</p>
+</section>
+
+<section>
+<span class="time">103–114 min</span><h2 data-en="🎤 Engineering Pitch & Peer Test" data-es="🎤 Pitch de ingeniería y prueba entre pares">🎤 Engineering Pitch & Peer Test</h2>
+<p data-en="Each team explains its design in about 90 seconds: Problem → Sensor → Decision → Actuator → Web → SDG. Another team must ask one technical question and suggest one improvement."
+data-es="Cada equipo explica su diseño en aproximadamente 90 segundos: Problema → Sensor → Decisión → Actuador → Web → ODS. Otro equipo debe hacer una pregunta técnica y sugerir una mejora.">Each team explains its design in about 90 seconds.</p>
+<table><tr><th>Checkpoint</th><th>Evidence</th></tr><tr><td>Problem</td><td>Clear and relevant</td></tr><tr><td>System</td><td>Sensor + logic + actuator</td></tr><tr><td>Communication</td><td>Explains WiFi/data flow</td></tr><tr><td>Web</td><td>Useful dashboard wireframe</td></tr><tr><td>Impact</td><td>Ethics + sustainability + SDG</td></tr></table>
+</section>
+
+<section class="exit">
+<span class="time">114–120 min</span><h2 data-en="📝 Exit Ticket — Individual" data-es="📝 Ticket de salida — Individual">📝 Exit Ticket — Individual</h2>
+<ol>
+<li data-en="Explain the difference between a sensor and an actuator." data-es="Explica la diferencia entre un sensor y un actuador.">Explain the difference between a sensor and an actuator.</li>
+<li data-en="Why does the ESP32 need logic before activating an actuator?" data-es="¿Por qué el ESP32 necesita lógica antes de activar un actuador?">Why does the ESP32 need logic?</li>
+<li data-en="What information should travel from the robotic system to the web interface?" data-es="¿Qué información debería viajar del sistema robótico hacia la interfaz web?">What information should travel to the web interface?</li>
+<li data-en="What was the strongest part of your team's proposal?" data-es="¿Cuál fue la parte más sólida de la propuesta de tu equipo?">What was the strongest part?</li>
+<li data-en="What must your team improve before building the simulation?" data-es="¿Qué debe mejorar tu equipo antes de construir la simulación?">What must your team improve?</li>
+</ol>
+<div class="notebook"><b data-en="Keep these pages." data-es="Conserva estas páginas.">Keep these pages.</b> <span data-en="They are the first entry of your AUTO-SOLUTIONS engineering logbook." data-es="Son la primera entrada de tu bitácora de ingeniería AUTO-SOLUTIONS.">They are the first entry of your AUTO-SOLUTIONS engineering logbook.</span></div>
+</section>
+</main>
+<footer>AUTO-SOLUTIONS · Technology 11th · Cycle 3 · Engineering Design Lab</footer>
+<script>
+let current="en";const b=document.getElementById("lang");
+function render(){document.documentElement.lang=current;document.querySelectorAll("[data-en]").forEach(e=>e.textContent=e.dataset[current]);b.textContent=current==="en"?"Español":"English"}
+b.addEventListener("click",()=>{current=current==="en"?"es":"en";render()});
+</script>
+</body></html>

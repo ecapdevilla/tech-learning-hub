@@ -2,16 +2,32 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-11-cycle-3-autosolutions-engineering-design-lab",
+    grade: 11,
+    cycle: 3,
+    title: {
+      en: "AUTO-SOLUTIONS · Engineering Design Lab",
+      es: "AUTO-SOLUTIONS · Laboratorio de Diseño de Ingeniería",
+    },
+    objective: {
+      en: "Design the initial proposal for a smart automated system integrating sensors, actuators, WiFi, a web interface and SDGs.",
+      es: "Diseñar la propuesta inicial de un sistema automatizado inteligente integrando sensores, actuadores, WiFi, interfaz web y ODS.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-11/autosolutions-engineering-design-lab.html",
+    tags: ["AUTO-SOLUTIONS", "Sensors", "ESP32", "WiFi", "Web", "SDGs", "Notebook"],
+  },
+  {
     id: "grade-09-cycle-3-stem-mvc-project-sequence",
     grade: 9,
     cycle: 3,
     title: {
-      en: "STEM · MVC Project Sequence",
-      es: "Secuencia de Proyecto STEM · MVC",
+      en: "STEM Â· MVC Project Sequence",
+      es: "Secuencia de Proyecto STEM Â· MVC",
     },
     objective: {
       en: "Plan and develop a STEM project using MVC architecture, JavaScript, testing, documentation, SDGs and prompt engineering.",
-      es: "Planear y desarrollar un proyecto STEM usando arquitectura MVC, JavaScript, pruebas, documentación, ODS e ingeniería de prompts.",
+      es: "Planear y desarrollar un proyecto STEM usando arquitectura MVC, JavaScript, pruebas, documentaciÃ³n, ODS e ingenierÃ­a de prompts.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-09/stem-mvc-project-sequence.html",
@@ -22,12 +38,12 @@ export const lessons: LessonSummary[] = [
     grade: 9,
     cycle: 3,
     title: {
-      en: "Web Thinking Lab Â· 9th Blue",
-      es: "Laboratorio de Pensamiento Web Â· 9th Blue",
+      en: "Web Thinking Lab Ã‚Â· 9th Blue",
+      es: "Laboratorio de Pensamiento Web Ã‚Â· 9th Blue",
     },
     objective: {
       en: "Understand how a web page is created from scratch using HTML for structure, CSS for design and JavaScript for interaction.",
-      es: "Comprender cÃ³mo se crea una pÃ¡gina web desde cero usando HTML para la estructura, CSS para el diseÃ±o y JavaScript para la interacciÃ³n.",
+      es: "Comprender cÃƒÂ³mo se crea una pÃƒÂ¡gina web desde cero usando HTML para la estructura, CSS para el diseÃƒÂ±o y JavaScript para la interacciÃƒÂ³n.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-09/web-thinking-lab-blue.html",
@@ -39,11 +55,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "RoboLab: Function Factory",
-      es: "RoboLab: FÃƒÂ¡brica de Funciones",
+      es: "RoboLab: FÃƒÆ’Ã‚Â¡brica de Funciones",
     },
     objective: {
       en: "Create and reuse functions, use simple parameters and understand returned results.",
-      es: "Crear y reutilizar funciones, usar parÃƒÂ¡metros sencillos y comprender resultados retornados.",
+      es: "Crear y reutilizar funciones, usar parÃƒÆ’Ã‚Â¡metros sencillos y comprender resultados retornados.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-05/robolab-functions.html",
@@ -71,7 +87,7 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "Little Programmers",
-      es: "PequeÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢os Programadores",
+      es: "PequeÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢os Programadores",
     },
     objective: {
       en: "Understand algorithms through ordered steps, routes and games.",
@@ -87,11 +103,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "Code Creators",
-      es: "Creadores de CÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡digo",
+      es: "Creadores de CÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡digo",
     },
     objective: {
       en: "Design an interactive solution through algorithms and programming concepts.",
-      es: "DiseÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢ar una soluciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n interactiva mediante algoritmos y conceptos de programaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n.",
+      es: "DiseÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ar una soluciÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡n interactiva mediante algoritmos y conceptos de programaciÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡n.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-06/code-creators-cycle-3.html",
@@ -107,7 +123,7 @@ export const lessons: LessonSummary[] = [
     },
     objective: {
       en: "Build a data analysis project that uses spreadsheets, visualization and AI to solve a real school or community problem.",
-      es: "Desarrollar un proyecto de anÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­lisis de datos que use hojas de cÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­lculo, visualizaciones e IA para resolver un problema real en la escuela o comunidad.",
+      es: "Desarrollar un proyecto de anÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­lisis de datos que use hojas de cÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­lculo, visualizaciones e IA para resolver un problema real en la escuela o comunidad.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-08/data-ai-community.html",
@@ -119,11 +135,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "My First Web Page",
-      es: "Mi Primera PÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­gina Web",
+      es: "Mi Primera PÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­gina Web",
     },
     objective: {
       en: "Create a web page from scratch using HTML for structure, CSS for design and JavaScript for interaction.",
-      es: "Crear una pÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­gina web desde cero usando HTML para la estructura, CSS para el diseÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢o y JavaScript para la interacciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n.",
+      es: "Crear una pÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­gina web desde cero usando HTML para la estructura, CSS para el diseÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢o y JavaScript para la interacciÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡n.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-09/my-first-web-page-cycle-3.html",
@@ -155,7 +171,7 @@ export const lessons: LessonSummary[] = [
     },
     objective: {
       en: "Design and present an interactive web app that solves a real school or community problem using JavaScript, HTML, and CSS.",
-      es: "DiseÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢ar, desarrollar y presentar una aplicaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n web interactiva que resuelva un problema real de la escuela o comunidad usando JavaScript, HTML y CSS.",
+      es: "DiseÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ar, desarrollar y presentar una aplicaciÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡n web interactiva que resuelva un problema real de la escuela o comunidad usando JavaScript, HTML y CSS.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-10/code-for-change.html",
@@ -167,11 +183,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "ESP32 WiFi Communication",
-      es: "ComunicaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n WiFi con ESP32",
+      es: "ComunicaciÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡n WiFi con ESP32",
     },
     objective: {
       en: "Implement wireless communication with Wokwi and send/receive data.",
-      es: "Implementar comunicaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n inalÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­mbrica con Wokwi y enviar/recibir datos.",
+      es: "Implementar comunicaciÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡n inalÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­mbrica con Wokwi y enviar/recibir datos.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-11/esp32-wifi-wokwi.html",
