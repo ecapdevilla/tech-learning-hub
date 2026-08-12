@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>6th Grade · Proyecto Scratch - Clase Interactiva</title>
+<style>
+:root{--navy:#12324a;--blue:#2f7ed8;--green:#2da66f;--yellow:#f4c84a;--ink:#20364a;--muted:#6c8192;--line:#d9e5ee}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:linear-gradient(#f6fbfd,#eef5f8);color:var(--ink);line-height:1.6}
+.top{position:sticky;top:0;z-index:20;background:#12324af5;color:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center}.top button{border:0;border-radius:999px;padding:8px 13px;font-weight:800;cursor:pointer}.lang{background:#dce8f2}.active{background:var(--yellow)!important}
+.wrap{max-width:1120px;margin:24px auto 60px;padding:0 16px}
+.section{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.section h2{margin:0;padding:14px 18px;background:linear-gradient(90deg,#eef7ff,#fff);color:var(--navy)}.body{padding:20px}
+/* project styles adapted */
+.container-tools{width:100%;padding:18px}
+.header-tool{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px;border-radius:12px;background:linear-gradient(90deg,var(--green),var(--blue));color:var(--white)}
+.header-tool h1{margin:0;font-size:28px}
+.big-timer{font-weight:900;font-size:20px}
+.controls{display:flex;gap:10px}
+.btn{cursor:pointer;border:0;padding:10px 14px;border-radius:10px;font-weight:800}
+.btn-primary{background:var(--green);color:var(--white)}
+.btn-ghost{background:rgba(255,255,255,0.12);color:var(--white)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;padding:18px}
+.card{padding:16px;border-radius:12px;border:1px solid var(--line);display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.card .icon{font-size:28px}
+.select-btn{margin-top:auto;padding:10px 12px;border-radius:10px;background:var(--blue);color:var(--white)}
+.form-row{display:flex;gap:8px;margin-bottom:8px}
+.form-row input, .form-row textarea{flex:1;padding:10px;border-radius:8px;border:1px solid #e6eef6}
+.progress-bar{height:14px;background:#f1f6fb;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));width:0%}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px}
+.step{padding:12px;border-radius:10px;background:#f8fbff;text-align:center}
+.mission-panel{display:flex;gap:12px;align-items:flex-start}
+.mission-steps{padding-left:18px}
+.mission-steps li{margin:8px 0}
+.mission-steps li.active{color:var(--navy);font-weight:900}
+.feedback-list{max-height:220px;overflow:auto;border-top:1px dashed #e6eef6;padding-top:8px;margin-top:8px}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.muted-note{color:var(--muted);font-size:14px}
+@media(max-width:760px){.steps{grid-template-columns:1fr}.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-lang="es">
+<div class="top"><strong>🐾 6th Grade · Proyecto Scratch - Clase Interactiva</strong><div><button id="en" class="lang">🇺🇸 English</button> <button id="es" class="lang active">🇨🇴 Español</button></div></div>
+<main class="wrap">
+  <section class="section">
+    <div class="container-tools">
+      <div class="header-tool">
+        <div>
+          <h1>🚀 Proyecto Scratch - Clase Interactiva</h1>
+          <div class="muted-note">🌿 Iniciamos con el saludo lasallista: ¡Ánimo, fe y entusiasmo!</div>
+        </div>
+        <div style="text-align:right">
+          <div class="big-timer" id="timeDisplay">Tiempo restante: 2h 0m 0s</div>
+          <div style="margin-top:8px" class="controls">
+            <button id="pauseBtn" class="btn btn-primary">Pausar</button>
+            <button id="resetBtn" class="btn btn-ghost">Reiniciar</button>
+            <button id="projectorBtn" class="btn btn-ghost">Modo proyector</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apertura -->
+      <div id="opening" class="body">
+        <h2>❓ ¿Qué tipo de juego o simulador te gustaría crear?</h2>
+        <p class="muted-note">Elige una opción para comenzar la planeación. Trabajo en parejas opcional.</p>
+        <div class="cards" id="projectCards">
+          <div class="card" data-project="quiz">
+            <div class="icon">❓</div>
+            <h3>Quiz interactivo</h3>
+            <p>Preguntas y respuestas, con puntaje y retroalimentación.</p>
+            <button class="select-btn" data-project="quiz">Elegir este proyecto</button>
+          </div>
+          <div class="card" data-project="calculator">
+            <div class="icon">🧮</div>
+            <h3>Calculadora</h3>
+            <p>Operaciones y botones, ideal para practicar variables.</p>
+            <button class="select-btn" data-project="calculator">Elegir este proyecto</button>
+          </div>
+          <div class="card" data-project="story">
+            <div class="icon">📖</div>
+            <h3>Historia interactiva</h3>
+            <p>Escenas, decisiones y ramificación de la historia.</p>
+            <button class="select-btn" data-project="story">Elegir este proyecto</button>
+          </div>
+          <div class="card" data-project="clicker">
+            <div class="icon">🖱️</div>
+            <h3>Clicker game</h3>
+            <p>Juego simple para practicar contadores y eventos.</p>
+            <button class="select-btn" data-project="clicker">Elegir este proyecto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Planeación -->
+      <div id="planning" class="body hidden">
+        <h2>✏️ Planeación digital</h2>
+        <form id="planForm">
+          <div class="form-row"><input id="studentName" placeholder="Nombre del estudiante" required></div>
+          <div class="form-row"><input id="projectChosen" placeholder="Proyecto elegido" readonly></div>
+          <div class="form-row"><textarea id="whatWillDo" placeholder="¿Qué va a hacer?" rows="2"></textarea></div>
+          <div class="form-row"><input id="var1" placeholder="Variable 1"><input id="var2" placeholder="Variable 2"><input id="var3" placeholder="Variable 3"></div>
+          <div class="form-row"><textarea id="askUser" placeholder="¿Qué preguntará al usuario?" rows="2"></textarea></div>
+          <div class="form-row"><textarea id="showAtEnd" placeholder="¿Qué mostrará al final?" rows="2"></textarea></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button type="button" id="savePlan" class="btn btn-primary">📌 Guardar planeación</button>
+            <div id="planSaved" class="muted-note" style="align-self:center"></div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Implementación -->
+      <div id="implementation" class="body hidden">
+        <h2>🛠️ Implementación - Guía paso a paso</h2>
+        <div class="mission-panel">
+          <div style="flex:1">
+            <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+            <div class="steps" id="stepsContainer">
+              <div class="step" data-step="1"><h4>Paso 1</h4><div>Variables y entrada</div><div><small class="muted-note">Ej: Crea una variable llamada 'puntaje'</small></div><div style="margin-top:8px"><button class="btn btn-primary mark-step" data-step="1">✅ Marcar como completado</button></div></div>
+              <div class="step" data-step="2"><h4>Paso 2</h4><div>Condicionales (if/else)</div><div><small class="muted-note">Ej: Si puntaje&gt;5 mostrar mensaje</small></div><div style="margin-top:8px"><button class="btn btn-primary mark-step" data-step="2">✅ Marcar como completado</button></div></div>
+              <div class="step" data-step="3"><h4>Paso 3</h4><div>Bucles (repeat/forever)</div><div><small class="muted-note">Ej: Repite animación 10 veces</small></div><div style="margin-top:8px"><button class="btn btn-primary mark-step" data-step="3">✅ Marcar como completado</button></div></div>
+              <div class="step" data-step="4"><h4>Paso 4</h4><div>Listas (arrays)</div><div><small class="muted-note">Ej: Lista de preguntas del quiz</small></div><div style="margin-top:8px"><button class="btn btn-primary mark-step" data-step="4">✅ Marcar como completado</button></div></div>
+            </div>
+            <div id="completeMessage" class="hidden" style="margin-top:12px;font-weight:900;font-size:18px;color:var(--green)">🎉 ¡Has completado todos los pasos! Ahora depura y prueba tu proyecto.</div>
+          </div>
+          <div style="width:260px">
+            <div class="section" style="padding:12px;margin:0">
+              <h3 class="muted-note">Estado de la misión</h3>
+              <ol class="mission-steps">
+                <li id="m1">Variables y entrada</li>
+                <li id="m2">Condicionales</li>
+                <li id="m3">Bucles</li>
+                <li id="m4">Listas</li>
+              </ol>
+              <div style="margin-top:8px" class="muted-note">Consejo: Completa los pasos en orden y prueba frecuentemente.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Captura y Guardado -->
+      <div id="capture" class="body hidden">
+        <h2>📸 Captura y Guardado</h2>
+        <p class="muted-note">Usa el botón para abrir la herramienta de impresión y guardar una captura o PDF de la pantalla.</p>
+        <div style="display:flex;gap:8px">
+          <button id="screenshotBtn" class="btn btn-primary">📸 Tomar captura de pantalla</button>
+          <button id="saveProjectBtn" class="btn btn-ghost">💾 Guardar proyecto (.sb3)</button>
+        </div>
+      </div>
+
+      <!-- Retroalimentación -->
+      <div id="feedbackSection" class="body hidden">
+        <h2>💬 Retroalimentación (últimos 20 minutos)</h2>
+        <p class="muted-note">Intercambien computadores y dénse retroalimentación constructiva.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <input id="fbGood" placeholder="1 cosa buena del proyecto de tu compañero:" style="flex:1">
+          <input id="fbImprove" placeholder="1 cosa por mejorar:" style="flex:1">
+          <button id="sendFeedback" class="btn btn-primary">📝 Enviar retroalimentación</button>
+        </div>
+        <div class="feedback-list" id="feedbackList"></div>
+      </div>
+
+      <!-- Autoevaluación -->
+      <div id="selfEval" class="body hidden">
+        <h2>✅ Autoevaluación (últimos 10 minutos)</h2>
+        <form id="evalForm">
+          <div class="form-row"><label style="min-width:180px">¿Terminaste tu proyecto?</label><select id="finished"><option value="yes">Sí</option><option value="no">No</option></select></div>
+          <div class="form-row"><textarea id="hardest" placeholder="¿Qué fue lo más difícil?" rows="2"></textarea></div>
+          <div class="form-row"><textarea id="learned" placeholder="¿Qué aprendiste hoy?" rows="2"></textarea></div>
+          <div class="form-row"><label style="min-width:180px">Características:</label><div style="display:flex;gap:8px"><label><input type="checkbox" id="traitPerseverant"> Perseverante</label><label><input type="checkbox" id="traitCurious"> Curioso</label><label><input type="checkbox" id="traitEfficient"> Eficiente</label></div></div>
+          <div class="form-row"><textarea id="improve" placeholder="¿Qué mejorarías?" rows="2"></textarea></div>
+          <div style="display:flex;gap:8px"><button type="button" id="sendEval" class="btn btn-primary">📤 Entregar autoevaluación</button><div id="evalMsg" class="muted-note" style="align-self:center"></div></div>
+        </form>
+      </div>
+
+      <!-- Utilities -->
+      <div class="body" id="utilities">
+        <h2>📊 Utilidades del docente</h2>
+        <div class="summary-grid">
+          <div style="padding:12px;background:#f8fbff;border-radius:10px">
+            <div class="large" id="countPlans">0</div>
+            <div class="muted-note">Planeaciones guardadas</div>
+          </div>
+          <div style="padding:12px;background:#fff;border-radius:10px">
+            <div class="large" id="countFeedback">0</div>
+            <div class="muted-note">Retroalimentaciones</div>
+          </div>
+          <div style="padding:12px;background:#fff;border-radius:10px">
+            <div class="large" id="countEval">0</div>
+            <div class="muted-note">Autoevaluaciones</div>
+          </div>
+          <div style="padding:12px;background:#fff;border-radius:10px;display:flex;flex-direction:column;gap:8px">
+            <div class="muted-note">Acciones</div>
+            <div class="footer-actions">
+              <button id="summaryBtn" class="btn btn-ghost">📊 Ver resumen de la clase</button>
+              <button id="exportBtn" class="btn btn-ghost">📋 Exportar datos</button>
+              <button id="resetAll" class="btn btn-ghost">🔄 Reiniciar todo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;font-size:13px;color:var(--muted)">Fecha: <span id="today"></span></div>
+    </div>
+  </section>
+</main>
+
+<script>
+// Reuse script from tools page but kept localized here
+const KEY_PLANS = 'scratch_plans_v1';
+const KEY_FEEDBACK = 'scratch_feedback_v1';
+const KEY_EVAL = 'scratch_selfeval_v1';
+
+const opening = document.getElementById('opening');
+const planning = document.getElementById('planning');
+const implementation = document.getElementById('implementation');
+const capture = document.getElementById('capture');
+const feedbackSection = document.getElementById('feedbackSection');
+const selfEval = document.getElementById('selfEval');
+
+const projectChosen = document.getElementById('projectChosen');
+const savePlanBtn = document.getElementById('savePlan');
+const planSaved = document.getElementById('planSaved');
+
+const screenshotBtn = document.getElementById('screenshotBtn');
+const saveProjectBtn = document.getElementById('saveProjectBtn');
+
+const fbGood = document.getElementById('fbGood');
+const fbImprove = document.getElementById('fbImprove');
+const sendFeedback = document.getElementById('sendFeedback');
+const feedbackList = document.getElementById('feedbackList');
+
+const sendEval = document.getElementById('sendEval');
+const evalMsg = document.getElementById('evalMsg');
+
+const countPlans = document.getElementById('countPlans');
+const countFeedback = document.getElementById('countFeedback');
+const countEval = document.getElementById('countEval');
+
+const summaryBtn = document.getElementById('summaryBtn');
+const exportBtn = document.getElementById('exportBtn');
+const resetAll = document.getElementById('resetAll');
+
+const todayEl = document.getElementById('today');
+
+let totalSeconds = 120*60; let remaining = totalSeconds; let timerInterval = null; let paused = false;
+const timeDisplay = document.getElementById('timeDisplay');
+const pauseBtn = document.getElementById('pauseBtn');
+const resetBtn = document.getElementById('resetBtn');
+const projectorBtn = document.getElementById('projectorBtn');
+
+const steps = [false,false,false,false];
+
+function formatTime(s){const h=Math.floor(s/3600);const m=Math.floor((s%3600)/60);const sec=s%60;return `Tiempo restante: ${h}h ${m}m ${sec}s`}    
+function startTimer(){if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(()=>{if(!paused){remaining--;checkAlerts();updateTime();if(remaining<=0){clearInterval(timerInterval);onFinish()}}},1000)}
+function updateTime(){timeDisplay.textContent=formatTime(remaining)}
+let alerted30=false,alerted10=false;
+function checkAlerts(){if(!alerted30 && remaining<=30*60){alerted30=true;alert('⏰ ¡Últimos 30 minutos!')}if(!alerted10 && remaining<=10*60){alerted10=true;alert('⏰ ¡Últimos 10 minutos - ve cerrando!')}if(remaining<=0&&!alerted10){alerted10=true;onFinish()}}
+function onFinish(){alert('⏰ ¡TIEMPO! Cierren todo y guardemos');}
+
+pauseBtn.addEventListener('click',()=>{paused=!paused;pauseBtn.textContent=paused? 'Reanudar' : 'Pausar';})
+resetBtn.addEventListener('click',()=>{if(confirm('¿Reiniciar temporizador y datos?')){remaining=totalSeconds;updateTime();localStorage.removeItem(KEY_PLANS);localStorage.removeItem(KEY_FEEDBACK);localStorage.removeItem(KEY_EVAL);loadSummary();renderFeedbackList();location.reload()}})
+projectorBtn.addEventListener('click',()=>{document.body.classList.toggle('projector')})
+
+todayEl.textContent = new Date().toLocaleDateString();
+
+document.querySelectorAll('.select-btn').forEach(b=>b.addEventListener('click',e=>{const p=e.target.dataset.project; document.getElementById('projectChosen').value=p; opening.classList.add('hidden'); planning.classList.remove('hidden'); implementation.classList.remove('hidden'); capture.classList.remove('hidden'); feedbackSection.classList.remove('hidden'); selfEval.classList.remove('hidden'); document.getElementById('whatWillDo').focus();}))
+
+savePlanBtn.addEventListener('click',()=>{const name=document.getElementById('studentName').value.trim(); if(!name){planSaved.textContent='Ingrese nombre';return} const plan={name,project:document.getElementById('projectChosen').value,what:document.getElementById('whatWillDo').value,vars:[document.getElementById('var1').value,document.getElementById('var2').value,document.getElementById('var3').value],ask:document.getElementById('askUser').value,show:document.getElementById('showAtEnd').value,ts:new Date().toISOString()}; const arr=JSON.parse(localStorage.getItem(KEY_PLANS)||'[]'); arr.push(plan); localStorage.setItem(KEY_PLANS,JSON.stringify(arr)); planSaved.textContent='Guardado ✓'; setTimeout(()=>planSaved.textContent='',1500); loadSummary();})
+
+document.querySelectorAll('.mark-step').forEach(btn=>btn.addEventListener('click',e=>{const s=Number(e.target.dataset.step)-1; steps[s]=true; updateProgress();}))
+function updateProgress(){const done=steps.filter(Boolean).length; const pct=Math.round(done/4*100); document.getElementById('progressFill').style.width=pct+'%'; for(let i=1;i<=4;i++){document.getElementById('m'+i).classList.toggle('active',steps[i-1])} if(done===4){document.getElementById('completeMessage').classList.remove('hidden')}}
+
+screenshotBtn.addEventListener('click',()=>{try{window.print()}catch(e){alert('Use la tecla Imprimir pantalla o la opción de su navegador para capturar la imagen.')}})
+saveProjectBtn.addEventListener('click',()=>{alert('Para guardar .sb3: en Scratch, haga clic en Archivo → Descargar a tu computadora. Si trabaja offline, use la función Exportar del editor.')})
+
+sendFeedback.addEventListener('click',()=>{const good=fbGood.value.trim(); const improve=fbImprove.value.trim(); if(!good && !improve){return} const arr=JSON.parse(localStorage.getItem(KEY_FEEDBACK)||'[]'); arr.push({good,improve,ts:new Date().toISOString()}); localStorage.setItem(KEY_FEEDBACK,JSON.stringify(arr)); fbGood.value=''; fbImprove.value=''; renderFeedbackList(); loadSummary();})
+function renderFeedbackList(){const arr=JSON.parse(localStorage.getItem(KEY_FEEDBACK)||'[]'); feedbackList.innerHTML=''; arr.slice().reverse().forEach(f=>{const d=document.createElement('div');d.style.padding='8px';d.style.borderBottom='1px dashed #eef6fb';d.innerHTML=`<div style="font-weight:800">${new Date(f.ts).toLocaleTimeString()}</div><div style='color:#04324a'>👍 ${escapeHtml(f.good)}</div><div style='color:#666'>🔧 ${escapeHtml(f.improve)}</div>`; feedbackList.appendChild(d)})}
+
+sendEval.addEventListener('click',()=>{const evalObj={finished:document.getElementById('finished').value,hard:document.getElementById('hardest').value,learned:document.getElementById('learned').value,traits:{perse:document.getElementById('traitPerseverant').checked,cur:document.getElementById('traitCurious').checked,eff:document.getElementById('traitEfficient').checked},improve:document.getElementById('improve').value,ts:new Date().toISOString()}; const arr=JSON.parse(localStorage.getItem(KEY_EVAL)||'[]'); arr.push(evalObj); localStorage.setItem(KEY_EVAL,JSON.stringify(arr)); evalMsg.textContent='Entregado ✓'; setTimeout(()=>evalMsg.textContent='',1500); loadSummary();})
+
+summaryBtn.addEventListener('click',()=>{showSummary()})
+exportBtn.addEventListener('click',()=>{exportData()})
+resetAll.addEventListener('click',()=>{if(confirm('¿Seguro? Esto eliminará todos los datos guardados.')){localStorage.removeItem(KEY_PLANS);localStorage.removeItem(KEY_FEEDBACK);localStorage.removeItem(KEY_EVAL);loadSummary();renderFeedbackList();alert('Datos reiniciados')}})
+
+function loadSummary(){const plans=JSON.parse(localStorage.getItem(KEY_PLANS)||'[]'); const fb=JSON.parse(localStorage.getItem(KEY_FEEDBACK)||'[]'); const ev=JSON.parse(localStorage.getItem(KEY_EVAL)||'[]'); countPlans.textContent=plans.length; countFeedback.textContent=fb.length; countEval.textContent=ev.length}
+function showSummary(){const plans=JSON.parse(localStorage.getItem(KEY_PLANS)||'[]'); const fb=JSON.parse(localStorage.getItem(KEY_FEEDBACK)||'[]'); const ev=JSON.parse(localStorage.getItem(KEY_EVAL)||'[]'); const byProject=plans.reduce((acc,p)=>{acc[p.project]=(acc[p.project]||0)+1;return acc},{}); let text=`Resumen - ${new Date().toLocaleDateString()}\n\nPlaneaciones: ${plans.length}\nRetroalimentaciones: ${fb.length}\nAutoevaluaciones: ${ev.length}\n\nPor proyecto:\n`; for(const k in byProject) text+=`${k}: ${byProject[k]}\n`; alert(text)}
+function exportData(){const plans=JSON.parse(localStorage.getItem(KEY_PLANS)||'[]'); const fb=JSON.parse(localStorage.getItem(KEY_FEEDBACK)||'[]'); const ev=JSON.parse(localStorage.getItem(KEY_EVAL)||'[]'); const out={date:new Date().toISOString(),plans,feedback:fb,evaluations:ev}; const blob=new Blob([JSON.stringify(out,null,2)],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`scratch_classroom_export_${new Date().toISOString().slice(0,10)}.txt`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url)}
+function escapeHtml(s){if(!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+remaining=totalSeconds; updateTime(); startTimer(); showStored();
+
+function showStored(){renderFeedbackList(); loadSummary()}
+
+window.addEventListener('beforeunload',()=>{localStorage.setItem('scratch_ui_steps', JSON.stringify(steps))})
+const savedSteps=JSON.parse(localStorage.getItem('scratch_ui_steps')||'null'); if(savedSteps){ for(let i=0;i<4;i++) steps[i]=savedSteps[i]||false; updateProgress() }
+</script>
+</body>
+</html>
