@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>4th Grade · Game-based Lessons</title>
+<style>
+/* Reuse compact styles */
+:root{--navy:#12324a;--blue:#2f7ed8;--green:#2da66f;--yellow:#f4c84a;--ink:#20364a;--muted:#6c8192;--line:#d9e5ee}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(#f6fbfd,#eef5f8);color:var(--ink)}
+.wrap{max-width:900px;margin:24px auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.btn{cursor:pointer;border:0;padding:10px 14px;border-radius:10px;font-weight:800}
+.btn-primary{background:var(--green);color:#fff}
+.muted{color:var(--muted)}
+.activities{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="card title"><h1>4th Grade — Game-based Lessons</h1><button id="langBtn" class="btn">Español</button></div>
+  <section class="card">
+    <h2>Core activity: Color Match Challenge</h2>
+    <p class="muted">Students write short programs (or sequences) to match target colors or patterns. Works with simple sensors or paper cards.</p>
+    <div class="activities">
+      <div>
+        <h3>Mini challenge</h3>
+        <p class="muted">Design an algorithm to sort three color cards.</p>
+        <button id="miniBtn" class="btn btn-primary">Show challenge</button>
+      </div>
+      <div>
+        <h3>Extension</h3>
+        <p class="muted">Add a scoring rule and a timer to make it competitive.</p>
+        <button id="extBtn" class="btn">Show extension</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Project: Story Bot</h2>
+    <p class="muted">Create a small interactive story where the user chooses actions. Useful for sequencing and conditionals.</p>
+    <button id="openProject" class="btn btn-primary">Open sample script</button>
+  </section>
+</main>
+
+<script>
+document.getElementById('miniBtn').addEventListener('click',()=>{alert('Arrange cards from lightest to darkest color. Discuss rules with your partner before executing.')});
+document.getElementById('extBtn').addEventListener('click',()=>{alert('Extension: give points for correct order and subtract for mistakes. Use 60 seconds timer.')});
+document.getElementById('openProject').addEventListener('click',()=>{window.open('https://example.com/story-bot-sample','_blank')});
+document.getElementById('langBtn').addEventListener('click',()=>{location.href='/guides/grade-04/quick-games-es.html'});
+</script>
+</body>
+</html>

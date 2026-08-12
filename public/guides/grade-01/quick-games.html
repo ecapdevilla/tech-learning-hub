@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1st Grade · Quick Game Activities</title>
+<style>
+/* Reuse compact styles from project */
+:root{--navy:#12324a;--blue:#2f7ed8;--green:#2da66f;--yellow:#f4c84a;--ink:#20364a;--muted:#6c8192;--line:#d9e5ee}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(#f6fbfd,#eef5f8);color:var(--ink)}
+.wrap{max-width:900px;margin:24px auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.title{display:flex;justify-content:space-between;align-items:center}
+.btn{cursor:pointer;border:0;padding:10px 14px;border-radius:10px;font-weight:800}
+.btn-primary{background:var(--blue);color:#fff}
+.muted{color:var(--muted)}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+.game{padding:12px;border-radius:10px;border:1px solid #eef6fb;background:#fff}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="card">
+    <div class="title"><h1>1st Grade — Quick Game Activities</h1><button id="langBtn" class="btn">Español</button></div>
+    <p class="muted">Short, playful activities you can run in class to teach algorithms, sequences, and teamwork. All content in English.</p>
+  </div>
+
+  <section class="card">
+    <h2>Warm-up: Dance Sequence</h2>
+    <p>Students create a 4-step dance sequence (left, right, jump, clap). Call out the sequence and have pairs perform it.</p>
+    <div class="games">
+      <div class="game">
+        <h3>Try: Random Sequence</h3>
+        <p class="muted">Press start to generate a sequence to perform.</p>
+        <button id="seqBtn" class="btn btn-primary">Start sequence</button>
+        <div id="seqOut" style="margin-top:8px; font-weight:800"></div>
+      </div>
+
+      <div class="game">
+        <h3>Team Relay</h3>
+        <p class="muted">Split the class in teams; each student adds one step to the sequence.</p>
+        <button id="relayBtn" class="btn">Show tips</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Core: Treasure Hunt (Algorithmic thinking)</h2>
+    <p>Create a grid on the board and give students simple instructions to reach the treasure (move 2 steps right, 1 up...).</p>
+    <button id="printGuide" class="btn btn-primary">Open teacher guide</button>
+  </section>
+
+  <footer style="margin-top:16px" class="muted">Use these activities to lead a 20–30 minute playful lesson. Adapt difficulty by increasing sequence length.</footer>
+</main>
+
+<script>
+const actions=['Left','Right','Jump','Clap','Spin'];
+document.getElementById('seqBtn').addEventListener('click',()=>{
+  const seq=[]; for(let i=0;i<4;i++) seq.push(actions[Math.floor(Math.random()*actions.length)]); document.getElementById('seqOut').textContent=seq.join(' → ');
+});
+document.getElementById('relayBtn').addEventListener('click',()=>{alert('Tip: Limit to 5 steps; encourage students to speak clearly and repeat the sequence before performing.')});
+document.getElementById('printGuide').addEventListener('click',()=>{window.open('https://example.com/teacher-guide','_blank')});
+document.getElementById('langBtn').addEventListener('click',()=>{location.href='/guides/grade-01/quick-games-es.html'});
+</script>
+</body>
+</html>
