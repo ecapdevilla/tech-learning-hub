@@ -1,4 +1,4 @@
-export type GradeId = 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+export type GradeId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 export type SchoolLevel = "primary" | "secondary";
 
@@ -10,8 +10,10 @@ export type Grade = {
 };
 
 const validGradeIds: GradeId[] = [
+  1,
   2,
   3,
+  4,
   5,
   6,
   7,
