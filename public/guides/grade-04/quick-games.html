@@ -17,36 +17,65 @@
 </head>
 <body>
 <main class="wrap">
-  <div class="card title"><h1>4th Grade — Game-based Lessons</h1><button id="langBtn" class="btn">Español</button></div>
+  <div class="card title"><h1>4th Grade — Color Capture</h1><button id="langBtn" class="btn">Español</button></div>
   <section class="card">
-    <h2>Core activity: Color Match Challenge</h2>
-    <p class="muted">Students write short programs (or sequences) to match target colors or patterns. Works with simple sensors or paper cards.</p>
-    <div class="activities">
-      <div>
-        <h3>Mini challenge</h3>
-        <p class="muted">Design an algorithm to sort three color cards.</p>
-        <button id="miniBtn" class="btn btn-primary">Show challenge</button>
+    <h2>Lesson focus: Conditionals & Sorting</h2>
+    <p class="muted">A competitive game where students write simple rules to collect colored tokens and score points. Encourages conditionals and comparisons.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <div style="min-width:300px">
+        <strong>Teacher guide</strong>
+        <ul class="muted" style="margin:8px 0 0 16px">
+          <li>Duration: 30–40 minutes</li>
+          <li>Skills: conditionals, sorting, algorithms</li>
+          <li>Materials: colored cards or tokens</li>
+        </ul>
       </div>
-      <div>
-        <h3>Extension</h3>
-        <p class="muted">Add a scoring rule and a timer to make it competitive.</p>
-        <button id="extBtn" class="btn">Show extension</button>
+      <div style="flex:1">
+        <div id="board" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        <div style="margin-top:8px">Select rule: <select id="ruleSelect"><option value="any">Collect any color</option><option value="red">Collect red only</option><option value="blue">Collect blue only</option><option value="odd">Collect odd-position tokens</option></select></div>
+        <div style="margin-top:8px;display:flex;gap:8px"><button id="startGame" class="btn btn-primary">Start round</button><button id="scoreBoard" class="btn">Show scoring</button></div>
       </div>
     </div>
   </section>
 
   <section class="card">
-    <h2>Project: Story Bot</h2>
-    <p class="muted">Create a small interactive story where the user chooses actions. Useful for sequencing and conditionals.</p>
-    <button id="openProject" class="btn btn-primary">Open sample script</button>
+    <h2>How to play</h2>
+    <ol class="muted">
+      <li>Choose a rule from the dropdown (teacher can change per round).</li>
+      <li>Students work in teams to write the rule in plain language and predict which tokens will be collected.</li>
+      <li>Press <strong>Start round</strong> — tokens are revealed; teams check predictions and score points.</li>
+    </ol>
+    <div style="margin-top:8px">
+      <button id="print" class="btn btn-primary">Print teacher checklist</button>
+    </div>
   </section>
 </main>
 
 <script>
-document.getElementById('miniBtn').addEventListener('click',()=>{alert('Arrange cards from lightest to darkest color. Discuss rules with your partner before executing.')});
-document.getElementById('extBtn').addEventListener('click',()=>{alert('Extension: give points for correct order and subtract for mistakes. Use 60 seconds timer.')});
-document.getElementById('openProject').addEventListener('click',()=>{window.open('https://example.com/story-bot-sample','_blank')});
-document.getElementById('langBtn').addEventListener('click',()=>{location.href='/guides/grade-04/quick-games-es.html'});
+// Color Capture game logic
+const board = document.getElementById('board');
+const colors = ['red','blue','yellow','green','red','blue','yellow','green'];
+
+function renderBoard(){ board.innerHTML=''; for(let i=0;i<8;i++){ const token=document.createElement('div'); token.style.width='60px'; token.style.height='60px'; token.style.borderRadius='8px'; token.style.background=colors[i]; token.style.display='flex'; token.style.alignItems='center'; token.style.justifyContent='center'; token.style.color='#fff'; token.style.fontWeight='800'; token.textContent = i+1; board.appendChild(token) } }
+
+document.getElementById('startGame').addEventListener('click',()=>{
+  const rule = document.getElementById('ruleSelect').value;
+  // reveal tokens and compute winners
+  let collected = [];
+  for(let i=0;i<colors.length;i++){
+    const c = colors[i];
+    if(rule==='any') collected.push(i+1);
+    if(rule==='red' && c==='red') collected.push(i+1);
+    if(rule==='blue' && c==='blue') collected.push(i+1);
+    if(rule==='odd' && ((i+1)%2===1)) collected.push(i+1);
+  }
+  alert('Collected tokens: ' + collected.join(', '));
+});
+
+document.getElementById('print').addEventListener('click',()=>{ window.print(); });
+document.getElementById('langBtn').addEventListener('click',()=>{ location.href='/guides/grade-04/quick-games-es.html' });
+
+renderBoard();
 </script>
 </body>
 </html>

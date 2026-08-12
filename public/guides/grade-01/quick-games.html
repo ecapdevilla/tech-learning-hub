@@ -20,46 +20,81 @@
 <body>
 <main class="wrap">
   <div class="card">
-    <div class="title"><h1>1st Grade — Quick Game Activities</h1><button id="langBtn" class="btn">Español</button></div>
-    <p class="muted">Short, playful activities you can run in class to teach algorithms, sequences, and teamwork. All content in English.</p>
+    <div class="title"><h1>1st Grade — Robot Rescue</h1><button id="langBtn" class="btn">Español</button></div>
+    <p class="muted">A playful lesson on sequencing and algorithms. Students program a robot with simple steps to rescue the lost teddy.</p>
   </div>
 
   <section class="card">
-    <h2>Warm-up: Dance Sequence</h2>
-    <p>Students create a 4-step dance sequence (left, right, jump, clap). Call out the sequence and have pairs perform it.</p>
-    <div class="games">
-      <div class="game">
-        <h3>Try: Random Sequence</h3>
-        <p class="muted">Press start to generate a sequence to perform.</p>
-        <button id="seqBtn" class="btn btn-primary">Start sequence</button>
-        <div id="seqOut" style="margin-top:8px; font-weight:800"></div>
+    <h2>Goal</h2>
+    <p>Program the robot by choosing a sequence of moves so it reaches the teddy without falling into holes. Each correct rescue gives the team a point.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <div style="min-width:260px">
+        <div style="background:#f8fbff;border-radius:8px;padding:10px">
+          <strong>Teacher notes</strong>
+          <ul class="muted" style="margin:8px 0 0 16px">
+            <li>Duration: 20–30 minutes</li>
+            <li>Group size: pairs</li>
+            <li>Learning goal: sequencing, prediction, debugging</li>
+          </ul>
+        </div>
       </div>
-
-      <div class="game">
-        <h3>Team Relay</h3>
-        <p class="muted">Split the class in teams; each student adds one step to the sequence.</p>
-        <button id="relayBtn" class="btn">Show tips</button>
+      <div style="flex:1">
+        <div id="grid" style="display:grid;grid-template-columns:repeat(5,54px);gap:6px;padding:10px;background:#fff;border-radius:8px">
+          <!-- 5x3 grid -->
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px">
+          <button id="left" class="btn">← Left</button>
+          <button id="up" class="btn">↑ Up</button>
+          <button id="down" class="btn">↓ Down</button>
+          <button id="right" class="btn">→ Right</button>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px">
+          <button id="addStep" class="btn btn-primary">Add step</button>
+          <button id="run" class="btn btn-primary">Run</button>
+          <button id="reset" class="btn">Reset</button>
+        </div>
+        <div id="sequence" style="margin-top:10px;font-weight:800"></div>
       </div>
     </div>
   </section>
 
   <section class="card">
-    <h2>Core: Treasure Hunt (Algorithmic thinking)</h2>
-    <p>Create a grid on the board and give students simple instructions to reach the treasure (move 2 steps right, 1 up...).</p>
-    <button id="printGuide" class="btn btn-primary">Open teacher guide</button>
+    <h2>How to play</h2>
+    <ol class="muted">
+      <li>Choose a team and open the grid.</li>
+      <li>Use the arrow buttons to add up to 6 steps into your sequence.</li>
+      <li>Press <strong>Run</strong> to simulate the robot. If it reaches the teddy, you score.</li>
+      <li>Discuss why a sequence failed and try again (debugging).</li>
+    </ol>
+    <div style="margin-top:8px">
+      <button id="print" class="btn btn-primary">Print teacher cue</button>
+    </div>
   </section>
 
   <footer style="margin-top:16px" class="muted">Use these activities to lead a 20–30 minute playful lesson. Adapt difficulty by increasing sequence length.</footer>
 </main>
 
 <script>
-const actions=['Left','Right','Jump','Clap','Spin'];
-document.getElementById('seqBtn').addEventListener('click',()=>{
-  const seq=[]; for(let i=0;i<4;i++) seq.push(actions[Math.floor(Math.random()*actions.length)]); document.getElementById('seqOut').textContent=seq.join(' → ');
-});
-document.getElementById('relayBtn').addEventListener('click',()=>{alert('Tip: Limit to 5 steps; encourage students to speak clearly and repeat the sequence before performing.')});
-document.getElementById('printGuide').addEventListener('click',()=>{window.open('https://example.com/teacher-guide','_blank')});
-document.getElementById('langBtn').addEventListener('click',()=>{location.href='/guides/grade-01/quick-games-es.html'});
+// Robot Rescue game logic
+const gridEl = document.getElementById('grid');
+const cols = 5, rows = 3;
+let robotPos = {x:0,y:1};
+let teddyPos = {x:4,y:1};
+let holes = [{x:2,y:0},{x:1,y:2}];
+let seq = [];
+
+function renderGrid(){ gridEl.innerHTML=''; for(let y=0;y<rows;y++){ for(let x=0;x<cols;x++){ const cell=document.createElement('div'); cell.style.width='54px'; cell.style.height='54px'; cell.style.borderRadius='8px'; cell.style.display='flex'; cell.style.alignItems='center'; cell.style.justifyContent='center'; cell.style.fontWeight='700'; cell.style.background='#f1fbff'; if(robotPos.x===x && robotPos.y===y){ cell.textContent='🤖' } else if(teddyPos.x===x && teddyPos.y===y){ cell.textContent='🧸' } else if(holes.some(h=>h.x===x&&h.y===y)){ cell.textContent='🕳️' } gridEl.appendChild(cell) }} }
+
+function updateSequenceDisplay(){ document.getElementById('sequence').textContent = seq.join(' → '); }
+
+['left','up','down','right'].forEach(id=>{ document.getElementById(id).addEventListener('click',()=>{ document.getElementById(id).classList.add('active'); }) });
+document.getElementById('addStep').addEventListener('click',()=>{ const activeBtns = Array.from(document.querySelectorAll('.btn.active')).map(b=>b.id); if(activeBtns.length===0){ alert('Select a direction first'); return } if(seq.length>=6){ alert('Max 6 steps') ; return } seq.push(activeBtns[0]); document.querySelectorAll('.btn.active').forEach(b=>b.classList.remove('active')); updateSequenceDisplay(); });
+document.getElementById('reset').addEventListener('click',()=>{ seq=[]; updateSequenceDisplay(); renderGrid(); });
+document.getElementById('run').addEventListener('click',()=>{ if(seq.length===0){ alert('Add steps first'); return } let pos={...robotPos}; let failed=false; for(let s of seq){ if(s==='left') pos.x--; if(s==='right') pos.x++; if(s==='up') pos.y--; if(s==='down') pos.y++; if(pos.x<0||pos.x>=cols||pos.y<0||pos.y>=rows){ failed=true; break } if(holes.some(h=>h.x===pos.x&&h.y===pos.y)){ failed=true; break } } if(!failed && pos.x===teddyPos.x && pos.y===teddyPos.y){ alert('Nice! You rescued the teddy 🎉') } else { alert('Try again — debug the sequence') } });
+document.getElementById('print').addEventListener('click',()=>{ window.print(); });
+document.getElementById('langBtn').addEventListener('click',()=>{ location.href='/guides/grade-01/quick-games-es.html' });
+
+renderGrid(); updateSequenceDisplay();
 </script>
 </body>
 </html>
