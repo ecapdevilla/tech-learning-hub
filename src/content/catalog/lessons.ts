@@ -98,6 +98,22 @@ export const lessons: LessonSummary[] = [
     tags: ["Algorithms", "Games", "Sequences", "Arrows"],
   },
   {
+    id: "grade-01-cycle-1-robot-rescue",
+    grade: 1,
+    cycle: 1,
+    title: {
+      en: "Robot Rescue",
+      es: "Rescate del Robot",
+    },
+    objective: {
+      en: "Practice sequencing and debugging by programming a robot to reach a goal.",
+      es: "Practicar secuenciaciÃƒÆ’Ã‚Â³n y depuraciÃƒÆ’Ã‚Â³n programando un robot para llegar a una meta.",
+    },
+    durationMinutes: 25,
+    guidePath: "/guides/grade-01/quick-games.html",
+    tags: ["Sequencing", "Debugging", "Play"],
+  },
+  {
     id: "grade-06-cycle-3-code-creators",
     grade: 6,
     cycle: 3,
@@ -112,6 +128,22 @@ export const lessons: LessonSummary[] = [
     durationMinutes: 120,
     guidePath: "/guides/grade-06/code-creators-cycle-3.html",
     tags: ["Algorithms", "Scratch", "Prototype", "Teamwork"],
+  },
+  {
+    id: "grade-04-cycle-2-color-capture",
+    grade: 4,
+    cycle: 2,
+    title: {
+      en: "Color Capture",
+      es: "Captura de Colores",
+    },
+    objective: {
+      en: "Learn conditionals and sorting through a rule-based token capture game.",
+      es: "Aprender condicionales y ordenamiento mediante un juego de captura por reglas.",
+    },
+    durationMinutes: 30,
+    guidePath: "/guides/grade-04/quick-games.html",
+    tags: ["Conditionals", "Sorting", "Game"],
   },
   {
     id: "grade-08-cycle-3-data-ai-community",
