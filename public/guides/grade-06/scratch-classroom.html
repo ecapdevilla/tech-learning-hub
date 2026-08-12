@@ -205,6 +205,166 @@
 </main>
 
 <script>
+// Translation support: start in English and allow switching to Spanish
+const TRANSLATIONS = {
+  en: {
+    topTitle: '🐾 6th Grade · Scratch Project - Interactive Class',
+    headerH1: '🚀 Scratch Project - Interactive Class',
+    headerNote: "🌿 Let's start with a classroom greeting: Go team!",
+    timePrefix: 'Time remaining: ',
+    pause: 'Pause',
+    resume: 'Resume',
+    reset: 'Reset',
+    projector: 'Projector mode',
+    openingHeading: '❓ What type of game or simulator would you like to create?',
+    openingNote: 'Choose an option to start planning. Pair work optional.',
+    cards: [
+      {title: 'Interactive quiz', desc: 'Questions and answers with scoring and feedback', btn: 'Choose this project'},
+      {title: 'Calculator', desc: 'Operations and buttons, great to practice variables', btn: 'Choose this project'},
+      {title: 'Interactive story', desc: 'Scenes, choices and branching narrative', btn: 'Choose this project'},
+      {title: 'Clicker game', desc: 'Simple game to practice counters and events', btn: 'Choose this project'}
+    ],
+    planningHeading: '✏️ Digital planning',
+    placeholders: {
+      studentName: 'Student name', projectChosen: 'Chosen project', whatWillDo: 'What will you do?', var1: 'Variable 1', var2: 'Variable 2', var3: 'Variable 3', askUser: 'What will you ask the user?', showAtEnd: 'What will be shown at the end?'
+    },
+    savePlan: '📌 Save plan',
+    implementationHeading: '🛠️ Implementation - Step by step guide',
+    steps: [
+      {title: 'Step 1', desc: 'Variables and input', note: "E.g.: create a variable named 'score'"},
+      {title: 'Step 2', desc: 'Conditionals (if/else)', note: 'E.g.: If score>5 show message'},
+      {title: 'Step 3', desc: 'Loops (repeat/forever)', note: 'E.g.: Repeat animation 10 times'},
+      {title: 'Step 4', desc: 'Lists (arrays)', note: 'E.g.: List of quiz questions'}
+    ],
+    completeMessage: '🎉 You completed all steps! Now debug and test your project.',
+    missionSteps: ['Variables and input','Conditionals','Loops','Lists'],
+    captureHeading: '📸 Capture and Save',
+    captureNote: 'Use the button to open the print dialog and save a screenshot or PDF of the screen.',
+    screenshotBtn: '📸 Take screenshot',
+    saveProjectBtn: '💾 Save project (.sb3)',
+    feedbackHeading: '💬 Feedback (last 20 minutes)',
+    feedbackNote: 'Swap computers and give constructive feedback.',
+    fbGood: "1 good thing about your peer's project:",
+    fbImprove: '1 thing to improve:',
+    sendFeedback: '📝 Send feedback',
+    selfEvalHeading: '✅ Self-evaluation (last 10 minutes)',
+    finishedYes: 'Yes',
+    finishedNo: 'No',
+    sendEval: '📤 Submit self-eval',
+    utilitiesHeading: '📊 Teacher utilities',
+    summaryBtn: '📊 View class summary',
+    exportBtn: '📋 Export data',
+    resetAll: '🔄 Reset all',
+    alerts: {last30: '⏰ Last 30 minutes!', last10: '⏰ Last 10 minutes - start wrapping up!', timeUp: '⏰ TIME! Close and save'}
+  },
+  es: {
+    topTitle: '🐾 6th Grade · Proyecto Scratch - Clase Interactiva',
+    headerH1: '🚀 Proyecto Scratch - Clase Interactiva',
+    headerNote: '🌿 Iniciamos con el saludo lasallista: ¡Ánimo, fe y entusiasmo!',
+    timePrefix: 'Tiempo restante: ',
+    pause: 'Pausar',
+    resume: 'Reanudar',
+    reset: 'Reiniciar',
+    projector: 'Modo proyector',
+    openingHeading: '❓ ¿Qué tipo de juego o simulador te gustaría crear?',
+    openingNote: 'Elige una opción para comenzar la planeación. Trabajo en parejas opcional.',
+    cards: [
+      {title: 'Quiz interactivo', desc: 'Preguntas y respuestas, con puntaje y retroalimentación', btn: 'Elegir este proyecto'},
+      {title: 'Calculadora', desc: 'Operaciones y botones, ideal para practicar variables', btn: 'Elegir este proyecto'},
+      {title: 'Historia interactiva', desc: 'Escenas, decisiones y ramificación de la historia', btn: 'Elegir este proyecto'},
+      {title: 'Clicker game', desc: 'Juego simple para practicar contadores y eventos', btn: 'Elegir este proyecto'}
+    ],
+    planningHeading: '✏️ Planeación digital',
+    placeholders: {
+      studentName: 'Nombre del estudiante', projectChosen: 'Proyecto elegido', whatWillDo: '¿Qué va a hacer?', var1: 'Variable 1', var2: 'Variable 2', var3: 'Variable 3', askUser: '¿Qué preguntará al usuario?', showAtEnd: '¿Qué mostrará al final?'
+    },
+    savePlan: '📌 Guardar planeación',
+    implementationHeading: '🛠️ Implementación - Guía paso a paso',
+    steps: [
+      {title: 'Paso 1', desc: 'Variables y entrada', note: "Ej: Crea una variable llamada 'puntaje'"},
+      {title: 'Paso 2', desc: 'Condicionales (if/else)', note: 'Ej: Si puntaje>5 mostrar mensaje'},
+      {title: 'Paso 3', desc: 'Bucles (repeat/forever)', note: 'Ej: Repite animación 10 veces'},
+      {title: 'Paso 4', desc: 'Listas (arrays)', note: 'Ej: Lista de preguntas del quiz'}
+    ],
+    completeMessage: '🎉 ¡Has completado todos los pasos! Ahora depura y prueba tu proyecto.',
+    missionSteps: ['Variables y entrada','Condicionales','Bucles','Listas'],
+    captureHeading: '📸 Captura y Guardado',
+    captureNote: 'Usa el botón para abrir la herramienta de impresión y guardar una captura o PDF de la pantalla.',
+    screenshotBtn: '📸 Tomar captura de pantalla',
+    saveProjectBtn: '💾 Guardar proyecto (.sb3)',
+    feedbackHeading: '💬 Retroalimentación (últimos 20 minutos)',
+    feedbackNote: 'Intercambien computadores y dénse retroalimentación constructiva.',
+    fbGood: '1 cosa buena del proyecto de tu compañero:',
+    fbImprove: '1 cosa por mejorar:',
+    sendFeedback: '📝 Enviar retroalimentación',
+    selfEvalHeading: '✅ Autoevaluación (últimos 10 minutos)',
+    finishedYes: 'Sí',
+    finishedNo: 'No',
+    sendEval: '📤 Entregar autoevaluación',
+    utilitiesHeading: '📊 Utilidades del docente',
+    summaryBtn: '📊 Ver resumen de la clase',
+    exportBtn: '📋 Exportar datos',
+    resetAll: '🔄 Reiniciar todo',
+    alerts: {last30: '⏰ ¡Últimos 30 minutos!', last10: '⏰ ¡Últimos 10 minutos - ve cerrando!', timeUp: '⏰ ¡TIEMPO! Cierren todo y guardemos'}
+  }
+}
+
+function setLang(lang){
+  const t = TRANSLATIONS[lang];
+  if(!t) return;
+  document.body.setAttribute('data-lang', lang);
+  const topTitle = document.querySelector('.top strong'); if(topTitle) topTitle.textContent = t.topTitle;
+  const headerH1 = document.querySelector('.header-tool h1'); if(headerH1) headerH1.textContent = t.headerH1;
+  const headerNote = document.querySelector('.header-tool .muted-note'); if(headerNote) headerNote.textContent = t.headerNote;
+  const timeDisplay = document.getElementById('timeDisplay'); if(timeDisplay) timeDisplay.textContent = t.timePrefix + formatTime(remaining);
+  const pauseBtn = document.getElementById('pauseBtn'); if(pauseBtn) pauseBtn.textContent = paused ? t.resume : t.pause;
+  const resetBtn = document.getElementById('resetBtn'); if(resetBtn) resetBtn.textContent = t.reset;
+  const projectorBtn = document.getElementById('projectorBtn'); if(projectorBtn) projectorBtn.textContent = t.projector;
+  const openingH = document.querySelector('#opening h2'); if(openingH) openingH.textContent = t.openingHeading;
+  const openingNote = document.querySelector('#opening .muted-note'); if(openingNote) openingNote.textContent = t.openingNote;
+  // cards
+  const cards = document.querySelectorAll('#projectCards .card'); cards.forEach((card,i)=>{ const c = t.cards[i]; if(!c) return; const h = card.querySelector('h3'); const p = card.querySelector('p'); const btn = card.querySelector('.select-btn'); if(h) h.textContent = c.title; if(p) p.textContent = c.desc; if(btn) btn.textContent = c.btn; });
+  // planning
+  const planningH = document.querySelector('#planning h2'); if(planningH) planningH.textContent = t.planningHeading;
+  const ph = t.placeholders || {};
+  const studentName = document.getElementById('studentName'); if(studentName) studentName.placeholder = ph.studentName || '';
+  const projectChosen = document.getElementById('projectChosen'); if(projectChosen) projectChosen.placeholder = ph.projectChosen || '';
+  const whatWillDo = document.getElementById('whatWillDo'); if(whatWillDo) whatWillDo.placeholder = ph.whatWillDo || '';
+  ['var1','var2','var3'].forEach((id,i)=>{ const el = document.getElementById(id); if(el) el.placeholder = ph['var'+(i+1)] || ''});
+  const askUser = document.getElementById('askUser'); if(askUser) askUser.placeholder = ph.askUser || '';
+  const showAtEnd = document.getElementById('showAtEnd'); if(showAtEnd) showAtEnd.placeholder = ph.showAtEnd || '';
+  const savePlan = document.getElementById('savePlan'); if(savePlan) savePlan.textContent = t.savePlan;
+  // implementation
+  const implH = document.querySelector('#implementation h2'); if(implH) implH.textContent = t.implementationHeading;
+  const stepEls = document.querySelectorAll('#stepsContainer .step'); stepEls.forEach((el,i)=>{ const s = t.steps[i]; if(!s) return; const h = el.querySelector('h4'); const desc = el.querySelectorAll('div')[0]; const note = el.querySelector('small.muted-note'); const mark = el.querySelector('.mark-step'); if(h) h.textContent = s.title; if(desc) desc.textContent = s.desc; if(note) note.textContent = s.note; if(mark) mark.textContent = '✅ ' + (lang==='en' ? 'Mark complete' : 'Marcar como completado'); });
+  const completeMessage = document.getElementById('completeMessage'); if(completeMessage) completeMessage.textContent = t.completeMessage;
+  // mission steps
+  const mEls = document.querySelectorAll('.mission-steps li'); mEls.forEach((li,i)=>{ if(t.missionSteps[i]) li.textContent = t.missionSteps[i]; });
+  // capture
+  const captureH = document.querySelector('#capture h2'); if(captureH) captureH.textContent = t.captureHeading;
+  const captureNote = document.querySelector('#capture .muted-note'); if(captureNote) captureNote.textContent = t.captureNote;
+  const ssBtn = document.getElementById('screenshotBtn'); if(ssBtn) ssBtn.textContent = t.screenshotBtn;
+  const saveProj = document.getElementById('saveProjectBtn'); if(saveProj) saveProj.textContent = t.saveProjectBtn;
+  // feedback
+  const feedbackH = document.querySelector('#feedbackSection h2'); if(feedbackH) feedbackH.textContent = t.feedbackHeading;
+  const feedbackNote = document.querySelector('#feedbackSection .muted-note'); if(feedbackNote) feedbackNote.textContent = t.feedbackNote;
+  const fbGoodEl = document.getElementById('fbGood'); if(fbGoodEl) fbGoodEl.placeholder = t.fbGood;
+  const fbImproveEl = document.getElementById('fbImprove'); if(fbImproveEl) fbImproveEl.placeholder = t.fbImprove;
+  const sendFb = document.getElementById('sendFeedback'); if(sendFb) sendFb.textContent = t.sendFeedback;
+  // self eval
+  const selfH = document.querySelector('#selfEval h2'); if(selfH) selfH.textContent = t.selfEvalHeading;
+  const finished = document.getElementById('finished'); if(finished){ finished.options[0].text = t.finishedYes; finished.options[1].text = t.finishedNo }
+  const sendE = document.getElementById('sendEval'); if(sendE) sendE.textContent = t.sendEval;
+  // utilities
+  const utilH = document.querySelector('#utilities h2'); if(utilH) utilH.textContent = t.utilitiesHeading;
+  const sumBtn = document.getElementById('summaryBtn'); if(sumBtn) sumBtn.textContent = t.summaryBtn;
+  const expBtn = document.getElementById('exportBtn'); if(expBtn) expBtn.textContent = t.exportBtn;
+  const rstBtn = document.getElementById('resetAll'); if(rstBtn) rstBtn.textContent = t.resetAll;
+}
+
+document.getElementById('en').addEventListener('click',()=>{setLang('en'); document.getElementById('en').classList.add('active'); document.getElementById('es').classList.remove('active')});
+document.getElementById('es').addEventListener('click',()=>{setLang('es'); document.getElementById('es').classList.add('active'); document.getElementById('en').classList.remove('active')});
+
 // Reuse script from tools page but kept localized here
 const KEY_PLANS = 'scratch_plans_v1';
 const KEY_FEEDBACK = 'scratch_feedback_v1';
