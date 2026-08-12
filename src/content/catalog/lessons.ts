@@ -2,16 +2,32 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-09-cycle-3-stem-mvc-project-sequence",
+    grade: 9,
+    cycle: 3,
+    title: {
+      en: "STEM · MVC Project Sequence",
+      es: "Secuencia de Proyecto STEM · MVC",
+    },
+    objective: {
+      en: "Plan and develop a STEM project using MVC architecture, JavaScript, testing, documentation, SDGs and prompt engineering.",
+      es: "Planear y desarrollar un proyecto STEM usando arquitectura MVC, JavaScript, pruebas, documentación, ODS e ingeniería de prompts.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-09/stem-mvc-project-sequence.html",
+    tags: ["STEM", "MVC", "JavaScript", "AI", "SDGs"],
+  },
+  {
     id: "grade-09-cycle-3-web-thinking-lab-blue",
     grade: 9,
     cycle: 3,
     title: {
-      en: "Web Thinking Lab · 9th Blue",
-      es: "Laboratorio de Pensamiento Web · 9th Blue",
+      en: "Web Thinking Lab Â· 9th Blue",
+      es: "Laboratorio de Pensamiento Web Â· 9th Blue",
     },
     objective: {
       en: "Understand how a web page is created from scratch using HTML for structure, CSS for design and JavaScript for interaction.",
-      es: "Comprender cómo se crea una página web desde cero usando HTML para la estructura, CSS para el diseño y JavaScript para la interacción.",
+      es: "Comprender cÃ³mo se crea una pÃ¡gina web desde cero usando HTML para la estructura, CSS para el diseÃ±o y JavaScript para la interacciÃ³n.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-09/web-thinking-lab-blue.html",
@@ -23,11 +39,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "RoboLab: Function Factory",
-      es: "RoboLab: FÃ¡brica de Funciones",
+      es: "RoboLab: FÃƒÂ¡brica de Funciones",
     },
     objective: {
       en: "Create and reuse functions, use simple parameters and understand returned results.",
-      es: "Crear y reutilizar funciones, usar parÃ¡metros sencillos y comprender resultados retornados.",
+      es: "Crear y reutilizar funciones, usar parÃƒÂ¡metros sencillos y comprender resultados retornados.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-05/robolab-functions.html",
@@ -55,7 +71,7 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "Little Programmers",
-      es: "PequeÃ¢â€Å“Ã¢â€“â€™os Programadores",
+      es: "PequeÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢os Programadores",
     },
     objective: {
       en: "Understand algorithms through ordered steps, routes and games.",
@@ -71,11 +87,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "Code Creators",
-      es: "Creadores de CÃ¢â€Å“Ã¢â€â€šdigo",
+      es: "Creadores de CÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡digo",
     },
     objective: {
       en: "Design an interactive solution through algorithms and programming concepts.",
-      es: "DiseÃ¢â€Å“Ã¢â€“â€™ar una soluciÃ¢â€Å“Ã¢â€â€šn interactiva mediante algoritmos y conceptos de programaciÃ¢â€Å“Ã¢â€â€šn.",
+      es: "DiseÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢ar una soluciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n interactiva mediante algoritmos y conceptos de programaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-06/code-creators-cycle-3.html",
@@ -91,7 +107,7 @@ export const lessons: LessonSummary[] = [
     },
     objective: {
       en: "Build a data analysis project that uses spreadsheets, visualization and AI to solve a real school or community problem.",
-      es: "Desarrollar un proyecto de anÃ¢â€Å“ÃƒÂ­lisis de datos que use hojas de cÃ¢â€Å“ÃƒÂ­lculo, visualizaciones e IA para resolver un problema real en la escuela o comunidad.",
+      es: "Desarrollar un proyecto de anÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­lisis de datos que use hojas de cÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­lculo, visualizaciones e IA para resolver un problema real en la escuela o comunidad.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-08/data-ai-community.html",
@@ -103,11 +119,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "My First Web Page",
-      es: "Mi Primera PÃ¢â€Å“ÃƒÂ­gina Web",
+      es: "Mi Primera PÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­gina Web",
     },
     objective: {
       en: "Create a web page from scratch using HTML for structure, CSS for design and JavaScript for interaction.",
-      es: "Crear una pÃ¢â€Å“ÃƒÂ­gina web desde cero usando HTML para la estructura, CSS para el diseÃ¢â€Å“Ã¢â€“â€™o y JavaScript para la interacciÃ¢â€Å“Ã¢â€â€šn.",
+      es: "Crear una pÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­gina web desde cero usando HTML para la estructura, CSS para el diseÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢o y JavaScript para la interacciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-09/my-first-web-page-cycle-3.html",
@@ -139,7 +155,7 @@ export const lessons: LessonSummary[] = [
     },
     objective: {
       en: "Design and present an interactive web app that solves a real school or community problem using JavaScript, HTML, and CSS.",
-      es: "DiseÃ¢â€Å“Ã¢â€“â€™ar, desarrollar y presentar una aplicaciÃ¢â€Å“Ã¢â€â€šn web interactiva que resuelva un problema real de la escuela o comunidad usando JavaScript, HTML y CSS.",
+      es: "DiseÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬â„¢ar, desarrollar y presentar una aplicaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n web interactiva que resuelva un problema real de la escuela o comunidad usando JavaScript, HTML y CSS.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-10/code-for-change.html",
@@ -151,11 +167,11 @@ export const lessons: LessonSummary[] = [
     cycle: 3,
     title: {
       en: "ESP32 WiFi Communication",
-      es: "ComunicaciÃ¢â€Å“Ã¢â€â€šn WiFi con ESP32",
+      es: "ComunicaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n WiFi con ESP32",
     },
     objective: {
       en: "Implement wireless communication with Wokwi and send/receive data.",
-      es: "Implementar comunicaciÃ¢â€Å“Ã¢â€â€šn inalÃ¢â€Å“ÃƒÂ­mbrica con Wokwi y enviar/recibir datos.",
+      es: "Implementar comunicaciÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡n inalÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÆ’Ã‚Â­mbrica con Wokwi y enviar/recibir datos.",
     },
     durationMinutes: 120,
     guidePath: "/guides/grade-11/esp32-wifi-wokwi.html",

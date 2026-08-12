@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía STEM · MVC Pro · Ingeniería de Prompts</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f2f6fd;
+      font-family: 'Inter', 'Segoe UI', Roboto, system-ui, sans-serif;
+      padding: 2rem 1.5rem;
+      color: #0b1e2e;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 2.5rem;
+      box-shadow: 0 25px 50px -10px rgba(0, 20, 40, 0.20);
+      padding: 2.5rem 3rem;
+      transition: all 0.2s;
+    }
+
+    /* Encabezado profesional */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      border-bottom: 2px solid #e6edf6;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.2rem;
+    }
+
+    .header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(145deg, #0b2b44, #1d5b7a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .header h1 small {
+      font-size: 1rem;
+      background: #e3ecf7;
+      -webkit-text-fill-color: #1e3a5f;
+      background: #dce8f5;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #1e3a5f;
+    }
+
+    .badge-ia {
+      background: #0b2b44;
+      color: white;
+      padding: 0.5rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: #1d4a6b;
+      box-shadow: 0 6px 12px -6px rgba(0,0,0,0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-ia span {
+      font-size: 1.3rem;
+    }
+
+    /* Imagen conceptual / mockup elegante */
+    .hero-visual {
+      background: #eef4fc;
+      border-radius: 2rem;
+      padding: 1.8rem 2.2rem;
+      margin: 1.2rem 0 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #d3e2f2;
+    }
+
+    .hero-visual .mockup {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .mockup-item {
+      background: white;
+      border-radius: 1.2rem;
+      padding: 0.8rem 1.5rem 0.8rem 1.2rem;
+      box-shadow: 0 6px 14px rgba(0, 20, 30, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      border: 1px solid #dce8f5;
+      font-weight: 500;
+    }
+
+    .mockup-item .icon {
+      font-size: 1.8rem;
+    }
+
+    .prompt-engineering {
+      background: #1b3349;
+      color: #d9e9fa;
+      padding: 0.8rem 1.8rem;
+      border-radius: 3rem;
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    /* FASES (sin fechas ni clases) */
+    .fases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2.5rem 0 2rem;
+    }
+
+    .fase-card {
+      background: #f9fcff;
+      border-radius: 1.8rem;
+      padding: 1.8rem 1.8rem 2rem;
+      border: 1px solid #e2ecf7;
+      transition: 0.15s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+
+    .fase-card:hover {
+      border-color: #b0cee8;
+      box-shadow: 0 12px 28px -10px rgba(20, 60, 100, 0.10);
+    }
+
+    .fase-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0b2b44;
+      border-bottom: 3px solid #d7e4f2;
+      padding-bottom: 0.7rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .fase-header span {
+      background: #1d4a6b;
+      color: white;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      padding: 0.1rem 1rem;
+      font-weight: 600;
+    }
+
+    .fase-card ul {
+      list-style: none;
+    }
+
+    .fase-card ul li {
+      padding: 0.5rem 0 0.5rem 2rem;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231d5b7a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') left center no-repeat;
+      background-size: 1.2rem;
+      border-bottom: 1px solid #edf3fa;
+    }
+
+    .fase-card ul li:last-child {
+      border-bottom: none;
+    }
+
+    .code-snip {
+      background: #0f1f2e;
+      color: #d2e3f7;
+      padding: 0.8rem 1.2rem;
+      border-radius: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      margin: 0.8rem 0 0.2rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      border: 1px solid #2d4b66;
+    }
+
+    .highlight-prompt {
+      background: #e4eff9;
+      border-left: 6px solid #1d5b7a;
+      padding: 1rem 1.6rem;
+      border-radius: 1rem;
+      margin: 1.2rem 0 0.2rem;
+      font-weight: 450;
+    }
+
+    .highlight-prompt strong {
+      color: #0b2b44;
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      margin: 1.8rem 0;
+    }
+
+    @media (max-width: 700px) {
+      .container { padding: 1.5rem; }
+      .header h1 { font-size: 2rem; }
+      .grid-2col { grid-template-columns: 1fr; }
+      .hero-visual { flex-direction: column; align-items: start; gap: 1rem; }
+    }
+
+    .footer-stem {
+      margin-top: 2.8rem;
+      background: #e5eff8;
+      border-radius: 2rem;
+      padding: 1.2rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #c9dcef;
+    }
+
+    .btn-outline {
+      border: 2px solid #1d4a6b;
+      background: transparent;
+      padding: 0.4rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #1d4a6b;
+      transition: 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: #1d4a6b;
+      color: white;
+    }
+
+    .icono-ods {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>
+      🧩 STEM·MVC
+      <small>proyecto autónomo</small>
+    </h1>
+    <div class="badge-ia">
+      <span>⚡</span> ingeniería de prompts · IA
+    </div>
+  </div>
+
+  <!-- IMAGEN / VISUAL profesional -->
+  <div class="hero-visual">
+    <div class="mockup">
+      <div class="mockup-item"><span class="icon">📐</span> MVC · Modelo/Vista/Controlador</div>
+      <div class="mockup-item"><span class="icon">🧩</span> 3 entidades: Usuario · Tarea · Categoría</div>
+      <div class="mockup-item"><span class="icon">🌱</span> ODS integrados</div>
+    </div>
+    <div class="prompt-engineering">
+      <span>🤖</span> Prompt engineering · copiloto de código
+    </div>
+  </div>
+
+  <!-- INTRO: ellos construyen -->
+  <div style="background: #dce8f5; padding: 0.8rem 2rem; border-radius: 3rem; margin-bottom: 1.8rem; display: inline-block; font-weight: 600;">
+    ⚙️ Ustedes son los protagonistas · cada equipo construye su propia solución
+  </div>
+
+  <!-- FASES (sin fechas ni clases) -->
+  <div class="fases-grid">
+
+    <!-- FASE 1: DISEÑO Y ARQUITECTURA -->
+    <div class="fase-card">
+      <div class="fase-header">
+        <span>FASE 1</span> Diseño & arquitectura
+      </div>
+      <ul>
+        <li><strong>Problema real</strong> · identificar necesidad en la escuela/comunidad</li>
+        <li><strong>Arquitectura MVC</strong> · bocetos, diagramas (Lucidchart/Draw.io)</li>
+        <li>Definir <strong>Modelo</strong> (datos), <strong>Vista</strong> (UI), <strong>Controlador</strong> (lógica)</li>
+        <li>Estructura de carpetas: <code>/src</code>, <code>/docs</code>, <code>index.html</code></li>
+        <li>Asignación de roles: Product Owner, Dev, Tester, Documentador, UI</li>
+        <li>Crear repositorio y plan de trabajo</li>
+      </ul>
+      <div class="highlight-prompt">
+        <strong>🧠 Prompt sugerido (IA):</strong> “Dame un ejemplo de arquitectura MVC para una To‑Do List con Usuario, Tarea y Categoría en JavaScript vanilla.”
+      </div>
+    </div>
+
+    <!-- FASE 2: IMPLEMENTACIÓN Y CODIFICACIÓN -->
+    <div class="fase-card">
+      <div class="fase-header">
+        <span>FASE 2</span> Codificación & pruebas
+      </div>
+      <ul>
+        <li><strong>Implementar MVC</strong> con JavaScript puro (sin frameworks)</li>
+        <li>Modelo: clases <code>Usuario</code>, <code>Tarea</code>, <code>Categoría</code></li>
+        <li>Vista: renderizado dinámico con DOM</li>
+        <li>Controlador: eventos, actualización de datos y vista</li>
+        <li><strong>Pruebas</strong> · depuración · refactorización</li>
+        <li>Persistencia en <code>localStorage</code> o array</li>
+        <li>Documentación del código con comentarios JSDoc</li>
+      </ul>
+      <div class="code-snip">
+// Ejemplo: Controlador
+class TareaController {
+  constructor(modelo, vista) {
+    this.modelo = modelo;
+    this.vista = vista;
+  }
+  agregarTarea(datos) { /* lógica */ }
+}
+      </div>
+      <div class="highlight-prompt" style="margin-top: 0.5rem;">
+        <strong>🤖 Prompt IA:</strong> “Refactoriza este código MVC para que sea más modular y fácil de probar.”
+      </div>
+    </div>
+
+    <!-- FASE 3: UI, ODS, DOCUMENTACIÓN Y PRESENTACIÓN -->
+    <div class="fase-card">
+      <div class="fase-header">
+        <span>FASE 3</span> UI · ODS · entrega
+      </div>
+      <ul>
+        <li><strong>Interfaz final</strong> con HTML/CSS (responsive, accesible)</li>
+        <li>Integrar <strong>ODS</strong> (reflexión y reporte) en la app o documentación</li>
+        <li>Documentación técnica completa: README, manual de usuario, diagramas</li>
+        <li>Preparar presentación oral y <strong>pitch</strong> (3 min)</li>
+        <li><strong>Autoevaluación</strong> y coevaluación (rúbricas)</li>
+        <li>Demostración funcional del sistema</li>
+        <li>Entrega del portafolio STEM: código, capturas, reflexión</li>
+      </ul>
+      <div style="background: #d4e3f5; border-radius: 1.2rem; padding: 0.5rem 1.2rem; margin-top: 0.8rem;">
+        🌱 <strong>ODS aplicados:</strong> ODS 4 (educación de calidad), ODS 12 (producción y consumo responsables)
+      </div>
+    </div>
+  </div>
+
+  <!-- INGENIERÍA DE PROMPTS + IA -->
+  <div style="background: #f0f6fe; border-radius: 2rem; padding: 1.5rem 2rem; margin: 1.8rem 0; border: 1px solid #cadeef;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem;">
+      <div style="font-size: 2.2rem;">🧪</div>
+      <div>
+        <h3 style="font-size: 1.5rem; font-weight: 700; color: #0b2b44;">Ingeniería de Prompts · IA como aliada</h3>
+        <p style="max-width: 700px;">Usen la IA para <strong>generar, depurar y explicar</strong> código. Un buen prompt es específico: <br/>
+        <em>“Escribe una función en JavaScript que filtre tareas por categoría y estado, con manejo de errores.”</em></p>
+      </div>
+      <div style="margin-left: auto; background: #1d4a6b; color: white; padding: 0.4rem 1.8rem; border-radius: 40px;">
+        ⚡ prompt engineering
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTREGABLES Y EVALUACIÓN (en dos columnas) -->
+  <div class="grid-2col">
+    <div style="background: #f5faff; border-radius: 1.6rem; padding: 1.5rem 1.8rem;">
+      <h4 style="font-size: 1.3rem; display: flex; gap: 0.6rem; align-items: center;">📦 Entregables finales</h4>
+      <ul style="list-style: none; margin-top: 0.6rem;">
+        <li style="padding: 0.3rem 0;">✅ Código JS funcional + comentarios</li>
+        <li style="padding: 0.3rem 0;">✅ Interfaz HTML/CSS (diseño propio)</li>
+        <li style="padding: 0.3rem 0;">✅ Diagramas de arquitectura (MVC)</li>
+        <li style="padding: 0.3rem 0;">✅ Documentación técnica en <code>/docs</code></li>
+        <li style="padding: 0.3rem 0;">✅ Reporte de reflexión ODS</li>
+        <li style="padding: 0.3rem 0;">✅ Presentación + pitch</li>
+        <li style="padding: 0.3rem 0;">✅ Autoevaluación y coevaluación</li>
+      </ul>
+    </div>
+    <div style="background: #f5faff; border-radius: 1.6rem; padding: 1.5rem 1.8rem;">
+      <h4 style="font-size: 1.3rem; display: flex; gap: 0.6rem; align-items: center;">📋 Evaluación</h4>
+      <ul style="list-style: none; margin-top: 0.6rem;">
+        <li style="padding: 0.3rem 0;">📌 Rúbrica analítica (código, funcionalidad, documentación)</li>
+        <li style="padding: 0.3rem 0;">📌 Lista de verificación de observación</li>
+        <li style="padding: 0.3rem 0;">📌 Registros anecdóticos · seguimiento</li>
+        <li style="padding: 0.3rem 0;">📌 Rúbrica de producto final</li>
+        <li style="padding: 0.3rem 0;">📌 Autoevaluación / coevaluación</li>
+        <li style="padding: 0.3rem 0;">📌 Presentación oral</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- HERRAMIENTAS Y RECURSOS -->
+  <div style="background: #e2ebf6; border-radius: 2rem; padding: 1.2rem 2rem; display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; margin: 1.8rem 0;">
+    <div><strong>🛠️ VS Code</strong> · Live Server, Prettier, JavaScript</div>
+    <div><strong>📐 Diagramas</strong> · Lucidchart / Draw.io</div>
+    <div><strong>📄 Docs</strong> · Google Docs / Word / Markdown</div>
+    <div><strong>📁 Control</strong> · GitHub / Google Drive</div>
+    <div><strong>📚 Referencias</strong> · MDN, W3Schools, JavaScript.info</div>
+  </div>
+
+  <!-- FOOTER PROFESIONAL -->
+  <div class="footer-stem">
+    <div class="icono-ods">
+      <span>🌍</span> ODS · Objetivos de Desarrollo Sostenible
+    </div>
+    <div>
+      <span style="font-weight: 500;">#STEM · #MVC · #PromptEngineering</span>
+    </div>
+    <div>
+      <span class="btn-outline">🎯 Autonomía · Equipo · Innovación</span>
+    </div>
+  </div>
+
+  <!-- Mensaje final para estudiantes -->
+  <div style="margin-top: 2rem; text-align: center; background: #eef4fc; border-radius: 3rem; padding: 0.8rem 1.8rem; border: 2px solid #c1d8ec;">
+    ⭐ <strong>Construyan, experimenten, documenten.</strong>  La guía está completa. Usen la IA con prompts claros, revisen en equipo y entreguen su mejor versión.
+  </div>
+
+</div>
+<!-- fin container -->
+</body>
+</html>
