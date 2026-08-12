@@ -99,6 +99,27 @@ export default async function GradePage({ params }: Props) {
                   )}
                 </article>
               ))}
+              {/* Additional static card for Grade 6: Ciclo 4 */}
+              {gradeData.id === 6 && (
+                <article className="lesson-card">
+                  <div className="lesson-top">
+                    <span className="cycle-badge">Cycle 4</span>
+                    <span>20 min</span>
+                  </div>
+
+                  <h3>Ciclo 4</h3>
+                  <p>Proyecto Scratch — Clase interactiva para trabajar destrezas del ciclo 4.</p>
+
+                  <div className="tags">
+                    <span>scratch</span>
+                    <span>project</span>
+                  </div>
+
+                  <a href="/guides/grade-06/scratch-classroom.html" className="primary-button lesson-button">
+                    Abrir guía
+                  </a>
+                </article>
+              )}
             </div>
           )}
         </section>
