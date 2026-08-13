@@ -2,6 +2,22 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-02-cycle-4-smart-robot-delivery",
+    grade: 2,
+    cycle: 4,
+    title: {
+      en: "Cycle 4 · Smart Robot Delivery",
+      es: "Ciclo 4 · Entrega con Robot Inteligente",
+    },
+    objective: {
+      en: "Create simple algorithms using sequences and loops and recognize how sensors help technology receive information.",
+      es: "Crear algoritmos sencillos usando secuencias y ciclos y reconocer cómo los sensores ayudan a la tecnología a recibir información.",
+    },
+    durationMinutes: 60,
+    guidePath: "/guides/grade-02/cycle-4-smart-robot-delivery.html",
+    tags: ["Cycle 4", "Algorithms", "Sequences", "Loops", "Sensors", "Game"],
+  },
+  {
     id: "grade-08-cycle-4-dashboard-data-storytelling",
     grade: 8,
     cycle: 4,

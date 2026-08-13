@@ -56,12 +56,59 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid
 <section class="section"><h2>🌟 1. Opening / Motivation</h2><div class="body">
 <span class="phase">0–15 min</span>
 <div class="question"><b>Driving Question:</b> “How can we test our designs without physical components?”</div>
-<div class="note lang-en"><b>Observe before building:</b> During the teacher's live Wokwi/Tinkercad demonstration, identify what enters the system, what decision is made and what output responds.</div>
-<div class="note lang-es"><b>Observa antes de construir:</b> Durante la demostración del profesor en Wokwi/Tinkercad, identifica qué entra al sistema, qué decisión se toma y qué salida responde.</div>
-<div class="grid3">
-<div><label>What did you observe?</label><textarea id="observe"></textarea></div>
-<div><label>What changed?</label><textarea id="changed"></textarea></div>
-<div><label>What caused the change?</label><textarea id="cause"></textarea></div>
+<div class="note lang-en"><b>Explore Before You Build — Research Mission:</b> Your first mission is to investigate before building. Explore Wokwi or Tinkercad and discover how an automated system can detect something and respond automatically. You may search, explore examples, test components, ask questions, and use what you already know.</div>
+<div class="note lang-es"><b>Explora antes de construir — Misión de investigación:</b> Tu primera misión es investigar antes de construir. Explora Wokwi o Tinkercad y descubre cómo un sistema automatizado puede detectar algo y responder automáticamente. Puedes investigar, explorar ejemplos, probar componentes, hacer preguntas y utilizar lo que ya sabes.</div>
+
+<div class="grid2">
+<div>
+<h3 class="lang-en">🔎 Research in your notebook</h3>
+<h3 class="lang-es">🔎 Investiga en tu cuaderno</h3>
+<ol class="lang-en">
+<li>What is Wokwi or Tinkercad, and what can we simulate with it?</li>
+<li>What is a sensor?</li>
+<li>What is a PIR motion sensor?</li>
+<li>What information does the PIR sensor send to the system?</li>
+<li>What is an LED, and why can it be considered an output?</li>
+<li>What role does the Arduino/controller play?</li>
+<li>What should happen when motion is detected?</li>
+<li>What should happen when no motion is detected?</li>
+</ol>
+<ol class="lang-es">
+<li>¿Qué es Wokwi o Tinkercad y qué podemos simular allí?</li>
+<li>¿Qué es un sensor?</li>
+<li>¿Qué es un sensor de movimiento PIR?</li>
+<li>¿Qué información envía el PIR al sistema?</li>
+<li>¿Qué es un LED y por qué puede considerarse una salida?</li>
+<li>¿Qué función cumple el Arduino/controlador?</li>
+<li>¿Qué debería ocurrir cuando se detecta movimiento?</li>
+<li>¿Qué debería ocurrir cuando no se detecta movimiento?</li>
+</ol>
+</div>
+<div>
+<h3>🧭 Research Evidence</h3>
+<label class="lang-en">What did you discover about simulation?</label>
+<label class="lang-es">¿Qué descubriste sobre la simulación?</label>
+<textarea id="observe"></textarea>
+<label class="lang-en">What did you discover about sensors and outputs?</label>
+<label class="lang-es">¿Qué descubriste sobre sensores y salidas?</label>
+<textarea id="changed"></textarea>
+<label class="lang-en">What question do you still have?</label>
+<label class="lang-es">¿Qué pregunta todavía tienes?</label>
+<textarea id="cause"></textarea>
+</div>
+</div>
+
+<div class="success">
+<h3>🕵️ Engineer's Prediction</h3>
+<p class="lang-en"><b>Complete this before building.</b> Your first idea does not need to be perfect. You will test it and improve it with evidence.</p>
+<p class="lang-es"><b>Completa esto antes de construir.</b> Tu primera idea no tiene que ser perfecta. La pondrás a prueba y la mejorarás con evidencia.</p>
+<div class="grid2">
+<div><label class="lang-en">I think the INPUT is...</label><label class="lang-es">Creo que la ENTRADA es...</label><textarea id="researchInput"></textarea></div>
+<div><label class="lang-en">I think the CONTROLLER must decide...</label><label class="lang-es">Creo que el CONTROLADOR debe decidir...</label><textarea id="researchDecision"></textarea></div>
+<div><label class="lang-en">I think the OUTPUT should...</label><label class="lang-es">Creo que la SALIDA debería...</label><textarea id="researchOutput"></textarea></div>
+<div><label>IF __________ THEN __________</label><textarea id="researchRule"></textarea></div>
+</div>
+<div class="flow">INVESTIGATE → HYPOTHESIZE → DESIGN → BUILD → SIMULATE → OBSERVE → COMPARE → DEBUG → EXPLAIN</div>
 </div></div></section>
 
 <section class="section"><h2>🧠 2. Master Class · How an Automated System Thinks</h2><div class="body">
@@ -160,6 +207,8 @@ REPEAT continuously</div>
 <textarea id="reflection"></textarea>
 <label>What did you understand better today? / ¿Qué comprendiste mejor hoy?</label><textarea id="learned"></textarea>
 <label>How could an automated system serve people at school, home or in the community? / ¿Cómo podría servir a otros?</label><textarea id="impact"></textarea>
+<div class="question"><b>Return to your first hypothesis:</b> Was your original hypothesis correct? What did you change after testing the simulation?</div>
+<textarea id="hypothesisReview"></textarea>
 <div class="note lang-en"><b>Lasallian closing:</b> Give thanks for learning, teamwork and the opportunity to use technology responsibly in service of others.</div>
 <div class="note lang-es"><b>Cierre Lasallista:</b> Agradece por el aprendizaje, el trabajo en equipo y la oportunidad de usar responsablemente la tecnología al servicio de los demás.</div>
 </div></section>
@@ -171,7 +220,7 @@ REPEAT continuously</div>
 </main>
 
 <script>
-const ids=["observe","changed","cause","prediction","guidedResult","student","date","course","partner","problem","systemName","systemInput","systemProcess","systemOutput","rule","diagram","t1in","t1expected","t1actual","t1fix","t2in","t2expected","t2actual","t2fix","explanation","automatedWhy","physicalChange","strength","suggestion","peerQuestion","galleryIdea","reflection","learned","impact"];
+const ids=["observe","changed","cause","researchInput","researchDecision","researchOutput","researchRule","prediction","guidedResult","student","date","course","partner","problem","systemName","systemInput","systemProcess","systemOutput","rule","diagram","t1in","t1expected","t1actual","t1fix","t2in","t2expected","t2actual","t2fix","explanation","automatedWhy","physicalChange","strength","suggestion","peerQuestion","galleryIdea","reflection","learned","impact","hypothesisReview"];
 function setLang(l){document.body.dataset.lang=l;document.getElementById("en").classList.toggle("active",l==="en");document.getElementById("es").classList.toggle("active",l==="es");localStorage.setItem("g7c4-lang",l)}
 document.getElementById("en").onclick=()=>setLang("en");document.getElementById("es").onclick=()=>setLang("es");
 function save(){const d={};ids.forEach(id=>d[id]=document.getElementById(id).value);d.progress=[...document.querySelectorAll(".progress:checked")].map(x=>x.value);localStorage.setItem("g7c4-master",JSON.stringify(d));update()}

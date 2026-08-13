@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2nd Grade · Cycle 4 · Smart Robot Delivery</title>
+<style>
+:root{--navy:#17365d;--blue:#2878e5;--sky:#eaf6ff;--green:#25a36f;--gold:#ffd75a;--red:#e65d67;--ink:#20354a;--line:#d6e3ee}
+*{box-sizing:border-box}body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:linear-gradient(#f8fcff,#edf7f5);color:var(--ink);line-height:1.55}
+.top{position:sticky;top:0;z-index:20;background:#17365df2;color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center}.top button{border:0;border-radius:999px;padding:8px 12px;font-weight:900;cursor:pointer}.top .active{background:var(--gold)}
+.wrap{max-width:1100px;margin:22px auto 60px;padding:0 14px}.hero{background:linear-gradient(135deg,#17365d,#2878e5 65%,#20a7a1);color:#fff;border-radius:28px;padding:35px;box-shadow:0 18px 42px #17365d22}.hero h1{font-size:clamp(38px,7vw,65px);line-height:1;margin:8px 0}.hero p{font-size:19px}.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:18px}.meta div{background:#ffffff18;border:1px solid #ffffff33;padding:10px;border-radius:13px}
+.section{background:#fff;border:1px solid var(--line);border-radius:20px;margin-top:18px;overflow:hidden;box-shadow:0 8px 24px #17365d0d}.section h2{margin:0;padding:14px 18px;background:linear-gradient(90deg,#eaf6ff,#fff);color:var(--navy)}.body{padding:19px}
+.objective{background:#fff8d8;border-left:7px solid var(--gold);padding:15px;border-radius:12px;font-size:18px;font-weight:800}.flow{text-align:center;background:#eef7ff;padding:14px;border-radius:12px;font-weight:950;margin-top:12px}
+.timeline,.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fbfdff}.card h3{margin:5px 0;color:var(--navy)}.emoji{font-size:34px}.phase{display:inline-block;background:#eafff6;color:#14704f;padding:4px 9px;border-radius:999px;font-weight:900}
+.note{background:#fff8d8;border-left:6px solid var(--gold);padding:13px;border-radius:10px;margin:11px 0}.question{background:#f3f7ff;border-left:5px solid var(--blue);padding:12px;border-radius:9px;margin:10px 0}.success{background:#ebfaf3;border-left:6px solid var(--green);padding:13px;border-radius:10px;margin:10px 0}
+.book{border:2px dashed #8eb4d3;border-radius:15px;padding:15px;background:#fbfdff}.book-line{border-bottom:1px solid #cbd9e5;min-height:30px;margin:8px 0}
+.game{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.board{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:520px}.cell{aspect-ratio:1;border:2px solid #d5e2eb;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:34px;background:#f8fbfd}.wall{background:#d9e0e6}.target{background:#fff6cc}.robot{outline:4px solid #75c6ff}.controls{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fbfdff}.btns{display:flex;gap:7px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:10px 13px;font-weight:900;cursor:pointer}.move{background:#e7f1ff;color:#174d91}.loop{background:#eafff4;color:#126a4c}.run{background:var(--green);color:#fff}.reset{background:#edf0f3}.clear{background:#ffe8ea;color:#9a2832}.sequence{min-height:52px;border:2px dashed #b8cad8;border-radius:11px;padding:8px;margin:10px 0;background:white}.mission{font-size:18px;font-weight:900;color:var(--navy)}.stars{font-size:27px}.feedback{font-weight:900;min-height:52px;padding:10px;border-radius:10px;background:#eef6ff}.progressbar{height:14px;background:#e5edf3;border-radius:999px;overflow:hidden}.progress{height:100%;width:25%;background:linear-gradient(90deg,var(--green),#5bc7a2);transition:.25s}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}textarea,input{width:100%;border:1px solid #b9cbd8;border-radius:10px;padding:10px;font:inherit}textarea{min-height:75px}.badge{display:inline-block;background:#eaf2ff;color:#1c559e;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:900}
+.lang-en,.lang-es{display:none}body[data-lang=en] .lang-en{display:block}body[data-lang=es] .lang-es{display:block}
+@media(max-width:800px){.timeline,.cards,.meta{grid-template-columns:1fr 1fr}.game,.grid2{grid-template-columns:1fr}}@media(max-width:520px){.timeline,.cards,.meta{grid-template-columns:1fr}.cell{font-size:27px}}
+@media print{.top,.no-print,.game{display:none!important}body{background:#fff}.section,.hero{box-shadow:none}}
+</style></head>
+<body data-lang="en">
+<div class="top"><b>🤖 Tech Learning Hub · 2nd Grade · Cycle 4</b><div><button id="en" class="active">🇺🇸 English</button> <button id="es">🇨🇴 Español</button></div></div>
+<main class="wrap">
+<section class="hero"><div><b>TECHNOLOGY · PRIMARY · CYCLE 4</b></div>
+<h1 class="lang-en">Smart Robot Delivery</h1><h1 class="lang-es">Entrega con Robot Inteligente</h1>
+<p class="lang-en">Think like a programmer: find patterns, create loops and help a robot complete its delivery mission.</p><p class="lang-es">Piensa como programador: encuentra patrones, crea ciclos y ayuda a un robot a completar su misión de entrega.</p>
+<div class="meta"><div><b>Grade</b><br>2nd</div><div><b>Time</b><br>60 min</div><div><b>Cycle</b><br>4</div><div><b>Mission</b><br>4 levels ⭐</div></div></section>
+
+<section class="section"><h2>🎯 Class Objective</h2><div class="body">
+<div class="objective lang-en">By the end of the class, students will create and improve simple algorithms using sequences and loops, recognize how sensors help technology receive information, and explain how a robot follows instructions to complete a task.</div>
+<div class="objective lang-es">Al finalizar la clase, los estudiantes crearán y mejorarán algoritmos sencillos usando secuencias y ciclos, reconocerán cómo los sensores ayudan a la tecnología a recibir información y explicarán cómo un robot sigue instrucciones para cumplir una tarea.</div>
+<div class="flow">OBSERVE → THINK → CREATE → REPEAT → TEST → DEBUG → EXPLAIN</div>
+</div></section>
+
+<section class="section"><h2>⏱️ Our 60-Minute Mission</h2><div class="body timeline">
+<div class="card"><b>0–8 min</b><h3>👀 Discover</h3><span class="lang-en">Patterns around us.</span><span class="lang-es">Patrones a nuestro alrededor.</span></div>
+<div class="card"><b>8–18 min</b><h3>🧠 Build Knowledge</h3><span>Algorithm · Sequence · Loop · Sensor.</span></div>
+<div class="card"><b>18–48 min</b><h3>🎮 Play & Debug</h3><span class="lang-en">4 robot missions.</span><span class="lang-es">4 misiones del robot.</span></div>
+<div class="card"><b>48–60 min</b><h3>🏆 Challenge & Explain</h3><span class="lang-en">Final mission + reflection.</span><span class="lang-es">Misión final + reflexión.</span></div>
+</div></section>
+
+<section class="section"><h2>👀 1. Discover the Pattern</h2><div class="body"><span class="phase">0–8 min</span>
+<div class="question lang-en"><b>Look:</b> ⬆️ ⬆️ ⬆️ ⬆️ — Are we doing the same instruction again and again? Could we say it in a shorter way?</div>
+<div class="question lang-es"><b>Observa:</b> ⬆️ ⬆️ ⬆️ ⬆️ — ¿Estamos repitiendo la misma instrucción? ¿Podemos decirla de una forma más corta?</div>
+<div class="cards">
+<div class="card"><div class="emoji">👏</div><h3>Clap pattern</h3><p>👏👏 · 👏👏 · 👏👏</p></div>
+<div class="card"><div class="emoji">🚶</div><h3>Movement</h3><p>Step · Step · Turn · Step · Step · Turn</p></div>
+<div class="card"><div class="emoji">🤖</div><h3>Robot</h3><p>Up · Up · Up · Up</p></div>
+<div class="card"><div class="emoji">🔁</div><h3>Shortcut</h3><p><b>REPEAT 4 × UP</b></p></div>
+</div></div></section>
+
+<section class="section"><h2>🧠 2. Technology Words We Need</h2><div class="body"><span class="phase">8–18 min</span>
+<div class="cards">
+<div class="card"><div class="emoji">🗺️</div><h3>Algorithm</h3><p class="lang-en">A set of steps to complete a task.</p><p class="lang-es">Un conjunto de pasos para cumplir una tarea.</p></div>
+<div class="card"><div class="emoji">➡️</div><h3>Sequence</h3><p class="lang-en">Instructions in the correct order.</p><p class="lang-es">Instrucciones en el orden correcto.</p></div>
+<div class="card"><div class="emoji">🔁</div><h3>Loop</h3><p class="lang-en">Repeats instructions without writing them many times.</p><p class="lang-es">Repite instrucciones sin escribirlas muchas veces.</p></div>
+<div class="card"><div class="emoji">👁️</div><h3>Sensor</h3><p class="lang-en">Helps technology notice information around it.</p><p class="lang-es">Ayuda a la tecnología a detectar información a su alrededor.</p></div>
+</div>
+<div class="success lang-en"><b>Technology connection:</b> Computers and robots follow algorithms. Loops help programmers repeat instructions efficiently. Sensors can act as inputs, and lights, sounds or movement can be outputs.</div>
+<div class="success lang-es"><b>Conexión con tecnología:</b> Las computadoras y los robots siguen algoritmos. Los ciclos ayudan a repetir instrucciones eficientemente. Los sensores pueden ser entradas y las luces, sonidos o movimientos pueden ser salidas.</div>
+<div class="book"><b class="lang-en">✏️ Notebook Mission</b><b class="lang-es">✏️ Misión en el cuaderno</b>
+<p class="lang-en">Write today's objective and complete: <b>Algorithm =</b> ___ · <b>Loop =</b> ___ · Draw one device that may use a sensor.</p>
+<p class="lang-es">Escribe el objetivo de hoy y completa: <b>Algoritmo =</b> ___ · <b>Ciclo =</b> ___ · Dibuja un dispositivo que pueda usar un sensor.</p>
+<div class="book-line"></div><div class="book-line"></div>
+</div></div></section>
+
+<section class="section"><h2>🎮 3. Smart Robot Delivery Game</h2><div class="body"><span class="phase">18–48 min</span>
+<div class="note lang-en">Help 🤖 reach 📦. Avoid 🧱. Build the algorithm, press RUN and debug if needed. From Level 2 onward, try to use loops to make your program shorter.</div>
+<div class="note lang-es">Ayuda a 🤖 a llegar a 📦. Evita 🧱. Construye el algoritmo, presiona RUN y corrige si es necesario. Desde el Nivel 2 intenta usar ciclos para hacer tu programa más corto.</div>
+<div class="game">
+<div><div id="board" class="board"></div></div>
+<div class="controls">
+<div class="mission" id="mission"></div><div class="stars" id="stars">☆☆☆☆</div>
+<div><span class="badge" id="levelLabel">LEVEL 1</span> <span class="badge" id="movesLabel">0 blocks</span></div>
+<div class="sequence" id="sequence">Your algorithm will appear here.</div>
+<div class="btns no-print"><button class="btn move" data-cmd="U">↑ Up</button><button class="btn move" data-cmd="D">↓ Down</button><button class="btn move" data-cmd="L">← Left</button><button class="btn move" data-cmd="R">→ Right</button><button class="btn loop" data-cmd="X2">🔁 Repeat last ×2</button><button class="btn loop" data-cmd="X3">🔁 Repeat last ×3</button></div>
+<div class="btns no-print" style="margin-top:8px"><button id="run" class="btn run">▶ Run</button><button id="undo" class="btn reset">↩ Undo</button><button id="clear" class="btn clear">Clear</button><button id="reset" class="btn reset">Reset Level</button></div>
+<div id="feedback" class="feedback">Build your first algorithm!</div>
+<div style="margin-top:10px"><b>Mission progress</b><div class="progressbar"><div id="progress" class="progress"></div></div></div>
+</div></div></div></section>
+
+<section class="section"><h2>🏆 4. Programmer's Final Challenge</h2><div class="body"><span class="phase">48–55 min</span>
+<div class="question lang-en">A robot must move forward 5 times. Which algorithm is more efficient?<br><b>A)</b> ↑ ↑ ↑ ↑ ↑ &nbsp;&nbsp; <b>B)</b> 🔁 REPEAT 5 × ↑</div>
+<div class="question lang-es">Un robot debe avanzar 5 veces. ¿Cuál algoritmo es más eficiente?<br><b>A)</b> ↑ ↑ ↑ ↑ ↑ &nbsp;&nbsp; <b>B)</b> 🔁 REPETIR 5 × ↑</div>
+<div class="grid2"><div><label class="lang-en">My answer and why</label><label class="lang-es">Mi respuesta y por qué</label><textarea id="finalAnswer"></textarea></div><div><label class="lang-en">If a sensor detects an obstacle, what could the robot do?</label><label class="lang-es">Si un sensor detecta un obstáculo, ¿qué podría hacer el robot?</label><textarea id="sensorAnswer"></textarea></div></div>
+</div></section>
+
+<section class="section"><h2>💭 5. Exit Ticket</h2><div class="body"><span class="phase">55–60 min</span>
+<div class="grid2"><div><label class="lang-en">Today I learned that a LOOP...</label><label class="lang-es">Hoy aprendí que un CICLO...</label><textarea id="reflection"></textarea></div><div><label class="lang-en">One technology that can use a SENSOR is...</label><label class="lang-es">Una tecnología que puede usar un SENSOR es...</label><textarea id="technology"></textarea></div></div>
+<div class="success lang-en"><b>Mission accomplished:</b> Good programmers do not only make algorithms work — they look for clearer and smarter ways to solve problems.</div>
+<div class="success lang-es"><b>Misión cumplida:</b> Los buenos programadores no solo hacen que los algoritmos funcionen: buscan formas más claras e inteligentes de resolver problemas.</div>
+</div></section>
+</main>
+
+<script>
+function setLang(l){document.body.dataset.lang=l;document.getElementById("en").classList.toggle("active",l==="en");document.getElementById("es").classList.toggle("active",l==="es");localStorage.setItem("g2c4-lang",l);render()}
+document.getElementById("en").onclick=()=>setLang("en");document.getElementById("es").onclick=()=>setLang("es");
+
+const levels=[
+ {start:[4,0],target:[0,0],walls:[[2,2],[3,2]],titleEn:"Level 1 · Sequence",titleEs:"Nivel 1 · Secuencia",hintEn:"Reach the package using the correct order of steps.",hintEs:"Llega al paquete usando los pasos en el orden correcto."},
+ {start:[4,0],target:[0,0],walls:[[1,2],[2,2],[3,2]],titleEn:"Level 2 · Find the repetition",titleEs:"Nivel 2 · Encuentra la repetición",hintEn:"Can a loop make your algorithm shorter?",hintEs:"¿Puede un ciclo hacer tu algoritmo más corto?"},
+ {start:[4,0],target:[0,4],walls:[[3,1],[3,2],[3,3]],titleEn:"Level 3 · Loop route",titleEs:"Nivel 3 · Ruta con ciclos",hintEn:"Go up, then across. Look for repeated moves.",hintEs:"Sube y luego cruza. Busca movimientos repetidos."},
+ {start:[4,0],target:[0,4],walls:[[2,0],[2,1],[2,2],[1,3]],titleEn:"Level 4 · Smart Delivery",titleEs:"Nivel 4 · Entrega inteligente",hintEn:"Plan, use loops, avoid walls and debug.",hintEs:"Planea, usa ciclos, evita muros y corrige."}
+];
+let level=0,commands=[],robot=[...levels[0].start],won=[false,false,false,false];
+
+function expanded(){
+ let out=[];
+ commands.forEach(c=>{
+  if(c==="U"||c==="D"||c==="L"||c==="R")out.push(c);
+  else if(c==="X2"||c==="X3"){
+   if(out.length){let last=out[out.length-1],n=Number(c.slice(1));for(let i=1;i<n;i++)out.push(last)}
+  }
+ });return out
+}
+function render(){
+ const L=levels[level],b=document.getElementById("board");b.innerHTML="";
+ for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+  const d=document.createElement("div");d.className="cell";
+  if(L.walls.some(w=>w[0]===r&&w[1]===c)){d.classList.add("wall");d.textContent="🧱"}
+  if(L.target[0]===r&&L.target[1]===c){d.classList.add("target");d.textContent="📦"}
+  if(robot[0]===r&&robot[1]===c){d.classList.add("robot");d.textContent="🤖"}
+  b.appendChild(d)
+ }
+ const lang=document.body.dataset.lang;
+ document.getElementById("mission").textContent=(lang==="en"?L.titleEn+": "+L.hintEn:L.titleEs+": "+L.hintEs);
+ document.getElementById("levelLabel").textContent=(lang==="en"?"LEVEL ":"NIVEL ")+(level+1);
+ const icons={U:"↑",D:"↓",L:"←",R:"→",X2:"🔁×2",X3:"🔁×3"};
+ document.getElementById("sequence").textContent=commands.length?commands.map(x=>icons[x]).join("  "):(lang==="en"?"Your algorithm will appear here.":"Tu algoritmo aparecerá aquí.");
+ document.getElementById("movesLabel").textContent=commands.length+(lang==="en"?" blocks":" bloques");
+ document.getElementById("stars").textContent=won.map(x=>x?"⭐":"☆").join("");
+ document.getElementById("progress").style.width=((won.filter(Boolean).length/4)*100)+"%";
+}
+document.querySelectorAll("[data-cmd]").forEach(x=>x.onclick=()=>{commands.push(x.dataset.cmd);render()});
+document.getElementById("undo").onclick=()=>{commands.pop();render()};
+document.getElementById("clear").onclick=()=>{commands=[];robot=[...levels[level].start];render()};
+document.getElementById("reset").onclick=()=>{commands=[];robot=[...levels[level].start];document.getElementById("feedback").textContent=document.body.dataset.lang==="en"?"Level reset. Try a new algorithm!":"Nivel reiniciado. ¡Prueba un nuevo algoritmo!";render()};
+
+document.getElementById("run").onclick=()=>{
+ const L=levels[level],steps=expanded();robot=[...L.start];let failed=false;
+ for(const s of steps){
+  let [r,c]=robot,n=[r,c];
+  if(s==="U")n=[r-1,c];if(s==="D")n=[r+1,c];if(s==="L")n=[r,c-1];if(s==="R")n=[r,c+1];
+  if(n[0]<0||n[0]>4||n[1]<0||n[1]>4||L.walls.some(w=>w[0]===n[0]&&w[1]===n[1])){failed=true;break}
+  robot=n;
+ }
+ const success=robot[0]===L.target[0]&&robot[1]===L.target[1]&&!failed,lang=document.body.dataset.lang;
+ if(success){
+  won[level]=true;document.getElementById("feedback").textContent=lang==="en"?"⭐ Delivery complete! Your algorithm works.":"⭐ ¡Entrega completa! Tu algoritmo funciona.";render();
+  if(level<levels.length-1)setTimeout(()=>{level++;commands=[];robot=[...levels[level].start];document.getElementById("feedback").textContent=lang==="en"?"New mission unlocked!":"¡Nueva misión desbloqueada!";render()},700)
+ }else{
+  document.getElementById("feedback").textContent=failed?(lang==="en"?"🧱 The robot found an obstacle. Debug your algorithm!":"🧱 El robot encontró un obstáculo. ¡Corrige tu algoritmo!"):(lang==="en"?"🔧 Not there yet. Check the sequence and try again.":"🔧 Aún no llega. Revisa la secuencia e intenta otra vez.");render()
+ }
+};
+
+["finalAnswer","sensorAnswer","reflection","technology"].forEach(id=>{const el=document.getElementById(id);el.value=localStorage.getItem("g2c4-"+id)||"";el.oninput=()=>localStorage.setItem("g2c4-"+id,el.value)});
+setLang(localStorage.getItem("g2c4-lang")||"en");render();
+</script></body></html>

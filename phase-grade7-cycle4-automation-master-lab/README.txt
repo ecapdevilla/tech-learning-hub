@@ -28,3 +28,12 @@ La guía incluye:
 
 Instalar:
 .\phase-grade7-cycle4-automation-master-lab\install-grade7-cycle4-master-lab.ps1
+
+UPDATE:
+- Independent research mission before building
+- Student investigation in Wokwi/Tinkercad
+- Notebook research questions
+- Engineer's Prediction
+- Initial INPUT → PROCESS → OUTPUT hypothesis
+- IF → THEN hypothesis
+- Return-to-hypothesis reflection after simulation

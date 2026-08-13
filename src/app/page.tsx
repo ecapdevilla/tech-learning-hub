@@ -67,7 +67,19 @@ export default function Home() {
         <HomeFeatures />
       </section>
 
-      <footer className="site-footer">
+              <section className="gamification-home-entry">
+          <a href="/gamification" className="feature-card">
+            <span className="feature-icon">🎮</span>
+            <div>
+              <span className="section-kicker">Grades 9–11 · Gamification</span>
+              <h3>Gamification Zone</h3>
+              <p>
+                Logic, debugging, data, web, cybersecurity, databases,
+                AI and IoT. English · Español · French immersion.
+              </p>
+            </div>
+          </a>
+        </section><footer className="site-footer">
         <div className="page-shell">
           Tech Learning Hub · Learn · Practice · Create
         </div>
