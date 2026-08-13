@@ -1,100 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>1st Grade · Quick Game Activities</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1st Grade · Robot Rescue Pro</title>
 <style>
-/* Reuse compact styles from project */
-:root{--navy:#12324a;--blue:#2f7ed8;--green:#2da66f;--yellow:#f4c84a;--ink:#20364a;--muted:#6c8192;--line:#d9e5ee}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(#f6fbfd,#eef5f8);color:var(--ink)}
-.wrap{max-width:900px;margin:24px auto;padding:16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
-.title{display:flex;justify-content:space-between;align-items:center}
-.btn{cursor:pointer;border:0;padding:10px 14px;border-radius:10px;font-weight:800}
-.btn-primary{background:var(--blue);color:#fff}
-.muted{color:var(--muted)}
-.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
-.game{padding:12px;border-radius:10px;border:1px solid #eef6fb;background:#fff}
-</style>
-</head>
-<body>
+:root{--navy:#102f4d;--blue:#2e7be8;--green:#27a86b;--yellow:#ffd45b;--ink:#17324a;--line:#d7e5ef}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:linear-gradient(#f8fcff,#eef6fb);color:var(--ink);line-height:1.55}
+.top{position:sticky;top:0;z-index:20;background:#102f4df2;color:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px}.top button{border:0;border-radius:999px;padding:8px 12px;font-weight:900;cursor:pointer}.active{background:var(--yellow)!important}
+.wrap{max-width:1100px;margin:24px auto 60px;padding:0 16px}.hero{padding:36px;border-radius:30px;color:#fff;background:linear-gradient(135deg,#102f4d,#1e5d88 68%,#2e7be8);box-shadow:0 18px 45px #12324a20}.hero h1{font-size:clamp(38px,6vw,64px);margin:8px 0}.hero p{font-size:19px;max-width:800px}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.meta div{padding:12px;border-radius:15px;background:#ffffff12;border:1px solid #ffffff28}
+.section{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden}.section h2{margin:0;padding:14px 18px;background:linear-gradient(90deg,#edf7ff,#fff);color:var(--navy)}.body{padding:20px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fbfdff}.card .emoji{font-size:38px}.card h3{margin:5px 0;color:var(--navy)}
+.notebook{background:#fff9df;border-left:6px solid var(--yellow);padding:15px;border-radius:10px;margin-top:12px}
+.flow{text-align:center;font-weight:900;background:#eef7ff;padding:16px;border-radius:13px}
+.game{border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(135deg,#f8fbff,#f6fff9)}
+.status{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.pill{padding:9px;border-radius:13px;background:#fff;border:1px solid var(--line);text-align:center;font-weight:900}
+.board{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-width:650px;margin:14px auto}.cell{aspect-ratio:1;border:1px solid #d4e2ec;border-radius:13px;background:#fff;display:grid;place-items:center;font-size:31px}.hole{background:#e7edf2}.star{background:#fff8dc}.goal{background:#e7fff2}
+.sequence{min-height:62px;border:2px dashed #aac0d1;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;padding:10px}.step{width:42px;height:42px;border-radius:11px;background:#eef5ff;display:grid;place-items:center;font-size:24px}
+.controls{display:grid;grid-template-columns:repeat(3,70px);gap:7px;justify-content:center;margin:13px auto}.controls button{height:56px;border:0;border-radius:14px;background:var(--blue);color:white;font-size:24px;cursor:pointer}.blank{visibility:hidden}.actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer}.run{background:var(--green);color:#fff}.reset{background:#61798b;color:#fff}.undo{background:#edf2f6}.new{background:var(--yellow)}
+.feedback{min-height:70px;margin-top:12px;padding:12px;border:1px dashed #a6bccd;border-radius:13px;background:#fff;font-weight:700}
+.lang-en,.lang-es{display:none}body[data-lang=en] .lang-en{display:block}body[data-lang=es] .lang-es{display:block}.inline.lang-en,.inline.lang-es{display:none}body[data-lang=en] .inline.lang-en{display:inline}body[data-lang=es] .inline.lang-es{display:inline}
+@media(max-width:760px){.meta,.cards,.status{grid-template-columns:1fr 1fr}.cell{font-size:24px}}
+</style></head>
+<body data-lang="en">
+<div class="top"><strong>🤖 1st Grade · Robot Rescue</strong><div><button id="en" class="active">🇺🇸 English</button> <button id="es">🇨🇴 Español</button></div></div>
 <main class="wrap">
-  <div class="card">
-    <div class="title"><h1>1st Grade — Robot Rescue</h1><button id="langBtn" class="btn">Español</button></div>
-    <p class="muted">A playful lesson on sequencing and algorithms. Students program a robot with simple steps to rescue the lost teddy.</p>
-  </div>
+<section class="hero"><div>PRIMARY SCHOOL · LEARN + PLAY</div><h1 class="lang-en">Robot Rescue</h1><h1 class="lang-es">Rescate del Robot</h1><p class="lang-en">Learn how an algorithm is a sequence of steps. Think first, plan the route, run it and debug it if something goes wrong.</p><p class="lang-es">Aprende que un algoritmo es una secuencia de pasos. Piensa primero, planea la ruta, ejecútala y corrígela si algo sale mal.</p><div class="meta"><div><strong>Grade</strong><br>1st</div><div><strong>Time</strong><br>25–35 min</div><div><strong>Focus</strong><br>Algorithms</div><div><strong>Skills</strong><br>Plan · Predict · Debug</div></div></section>
 
-  <section class="card">
-    <h2>Goal</h2>
-    <p>Program the robot by choosing a sequence of moves so it reaches the teddy without falling into holes. Each correct rescue gives the team a point.</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
-      <div style="min-width:260px">
-        <div style="background:#f8fbff;border-radius:8px;padding:10px">
-          <strong>Teacher notes</strong>
-          <ul class="muted" style="margin:8px 0 0 16px">
-            <li>Duration: 20–30 minutes</li>
-            <li>Group size: pairs</li>
-            <li>Learning goal: sequencing, prediction, debugging</li>
-          </ul>
-        </div>
-      </div>
-      <div style="flex:1">
-        <div id="grid" style="display:grid;grid-template-columns:repeat(5,54px);gap:6px;padding:10px;background:#fff;border-radius:8px">
-          <!-- 5x3 grid -->
-        </div>
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <button id="left" class="btn">← Left</button>
-          <button id="up" class="btn">↑ Up</button>
-          <button id="down" class="btn">↓ Down</button>
-          <button id="right" class="btn">→ Right</button>
-        </div>
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <button id="addStep" class="btn btn-primary">Add step</button>
-          <button id="run" class="btn btn-primary">Run</button>
-          <button id="reset" class="btn">Reset</button>
-        </div>
-        <div id="sequence" style="margin-top:10px;font-weight:800"></div>
-      </div>
-    </div>
-  </section>
+<section class="section"><h2>🧠 <span class="inline lang-en">Build the idea</span><span class="inline lang-es">Construye la idea</span></h2><div class="body">
+<div class="flow">THINK → PLAN → RUN → CHECK → DEBUG → TRY AGAIN</div>
+<div class="cards" style="margin-top:12px"><div class="card"><div class="emoji">1️⃣2️⃣3️⃣</div><h3>Sequence</h3><p class="lang-en">Steps must be in the correct order.</p><p class="lang-es">Los pasos deben estar en el orden correcto.</p></div><div class="card"><div class="emoji">🤖</div><h3>Algorithm</h3><p class="lang-en">An algorithm is a set of instructions to reach a goal.</p><p class="lang-es">Un algoritmo es un conjunto de instrucciones para alcanzar una meta.</p></div><div class="card"><div class="emoji">🛠️</div><h3>Debug</h3><p class="lang-en">If the plan fails, find the first wrong step and improve it.</p><p class="lang-es">Si el plan falla, encuentra el primer paso incorrecto y mejóralo.</p></div></div>
+<div class="notebook"><b>✍️ <span class="inline lang-en">Notebook / Book activity</span><span class="inline lang-es">Actividad en cuaderno / libro</span>:</b> <span class="lang-en">On the page your teacher indicates, draw a robot and a teddy. Draw 4 squares between them. Write or draw the arrows the robot should follow. Circle the FIRST step.</span><span class="lang-es">En la página que indique tu docente, dibuja un robot y un oso. Dibuja 4 cuadros entre ellos. Escribe o dibuja las flechas que debe seguir el robot. Encierra el PRIMER paso.</span></div>
+</div></section>
 
-  <section class="card">
-    <h2>How to play</h2>
-    <ol class="muted">
-      <li>Choose a team and open the grid.</li>
-      <li>Use the arrow buttons to add up to 6 steps into your sequence.</li>
-      <li>Press <strong>Run</strong> to simulate the robot. If it reaches the teddy, you score.</li>
-      <li>Discuss why a sequence failed and try again (debugging).</li>
-    </ol>
-    <div style="margin-top:8px">
-      <button id="print" class="btn btn-primary">Print teacher cue</button>
-    </div>
-  </section>
+<section class="section"><h2>🎮 <span class="inline lang-en">Robot Rescue Mission</span><span class="inline lang-es">Misión de Rescate</span></h2><div class="body"><div class="game">
+<div class="status"><div class="pill"><span class="lang-en">Points</span><span class="lang-es">Puntos</span><br><span id="points">0</span></div><div class="pill"><span class="lang-en">Level</span><span class="lang-es">Nivel</span><br><span id="level">1</span></div><div class="pill"><span class="lang-en">Stars</span><span class="lang-es">Estrellas</span><br><span id="stars">0/2</span></div><div class="pill"><span class="lang-en">Steps</span><span class="lang-es">Pasos</span><br><span id="steps">0/8</span></div><div class="pill"><span class="lang-en">Best</span><span class="lang-es">Mejor</span><br><span id="best">—</span></div></div>
+<div id="board" class="board"></div><div id="sequence" class="sequence"></div>
+<div class="controls"><button class="blank">•</button><button data-dir="up">⬆️</button><button class="blank">•</button><button data-dir="left">⬅️</button><button data-dir="down">⬇️</button><button data-dir="right">➡️</button></div>
+<div class="actions"><button id="undo" class="btn undo">↩️ <span class="inline lang-en">Undo</span><span class="inline lang-es">Deshacer</span></button><button id="run" class="btn run">▶ RUN</button><button id="reset" class="btn reset">🔄 RESET</button><button id="new" class="btn new">🎲 <span class="inline lang-en">New Mission</span><span class="inline lang-es">Nueva misión</span></button></div>
+<div id="feedback" class="feedback"></div></div></div></section>
 
-  <footer style="margin-top:16px" class="muted">Use these activities to lead a 20–30 minute playful lesson. Adapt difficulty by increasing sequence length.</footer>
+<section class="section"><h2>💭 <span class="inline lang-en">After playing</span><span class="inline lang-es">Después de jugar</span></h2><div class="body"><div class="notebook"><span class="lang-en">Complete orally or in your notebook: 1) My algorithm worked because... 2) I changed this step... 3) Debugging means...</span><span class="lang-es">Completa oralmente o en tu cuaderno: 1) Mi algoritmo funcionó porque... 2) Cambié este paso... 3) Depurar significa...</span></div></div></section>
 </main>
-
 <script>
-// Robot Rescue game logic
-const gridEl = document.getElementById('grid');
-const cols = 5, rows = 3;
-let robotPos = {x:0,y:1};
-let teddyPos = {x:4,y:1};
-let holes = [{x:2,y:0},{x:1,y:2}];
-let seq = [];
-
-function renderGrid(){ gridEl.innerHTML=''; for(let y=0;y<rows;y++){ for(let x=0;x<cols;x++){ const cell=document.createElement('div'); cell.style.width='54px'; cell.style.height='54px'; cell.style.borderRadius='8px'; cell.style.display='flex'; cell.style.alignItems='center'; cell.style.justifyContent='center'; cell.style.fontWeight='700'; cell.style.background='#f1fbff'; if(robotPos.x===x && robotPos.y===y){ cell.textContent='🤖' } else if(teddyPos.x===x && teddyPos.y===y){ cell.textContent='🧸' } else if(holes.some(h=>h.x===x&&h.y===y)){ cell.textContent='🕳️' } gridEl.appendChild(cell) }} }
-
-function updateSequenceDisplay(){ document.getElementById('sequence').textContent = seq.join(' → '); }
-
-['left','up','down','right'].forEach(id=>{ document.getElementById(id).addEventListener('click',()=>{ document.getElementById(id).classList.add('active'); }) });
-document.getElementById('addStep').addEventListener('click',()=>{ const activeBtns = Array.from(document.querySelectorAll('.btn.active')).map(b=>b.id); if(activeBtns.length===0){ alert('Select a direction first'); return } if(seq.length>=6){ alert('Max 6 steps') ; return } seq.push(activeBtns[0]); document.querySelectorAll('.btn.active').forEach(b=>b.classList.remove('active')); updateSequenceDisplay(); });
-document.getElementById('reset').addEventListener('click',()=>{ seq=[]; updateSequenceDisplay(); renderGrid(); });
-document.getElementById('run').addEventListener('click',()=>{ if(seq.length===0){ alert('Add steps first'); return } let pos={...robotPos}; let failed=false; for(let s of seq){ if(s==='left') pos.x--; if(s==='right') pos.x++; if(s==='up') pos.y--; if(s==='down') pos.y++; if(pos.x<0||pos.x>=cols||pos.y<0||pos.y>=rows){ failed=true; break } if(holes.some(h=>h.x===pos.x&&h.y===pos.y)){ failed=true; break } } if(!failed && pos.x===teddyPos.x && pos.y===teddyPos.y){ alert('Nice! You rescued the teddy 🎉') } else { alert('Try again — debug the sequence') } });
-document.getElementById('print').addEventListener('click',()=>{ window.print(); });
-document.getElementById('langBtn').addEventListener('click',()=>{ location.href='/guides/grade-01/quick-games-es.html' });
-
-renderGrid(); updateSequenceDisplay();
-</script>
-</body>
-</html>
+const S={lang:"en",robot:0,teddy:29,holes:[],stars:[],collected:[],seq:[],points:0,level:1,running:false,best:null};
+const D={up:{d:-6,i:"⬆️"},down:{d:6,i:"⬇️"},left:{d:-1,i:"⬅️"},right:{d:1,i:"➡️"}};const t=(a,b)=>S.lang==="en"?a:b;
+function setLang(l){S.lang=l;document.body.dataset.lang=l;document.getElementById("en").classList.toggle("active",l==="en");document.getElementById("es").classList.toggle("active",l==="es");renderSeq();msg(t("Build a sequence, predict, then press RUN.","Construye una secuencia, predice y luego presiona RUN."))}
+function mission(){S.robot=0;S.seq=[];S.collected=[];const a=[2,3,4,7,8,9,10,13,14,15,16,19,20,21,22,25,26,27].sort(()=>Math.random()-.5);const n=S.level===1?3:S.level===2?4:5;S.holes=a.slice(0,n);S.stars=a.slice(n).slice(0,2);render();msg(t("New mission! Think before you press RUN.","¡Nueva misión! Piensa antes de presionar RUN."))}
+function add(x){if(S.running)return;const max=S.level===1?8:S.level===2?9:10;if(S.seq.length<max){S.seq.push(x);renderSeq()}}
+function valid(p,x){let r=Math.floor(p/6),c=p%6;if(x==="up"&&r===0||x==="down"&&r===4||x==="left"&&c===0||x==="right"&&c===5)return p;return p+D[x].d}
+async function run(){if(S.running||!S.seq.length)return;S.running=true;S.robot=0;S.collected=[];render();for(let i=0;i<S.seq.length;i++){S.robot=valid(S.robot,S.seq[i]);render();await new Promise(r=>setTimeout(r,380));if(S.holes.includes(S.robot)){msg(t(`Oops! The plan failed at step ${i+1}. Find the first wrong step.`,`¡Ups! El plan falló en el paso ${i+1}. Encuentra el primer paso incorrecto.`));S.running=false;return}if(S.stars.includes(S.robot)&&!S.collected.includes(S.robot))S.collected.push(S.robot);if(S.robot===S.teddy){S.points+=1+S.collected.length;if(S.best===null||S.seq.length<S.best)S.best=S.seq.length;if(S.level<3)S.level++;msg(t("🎉 Rescue complete! Your algorithm worked.","🎉 ¡Rescate completo! Tu algoritmo funcionó."));S.running=false;render();return}}msg(t("The teddy is still waiting. Debug your algorithm.","El oso sigue esperando. Depura tu algoritmo."));S.running=false}
+function render(){const b=document.getElementById("board");b.innerHTML="";for(let i=0;i<30;i++){let c=document.createElement("div");c.className="cell";if(S.holes.includes(i)){c.classList.add("hole");c.textContent="🕳️"}if(S.stars.includes(i)&&!S.collected.includes(i)){c.classList.add("star");c.textContent="⭐"}if(i===S.teddy){c.classList.add("goal");c.textContent="🧸"}if(i===S.robot)c.textContent="🤖";b.appendChild(c)}document.getElementById("points").textContent=S.points;document.getElementById("level").textContent=S.level;document.getElementById("stars").textContent=`${S.collected.length}/2`;document.getElementById("best").textContent=S.best??"—";renderSeq()}
+function renderSeq(){let b=document.getElementById("sequence");b.innerHTML="";if(!S.seq.length)b.textContent=t("Your sequence will appear here","Tu secuencia aparecerá aquí");else S.seq.forEach(x=>{let s=document.createElement("span");s.className="step";s.textContent=D[x].i;b.appendChild(s)});document.getElementById("steps").textContent=`${S.seq.length}/${S.level===1?8:S.level===2?9:10}`}
+function msg(x){document.getElementById("feedback").textContent=x}
+document.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>add(b.dataset.dir));document.getElementById("undo").onclick=()=>{S.seq.pop();renderSeq()};document.getElementById("run").onclick=run;document.getElementById("reset").onclick=()=>{S.robot=0;S.collected=[];render()};document.getElementById("new").onclick=mission;document.getElementById("en").onclick=()=>setLang("en");document.getElementById("es").onclick=()=>setLang("es");mission();
+</script></body></html>

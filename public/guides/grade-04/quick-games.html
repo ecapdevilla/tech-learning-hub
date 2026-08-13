@@ -1,81 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>4th Grade · Game-based Lessons</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>4th Grade · EcoBot Mission Control</title>
 <style>
-/* Reuse compact styles */
-:root{--navy:#12324a;--blue:#2f7ed8;--green:#2da66f;--yellow:#f4c84a;--ink:#20364a;--muted:#6c8192;--line:#d9e5ee}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(#f6fbfd,#eef5f8);color:var(--ink)}
-.wrap{max-width:900px;margin:24px auto;padding:16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
-.btn{cursor:pointer;border:0;padding:10px 14px;border-radius:10px;font-weight:800}
-.btn-primary{background:var(--green);color:#fff}
-.muted{color:var(--muted)}
-.activities{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
-</style>
-</head>
-<body>
+:root{--navy:#10233f;--blue:#2367e8;--green:#138a67;--cyan:#0aa6c2;--gold:#ffc947;--ink:#17243a;--line:#d9e3ef}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:linear-gradient(#f7fbff,#eff6f4);color:var(--ink);line-height:1.58}.top{position:sticky;top:0;z-index:20;background:#10233ff2;color:white;padding:10px 18px;display:flex;justify-content:space-between;align-items:center}.top button{border:0;border-radius:999px;padding:8px 13px;font-weight:900;cursor:pointer}.active{background:var(--gold)!important}
+.wrap{max-width:1120px;margin:24px auto 60px;padding:0 16px}.hero{padding:38px;border-radius:30px;color:#fff;background:linear-gradient(135deg,#10233f,#175a7f 62%,#0aa6c2);box-shadow:0 18px 45px #10233f20}.hero h1{font-size:clamp(38px,6vw,62px);margin:8px 0}.hero p{font-size:19px;max-width:850px}.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.meta div{padding:12px;border-radius:15px;background:#ffffff12;border:1px solid #ffffff28}
+.section{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden}.section h2{margin:0;padding:14px 18px;background:linear-gradient(90deg,#edf7ff,#fff);color:var(--navy)}.body{padding:20px}
+.flow{text-align:center;font-weight:900;padding:16px;border-radius:13px;background:#eef7ff}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fbfdff}.card .emoji{font-size:34px}.card h3{margin:4px 0;color:#16498d}
+.notebook{background:#fff9df;border-left:6px solid var(--gold);padding:14px;border-radius:10px;margin-top:12px}.game{border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(135deg,#f8fbff,#f4fff9)}
+.status{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.pill{background:#fff;border:1px solid var(--line);border-radius:13px;padding:9px;text-align:center;font-weight:900}
+.board{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:700px;margin:14px auto}.cell{aspect-ratio:1;border:1px solid #d5e0eb;border-radius:11px;background:white;display:grid;place-items:center;font-size:27px}.wall{background:#dfe7ec}.sensor{background:#e7f7ff}.energy{background:#fff8d9}.goal{background:#e8fff2}
+.program{min-height:70px;border:2px dashed #aabed0;background:#fff;border-radius:13px;padding:10px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;justify-content:center}.cmd{padding:8px 10px;border-radius:10px;background:#edf4ff;border:1px solid #c9dcf5;font-family:Consolas,monospace;font-weight:800}
+.palette{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:12px}.palette button{border:0;border-radius:11px;padding:10px 12px;background:#2367e8;color:#fff;font-weight:900;cursor:pointer}.palette .logic{background:#7b5cd6}.palette .loop{background:#138a67}
+.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer}.run{background:#138a67;color:white}.clear{background:#60788b;color:white}.new{background:var(--gold)}
+.feedback{min-height:76px;margin-top:12px;padding:13px;border:1px dashed #a4bacd;border-radius:13px;background:white;font-weight:700}
+.challenge{border-left:6px solid var(--blue);background:#f6f9ff;padding:14px;border-radius:10px;margin-top:12px}.code{font-family:Consolas,monospace;background:#142033;color:#eaf2ff;border-radius:10px;padding:13px;white-space:pre-wrap}
+.lang-en,.lang-es{display:none}body[data-lang=en] .lang-en{display:block}body[data-lang=es] .lang-es{display:block}.inline.lang-en,.inline.lang-es{display:none}body[data-lang=en] .inline.lang-en{display:inline}body[data-lang=es] .inline.lang-es{display:inline}
+@media(max-width:760px){.meta,.cards,.status{grid-template-columns:1fr 1fr}.cell{font-size:21px}}
+</style></head>
+<body data-lang="en">
+<div class="top"><strong>🌱 4th Grade · EcoBot Mission Control</strong><div><button id="en" class="active">🇺🇸 English</button> <button id="es">🇨🇴 Español</button></div></div>
 <main class="wrap">
-  <div class="card title"><h1>4th Grade — Color Capture</h1><button id="langBtn" class="btn">Español</button></div>
-  <section class="card">
-    <h2>Lesson focus: Conditionals & Sorting</h2>
-    <p class="muted">A competitive game where students write simple rules to collect colored tokens and score points. Encourages conditionals and comparisons.</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
-      <div style="min-width:300px">
-        <strong>Teacher guide</strong>
-        <ul class="muted" style="margin:8px 0 0 16px">
-          <li>Duration: 30–40 minutes</li>
-          <li>Skills: conditionals, sorting, algorithms</li>
-          <li>Materials: colored cards or tokens</li>
-        </ul>
-      </div>
-      <div style="flex:1">
-        <div id="board" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-        <div style="margin-top:8px">Select rule: <select id="ruleSelect"><option value="any">Collect any color</option><option value="red">Collect red only</option><option value="blue">Collect blue only</option><option value="odd">Collect odd-position tokens</option></select></div>
-        <div style="margin-top:8px;display:flex;gap:8px"><button id="startGame" class="btn btn-primary">Start round</button><button id="scoreBoard" class="btn">Show scoring</button></div>
-      </div>
-    </div>
-  </section>
+<section class="hero"><div>PRIMARY SCHOOL · LOGIC CHALLENGE</div><h1>EcoBot Mission Control</h1><p class="lang-en">Program an EcoBot that senses its environment, makes decisions and repeats actions. Build the logic before pressing RUN.</p><p class="lang-es">Programa un EcoBot que detecta su entorno, toma decisiones y repite acciones. Construye la lógica antes de presionar RUN.</p><div class="meta"><div><strong>Grade</strong><br>4th</div><div><strong>Time</strong><br>30–40 min</div><div><strong>Focus</strong><br>Conditions + Loops</div><div><strong>Skills</strong><br>Predict · Test · Debug</div></div></section>
 
-  <section class="card">
-    <h2>How to play</h2>
-    <ol class="muted">
-      <li>Choose a rule from the dropdown (teacher can change per round).</li>
-      <li>Students work in teams to write the rule in plain language and predict which tokens will be collected.</li>
-      <li>Press <strong>Start round</strong> — tokens are revealed; teams check predictions and score points.</li>
-    </ol>
-    <div style="margin-top:8px">
-      <button id="print" class="btn btn-primary">Print teacher checklist</button>
-    </div>
-  </section>
+<section class="section"><h2>🧠 <span class="inline lang-en">Build the knowledge</span><span class="inline lang-es">Construye el conocimiento</span></h2><div class="body">
+<div class="flow">SENSOR → CONDITION → DECISION → ACTION → LOOP</div>
+<div class="cards" style="margin-top:12px"><div class="card"><div class="emoji">👁️</div><h3>Sensor</h3><p class="lang-en">Detects something in the environment.</p><p class="lang-es">Detecta algo en el entorno.</p></div><div class="card"><div class="emoji">❓</div><h3>Condition</h3><p class="lang-en">Checks if something is true or false.</p><p class="lang-es">Comprueba si algo es verdadero o falso.</p></div><div class="card"><div class="emoji">⚡</div><h3>Action</h3><p class="lang-en">What the robot does after deciding.</p><p class="lang-es">Lo que hace el robot después de decidir.</p></div><div class="card"><div class="emoji">🔁</div><h3>Loop</h3><p class="lang-en">Repeats instructions efficiently.</p><p class="lang-es">Repite instrucciones de forma eficiente.</p></div></div>
+<div class="notebook"><b>✍️ <span class="inline lang-en">Notebook / Book activity</span><span class="inline lang-es">Actividad en cuaderno / libro</span>:</b> <span class="lang-en">On the page your teacher indicates, draw this chain: SENSOR → CONDITION → ACTION. Invent one example from real life. Then write: “A loop helps because...”</span><span class="lang-es">En la página que indique tu docente, dibuja esta cadena: SENSOR → CONDICIÓN → ACCIÓN. Inventa un ejemplo de la vida real. Luego escribe: “Un ciclo ayuda porque...”</span></div>
+</div></section>
+
+<section class="section"><h2>🔎 <span class="inline lang-en">Think before coding</span><span class="inline lang-es">Piensa antes de programar</span></h2><div class="body">
+<div class="challenge"><b>Challenge A</b><div class="code">IF sensor detects trash
+THEN collect trash</div><p class="lang-en">What is the sensor information? What is the action?</p><p class="lang-es">¿Cuál es la información del sensor? ¿Cuál es la acción?</p></div>
+<div class="challenge"><b>Challenge B</b><div class="code">REPEAT 3 TIMES
+  MOVE FORWARD</div><p class="lang-en">How many moves happen? Why is the loop useful?</p><p class="lang-es">¿Cuántos movimientos ocurren? ¿Por qué es útil el ciclo?</p></div>
+</div></section>
+
+<section class="section"><h2>🎮 EcoBot Mission</h2><div class="body"><div class="game">
+<div class="status"><div class="pill"><span class="lang-en">Score</span><span class="lang-es">Puntaje</span><br><span id="score">0</span></div><div class="pill"><span class="lang-en">Level</span><span class="lang-es">Nivel</span><br><span id="level">1</span></div><div class="pill"><span class="lang-en">Energy</span><span class="lang-es">Energía</span><br><span id="energy">5</span></div><div class="pill"><span class="lang-en">Trash</span><span class="lang-es">Residuos</span><br><span id="trash">0/2</span></div><div class="pill"><span class="lang-en">Commands</span><span class="lang-es">Comandos</span><br><span id="count">0/10</span></div></div>
+<div id="board" class="board"></div><div id="program" class="program"></div>
+<div class="palette"><button data-cmd="up">↑ MOVE</button><button data-cmd="left">← MOVE</button><button data-cmd="down">↓ MOVE</button><button data-cmd="right">→ MOVE</button><button data-cmd="collect" class="logic">IF TRASH → COLLECT</button><button data-cmd="loop2" class="loop">REPEAT 2</button></div>
+<div class="actions"><button id="run" class="btn run">▶ RUN</button><button id="undo" class="btn clear">↩ UNDO</button><button id="clear" class="btn clear">CLEAR</button><button id="new" class="btn new">🎲 <span class="inline lang-en">New Mission</span><span class="inline lang-es">Nueva misión</span></button></div>
+<div id="feedback" class="feedback"></div></div></div></section>
+
+<section class="section"><h2>💭 <span class="inline lang-en">Reflect & explain</span><span class="inline lang-es">Reflexiona y explica</span></h2><div class="body"><div class="notebook"><span class="lang-en">After playing, write 3 short sentences: 1) The sensor helped because... 2) My conditional did... 3) I used / could use a loop when...</span><span class="lang-es">Después de jugar, escribe 3 frases cortas: 1) El sensor ayudó porque... 2) Mi condicional hizo... 3) Usé / podría usar un ciclo cuando...</span></div></div></section>
 </main>
-
 <script>
-// Color Capture game logic
-const board = document.getElementById('board');
-const colors = ['red','blue','yellow','green','red','blue','yellow','green'];
-
-function renderBoard(){ board.innerHTML=''; for(let i=0;i<8;i++){ const token=document.createElement('div'); token.style.width='60px'; token.style.height='60px'; token.style.borderRadius='8px'; token.style.background=colors[i]; token.style.display='flex'; token.style.alignItems='center'; token.style.justifyContent='center'; token.style.color='#fff'; token.style.fontWeight='800'; token.textContent = i+1; board.appendChild(token) } }
-
-document.getElementById('startGame').addEventListener('click',()=>{
-  const rule = document.getElementById('ruleSelect').value;
-  // reveal tokens and compute winners
-  let collected = [];
-  for(let i=0;i<colors.length;i++){
-    const c = colors[i];
-    if(rule==='any') collected.push(i+1);
-    if(rule==='red' && c==='red') collected.push(i+1);
-    if(rule==='blue' && c==='blue') collected.push(i+1);
-    if(rule==='odd' && ((i+1)%2===1)) collected.push(i+1);
-  }
-  alert('Collected tokens: ' + collected.join(', '));
-});
-
-document.getElementById('print').addEventListener('click',()=>{ window.print(); });
-document.getElementById('langBtn').addEventListener('click',()=>{ location.href='/guides/grade-04/quick-games-es.html' });
-
-renderBoard();
-</script>
-</body>
-</html>
+const S={lang:"en",pos:0,goal:48,walls:[],trash:[],collected:[],energyCells:[],energy:5,program:[],score:0,level:1,running:false};
+const t=(a,b)=>S.lang==="en"?a:b;const moveMap={up:-7,down:7,left:-1,right:1};
+function setLang(l){S.lang=l;document.body.dataset.lang=l;document.getElementById("en").classList.toggle("active",l==="en");document.getElementById("es").classList.toggle("active",l==="es");renderProgram();msg(t("Build the logic, predict the result, then press RUN.","Construye la lógica, predice el resultado y luego presiona RUN."))}
+function mission(){S.pos=0;S.program=[];S.collected=[];S.energy=5;const pool=[2,3,4,8,9,10,11,15,16,17,18,22,23,24,25,29,30,31,32,36,37,38,39,43,44,45,46].sort(()=>Math.random()-.5);S.walls=pool.slice(0,S.level+3);S.trash=pool.slice(S.level+3,S.level+5);S.energyCells=pool.slice(S.level+5,S.level+7);render();msg(t("Mission: collect 2 trash items and reach the green station.","Misión: recoge 2 residuos y llega a la estación verde."))}
+function add(c){if(S.running||S.program.length>=10)return;S.program.push(c);renderProgram()}
+function valid(p,c){let r=Math.floor(p/7),col=p%7;if(c==="up"&&r===0||c==="down"&&r===6||c==="left"&&col===0||c==="right"&&col===6)return p;let n=p+moveMap[c];return S.walls.includes(n)?p:n}
+async function run(){if(S.running||!S.program.length)return;S.running=true;S.pos=0;S.collected=[];S.energy=5;render();let expanded=[];for(let c of S.program){if(c==="loop2"){let last=expanded[expanded.length-1];if(last&&["up","down","left","right"].includes(last))expanded.push(last)}else expanded.push(c)}
+for(let i=0;i<expanded.length;i++){let c=expanded[i];if(["up","down","left","right"].includes(c)){if(S.energy<=0){msg(t("No energy! Debug the route or collect energy.","¡Sin energía! Depura la ruta o recoge energía."));S.running=false;return}S.pos=valid(S.pos,c);S.energy--;if(S.energyCells.includes(S.pos))S.energy+=3}else if(c==="collect"){if(S.trash.includes(S.pos)&&!S.collected.includes(S.pos))S.collected.push(S.pos)}render();await new Promise(r=>setTimeout(r,350));}
+if(S.pos===S.goal&&S.collected.length===2){S.score+=10;S.level=Math.min(3,S.level+1);msg(t("🌟 Mission complete! Your logic controlled the EcoBot.","🌟 ¡Misión cumplida! Tu lógica controló el EcoBot."))}else msg(t("Mission incomplete. Check conditions, energy and route. Debug it.","Misión incompleta. Revisa condiciones, energía y ruta. Depúrala."));S.running=false;render()}
+function render(){let b=document.getElementById("board");b.innerHTML="";for(let i=0;i<49;i++){let c=document.createElement("div");c.className="cell";if(S.walls.includes(i)){c.classList.add("wall");c.textContent="🪨"}if(S.trash.includes(i)&&!S.collected.includes(i)){c.classList.add("sensor");c.textContent="♻️"}if(S.energyCells.includes(i)){c.classList.add("energy");c.textContent="🔋"}if(i===S.goal){c.classList.add("goal");c.textContent="🌳"}if(i===S.pos)c.textContent="🤖";b.appendChild(c)}document.getElementById("score").textContent=S.score;document.getElementById("level").textContent=S.level;document.getElementById("energy").textContent=S.energy;document.getElementById("trash").textContent=`${S.collected.length}/2`;renderProgram()}
+function renderProgram(){let p=document.getElementById("program");p.innerHTML="";if(!S.program.length)p.textContent=t("Your program will appear here","Tu programa aparecerá aquí");else S.program.forEach(c=>{let s=document.createElement("span");s.className="cmd";s.textContent={up:"↑ MOVE",down:"↓ MOVE",left:"← MOVE",right:"→ MOVE",collect:"IF TRASH → COLLECT",loop2:"REPEAT 2"}[c];p.appendChild(s)});document.getElementById("count").textContent=`${S.program.length}/10`}
+function msg(x){document.getElementById("feedback").textContent=x}
+document.querySelectorAll("[data-cmd]").forEach(b=>b.onclick=()=>add(b.dataset.cmd));document.getElementById("run").onclick=run;document.getElementById("undo").onclick=()=>{S.program.pop();renderProgram()};document.getElementById("clear").onclick=()=>{S.program=[];renderProgram()};document.getElementById("new").onclick=mission;document.getElementById("en").onclick=()=>setLang("en");document.getElementById("es").onclick=()=>setLang("es");mission();
+</script></body></html>
