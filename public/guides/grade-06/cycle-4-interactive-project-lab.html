@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>6th Grade · Cycle 4 · Interactive Project Lab PRO</title>
+<style>
+:root{--navy:#0f2742;--blue:#2868e8;--cyan:#12a0b5;--green:#148765;--gold:#f4c451;--ink:#1b2d42;--muted:#6e8190;--line:#d9e4ee;--soft:#f6f9fc}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:linear-gradient(#f8fbfe,#eef5f9);color:var(--ink);line-height:1.55}
+.top{position:sticky;top:0;z-index:20;background:#0f2742f2;color:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 16px #0002}
+.top button{border:0;border-radius:999px;padding:8px 12px;font-weight:900;cursor:pointer}.active{background:var(--gold)!important;color:#2b2300}
+.wrap{max-width:1150px;margin:24px auto 70px;padding:0 16px}.hero{padding:40px;border-radius:30px;color:#fff;background:linear-gradient(135deg,#0f2742,#1e5a84 62%,#12a0b5);box-shadow:0 18px 45px #14324a20}
+.hero h1{font-size:clamp(38px,5vw,62px);margin:8px 0;line-height:1}.hero p{font-size:19px;max-width:860px}.meta{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}.meta div{padding:12px;border-radius:15px;background:#ffffff12;border:1px solid #ffffff2a}
+.section{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 10px 28px #142d440b}.section h2{margin:0;padding:14px 18px;background:linear-gradient(90deg,#edf7ff,#fff);color:var(--navy)}.body{padding:20px}
+.academic-card{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}.academic-card>div{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fbfdff}
+.objective{background:#fff9df;border-left:6px solid var(--gold);padding:15px;border-radius:10px}.flow{text-align:center;font-weight:900;padding:16px;border-radius:13px;background:#eef7ff}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.time{border:1px solid var(--line);border-radius:15px;padding:14px;background:#fbfdff}.time strong{color:var(--blue)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fbfdff}.card[data-project]{cursor:pointer}.card.selected{border:2px solid var(--blue);background:#eef6ff}.emoji{font-size:35px}
+label{font-weight:800;display:block;margin:12px 0 5px}input[type=text],input[type=date],textarea,select{width:100%;border:1px solid #b9cad8;border-radius:11px;padding:11px;font:inherit;background:#fff}textarea{min-height:88px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff}
+.code{background:#142033;color:#ecf6ff;border-radius:14px;padding:15px;font-family:Consolas,monospace;white-space:pre-wrap}.callout{background:#fff9df;border-left:6px solid var(--gold);padding:14px;border-radius:10px}.successbox{background:#eefaf5;border-left:6px solid var(--green);padding:14px;border-radius:10px}
+.progressbar{height:15px;background:#e6edf3;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--green),#35b78f);transition:.2s}.progress-label{display:flex;justify-content:space-between;font-weight:800}
+.rubric{width:100%;border-collapse:collapse;margin-top:12px}.rubric th,.rubric td{border:1px solid var(--line);padding:9px;text-align:left}.rubric th{background:var(--navy);color:#fff}.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef4ff;color:#1d4f9f;font-size:13px;font-weight:800}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}.btn{border:0;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}.primary{background:var(--blue);color:white}.success{background:var(--green);color:white}.dark{background:var(--navy);color:white}.gold{background:var(--gold);color:#3b2e00}
+.evidence-card{border:2px solid #bed0e0;background:#fbfdff;border-radius:18px;padding:18px}.signature{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:15px}.signature div{border-top:1px solid #8295a6;padding-top:6px;color:#607180}
+.lang-en,.lang-es{display:none}body[data-lang=en] .lang-en{display:block}body[data-lang=es] .lang-es{display:block}.inline.lang-en,.inline.lang-es{display:none}body[data-lang=en] .inline.lang-en{display:inline}body[data-lang=es] .inline.lang-es{display:inline}
+@media(max-width:900px){.meta,.cards,.academic-card,.timeline,.grid2,.checkgrid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.meta,.cards,.academic-card,.timeline,.grid2,.checkgrid{grid-template-columns:1fr}}
+@media print{.top,.no-print{display:none!important}body{background:#fff}.wrap{max-width:none;margin:0;padding:0}.section,.hero{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body data-lang="en">
+<div class="top"><strong>💻 Tech Learning Hub · 6th Grade · Cycle 4</strong><div><button id="en" class="active">🇺🇸 English</button> <button id="es">🇨🇴 Español</button></div></div>
+
+<main class="wrap">
+<section class="hero">
+<div>TECHNOLOGY & ROBOTICS · THIRD PERIOD · CYCLE 4</div>
+<h1 class="lang-en">Interactive Project Lab PRO</h1><h1 class="lang-es">Laboratorio de Proyecto Interactivo PRO</h1>
+<p class="lang-en">From idea to evidence: plan, build, test, debug and document an interactive project using variables, conditionals and loops.</p>
+<p class="lang-es">De la idea a la evidencia: planea, construye, prueba, depura y documenta un proyecto interactivo usando variables, condicionales y ciclos.</p>
+<div class="meta"><div><b>Grade</b><br>6th</div><div><b>Duration</b><br>120 min</div><div><b>Period</b><br>3</div><div><b>Cycle</b><br>4</div><div><b>Evidence</b><br>Digital</div></div>
+</section>
+
+<section class="section"><h2>📘 Academic Record / Ficha Académica</h2><div class="body academic-card">
+<div><b>Subject / Asignatura</b><br>Technology & Robotics</div><div><b>Cycle</b><br>4</div><div><b>Period</b><br>3</div>
+<div><b>Learning focus</b><br>Variables · Conditions · Loops</div><div><b>Advanced challenge</b><br>Lists / Arrays</div><div><b>Evidence type</b><br>Project log + Reflection</div>
+</div></section>
+
+<section class="section"><h2>🎯 Learning Objective</h2><div class="body">
+<div class="objective lang-en">By the end of class, students will have selected, planned and started an interactive project applying at least variables, conditionals and loops, documenting the process as academic evidence.</div>
+<div class="objective lang-es">Al finalizar la clase, los estudiantes habrán seleccionado, planeado e iniciado un proyecto interactivo aplicando como mínimo variables, condicionales y ciclos, documentando el proceso como evidencia académica.</div>
+<div class="flow" style="margin-top:14px">IDEA → PLAN → BUILD → TEST → DEBUG → DOCUMENT → SHARE</div>
+</div></section>
+
+<section class="section"><h2>⏱️ 120-Minute Learning Path</h2><div class="body timeline">
+<div class="time"><strong>0–20 min</strong><br><b>CONNECT</b><br>Prior knowledge · project choice · objective.</div>
+<div class="time"><strong>20–105 min</strong><br><b>CREATE</b><br>Plan · build · test · debug · improve.</div>
+<div class="time"><strong>105–120 min</strong><br><b>DOCUMENT & SHARE</b><br>Progress · feedback · reflection · evidence.</div>
+</div></section>
+
+<section class="section"><h2>👤 Student Information</h2><div class="body grid2">
+<div><label>Full Name / Nombre completo</label><input id="student" type="text"></div>
+<div><label>Date / Fecha</label><input id="date" type="date"></div>
+<div><label>Course / Curso</label><input id="course" type="text" value="6th Grade"></div>
+<div><label>Partner / Compañero(a)</label><input id="partner" type="text"></div>
+</div></section>
+
+<section class="section"><h2>💡 1. Project Selection</h2><div class="body">
+<div class="cards">
+<div class="card" data-project="Quiz Game"><div class="emoji">❓</div><b>Quiz Game</b><p>Questions + score + feedback.</p><span class="badge">Medium</span></div>
+<div class="card" data-project="Interactive Calculator"><div class="emoji">🧮</div><b>Interactive Calculator</b><p>Input + operations + result.</p><span class="badge">Easy</span></div>
+<div class="card" data-project="Story Generator"><div class="emoji">📖</div><b>Story Generator</b><p>User choices build a story.</p><span class="badge">Advanced</span></div>
+<div class="card" data-project="Clicker Game"><div class="emoji">🎯</div><b>Clicker Game</b><p>Click + score + goal.</p><span class="badge">Medium</span></div>
+</div>
+<input id="project" type="hidden">
+<label>Why did you choose this project? / ¿Por qué elegiste este proyecto?</label><textarea id="why"></textarea>
+</div></section>
+
+<section class="section"><h2>🧠 2. Planning Before Coding</h2><div class="body">
+<div class="callout"><b>Engineering habit:</b> Good programmers do not start by typing. They first understand the problem, define variables and decide how the user will interact.</div>
+<label>Project goal / Objetivo del proyecto</label><textarea id="goal"></textarea>
+<div class="grid2"><div><label>Variable 1</label><input id="v1" type="text"></div><div><label>Variable 2</label><input id="v2" type="text"></div></div>
+<label>User interaction / Interacción del usuario</label><textarea id="interaction"></textarea>
+<label>Important condition / Condición importante</label><textarea id="condition"></textarea>
+</div></section>
+
+<section class="section"><h2>🧩 3. Programming Structures</h2><div class="body">
+<div class="cards">
+<div class="card"><div class="emoji">📦</div><b>Variable</b><p>Stores information that can change.</p></div>
+<div class="card"><div class="emoji">🔀</div><b>Conditional</b><p>Checks a decision: IF true → action.</p></div>
+<div class="card"><div class="emoji">🔁</div><b>Loop</b><p>Repeats instructions efficiently.</p></div>
+<div class="card"><div class="emoji">📚</div><b>List / Array</b><p>Stores several related values.</p></div>
+</div>
+<div class="checkgrid" style="margin-top:14px">
+<label class="check"><input class="structure" type="checkbox" value="Variables"> Variables</label>
+<label class="check"><input class="structure" type="checkbox" value="Conditionals"> Conditionals</label>
+<label class="check"><input class="structure" type="checkbox" value="Loops"> Loops</label>
+<label class="check"><input class="structure" type="checkbox" value="Arrays"> Arrays ⭐ Challenge</label>
+</div>
+</div></section>
+
+<section class="section"><h2>🛠️ 4. Build Logic</h2><div class="body">
+<h3>STEP 1 · Variable + interaction</h3><div class="code">when green flag clicked
+set [score] to [0]
+ask [What is your name?] and wait
+say (join [Hello ] (answer)) for [2] seconds</div>
+<h3>STEP 2 · Condition + loop</h3><div class="code">repeat [3]
+  ask [2 + 2 = ?] and wait
+  if &lt;(answer) = [4]&gt; then
+    change [score] by [1]
+    say [Correct!]
+  else
+    say [Try again!]
+  end
+end</div>
+<h3>STEP 3 · Advanced list challenge</h3><div class="code">create list [questions]
+add [2 + 2] to [questions]
+add [5 + 3] to [questions]
+use an index to visit each item</div>
+<div class="successbox"><b>Professional rule:</b> Adapt the logic to your project. Do not copy without understanding.</div>
+</div></section>
+
+<section class="section"><h2>✅ 5. Evidence Checklist & Progress</h2><div class="body">
+<div class="checkgrid">
+<label class="check"><input class="progress" type="checkbox" value="Project chosen"> Project chosen</label>
+<label class="check"><input class="progress" type="checkbox" value="Planning complete"> Planning complete</label>
+<label class="check"><input class="progress" type="checkbox" value="Variable implemented"> Variable implemented</label>
+<label class="check"><input class="progress" type="checkbox" value="Interaction created"> Interaction created</label>
+<label class="check"><input class="progress" type="checkbox" value="Conditional implemented"> Conditional implemented</label>
+<label class="check"><input class="progress" type="checkbox" value="Loop implemented"> Loop implemented</label>
+<label class="check"><input class="progress" type="checkbox" value="Project tested"> Project tested</label>
+<label class="check"><input class="progress" type="checkbox" value="List challenge attempted"> ⭐ List challenge attempted</label>
+</div>
+<div style="margin-top:16px"><div class="progress-label"><span>Overall Progress / Progreso general</span><span id="pct">0%</span></div><div class="progressbar"><div id="bar" class="bar"></div></div></div>
+<label>What did you accomplish today? / ¿Qué lograste hoy?</label><textarea id="done"></textarea>
+<label>What was the most difficult part? / ¿Qué fue lo más difícil?</label><textarea id="hard"></textarea>
+</div></section>
+
+<section class="section"><h2>🤝 6. Peer Review</h2><div class="body grid2">
+<div><label>👍 Strength / Fortaleza</label><textarea id="like"></textarea></div>
+<div><label>💡 Improvement suggestion / Sugerencia de mejora</label><textarea id="improve"></textarea></div>
+</div></section>
+
+<section class="section"><h2>📊 7. Quick Rubric</h2><div class="body">
+<table class="rubric">
+<tr><th>Criterion</th><th>Excellent</th><th>In Progress</th><th>Needs Improvement</th></tr>
+<tr><td>Planning</td><td>Clear goal, variables and interaction</td><td>Partially defined</td><td>Needs more detail</td></tr>
+<tr><td>Programming structures</td><td>Variable + condition + loop used correctly</td><td>Some structures implemented</td><td>Structures unclear</td></tr>
+<tr><td>Testing & debugging</td><td>Tested and improved after errors</td><td>Some testing performed</td><td>No evidence of testing</td></tr>
+<tr><td>Reflection</td><td>Explains learning and impact clearly</td><td>Basic reflection</td><td>Reflection incomplete</td></tr>
+</table>
+</div></section>
+
+<section class="section"><h2>💭 8. Reflection</h2><div class="body">
+<label>How did you feel while programming? / ¿Cómo te sentiste?</label><select id="emotion"><option value="">Choose...</option><option>😊 Happy / Feliz</option><option>😎 Great / Genial</option><option>😐 Normal</option><option>🤯 Confused / Confundido</option><option>😢 Frustrated / Frustrado</option></select>
+<label>What did you learn today? / ¿Qué aprendiste hoy?</label><textarea id="learned"></textarea>
+<label>How could your project help others, the school or the community? / ¿Cómo podría ayudar a otros?</label><textarea id="help"></textarea>
+</div></section>
+
+<section class="section"><h2>📄 9. Final Evidence Record</h2><div class="body">
+<div class="evidence-card">
+<p><b>Evidence title:</b> 6th Grade · Cycle 4 · Interactive Project</p>
+<p><b>Required:</b> Project selection · Planning · Structures · Progress · Peer review · Reflection</p>
+<p><b>Recommended filename:</b> <span id="filename">6th-cycle4-evidence-student.html</span></p>
+<div class="signature"><div>Student validation / Validación del estudiante</div><div>Date / Fecha</div></div>
+</div>
+</div></section>
+
+<section class="section"><h2>☁️ 10. Download & Upload Evidence</h2><div class="body">
+<div class="successbox"><b>Final workflow:</b> Review → Download → Save PDF if required → Upload → Verify.</div>
+<div class="actions no-print">
+<button id="download" class="btn primary">📥 Download Evidence</button>
+<button id="pdf" class="btn dark">🖨️ Save as PDF</button>
+<a class="btn success" href="https://delasalleedu-my.sharepoint.com/:f:/g/personal/tecnologiaeinformatica02bs_delasalle_edu_co/IgBrtEQ8T0_fS4vxC0KG1ZGaATDpbbmMgP8eedi_X77gzGk?e=h3hqHF" target="_blank" rel="noopener">☁️ Upload Evidence</a>
+</div>
+<p><b>Important:</b> After uploading, verify that your file appears in the evidence folder.</p>
+</div></section>
+</main>
+
+<script>
+const ids=["student","date","course","partner","project","why","goal","v1","v2","interaction","condition","done","hard","like","improve","emotion","learned","help"];
+function setLang(l){document.body.dataset.lang=l;document.getElementById("en").classList.toggle("active",l==="en");document.getElementById("es").classList.toggle("active",l==="es");localStorage.setItem("g6c4-lang",l)}
+document.getElementById("en").onclick=()=>setLang("en");document.getElementById("es").onclick=()=>setLang("es");
+document.querySelectorAll("[data-project]").forEach(c=>c.onclick=()=>{document.querySelectorAll("[data-project]").forEach(x=>x.classList.remove("selected"));c.classList.add("selected");document.getElementById("project").value=c.dataset.project;save()});
+function save(){const d={};ids.forEach(id=>d[id]=document.getElementById(id).value);d.structures=[...document.querySelectorAll(".structure:checked")].map(x=>x.value);d.progress=[...document.querySelectorAll(".progress:checked")].map(x=>x.value);localStorage.setItem("grade6-cycle4-pro",JSON.stringify(d));update()}
+function restore(){try{const d=JSON.parse(localStorage.getItem("grade6-cycle4-pro")||"{}");ids.forEach(id=>{if(d[id]!=null)document.getElementById(id).value=d[id]});document.querySelectorAll(".structure").forEach(x=>x.checked=(d.structures||[]).includes(x.value));document.querySelectorAll(".progress").forEach(x=>x.checked=(d.progress||[]).includes(x.value));if(d.project)document.querySelector('[data-project="'+d.project+'"]')?.classList.add("selected")}catch(e){}update()}
+function update(){const all=[...document.querySelectorAll(".progress")],done=all.filter(x=>x.checked).length,p=Math.round(done/all.length*100);document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"%";const n=(document.getElementById("student").value||"student").trim().replace(/[^a-z0-9]+/gi,"-");document.getElementById("filename").textContent="6th-cycle4-evidence-"+n+".html"}
+document.querySelectorAll("input,textarea,select").forEach(x=>x.addEventListener("input",save));document.querySelectorAll("input[type=checkbox]").forEach(x=>x.addEventListener("change",save));
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+document.getElementById("download").onclick=()=>{save();const d=JSON.parse(localStorage.getItem("grade6-cycle4-pro")||"{}"),name=(d.student||"student").trim().replace(/[^a-z0-9]+/gi,"-");const progress=Math.round(((d.progress||[]).length/8)*100);const out='<!doctype html><meta charset="utf-8"><title>Cycle 4 Evidence</title><style>body{font-family:Arial;max-width:900px;margin:35px auto;line-height:1.5;color:#17324a}h1{color:#102f4d}h2{border-bottom:2px solid #d9e3ef;padding-bottom:5px}.box{background:#f5f8fb;padding:13px;border-radius:8px;margin:8px 0}.head{border:2px solid #102f4d;padding:18px;border-radius:10px}</style><div class="head"><h1>6th Grade · Cycle 4 · Interactive Project Evidence</h1><p><b>Student:</b> '+esc(d.student)+' · <b>Date:</b> '+esc(d.date)+' · <b>Course:</b> '+esc(d.course)+'</p><p><b>Progress:</b> '+progress+'%</p></div><h2>Project Selection</h2><div class="box"><b>'+esc(d.project)+'</b><br>'+esc(d.why)+'</div><h2>Planning</h2><div class="box"><b>Goal:</b> '+esc(d.goal)+'<br><b>Variables:</b> '+esc(d.v1)+', '+esc(d.v2)+'<br><b>Interaction:</b> '+esc(d.interaction)+'<br><b>Condition:</b> '+esc(d.condition)+'<br><b>Structures:</b> '+esc((d.structures||[]).join(", "))+'</div><h2>Progress Evidence</h2><div class="box">'+esc((d.progress||[]).join(", "))+'<br><b>Accomplished:</b> '+esc(d.done)+'<br><b>Hardest:</b> '+esc(d.hard)+'</div><h2>Peer Review</h2><div class="box"><b>Strength:</b> '+esc(d.like)+'<br><b>Improve:</b> '+esc(d.improve)+'</div><h2>Reflection</h2><div class="box"><b>Emotion:</b> '+esc(d.emotion)+'<br><b>Learned:</b> '+esc(d.learned)+'<br><b>Impact:</b> '+esc(d.help)+'</div><p><b>Student validation:</b> ______________________________</p>';const blob=new Blob([out],{type:"text/html"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="6th-cycle4-evidence-"+name+".html";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+document.getElementById("pdf").onclick=()=>window.print();if(!document.getElementById("date").value)document.getElementById("date").value=new Date().toISOString().slice(0,10);setLang(localStorage.getItem("g6c4-lang")||"en");restore();
+</script>
+</body></html>
