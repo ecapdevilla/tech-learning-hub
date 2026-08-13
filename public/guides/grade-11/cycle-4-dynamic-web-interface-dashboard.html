@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>11th Grade · Cycle 4 · Dynamic Web Interface & Prompt Engineering</title>
+    <style>
+      :root {
+        --navy: #10233f;
+        --blue: #1769ff;
+        --cyan: #0aa6c2;
+        --soft: #eef5ff;
+        --gold: #f6b51b;
+        --green: #138a67;
+        --ink: #17243a;
+        --line: #d9e3f0;
+        --paper: #fffdf6;
+        --alert: #fff5d6;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(180deg, #f4f7fb 0%, #eef3f9 100%);
+        color: var(--ink);
+        line-height: 1.65;
+      }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 18px 60px; }
+      .hero {
+        background: linear-gradient(125deg, #0c203c, #1257c7 60%, #08a0b9);
+        color: white;
+        padding: 40px 0 28px;
+      }
+      .hero .wrap { padding-bottom: 0; }
+      .kicker {
+        display: inline-block;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.35);
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      h1 {
+        margin: 14px 0 8px;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 1.08;
+      }
+      .hero p { margin: 0; font-size: 1.08rem; max-width: 980px; }
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .meta div {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+      section {
+        background: white;
+        border-radius: 18px;
+        padding: 22px 20px 20px;
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        box-shadow: 0 10px 28px rgba(16, 35, 63, 0.08);
+      }
+      h2 {
+        margin-top: 0;
+        color: #1d4f97;
+        font-size: clamp(1.45rem, 2vw, 2rem);
+      }
+      .time {
+        display: inline-block;
+        margin-bottom: 10px;
+        background: #eafaf3;
+        color: #0c6d50;
+        border-radius: 999px;
+        padding: 5px 11px;
+        font-weight: 800;
+      }
+      .objective, .notebook, .mission, .prompt-box {
+        border-radius: 12px;
+        padding: 15px 16px;
+        margin-top: 12px;
+      }
+      .objective {
+        border-left: 7px solid var(--gold);
+        background: #fff9df;
+      }
+      .notebook {
+        background: #fffaf0;
+        border-left: 6px solid var(--gold);
+      }
+      .mission {
+        background: #f3f8ff;
+        border-left: 6px solid var(--blue);
+      }
+      .prompt-box {
+        background: #eefcf7;
+        border-left: 6px solid var(--green);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        background: #f9fbff;
+        border-radius: 14px;
+        padding: 15px;
+      }
+      .card strong { color: #1a4c98; }
+      .code {
+        margin-top: 10px;
+        background: #142033;
+        color: #edf4ff;
+        padding: 15px 14px;
+        border-radius: 12px;
+        font-family: Consolas, monospace;
+        white-space: pre-wrap;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+      th, td {
+        border: 1px solid var(--line);
+        text-align: left;
+        padding: 9px 10px;
+        vertical-align: top;
+      }
+      th {
+        background: #153f80;
+        color: white;
+      }
+      ul, ol { padding-left: 20px; }
+      .checklist {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px; 
+      }
+      .check {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fbfdff;
+        padding: 10px 12px;
+      }
+      .footer-note {
+        margin-top: 18px;
+        font-size: 0.96rem;
+        color: #5f7289;
+      }
+      @media (max-width: 700px) {
+        .meta { grid-template-columns: 1fr 1fr; }
+        .checklist { grid-template-columns: 1fr; }
+      }
+      @media print {
+        body { background: white; }
+        section { box-shadow: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap">
+        <div class="kicker">11th Grade · Cycle 4</div>
+        <h1>Dynamic Web Interface with Authentication, Charts and Local Database</h1>
+        <p>En este ciclo, los estudiantes explorarán cómo crear una interfaz web dinámica con autenticación, gráficos y almacenamiento local, desarrollando una propuesta clara y aplicable al diseño de sistemas digitales.</p>
+        <div class="meta">
+          <div><b>Grade</b><br>11th</div>
+          <div><b>Duration</b><br>120 min</div>
+          <div><b>Cycle</b><br>4</div>
+          <div><b>Dates</b><br>Aug 13-14<br>Aug 18-21</div>
+          <div><b>Format</b><br>Notebook + home work</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section>
+        <span class="time">0–15 min</span>
+        <h2>Opening / Motivation</h2>
+        <p><b>Lasallian greeting:</b> We begin with a respectful and calm greeting. We remember that technology must serve people and the community.</p>
+        <div class="mission">
+          <b>Question:</b> “What should a good dashboard include?”
+        </div>
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card"><strong>Examples to observe</strong><br>Dynamic dashboards with charts, login forms, filters, status cards and tables.</div>
+          <div class="card"><strong>Key idea</strong><br>A web dashboard helps people interpret information and make decisions faster.</div>
+          <div class="card"><strong>Materials</strong><br>Notebook, pencil, colored pencils, projector if available.</div>
+        </div>
+      </section>
+
+      <section>
+        <span class="time">15–35 min</span>
+        <h2>Development / Representation</h2>
+        <div class="objective">
+          <b>Objective:</b> Students will understand how a dynamic website can organize information, protect access with authentication, present data with charts, and store user preferences locally.
+        </div>
+
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <strong>1. Dynamic web interface</strong>
+            <p>A dashboard is a web page that shows information clearly and updates when data changes.</p>
+            <p>Think of it as a control panel.</p>
+          </div>
+          <div class="card">
+            <strong>2. Authentication</strong>
+            <p>Authentication means identifying who the user is before allowing access.</p>
+            <p>Examples: login form, username, password, session.</p>
+          </div>
+          <div class="card">
+            <strong>3. Charts</strong>
+            <p>Charts help show patterns, comparisons and progress visually.</p>
+            <p>Examples: bars, lines, pie charts.</p>
+          </div>
+          <div class="card">
+            <strong>4. Local database</strong>
+            <p>localStorage stores data in the browser so users can keep settings or small information without a server.</p>
+          </div>
+        </div>
+
+        <div class="notebook" style="margin-top: 14px;">
+          <b>Notebook task:</b> Write a definition in your own words for: dashboard, authentication, chart, localStorage, and user session.
+        </div>
+      </section>
+
+      <section>
+        <span class="time">35–70 min</span>
+        <h2>Core Concepts · What Students Need to Know</h2>
+
+        <div class="grid">
+          <div class="card">
+            <strong>Web interface</strong>
+            <p>HTML provides structure, CSS provides design, JavaScript makes it dynamic.</p>
+            <div class="code">HTML → structure
+CSS → design
+JavaScript → interaction</div>
+          </div>
+          <div class="card">
+            <strong>Authentication</strong>
+            <p>The user enters credentials; the system validates them before showing the dashboard.</p>
+            <div class="code">username = "admin"
+password = "1234"
+IF user enters correct data THEN open dashboard</div>
+          </div>
+          <div class="card">
+            <strong>Charts</strong>
+            <p>Chart.js is a JavaScript library that makes graphs easier to create in a web page.</p>
+            <div class="code">new Chart(ctx, {
+  type: 'bar',
+  data: { labels: ['Jan', 'Feb'], datasets: [...] }
+});</div>
+          </div>
+          <div class="card">
+            <strong>Local database</strong>
+            <p>localStorage can save preferences or records locally in the browser.</p>
+            <div class="code">localStorage.setItem('theme', 'dark');
+const theme = localStorage.getItem('theme');</div>
+          </div>
+        </div>
+
+        <div class="notebook">
+          <b>Notebook challenge:</b> Explain in 5 lines how the browser can remember the user’s preferred theme or last value selected.
+        </div>
+      </section>
+
+      <section>
+        <span class="time">70–90 min</span>
+        <h2>Guided Project Planning</h2>
+        <p>Students must plan the dashboard before coding. They should write the structure in their notebook.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Section</th>
+              <th>What it does</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Login</td>
+              <td>Allows access to the dashboard</td>
+              <td>Username and password</td>
+            </tr>
+            <tr>
+              <td>Home panel</td>
+              <td>Shows summary values</td>
+              <td>Total sales, users, alerts</td>
+            </tr>
+            <tr>
+              <td>Chart area</td>
+              <td>Visualizes the information</td>
+              <td>Bar chart or line chart</td>
+            </tr>
+            <tr>
+              <td>Table</td>
+              <td>Shows detailed data</td>
+              <td>List of records</td>
+            </tr>
+            <tr>
+              <td>Settings</td>
+              <td>Lets users change simulation configuration</td>
+              <td>Theme, limits, colors</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="mission" style="margin-top: 14px;">
+          <b>Design prompt:</b> Create a dashboard for a school’s energy system. Include a login page, energy charts, report table and a settings panel.
+        </div>
+      </section>
+
+      <section>
+        <span class="time">90–105 min</span>
+        <h2>Prompt Engineering Intro</h2>
+        <p>Students need to learn how to communicate clearly with AI tools and coding assistants. Prompt engineering helps us give instructions that are precise, structured and useful.</p>
+
+        <div class="prompt-box">
+          <b>Simple prompt example:</b>
+          <div class="code">Create a dashboard for a school with a login form, three cards with statistics, and a line chart showing energy consumption for the week.</div>
+        </div>
+
+        <div class="prompt-box" style="margin-top: 12px;">
+          <b>Improved prompt example:</b>
+          <div class="code">Act as a web developer. Generate a clean dashboard interface in HTML, CSS and JavaScript with: a login form, a navigation bar, three summary cards, a bar chart showing monthly data, and a table with student names and scores. Use a modern blue color palette and responsive design.</div>
+        </div>
+
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <strong>Good prompt includes</strong>
+            <ul>
+              <li>Role</li>
+              <li>Goal</li>
+              <li>Context</li>
+              <li>Output format</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>Prompt checklist</strong>
+            <ul>
+              <li>What should it do?</li>
+              <li>Which technologies to use?</li>
+              <li>What output should appear?</li>
+              <li>What design style should it have?</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="notebook">
+          <b>Prompt task:</b> Write two prompts: one for a login page and one for a dashboard with charts. Then explain which prompt is better and why.
+        </div>
+      </section>
+
+      <section>
+        <span class="time">105–120 min</span>
+        <h2>Closure / Action and Expression</h2>
+        <p><b>Gallery walk / peer sharing:</b> Students compare their dashboard ideas and discuss what elements are useful for decision-making.</p>
+
+        <div class="mission">
+          Reflection questions:
+          <ol>
+            <li>How can a dashboard help in decision-making?</li>
+            <li>Why is authentication important in a web system?</li>
+            <li>How do charts make data easier to understand?</li>
+            <li>What information can be stored locally and why is it useful?</li>
+            <li>How can prompt engineering help you create a better solution faster?</li>
+          </ol>
+        </div>
+
+        <div class="notebook" style="margin-top: 12px;">
+          <b>Final notebook ticket:</b> Write 5 lines answering: What did I learn today? What was easiest? What was hardest? What would I improve at home?
+        </div>
+      </section>
+
+      <section>
+        <h2>Homework / Home Practice</h2>
+        <div class="checklist">
+          <div class="check"><b>1.</b> Draw a mockup of the login page.</div>
+          <div class="check"><b>2.</b> Draw a dashboard with at least 3 cards and 1 chart.</div>
+          <div class="check"><b>3.</b> Write the data structure that your dashboard will use.</div>
+          <div class="check"><b>4.</b> Define 3 variables for the project.</div>
+          <div class="check"><b>5.</b> Add one prompt for an AI assistant to generate the code.</div>
+          <div class="check"><b>6.</b> Explain what localStorage would save for your project.</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Evidence to Deliver</h2>
+        <div class="objective">
+          Students must submit the following in the notebook or as a digital file:
+          <ul>
+            <li>Project idea</li>
+            <li>Dashboard wireframe</li>
+            <li>Authentication proposal</li>
+            <li>Chart plan</li>
+            <li>Local data storage idea</li>
+            <li>Prompt engineering examples</li>
+            <li>Short reflection</li>
+          </ul>
+        </div>
+      </section>
+
+      <p class="footer-note">This guide is designed to support planning, analysis and reflection during the cycle, and can be complemented with practical implementation in class or at home according to the teacher's plan.</p>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6th Grade · Cycle 4 v2 · Interactive Project Master Lab</title>
+    <style>
+      :root {
+        --navy: #0f2a46;
+        --navy-2: #173d67;
+        --blue: #2d6cdf;
+        --cyan: #0aa5bb;
+        --green: #1f8f64;
+        --gold: #f3c957;
+        --red: #d95a67;
+        --ink: #1b3046;
+        --muted: #6c7f90;
+        --line: #dfeaf3;
+        --soft: #f6fafc;
+        --card: #ffffff;
+        --shadow: 0 14px 32px rgba(23, 61, 103, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(180deg, #f7fbff 0%, #edf4f8 100%);
+        color: var(--ink);
+        line-height: 1.6;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 18px;
+        background: rgba(15, 42, 70, 0.96);
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .topbar strong {
+        font-size: 15px;
+      }
+
+      .topbar .actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .topbar button {
+        border: 0;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-weight: 700;
+        cursor: pointer;
+        background: #e7eef5;
+        color: var(--navy-2);
+      }
+
+      .topbar .active {
+        background: var(--gold);
+        color: #332500;
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 24px auto 72px;
+        padding: 0 16px;
+      }
+
+      .hero {
+        padding: 32px 28px;
+        border-radius: 28px;
+        color: white;
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 45%, var(--cyan) 100%);
+        box-shadow: var(--shadow);
+      }
+
+      .hero .kicker {
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        margin: 10px 0 8px;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 1.08;
+      }
+
+      .hero p {
+        margin: 0;
+        font-size: 1.08rem;
+        max-width: 920px;
+        color: #eaf8ff;
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .meta div {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 15px;
+        padding: 12px 14px;
+      }
+
+      .section {
+        margin-top: 20px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .section h2 {
+        margin: 0;
+        padding: 16px 20px;
+        background: linear-gradient(90deg, #edf7ff 0%, #ffffff 100%);
+        color: var(--navy);
+        font-size: clamp(1.4rem, 2vw, 2rem);
+      }
+
+      .body {
+        padding: 20px 22px 22px;
+      }
+
+      .objective {
+        border-left: 7px solid var(--gold);
+        background: #fff9df;
+        border-radius: 10px;
+        padding: 15px 16px;
+        font-weight: 700;
+        font-size: 1.08rem;
+      }
+
+      .flow {
+        margin-top: 14px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        background: #edf6ff;
+        text-align: center;
+        font-weight: 900;
+        letter-spacing: 0.2px;
+      }
+
+      .timeline,
+      .cards,
+      .grid2,
+      .grid3,
+      .checkgrid,
+      .scorebox {
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .checkgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .scorebox { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+      .timeline-card,
+      .card,
+      .check,
+      .panel,
+      .evidence {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fbfdff;
+        padding: 15px;
+      }
+
+      .timeline-card strong { color: var(--blue); }
+
+      .card .emoji { font-size: 2.4rem; }
+      .card h3 { margin: 6px 0 8px; color: var(--navy-2); }
+      .card p { margin: 0; }
+      .card .code {
+        margin-top: 10px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #122236;
+        color: #ecf7ff;
+        font-family: Consolas, monospace;
+        white-space: pre-wrap;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #eaf2ff;
+        color: #1d4e9f;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .phase {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 5px 11px;
+        border-radius: 999px;
+        background: #e9fff7;
+        color: #0a684f;
+        font-weight: 900;
+      }
+
+      .question,
+      .note,
+      .challenge {
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-top: 12px;
+      }
+
+      .question {
+        border-left: 5px solid var(--blue);
+        background: #f5f8ff;
+      }
+
+      .note {
+        border-left: 6px solid var(--gold);
+        background: #fff9df;
+      }
+
+      .challenge {
+        border-left: 6px solid var(--green);
+        background: #eefaf5;
+      }
+
+      .architecture {
+        text-align: center;
+        border-radius: 16px;
+        border: 1px solid #cfe0f0;
+        background: #f4f9ff;
+        padding: 18px;
+        font-weight: 900;
+      }
+
+      .project-map {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .project-map div {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px;
+        background: white;
+        text-align: center;
+        font-weight: 800;
+      }
+
+      .arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--blue);
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      label {
+        display: block;
+        font-weight: 800;
+        margin: 12px 0 5px;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid #b7c8d8;
+        border-radius: 11px;
+        padding: 11px 12px;
+        font: inherit;
+        background: white;
+      }
+
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+
+      .checkbox-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .checkbox-row label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+      }
+
+      .progress-wrap {
+        margin-top: 18px;
+      }
+
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-weight: 800;
+      }
+
+      .progressbar {
+        height: 16px;
+        background: #e6edf3;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      #bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--green), #59c292);
+        transition: width 0.2s ease;
+      }
+
+      .checklist {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .check {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .check input {
+        margin-top: 3px;
+      }
+
+      .test-table, .rubric {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+
+      .test-table th,
+      .test-table td,
+      .rubric th,
+      .rubric td {
+        border: 1px solid var(--line);
+        padding: 10px 9px;
+        vertical-align: top;
+      }
+
+      .test-table th,
+      .rubric th {
+        background: var(--navy);
+        color: white;
+        text-align: left;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 11px 18px;
+        font-weight: 900;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn.primary { background: var(--blue); color: white; }
+      .btn.dark { background: var(--navy); color: white; }
+      .btn.success { background: var(--green); color: white; }
+      .btn.gold { background: var(--gold); color: #332500; }
+
+      .evidence {
+        background: #fbfdff;
+        border: 2px solid #bfd0df;
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .small {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .hidden { display: none !important; }
+
+      @media (max-width: 900px) {
+        .meta, .timeline, .cards, .grid2, .grid3, .checkgrid, .scorebox, .project-map { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 600px) {
+        .meta, .timeline, .cards, .grid2, .grid3, .checkgrid, .scorebox, .project-map, .checklist { grid-template-columns: 1fr; }
+      }
+
+      @media print {
+        .topbar, .no-print { display: none !important; }
+        .wrap { max-width: none; margin: 0; padding: 0; }
+        body { background: white; }
+        .section, .hero { box-shadow: none; break-inside: avoid; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <strong>💻 Tech Learning Hub · 6th Grade · Cycle 4 v2</strong>
+      <div class="actions">
+        <button class="active" type="button">🇨🇴 Español</button>
+      </div>
+    </div>
+
+    <main class="wrap">
+      <section class="hero">
+        <div class="kicker">TECHNOLOGY &amp; ROBOTICS · THIRD PERIOD · CYCLE 4</div>
+        <h1>Laboratorio Maestro de Proyecto Interactivo · v2</h1>
+        <p>Guía para desarrollar un proyecto interactivo con computadora, aplicando variables, entrada del usuario, condicionales, ciclos y, como desafío avanzado, arreglos/listas.</p>
+        <div class="meta">
+          <div><b>Grade</b><br>6th</div>
+          <div><b>Duration</b><br>120 min</div>
+          <div><b>Cycle</b><br>4</div>
+          <div><b>Period</b><br>3</div>
+          <div><b>Evidence</b><br>Digital + Project</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>🎯 Objetivo de aprendizaje</h2>
+        <div class="body">
+          <div class="objective">Al finalizar la sesión, los estudiantes habrán elegido, planeado e iniciado un proyecto interactivo completo, aplicando variables, entrada del usuario, condicionales y ciclos, y documentando su avance como evidencia de trabajo.</div>
+          <div class="flow">IDEA → PLAN → STRUCTURE → BUILD → TEST → DEBUG → IMPROVE → SHARE</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>⏱️ Ruta de clase · 120 minutos</h2>
+        <div class="body timeline">
+          <div class="timeline-card"><strong>0–15 min</strong><br><b>APERTURA</b><br>Saludo · check-in emocional · ejemplos de proyectos.</div>
+          <div class="timeline-card"><strong>15–40 min</strong><br><b>CLASE MAESTRA</b><br>Variables · entrada · condiciones · ciclos · listas.</div>
+          <div class="timeline-card"><strong>40–105 min</strong><br><b>LABORATORIO</b><br>Planificación · construcción guiada · trabajo independiente.</div>
+          <div class="timeline-card"><strong>105–120 min</strong><br><b>CIERRE</b><br>Avance · retroalimentación · evidencia · reflexión.</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>🌟 1. Apertura y motivación</h2>
+        <div class="body">
+          <span class="phase">0–15 min</span>
+          <div class="question"><b>Check-in emocional:</b> ¿Cómo llegaste hoy? 😊 😐 😢 🤯 😎</div>
+          <div class="question"><b>Pregunta generadora:</b> ¿Qué tipo de juego o simulador te gustaría crear en la computadora?</div>
+
+          <div class="cards" style="margin-top:12px;">
+            <div class="card"><div class="emoji">❓</div><h3>Quiz</h3><p>Preguntas · puntaje · retroalimentación · rondas.</p></div>
+            <div class="card"><div class="emoji">🧮</div><h3>Calculadora</h3><p>Entrada · operación · resultado · decisiones.</p></div>
+            <div class="card"><div class="emoji">📖</div><h3>Historia interactiva</h3><p>Opciones · variables · ramas · listas.</p></div>
+            <div class="card"><div class="emoji">🎯</div><h3>Clicker</h3><p>Clicks · puntaje · meta · temporizador y ciclo.</p></div>
+          </div>
+
+          <div class="note"><b>Piensa primero:</b> ¿Qué tienen en común los cuatro proyectos? ¿Qué cambia? ¿Qué decisiones ocurren? ¿Qué se repite?</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>🧠 2. Clase maestra · Los cinco bloques</h2>
+        <div class="body">
+          <span class="phase">15–40 min</span>
+          <div class="cards">
+            <div class="card">
+              <div class="emoji">📦</div>
+              <h3>Variable</h3>
+              <p>Un espacio con nombre que guarda información.</p>
+              <div class="code">score = 0
+lives = 3
+name = "Ana"</div>
+            </div>
+            <div class="card">
+              <div class="emoji">⌨️</div>
+              <h3>Entrada del usuario</h3>
+              <p>La información que el usuario escribe.</p>
+              <div class="code">ask "¿Cómo te llamas?"
+answer → name</div>
+            </div>
+            <div class="card">
+              <div class="emoji">🔀</div>
+              <h3>Condicional</h3>
+              <p>Si ocurre algo, se ejecuta una acción.</p>
+              <div class="code">IF score >= 10
+  YOU WIN</div>
+            </div>
+            <div class="card">
+              <div class="emoji">🔁</div>
+              <h3>Ciclo</h3>
+              <p>Repite instrucciones de forma eficiente.</p>
+              <div class="code">REPEAT 5 TIMES
+  ask question</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 12px;">
+            <div class="emoji">📚</div>
+            <h3>Arreglo / Lista ⭐ desafío avanzado</h3>
+            <p>Es una estructura que guarda varios valores relacionados.</p>
+            <div class="code">questions = ["2+2?", "5+3?", "10-4?"]
+answers   = ["4", "8", "6"]</div>
+          </div>
+
+          <div class="question"><b>Pregunta rápida 1:</b> ¿Qué estructura debe guardar la puntuación del jugador?</div>
+          <div class="question"><b>Pregunta rápida 2:</b> ¿Qué estructura decide si una respuesta es correcta?</div>
+          <div class="question"><b>Pregunta rápida 3:</b> ¿Qué estructura evita escribir la misma pregunta 10 veces?</div>
+          <div class="question"><b>Pregunta rápida 4:</b> ¿Qué estructura puede guardar muchas preguntas juntas?</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>🧭 3. Arquitectura del proyecto · Planear antes de programar</h2>
+        <div class="body">
+          <div class="architecture">
+            <div class="project-map">
+              <div>INICIO</div>
+              <div>→</div>
+              <div>ENTRADA</div>
+              <div>→</div>
+              <div>PROCESO</div>
+              <div>DECISIÓN</div>
+              <div>→</div>
+              <div>REPETICIÓN</div>
+              <div>→</div>
+              <div>RESULTADO</div>
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top: 18px;">
+            <div class="panel">
+              <label>Estudiante / Estudiante</label>
+              <input type="text" placeholder="Nombre del estudiante" />
+              <label>Fecha / Fecha</label>
+              <input type="date" />
+              <label>Curso / Curso</label>
+              <input type="text" value="6th Grade" />
+              <label>Socio / Pareja</label>
+              <input type="text" placeholder="Nombre del compañero" />
+            </div>
+
+            <div class="panel">
+              <label>Proyecto elegido / Choose your project</label>
+              <select>
+                <option>Quiz Game</option>
+                <option>Calculator</option>
+                <option>Interactive Story</option>
+                <option>Clicker Game</option>
+              </select>
+              <label>Propósito del proyecto / Project purpose</label>
+              <textarea placeholder="¿Qué busca resolver o entretener este proyecto?"></textarea>
+              <label>Variable 1</label>
+              <input type="text" placeholder="score / puntos / lives" />
+              <label>Variable 2</label>
+              <input type="text" placeholder="name / usuario / contador" />
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top: 12px;">
+            <div class="panel">
+              <label>Condición principal / Main IF condition</label>
+              <textarea placeholder="Ejemplo: si score >= 10 → ganar"></textarea>
+            </div>
+            <div class="panel">
+              <label>¿Qué se repite? / What repeats?</label>
+              <textarea placeholder="Ejemplo: repetir tres preguntas o contar clics varios segundos"></textarea>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top: 12px;">
+            <label>¿Qué podría guardarse en una lista? / What could be stored in a list?</label>
+            <textarea placeholder="Ejemplo: preguntas, opciones, nombres de personajes, frases del juego"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>👨‍💻 4. Construcción guiada · Predice antes de ejecutar</h2>
+        <div class="body">
+          <div class="panel">
+            <span class="phase">55–75 min</span>
+            <h3>Step A · Estado inicial</h3>
+            <div class="code">when green flag clicked
+set [score] to [0]
+set [lives] to [3]</div>
+            <div class="note"><b>Predicción:</b> ¿Qué valores deberían aparecer al iniciar el proyecto?</div>
+          </div>
+
+          <div class="panel" style="margin-top: 12px;">
+            <h3>Step B · Entrada del usuario</h3>
+            <div class="code">ask [¿Cómo te llamas?] and wait
+say (join [Bienvenido/a ] (answer)) for [2] seconds</div>
+            <div class="note"><b>Predicción:</b> ¿Qué valor cambia si otro estudiante usa el proyecto?</div>
+          </div>
+
+          <div class="panel" style="margin-top: 12px;">
+            <h3>Step C · Decisión</h3>
+            <div class="code">if &lt;(answer) = [4]&gt; then
+  change [score] by [1]
+  say [¡Correcto!]
+else
+  say [¡Intenta de nuevo!]
+end</div>
+            <div class="note"><b>Predicción:</b> ¿Qué pasa si la respuesta es 4? ¿Qué pasa si la respuesta es 7?</div>
+          </div>
+
+          <div class="panel" style="margin-top: 12px;">
+            <h3>Step D · Repetición</h3>
+            <div class="code">repeat [3]
+  ask [Pregunta] and wait
+  check the answer
+end</div>
+            <div class="note"><b>Predicción:</b> ¿Cuántas rondas se ejecutarán? ¿Por qué un ciclo es mejor que copiar el mismo bloque tres veces?</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>🚀 5. Proyecto independiente · Reto mínimo</h2>
+        <div class="body">
+          <div class="challenge">Tu primera versión funcional debe incluir al menos: variable, interacción con el usuario, una condición y un ciclo. El desafío avanzado es usar lista/arreglo.</div>
+
+          <div class="progress-wrap">
+            <div class="progress-label"><span>Proyecto en progreso</span><span id="progressText">0%</span></div>
+            <div class="progressbar"><div id="bar"></div></div>
+          </div>
+
+          <div class="checklist" id="missionChecklist" style="margin-top: 16px;">
+            <label class="check"><input type="checkbox" /> Proyecto seleccionado</label>
+            <label class="check"><input type="checkbox" /> Arquitectura planeada</label>
+            <label class="check"><input type="checkbox" /> Variable creada</label>
+            <label class="check"><input type="checkbox" /> Entrada de usuario creada</label>
+            <label class="check"><input type="checkbox" /> Condicional añadido</label>
+            <label class="check"><input type="checkbox" /> Ciclo añadido</label>
+            <label class="check"><input type="checkbox" /> Primera prueba completada</label>
+            <label class="check"><input type="checkbox" /> Lista/arreglo (desafío)</label>
+          </div>
+
+          <div class="grid2" style="margin-top: 18px;">
+            <div class="panel">
+              <label>¿Qué funciona ahora?</label>
+              <textarea placeholder="Escribe lo que ya está funcionando"></textarea>
+            </div>
+            <div class="panel">
+              <label>¿Qué falta?</label>
+              <textarea placeholder="Escribe lo que aún debes mejorar"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>🧪 6. Laboratorio de pruebas y depuración</h2>
+        <div class="body">
+          <div class="note"><b>Depurar no es fallar.</b> Es comparar lo que debería pasar con lo que realmente ocurrió y mejorar el programa.</div>
+
+          <table class="test-table">
+            <thead>
+              <tr>
+                <th>Prueba</th>
+                <th>Se esperaba</th>
+                <th>Qué pasó</th>
+                <th>Qué cambié</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Prueba 1</td>
+                <td><input type="text" placeholder="Ej: el juego inicia con puntaje 0" /></td>
+                <td><input type="text" placeholder="Resultado observado" /></td>
+                <td><input type="text" placeholder="Cambio realizado" /></td>
+              </tr>
+              <tr>
+                <td>Prueba 2</td>
+                <td><input type="text" placeholder="Ej: si la respuesta es correcta sube un punto" /></td>
+                <td><input type="text" placeholder="Resultado observado" /></td>
+                <td><input type="text" placeholder="Cambio realizado" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>🤝 7. Retroalimentación entre pares</h2>
+        <div class="body">
+          <div class="grid2">
+            <div class="panel">
+              <label>👍 Me gusta...</label>
+              <textarea placeholder="Escribe una cosa que te gustó del proyecto de tu compañero"></textarea>
+            </div>
+            <div class="panel">
+              <label>💡 Sugiero...</label>
+              <textarea placeholder="Escribe una recomendación útil"></textarea>
+            </div>
+          </div>
+          <div class="panel" style="margin-top: 12px;">
+            <label>❓ Una pregunta que tengo...</label>
+            <textarea placeholder="Escribe una pregunta para clarificar alguna parte del proyecto"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>📊 8. Rúbrica de proyecto</h2>
+        <div class="body">
+          <table class="rubric">
+            <thead>
+              <tr>
+                <th>Criterio</th>
+                <th>4 · Excelente</th>
+                <th>3 · Bueno</th>
+                <th>2 · En desarrollo</th>
+                <th>1 · Inicio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Diseño del proyecto</td>
+                <td>Propósito y arquitectura muy claros.</td>
+                <td>Mayormente claros.</td>
+                <td>Parcialmente definidos.</td>
+                <td>Sin claridad.</td>
+              </tr>
+              <tr>
+                <td>Variables e ingreso</td>
+                <td>Uso correcto y significativo.</td>
+                <td>Funciona con pequeños errores.</td>
+                <td>Uso parcial.</td>
+                <td>Falta.</td>
+              </tr>
+              <tr>
+                <td>Condicionales</td>
+                <td>La lógica funciona correctamente.</td>
+                <td>Mayormente bien.</td>
+                <td>Necesita depuración.</td>
+                <td>Falta.</td>
+              </tr>
+              <tr>
+                <td>Ciclos</td>
+                <td>Repetición eficiente y clara.</td>
+                <td>El ciclo funciona.</td>
+                <td>Funciona parcialmente.</td>
+                <td>Falta.</td>
+              </tr>
+              <tr>
+                <td>Pruebas y depuración</td>
+                <td>Prueba, identifica y corrige.</td>
+                <td>Prueba y mejora.</td>
+                <td>Pruebas limitadas.</td>
+                <td>No prueba.</td>
+              </tr>
+              <tr>
+                <td>Creatividad y propósito</td>
+                <td>Útil, claro y original.</td>
+                <td>Claro y útil.</td>
+                <td>Idea básica.</td>
+                <td>Sin propósito claro.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>💭 9. Cierre · Acción y expresión</h2>
+        <div class="body">
+          <div class="grid2">
+            <div class="panel">
+              <label>¿Qué completaste?</label>
+              <textarea placeholder="Escribe lo que ya hiciste"></textarea>
+            </div>
+            <div class="panel">
+              <label>¿Qué falta?</label>
+              <textarea placeholder="Escribe lo que te falta por terminar"></textarea>
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top: 12px;">
+            <div class="panel">
+              <label>¿Qué concepto fue más difícil?</label>
+              <textarea placeholder="Ejemplo: condicionales o listas"></textarea>
+            </div>
+            <div class="panel">
+              <label>¿Qué aprendiste que no sabías antes?</label>
+              <textarea placeholder="Escribe tu aprendizaje principal"></textarea>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top: 12px;">
+            <label>¿Cómo podría ayudar tu proyecto a otra persona, la escuela o la comunidad?</label>
+            <textarea placeholder="Ejemplo: juego de aprendizaje, herramienta de orientación, demostración de ciencia o tecnología"></textarea>
+          </div>
+
+          <div class="note" style="margin-top: 12px;"><b>Cierre Lasallista:</b> Agradece la oportunidad de aprender, crear, colaborar y usar la tecnología al servicio de los demás.</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>📄 10. Registro final de evidencia</h2>
+        <div class="body">
+          <div class="evidence">
+            <p><b>Evidence:</b> 6th Grade · Cycle 4 · Interactive Project Master Lab</p>
+            <p><b>Includes:</b> Project plan · Structures · Testing · Debugging · Peer feedback · Reflection</p>
+            <p><b>Recommended filename:</b> 6th-cycle4-student.html</p>
+
+            <div class="scorebox">
+              <div><b>Design</b><br>__/4</div>
+              <div><b>Structures</b><br>__/4</div>
+              <div><b>Testing</b><br>__/4</div>
+              <div><b>Explanation</b><br>__/4</div>
+              <div><b>Evidence</b><br>__/4</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>☁️ 11. Descarga y carga de evidencia</h2>
+        <div class="body">
+          <div class="note"><b>Flujo final:</b> REVISAR → DESCARGAR → GUARDAR PDF SI SE REQUIERE → SUBIR → VERIFICAR.</div>
+          <div class="btn-row no-print">
+            <button class="btn primary" type="button" onclick="window.print()">📥 Descargar evidencia</button>
+            <button class="btn dark" type="button" onclick="alert('Se recomienda guardar el archivo como PDF si el docente lo solicita.')">🖨️ Guardar como PDF</button>
+            <a class="btn gold" href="https://delasalleedu-my.sharepoint.com/:f:/g/personal/tecnologiaeinformatica02bs_delasalle_edu_co/IgBrtEQ8T0_fS4vxC0KG1ZGaATDpbbmMgP8eedi_X77gzGk?e=h3hqHF" target="_blank" rel="noreferrer">☁️ Subir evidencia</a>
+          </div>
+          <p class="small" style="margin-top: 12px;">Ruta sugerida para este grado: <b>grade-06/cycle-4-interactive-project-lab-v2.html</b></p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const checklist = document.querySelectorAll('#missionChecklist input[type="checkbox"]');
+      const bar = document.getElementById('bar');
+      const progressText = document.getElementById('progressText');
+
+      function updateProgress() {
+        const checked = [...checklist].filter((box) => box.checked).length;
+        const total = checklist.length;
+        const percent = Math.round((checked / total) * 100);
+        bar.style.width = percent + '%';
+        progressText.textContent = percent + '%';
+      }
+
+      checklist.forEach((box) => box.addEventListener('change', updateProgress));
+      updateProgress();
+    </script>
+  </body>
+</html>

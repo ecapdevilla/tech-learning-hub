@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>8th Grade · Cycle 4 · Dynamic Dashboard & Data Storytelling · Projection Guide</title>
+    <style>
+      :root {
+        --navy: #102b46;
+        --blue: #2869df;
+        --cyan: #0aa2b8;
+        --green: #168360;
+        --gold: #f3c755;
+        --ink: #1d3247;
+        --line: #d9e3ed;
+        --paper: #f8fbff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(180deg, #f8fbfe 0%, #edf4f8 100%);
+        color: var(--ink);
+        line-height: 1.6;
+      }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 18px 60px; }
+      .hero {
+        background: linear-gradient(125deg, #102b46, #195b86 62%, #0aa2b8);
+        color: white;
+        padding: 42px 0 30px;
+      }
+      .hero .wrap { padding-bottom: 0; }
+      .kicker {
+        display: inline-block;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.28);
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 14px 0 10px;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 1.1;
+      }
+      .hero p {
+        margin: 0;
+        max-width: 920px;
+        font-size: 1.08rem;
+      }
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .meta div {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+      section {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        margin-top: 18px;
+        padding: 22px 20px 18px;
+        box-shadow: 0 12px 28px rgba(16, 43, 70, 0.08);
+      }
+      h2 {
+        margin-top: 0;
+        color: #1d4f97;
+        font-size: clamp(1.4rem, 2vw, 2rem);
+      }
+      .time {
+        display: inline-block;
+        margin-bottom: 10px;
+        background: #eafaf3;
+        color: #0f6d51;
+        border-radius: 999px;
+        padding: 5px 11px;
+        font-weight: 800;
+      }
+      .objective, .question, .note, .mission, .prompt-box {
+        border-radius: 12px;
+        padding: 15px 16px;
+        margin-top: 12px;
+      }
+      .objective {
+        background: #fff9df;
+        border-left: 7px solid var(--gold);
+      }
+      .question {
+        background: #f4f8ff;
+        border-left: 5px solid var(--blue);
+      }
+      .note {
+        background: #fffaf0;
+        border-left: 6px solid var(--gold);
+      }
+      .mission {
+        background: #eefaf5;
+        border-left: 6px solid var(--green);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        background: #f9fbff;
+        border-radius: 14px;
+        padding: 15px;
+      }
+      .card strong { color: #194c98; }
+      .compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 12px;
+      }
+      .raw {
+        background: #f7f9fb;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        font-family: Consolas, monospace;
+        white-space: pre-wrap;
+      }
+      .mini-panel {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fbfdff;
+        padding: 14px;
+      }
+      .code {
+        margin-top: 10px;
+        background: #122236;
+        color: #edf5ff;
+        padding: 14px;
+        border-radius: 12px;
+        font-family: Consolas, monospace;
+        white-space: pre-wrap;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+      th, td {
+        border: 1px solid var(--line);
+        padding: 9px 10px;
+        vertical-align: top;
+        text-align: left;
+      }
+      th {
+        background: var(--navy);
+        color: white;
+      }
+      input, textarea, select {
+        width: 100%;
+        border: 1px solid #b9c9d9;
+        border-radius: 10px;
+        padding: 10px 11px;
+        font: inherit;
+        background: white;
+      }
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .checklist {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: #fbfdff;
+      }
+      @media (max-width: 700px) {
+        .meta { grid-template-columns: 1fr 1fr; }
+        .compare, .checklist { grid-template-columns: 1fr; }
+      }
+      @media print {
+        body { background: white; }
+        section { box-shadow: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap">
+        <div class="kicker">DATA ANALYSIS · THIRD PERIOD · CYCLE 4</div>
+        <h1>Dynamic Dashboard &amp; Data Storytelling</h1>
+        <p>Students will analyze data, create dynamic dashboards and explain the story behind the numbers using charts, filters and evidence to make better decisions.</p>
+        <div class="meta">
+          <div><b>Grade</b><br>8th</div>
+          <div><b>Duration</b><br>120 min</div>
+          <div><b>Cycle</b><br>4</div>
+          <div><b>Dates</b><br>Aug 13-14<br>Aug 18-21</div>
+          <div><b>Tools</b><br>Excel / Sheets</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section>
+        <span class="time">0–15 min</span>
+        <h2>Opening / Motivation</h2>
+        <p><b>Lasallian greeting:</b> We begin with a respectful and calm greeting. We remember that technology is used to understand reality and improve decisions.</p>
+        <div class="question"><b>Prompt for the class:</b> “What story does this data tell?”</div>
+        <div class="compare">
+          <div>
+            <h3>Raw data</h3>
+            <div class="raw">Student | Mon | Tue | Wed
+A       | 1   | 1   | 0
+B       | 1   | 0   | 1
+C       | 1   | 1   | 1
+D       | 0   | 1   | 1</div>
+          </div>
+          <div>
+            <h3>Dashboard</h3>
+            <div class="mini-panel">
+              <strong>Attendance summary</strong>
+              <p>Highest attendance: Wednesday</p>
+              <p>Lowest attendance: Monday</p>
+              <div class="code">Most frequent pattern = active participation on mid-week days.</div>
+            </div>
+          </div>
+        </div>
+        <div class="note">Ask: What became easier to understand after visualizing the data?</div>
+      </section>
+
+      <section>
+        <span class="time">15–35 min</span>
+        <h2>Development / Representation</h2>
+        <div class="objective">
+          <b>Objective:</b> Students will build a dynamic dashboard using pivot tables, charts, slicers and conditional formatting to interpret meaningful patterns and communicate a clear data story.
+        </div>
+
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <strong>1. Dynamic chart vs static chart</strong>
+            <p>A static chart shows one fixed view. A dynamic chart updates with filters, slicers or connected data.</p>
+          </div>
+          <div class="card">
+            <strong>2. Pivot table</strong>
+            <p>Lets students group, summarize and reorganize data efficiently.</p>
+          </div>
+          <div class="card">
+            <strong>3. Chart selection</strong>
+            <p>Bar charts compare categories. Line charts show trends over time.</p>
+          </div>
+          <div class="card">
+            <strong>4. Dashboard design</strong>
+            <p>Combines tables, charts, conditions and filters to help decision-making.</p>
+          </div>
+        </div>
+
+        <div class="question" style="margin-top: 12px;">
+          <b>Professional question:</b> “What question am I trying to answer with this data?”
+        </div>
+      </section>
+
+      <section>
+        <span class="time">35–60 min</span>
+        <h2>Guided Practice</h2>
+        <div class="mission">
+          <b>Mission:</b> Use the pivot table created in Cycle 3 and transform it into a dashboard.
+        </div>
+
+        <ol>
+          <li>Select the pivot table from the previous cycle.</li>
+          <li>Insert a bar chart to compare categories.</li>
+          <li>Insert a line chart to observe trends over time.</li>
+          <li>Add a slicer or filter to analyze each category.</li>
+          <li>Apply conditional formatting to highlight key results.</li>
+          <li>Write a title and labels that communicate the story clearly.</li>
+        </ol>
+
+        <div class="question">Show a slicer or filter and ask: What should change when a slicer or filter is applied?</div>
+        <div style="margin-top: 8px;">
+          <label><b>Prediction</b></label>
+          <textarea placeholder="Write what you expect to happen when the filter changes."></textarea>
+        </div>
+      </section>
+
+      <section>
+        <span class="time">60–90 min</span>
+        <h2>Independent Project Challenge</h2>
+        <div class="grid">
+          <div class="card">
+            <strong>School attendance dashboard</strong>
+            <p>Compare attendance by day, group or course.</p>
+          </div>
+          <div class="card">
+            <strong>Survey dashboard</strong>
+            <p>Analyze student preferences, activities or opinions.</p>
+          </div>
+          <div class="card">
+            <strong>Screen-time dashboard</strong>
+            <p>Use class data to study patterns in digital use.</p>
+          </div>
+          <div class="card">
+            <strong>Own data story</strong>
+            <p>Choose another dataset approved by the teacher.</p>
+          </div>
+        </div>
+
+        <div class="checklist" style="margin-top: 14px;">
+          <label class="check"><input type="checkbox" /> Data organized</label>
+          <label class="check"><input type="checkbox" /> Pivot table completed</label>
+          <label class="check"><input type="checkbox" /> Bar chart added</label>
+          <label class="check"><input type="checkbox" /> Line chart added</label>
+          <label class="check"><input type="checkbox" /> Slicer or filter added</label>
+          <label class="check"><input type="checkbox" /> Conditional formatting applied</label>
+          <label class="check"><input type="checkbox" /> Clear labels and title</label>
+          <label class="check"><input type="checkbox" /> Meaningful finding written</label>
+        </div>
+      </section>
+
+      <section>
+        <span class="time">90–105 min</span>
+        <h2>Peer Review</h2>
+        <div class="grid">
+          <div class="card">
+            <strong>What I like</strong>
+            <textarea placeholder="Write one strong element of your peer's dashboard."></textarea>
+          </div>
+          <div class="card">
+            <strong>Suggestion</strong>
+            <textarea placeholder="Write one idea to improve clarity or interpretation."></textarea>
+          </div>
+          <div class="card">
+            <strong>Question</strong>
+            <textarea placeholder="Write a question that arises from the dashboard."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <span class="time">105–120 min</span>
+        <h2>Closure / Action and Expression</h2>
+        <div class="question"><b>Reflection:</b> “What makes a dashboard effective?”</div>
+        <div class="note">Use data responsibly, respect the people behind the numbers, and think about how visualization helps with understanding and decision-making.</div>
+
+        <table>
+          <tr>
+            <th>Question</th>
+            <th>Response</th>
+          </tr>
+          <tr>
+            <td>What was the most important pattern you found?</td>
+            <td><textarea placeholder="Answer here"></textarea></td>
+          </tr>
+          <tr>
+            <td>Which chart was most useful and why?</td>
+            <td><textarea placeholder="Answer here"></textarea></td>
+          </tr>
+          <tr>
+            <td>How can this dashboard support decisions?</td>
+            <td><textarea placeholder="Answer here"></textarea></td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Evidence to Submit</h2>
+        <div class="objective">
+          Final evidence should include:
+          <ul>
+            <li>Dataset used</li>
+            <li>Pivot table summary</li>
+            <li>Bar chart and line chart</li>
+            <li>Slicer or filter</li>
+            <li>Conditional formatting</li>
+            <li>Short data story</li>
+            <li>Peer feedback</li>
+            <li>Final reflection</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

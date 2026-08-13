@@ -34,6 +34,22 @@ export const lessons: LessonSummary[] = [
     tags: ["Cycle 4", "Data Analysis", "Dashboard", "Pivot Table", "Charts", "Excel", "Sheets"],
   },
   {
+    id: "grade-08-cycle-4-dashboard-data-storytelling-classroom-guide",
+    grade: 8,
+    cycle: 4,
+    title: {
+      en: "Cycle 4 · Dynamic Dashboard & Data Storytelling Classroom Guide",
+      es: "Ciclo 4 · Guía de Aula de Dashboards Dinámicos y Narrativa de Datos",
+    },
+    objective: {
+      en: "Design a dynamic dashboard and tell the story behind a dataset using charts, filters and evidence-based reflection.",
+      es: "Diseñar un dashboard dinámico y contar la historia detrás de un conjunto de datos usando gráficos, filtros y reflexión basada en evidencia.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-08/cycle-4-dashboard-data-storytelling-classroom-guide.html",
+    tags: ["Cycle 4", "Dashboard", "Charts", "Data Story", "Excel", "Sheets", "Classroom"],
+  },
+  {
     id: "grade-07-cycle-4-automation-simulation",
     grade: 7,
     cycle: 4,
@@ -62,8 +78,24 @@ export const lessons: LessonSummary[] = [
       es: "Crear un proyecto interactivo completo integrando variables, entrada del usuario, condicionales y ciclos, con arreglos como desafío avanzado.",
     },
     durationMinutes: 120,
-    guidePath: "/guides/grade-06/cycle-4-interactive-project-lab.html",
+    guidePath: "/guides/grade-06/cycle-4-interactive-project-lab-v2.html",
     tags: ["Cycle 4", "Project", "Variables", "Conditionals", "Loops", "Arrays", "Evidence"],
+  },
+  {
+    id: "grade-11-cycle-4-dynamic-web-dashboard",
+    grade: 11,
+    cycle: 4,
+    title: {
+      en: "Cycle 4 · Dynamic Web Interface & Prompt Engineering",
+      es: "Ciclo 4 · Interfaz Web Dinámica e Ingeniería de Prompts",
+    },
+    objective: {
+      en: "Design and plan a dynamic web interface with authentication, charts and local data storage, while learning the basics of prompt engineering for coding support.",
+      es: "Diseñar y planear una interfaz web dinámica con autenticación, gráficos y almacenamiento local de datos, mientras aprenden los fundamentos de ingeniería de prompts para apoyo en programación.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-11/cycle-4-dynamic-web-interface-dashboard.html",
+    tags: ["Cycle 4", "Web", "Authentication", "Charts", "Local Storage", "Prompt Engineering", "Notebook"],
   },
   {
     id: "grade-11-cycle-3-autosolutions-engineering-design-lab",
