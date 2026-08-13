@@ -2,6 +2,22 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-07-cycle-4-automation-simulation",
+    grade: 7,
+    cycle: 4,
+    title: {
+      en: "Cycle 4 · Automation Simulation Master Lab",
+      es: "Ciclo 4 · Laboratorio Maestro de Simulación y Automatización",
+    },
+    objective: {
+      en: "Simulate an automated system using Wokwi or Tinkercad and document the engineering process.",
+      es: "Simular un sistema automatizado usando Wokwi o Tinkercad y documentar el proceso de ingeniería.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-07/cycle-4-automation-simulation-master-lab.html",
+    tags: ["Cycle 4", "Automation", "Simulation", "Wokwi", "Tinkercad", "PIR", "Arduino"],
+  },
+  {
     id: "grade-06-cycle-4-interactive-project",
     grade: 6,
     cycle: 4,

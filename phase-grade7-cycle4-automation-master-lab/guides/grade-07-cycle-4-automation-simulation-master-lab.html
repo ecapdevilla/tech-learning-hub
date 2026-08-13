@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>7th Grade · Cycle 4 · Automation Simulation Master Lab</title>
+<style>
+:root{--navy:#102b46;--blue:#2869df;--cyan:#08a2b8;--green:#17835f;--gold:#f3c755;--ink:#1d3247;--line:#d8e3ed;--soft:#f6f9fc}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:linear-gradient(#f9fbfd,#edf4f8);color:var(--ink);line-height:1.58}
+.top{position:sticky;top:0;z-index:30;background:#102b46f4;color:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 18px #0002}
+.top button{border:0;border-radius:999px;padding:8px 13px;font-weight:900;cursor:pointer}.top .active{background:var(--gold)}
+.wrap{max-width:1180px;margin:24px auto 70px;padding:0 16px}.hero{padding:42px;border-radius:32px;color:#fff;background:linear-gradient(135deg,#102b46,#185c86 62%,#08a2b8);box-shadow:0 20px 48px #17324a20}
+.hero h1{font-size:clamp(39px,6vw,66px);line-height:1;margin:9px 0}.hero p{font-size:19px;max-width:900px}.kicker{font-weight:900;letter-spacing:.5px;font-size:13px}
+.meta{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}.meta div{padding:12px;border:1px solid #ffffff2b;border-radius:15px;background:#ffffff12}
+.section{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 10px 28px #17324a0a}.section h2{margin:0;padding:15px 19px;background:linear-gradient(90deg,#edf7ff,#fff);color:var(--navy);font-size:24px}.body{padding:21px}
+.objective{border-left:7px solid var(--gold);background:#fff9df;border-radius:11px;padding:15px;font-size:18px;font-weight:760}.flow{text-align:center;font-weight:950;background:#edf6ff;border-radius:13px;padding:17px;margin-top:14px}
+.timeline,.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fbfdff}.card .emoji{font-size:36px}.card h3{margin:5px 0;color:var(--navy)}.timeline .card strong{color:var(--blue);font-size:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+label{font-weight:850;display:block;margin:12px 0 5px}input[type=text],input[type=date],textarea,select{width:100%;border:1px solid #b8c9d8;border-radius:11px;padding:11px;font:inherit;background:#fff}textarea{min-height:86px;resize:vertical}
+.note{background:#fff9df;border-left:6px solid var(--gold);padding:14px;border-radius:10px;margin-top:12px}.success{background:#eefaf5;border-left:6px solid var(--green);padding:14px;border-radius:10px;margin-top:12px}.question{border-left:5px solid var(--blue);background:#f5f8ff;border-radius:9px;padding:13px;margin:11px 0}
+.system{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:9px;align-items:center;margin:14px 0}.system div:not(.arrow){border:1px solid var(--line);background:#fbfdff;border-radius:14px;padding:15px;text-align:center;font-weight:900}.arrow{font-size:26px;color:var(--blue);font-weight:900}
+.code{background:#122236;color:#edf8ff;border-radius:14px;padding:15px;font-family:Consolas,monospace;white-space:pre-wrap;overflow:auto}
+.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff}.progress-label{display:flex;justify-content:space-between;font-weight:900;margin-top:16px}.progressbar{height:15px;background:#e5edf3;border-radius:999px;overflow:hidden}#bar{height:100%;width:0;background:linear-gradient(90deg,var(--green),#39b58d);transition:.2s}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid var(--line);padding:9px;vertical-align:top}th{background:var(--navy);color:#fff;text-align:left}td input{width:100%;border:0;background:transparent;font:inherit}
+.phase{display:inline-block;padding:5px 10px;border-radius:999px;background:#e9fff7;color:#0a684f;font-weight:900}.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#eaf2ff;color:#1d4e9f;font-size:12px;font-weight:900}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}.primary{background:var(--blue);color:#fff}.dark{background:var(--navy);color:#fff}.green{background:var(--green);color:#fff}.cyan{background:var(--cyan);color:#fff}
+.evidence{border:2px solid #bfd0df;border-radius:18px;padding:18px;background:#fbfdff}
+.lang-en,.lang-es{display:none}body[data-lang=en] .lang-en{display:block}body[data-lang=es] .lang-es{display:block}
+@media(max-width:900px){.meta,.timeline,.cards,.grid2,.grid3,.checkgrid{grid-template-columns:1fr 1fr}.system{grid-template-columns:1fr}.arrow{transform:rotate(90deg);text-align:center}}
+@media(max-width:600px){.meta,.timeline,.cards,.grid2,.grid3,.checkgrid{grid-template-columns:1fr}}
+@media print{.top,.no-print{display:none!important}body{background:#fff}.wrap{max-width:none;margin:0;padding:0}.section,.hero{box-shadow:none;break-inside:avoid}}
+</style></head>
+<body data-lang="en">
+<div class="top"><strong>⚙️ Tech Learning Hub · 7th Grade · Cycle 4</strong><div><button id="en" class="active">🇺🇸 English</button> <button id="es">🇨🇴 Español</button></div></div>
+<main class="wrap">
+<section class="hero">
+<div class="kicker">TECHNOLOGY & ROBOTICS · THIRD PERIOD · CYCLE 4</div>
+<h1 class="lang-en">Automation Simulation Master Lab</h1><h1 class="lang-es">Laboratorio Maestro de Simulación y Automatización</h1>
+<p class="lang-en">Design, simulate, test and document an automated system using a virtual electronics laboratory.</p>
+<p class="lang-es">Diseña, simula, prueba y documenta un sistema automatizado usando un laboratorio virtual de electrónica.</p>
+<div class="meta"><div><b>Grade</b><br>7th</div><div><b>Duration</b><br>120 min</div><div><b>Cycle</b><br>4</div><div><b>Tools</b><br>Wokwi / Tinkercad</div><div><b>Evidence</b><br>Simulation + Report</div></div>
+</section>
+
+<section class="section"><h2>🎯 Learning Objective</h2><div class="body">
+<div class="objective lang-en">By the end of the session, students will simulate an automated system, test its behavior without physical components, identify input-process-output relationships, and document how the system works and how it can be improved.</div>
+<div class="objective lang-es">Al finalizar la sesión, los estudiantes simularán un sistema automatizado, probarán su comportamiento sin componentes físicos, identificarán las relaciones entrada-proceso-salida y documentarán cómo funciona y cómo puede mejorarse.</div>
+<div class="flow">PROBLEM → INPUT → PROCESS → OUTPUT → SIMULATE → TEST → DEBUG → DOCUMENT → SHARE</div>
+</div></section>
+
+<section class="section"><h2>⏱️ 120-Minute Mission</h2><div class="body timeline">
+<div class="card"><strong>0–15 min</strong><br><b>CONNECT</b><br>Greeting · driving question · live simulation.</div>
+<div class="card"><strong>15–40 min</strong><br><b>UNDERSTAND</b><br>Simulation · PIR · LED · automation logic.</div>
+<div class="card"><strong>40–100 min</strong><br><b>ENGINEER</b><br>Guided security system + own automated system.</div>
+<div class="card"><strong>100–120 min</strong><br><b>DOCUMENT & SHARE</b><br>Testing · peer review · gallery walk · reflection.</div>
+</div></section>
+
+<section class="section"><h2>🌟 1. Opening / Motivation</h2><div class="body">
+<span class="phase">0–15 min</span>
+<div class="question"><b>Driving Question:</b> “How can we test our designs without physical components?”</div>
+<div class="note lang-en"><b>Observe before building:</b> During the teacher's live Wokwi/Tinkercad demonstration, identify what enters the system, what decision is made and what output responds.</div>
+<div class="note lang-es"><b>Observa antes de construir:</b> Durante la demostración del profesor en Wokwi/Tinkercad, identifica qué entra al sistema, qué decisión se toma y qué salida responde.</div>
+<div class="grid3">
+<div><label>What did you observe?</label><textarea id="observe"></textarea></div>
+<div><label>What changed?</label><textarea id="changed"></textarea></div>
+<div><label>What caused the change?</label><textarea id="cause"></textarea></div>
+</div></div></section>
+
+<section class="section"><h2>🧠 2. Master Class · How an Automated System Thinks</h2><div class="body">
+<span class="phase">15–40 min</span>
+<div class="system"><div>👁️ INPUT<br><small>Sensor / PIR</small></div><div class="arrow">→</div><div>🧠 PROCESS<br><small>Arduino + program</small></div><div class="arrow">→</div><div>💡 OUTPUT<br><small>LED / alarm</small></div></div>
+<div class="cards">
+<div class="card"><div class="emoji">🧪</div><h3>Simulation</h3><p class="lang-en">A virtual model used to test how a design behaves before building it physically.</p><p class="lang-es">Un modelo virtual para probar cómo se comporta un diseño antes de construirlo físicamente.</p></div>
+<div class="card"><div class="emoji">👁️</div><h3>PIR Sensor</h3><p class="lang-en">Acts as an input. It can detect changes associated with movement.</p><p class="lang-es">Actúa como entrada. Puede detectar cambios asociados al movimiento.</p></div>
+<div class="card"><div class="emoji">🧠</div><h3>Controller</h3><p class="lang-en">Reads the input and executes the programmed logic.</p><p class="lang-es">Lee la entrada y ejecuta la lógica programada.</p></div>
+<div class="card"><div class="emoji">💡</div><h3>LED</h3><p class="lang-en">Acts as an output: ON or OFF according to the program.</p><p class="lang-es">Actúa como salida: encendido o apagado según el programa.</p></div>
+</div>
+<div class="question"><b>Quick Check:</b> If the PIR detects movement, which component receives that information? Which component reacts?</div>
+<div class="question"><b>Think deeper:</b> Is an LED alone an automated system? Explain why or why not.</div>
+</div></section>
+
+<section class="section"><h2>🔐 3. Guided Practice · Security System</h2><div class="body">
+<span class="phase">40–65 min</span>
+<div class="success"><b>Mission:</b> Simulate a simple security system. When motion is detected by the PIR sensor, the LED must turn on. When no motion is detected, the LED must remain off.</div>
+<h3>System architecture</h3>
+<div class="system"><div>PIR SENSOR<br><span class="badge">INPUT</span></div><div class="arrow">→</div><div>ARDUINO + LOGIC<br><span class="badge">PROCESS</span></div><div class="arrow">→</div><div>LED<br><span class="badge">OUTPUT</span></div></div>
+<h3>Logic before code</h3><div class="code">START
+READ motion sensor
+IF motion is detected
+    TURN LED ON
+ELSE
+    TURN LED OFF
+REPEAT continuously</div>
+<div class="question">🔮 Predict before simulation: What should the LED do when the sensor changes from LOW to HIGH?</div>
+<label>My prediction / Mi predicción</label><textarea id="prediction"></textarea>
+<label>What actually happened? / ¿Qué ocurrió realmente?</label><textarea id="guidedResult"></textarea>
+</div></section>
+
+<section class="section"><h2>🛠️ 4. Engineering Design · Your Automated System</h2><div class="body">
+<span class="phase">65–80 min</span>
+<div class="grid2"><div><label>Student / Estudiante</label><input id="student" type="text"></div><div><label>Date / Fecha</label><input id="date" type="date"></div><div><label>Course / Curso</label><input id="course" type="text" value="7th Grade"></div><div><label>Partner / Reviewer</label><input id="partner" type="text"></div></div>
+<label>Problem to solve / Problema a resolver</label><textarea id="problem"></textarea>
+<label>System name / Nombre del sistema</label><input id="systemName" type="text">
+<div class="grid3"><div><label>INPUT · Sensor</label><textarea id="systemInput"></textarea></div><div><label>PROCESS · Decision</label><textarea id="systemProcess"></textarea></div><div><label>OUTPUT · Action</label><textarea id="systemOutput"></textarea></div></div>
+<label>Automation rule: IF... THEN... / Regla de automatización</label><textarea id="rule"></textarea>
+<label>Describe or sketch your connection diagram / Describe tu diagrama de conexión</label><textarea id="diagram"></textarea>
+</div></section>
+
+<section class="section"><h2>🚀 5. Individual Simulation Challenge</h2><div class="body">
+<span class="phase">80–100 min</span>
+<div class="note lang-en"><b>Engineer rule:</b> Do not add components just to make the circuit look complex. Every component must have a purpose in the system.</div>
+<div class="note lang-es"><b>Regla de ingeniería:</b> No agregues componentes solo para hacer que el circuito parezca complejo. Cada componente debe cumplir una función.</div>
+<div class="checkgrid">
+<label class="check"><input class="progress" type="checkbox" value="Problem defined"> Problem defined</label>
+<label class="check"><input class="progress" type="checkbox" value="Input identified"> Input identified</label>
+<label class="check"><input class="progress" type="checkbox" value="Process defined"> Process defined</label>
+<label class="check"><input class="progress" type="checkbox" value="Output identified"> Output identified</label>
+<label class="check"><input class="progress" type="checkbox" value="Circuit assembled"> Circuit assembled</label>
+<label class="check"><input class="progress" type="checkbox" value="Logic programmed"> Logic programmed</label>
+<label class="check"><input class="progress" type="checkbox" value="Simulation tested"> Simulation tested</label>
+<label class="check"><input class="progress" type="checkbox" value="System improved"> System improved</label>
+</div>
+<div class="progress-label"><span>AUTOMATION MISSION CONTROL</span><span id="pct">0%</span></div><div class="progressbar"><div id="bar"></div></div>
+</div></section>
+
+<section class="section"><h2>🧪 6. Testing & Debugging Lab</h2><div class="body">
+<span class="phase">100–108 min</span>
+<div class="success"><b>Engineering cycle:</b> TEST → OBSERVE → FIND THE CAUSE → MODIFY → TEST AGAIN.</div>
+<table>
+<tr><th>Test</th><th>Input / Situation</th><th>Expected Output</th><th>Actual Result</th><th>Improvement</th></tr>
+<tr><td>1</td><td><input id="t1in"></td><td><input id="t1expected"></td><td><input id="t1actual"></td><td><input id="t1fix"></td></tr>
+<tr><td>2</td><td><input id="t2in"></td><td><input id="t2expected"></td><td><input id="t2actual"></td><td><input id="t2fix"></td></tr>
+</table></div></section>
+
+<section class="section"><h2>📝 7. Technical Documentation</h2><div class="body">
+<span class="phase">108–112 min</span>
+<label>Explain how your system works from input to output. / Explica cómo funciona desde la entrada hasta la salida.</label><textarea id="explanation"></textarea>
+<label>Why is your system automated? / ¿Por qué tu sistema es automatizado?</label><textarea id="automatedWhy"></textarea>
+<label>What would you change before building it with physical components? / ¿Qué cambiarías antes de construirlo físicamente?</label><textarea id="physicalChange"></textarea>
+</div></section>
+
+<section class="section"><h2>🤝 8. Peer Review & Gallery Walk</h2><div class="body">
+<span class="phase">112–116 min</span>
+<div class="grid3"><div><label>👍 One strength</label><textarea id="strength"></textarea></div><div><label>💡 One improvement</label><textarea id="suggestion"></textarea></div><div><label>❓ One question</label><textarea id="peerQuestion"></textarea></div></div>
+<div class="question">Gallery Walk: Visit another simulation. What idea could improve your own design?</div><textarea id="galleryIdea"></textarea>
+</div></section>
+
+<section class="section"><h2>📊 9. Engineering Rubric</h2><div class="body">
+<table>
+<tr><th>Criterion</th><th>4 · Excellent</th><th>3 · Good</th><th>2 · Developing</th><th>1 · Beginning</th></tr>
+<tr><td>System Design</td><td>Clear problem and logical architecture.</td><td>Mostly clear.</td><td>Partial design.</td><td>Unclear.</td></tr>
+<tr><td>Input–Process–Output</td><td>All elements correctly identified.</td><td>Minor confusion.</td><td>Some elements unclear.</td><td>Not identified.</td></tr>
+<tr><td>Simulation</td><td>System behaves as intended.</td><td>Mostly functional.</td><td>Partially functional.</td><td>Not functional yet.</td></tr>
+<tr><td>Testing & Debugging</td><td>Tests, identifies causes and improves.</td><td>Tests and adjusts.</td><td>Limited testing.</td><td>No evidence.</td></tr>
+<tr><td>Documentation</td><td>Clear technical explanation.</td><td>Mostly clear.</td><td>Basic explanation.</td><td>Incomplete.</td></tr>
+<tr><td>Peer Feedback</td><td>Specific and constructive.</td><td>Useful feedback.</td><td>Basic feedback.</td><td>Missing.</td></tr>
+</table></div></section>
+
+<section class="section"><h2>💭 10. Closure · Action & Expression</h2><div class="body">
+<span class="phase">116–120 min</span>
+<div class="question"><b>Reflection:</b> “How does simulation help us improve our designs?”</div>
+<textarea id="reflection"></textarea>
+<label>What did you understand better today? / ¿Qué comprendiste mejor hoy?</label><textarea id="learned"></textarea>
+<label>How could an automated system serve people at school, home or in the community? / ¿Cómo podría servir a otros?</label><textarea id="impact"></textarea>
+<div class="note lang-en"><b>Lasallian closing:</b> Give thanks for learning, teamwork and the opportunity to use technology responsibly in service of others.</div>
+<div class="note lang-es"><b>Cierre Lasallista:</b> Agradece por el aprendizaje, el trabajo en equipo y la oportunidad de usar responsablemente la tecnología al servicio de los demás.</div>
+</div></section>
+
+<section class="section"><h2>📄 11. Final Evidence Record</h2><div class="body">
+<div class="evidence"><p><b>Evidence:</b> 7th Grade · Cycle 4 · Automation Simulation Master Lab</p><p><b>Required:</b> System architecture · Simulation · Tests · Technical documentation · Peer feedback · Reflection</p><p><b>Recommended filename:</b> <span id="filename">7th-cycle4-student.html</span></p></div>
+<div class="actions no-print"><button id="download" class="btn primary">📥 Download Evidence</button><button id="pdf" class="btn dark">🖨️ Save as PDF</button><a href="https://wokwi.com" target="_blank" rel="noopener" class="btn green">⚡ Open Wokwi</a><a href="https://www.tinkercad.com" target="_blank" rel="noopener" class="btn cyan">🧩 Open Tinkercad</a></div>
+</div></section>
+</main>
+
+<script>
+const ids=["observe","changed","cause","prediction","guidedResult","student","date","course","partner","problem","systemName","systemInput","systemProcess","systemOutput","rule","diagram","t1in","t1expected","t1actual","t1fix","t2in","t2expected","t2actual","t2fix","explanation","automatedWhy","physicalChange","strength","suggestion","peerQuestion","galleryIdea","reflection","learned","impact"];
+function setLang(l){document.body.dataset.lang=l;document.getElementById("en").classList.toggle("active",l==="en");document.getElementById("es").classList.toggle("active",l==="es");localStorage.setItem("g7c4-lang",l)}
+document.getElementById("en").onclick=()=>setLang("en");document.getElementById("es").onclick=()=>setLang("es");
+function save(){const d={};ids.forEach(id=>d[id]=document.getElementById(id).value);d.progress=[...document.querySelectorAll(".progress:checked")].map(x=>x.value);localStorage.setItem("g7c4-master",JSON.stringify(d));update()}
+function restore(){try{const d=JSON.parse(localStorage.getItem("g7c4-master")||"{}");ids.forEach(id=>{if(d[id]!=null)document.getElementById(id).value=d[id]});document.querySelectorAll(".progress").forEach(x=>x.checked=(d.progress||[]).includes(x.value))}catch(e){}update()}
+function update(){const all=[...document.querySelectorAll(".progress")],done=all.filter(x=>x.checked).length,p=Math.round(done/all.length*100);document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"%";const n=(document.getElementById("student").value||"student").trim().replace(/[^a-z0-9]+/gi,"-");document.getElementById("filename").textContent="7th-cycle4-"+n+".html"}
+document.querySelectorAll("input,textarea,select").forEach(x=>x.addEventListener("input",save));document.querySelectorAll("input[type=checkbox]").forEach(x=>x.addEventListener("change",save));
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+document.getElementById("download").onclick=()=>{save();const d=JSON.parse(localStorage.getItem("g7c4-master")||"{}"),name=(d.student||"student").trim().replace(/[^a-z0-9]+/gi,"-"),p=Math.round(((d.progress||[]).length/8)*100);const out='<!doctype html><meta charset="utf-8"><title>7th Cycle 4 Evidence</title><style>body{font-family:Arial;max-width:900px;margin:35px auto;line-height:1.5;color:#17324a}h1{color:#102f4d}h2{border-bottom:2px solid #d9e3ef}.box{background:#f5f8fb;padding:13px;border-radius:8px;margin:8px 0}.head{border:2px solid #102f4d;padding:18px;border-radius:10px}</style><div class="head"><h1>7th Grade · Cycle 4 · Automation Simulation Evidence</h1><p><b>Student:</b> '+esc(d.student)+' · <b>Date:</b> '+esc(d.date)+' · <b>System:</b> '+esc(d.systemName)+' · <b>Progress:</b> '+p+'%</p></div><h2>System Design</h2><div class="box"><b>Problem:</b> '+esc(d.problem)+'<br><b>Input:</b> '+esc(d.systemInput)+'<br><b>Process:</b> '+esc(d.systemProcess)+'<br><b>Output:</b> '+esc(d.systemOutput)+'<br><b>Rule:</b> '+esc(d.rule)+'<br><b>Diagram:</b> '+esc(d.diagram)+'</div><h2>Testing</h2><div class="box"><b>Test 1:</b> '+esc(d.t1in)+' | Expected: '+esc(d.t1expected)+' | Actual: '+esc(d.t1actual)+' | Improvement: '+esc(d.t1fix)+'<br><b>Test 2:</b> '+esc(d.t2in)+' | Expected: '+esc(d.t2expected)+' | Actual: '+esc(d.t2actual)+' | Improvement: '+esc(d.t2fix)+'</div><h2>Technical Documentation</h2><div class="box">'+esc(d.explanation)+'<br><b>Why automated:</b> '+esc(d.automatedWhy)+'<br><b>Before physical build:</b> '+esc(d.physicalChange)+'</div><h2>Peer Review</h2><div class="box"><b>Strength:</b> '+esc(d.strength)+'<br><b>Suggestion:</b> '+esc(d.suggestion)+'<br><b>Question:</b> '+esc(d.peerQuestion)+'<br><b>Gallery idea:</b> '+esc(d.galleryIdea)+'</div><h2>Reflection</h2><div class="box">'+esc(d.reflection)+'<br><b>Learned:</b> '+esc(d.learned)+'<br><b>Impact:</b> '+esc(d.impact)+'</div>';const blob=new Blob([out],{type:"text/html"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="7th-cycle4-"+name+".html";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+document.getElementById("pdf").onclick=()=>window.print();if(!document.getElementById("date").value)document.getElementById("date").value=new Date().toISOString().slice(0,10);setLang(localStorage.getItem("g7c4-lang")||"en");restore();
+</script></body></html>
