@@ -118,6 +118,97 @@
         padding: 15px;
       }
       .card strong { color: #194c98; }
+      .dashboard-visual {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 16px;
+        margin-top: 14px;
+      }
+      .chart-panel {
+        background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px;
+      }
+      .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        font-weight: 700;
+      }
+      .chart-bars {
+        display: flex;
+        align-items: end;
+        gap: 12px;
+        height: 180px;
+        padding: 10px 6px 0;
+        border-bottom: 2px solid #d9e6f3;
+      }
+      .bar {
+        flex: 1;
+        border-radius: 10px 10px 0 0;
+        min-height: 20px;
+        position: relative;
+      }
+      .bar::after {
+        content: attr(data-label);
+        position: absolute;
+        bottom: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 11px;
+        color: #48637f;
+        font-weight: 700;
+      }
+      .b1 { height: 38%; background: linear-gradient(180deg, #2c8cff, #235fd8); }
+      .b2 { height: 53%; background: linear-gradient(180deg, #28b3d8, #107fb3); }
+      .b3 { height: 66%; background: linear-gradient(180deg, #2bcf95, #179b71); }
+      .b4 { height: 82%; background: linear-gradient(180deg, #ffc857, #e18a10); }
+      .b5 { height: 94%; background: linear-gradient(180deg, #ff7b72, #d6514e); }
+      .mini-stat {
+        display: grid;
+        gap: 10px;
+      }
+      .stat-box {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .stat-box strong {
+        display: block;
+        font-size: 1.5rem;
+        color: #123f6c;
+      }
+      .donut {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto 10px;
+        background: conic-gradient(#2c8cff 0 30%, #28b3d8 30% 58%, #2bcf95 58% 82%, #ffc857 82% 100%);
+        position: relative;
+      }
+      .donut:before {
+        content: "";
+        position: absolute;
+        inset: 20px;
+        background: white;
+        border-radius: 50%;
+      }
+      .legend {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        font-size: 12px;
+      }
+      .dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
       .compare {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -201,13 +292,13 @@
   <body>
     <header class="hero">
       <div class="wrap">
-        <div class="kicker">CICLO 4 · GRADO 8° · TRABAJO EN CUADERNO</div>
+        <div class="kicker">GUIA ESPECIAL · 14 AGOSTO 2026 · CICLO 4 · GRADO 8°</div>
         <h1>Dashboard dinámico y narrativa de datos</h1>
-        <p>En este ciclo vas a analizar datos, construir un tablero dinámico y explicar la historia que cuentan los números para tomar decisiones con evidencia.</p>
+        <p>En esta sesión de dos horas vas a analizar información real, elegir el mejor tipo de gráfico, construir un dashboard visual y contar la historia que esconden los datos.</p>
         <div class="meta">
           <div><b>Grado</b><br>8°</div>
           <div><b>Tiempo</b><br>120 min</div>
-          <div><b>Ciclo</b><br>4</div>
+          <div><b>Fecha</b><br>14 Ago 2026</div>
           <div><b>Objetivo</b><br>Interpretar datos</div>
           <div><b>Herramienta</b><br>Excel / Sheets</div>
         </div>
@@ -218,60 +309,86 @@
       <section>
         <span class="time">0–15 min</span>
         <h2>Inicio: observa y piensa</h2>
-        <p>Lee la siguiente información y responde en tu cuaderno.</p>
 
-        <div class="compare">
-          <div>
-            <h3>Datos sin organizar</h3>
-            <div class="raw">Estudiante | Lunes | Martes | Miércoles
-A          | 1     | 1      | 0
-B          | 1     | 0      | 1
-C          | 1     | 1      | 1
-D          | 0     | 1      | 1</div>
+        <div class="dashboard-visual">
+          <div class="chart-panel">
+            <div class="chart-header">
+              <span>Asistencia por día</span>
+              <span style="color:#1a7d5b; font-size: 12px;">+18%</span>
+            </div>
+            <div class="chart-bars">
+              <div class="bar b1" data-label="Lun"></div>
+              <div class="bar b2" data-label="Mar"></div>
+              <div class="bar b3" data-label="Mie"></div>
+              <div class="bar b4" data-label="Jue"></div>
+              <div class="bar b5" data-label="Vie"></div>
+            </div>
           </div>
-          <div>
-            <h3>Interpretación</h3>
-            <div class="mini-panel">
-              <strong>Resumen de asistencia</strong>
-              <p>Mayor asistencia: miércoles</p>
-              <p>Menor asistencia: lunes</p>
-              <div class="code">Patrón: la participación es más alta a mitad de la semana.</div>
+          <div class="mini-stat">
+            <div class="stat-box">
+              <span style="color:#5c6b7a; font-size:12px;">Máximo</span>
+              <strong>94%</strong>
+              <small>viernes</small>
+            </div>
+            <div class="stat-box">
+              <span style="color:#5c6b7a; font-size:12px;">Patrón</span>
+              <strong>Más alta</strong>
+              <small>al final de la semana</small>
             </div>
           </div>
         </div>
 
-        <div class="question"><b>Escribe en tu cuaderno:</b> ¿Qué historia cuentan estos datos? ¿Qué patrón observas?</div>
-        <div class="note">Explica con tus palabras qué significa cada número y cuál es la información más importante.</div>
+        <div class="question"><b>Pregunta guía:</b> ¿Qué historia cuenta esta gráfica? ¿Qué patrón observas?</div>
+        <div class="note">No solo mires los números: explica qué significa ese aumento o disminución.</div>
       </section>
 
       <section>
         <span class="time">15–35 min</span>
-        <h2>Conceptos clave</h2>
-        <div class="objective">
-          <b>Objetivo de aprendizaje:</b> Comprender qué es un dashboard, cómo se usa una tabla dinámica y cómo una gráfica comunica información útil.
-        </div>
+        <h2>¿Qué tipo de gráfico usar?</h2>
 
         <div class="grid" style="margin-top: 12px;">
           <div class="card">
-            <strong>1. Datos brutos</strong>
-            <p>Son cifras o información sin organizar. A veces no dicen mucho si se miran solos.</p>
+            <strong>Gráfico de barras</strong>
+            <p>Para comparar categorías: cursos, días, niveles o grupos.</p>
           </div>
           <div class="card">
-            <strong>2. Tabla dinámica</strong>
-            <p>Permite resumir, agrupar y reorganizar la información para encontrar patrones.</p>
+            <strong>Gráfico de líneas</strong>
+            <p>Para mostrar cambios a lo largo del tiempo: semanas, meses o días.</p>
           </div>
           <div class="card">
-            <strong>3. Gráfica dinámica</strong>
-            <p>Se actualiza cuando cambian los filtros o los datos, y ayuda a visualizar tendencias.</p>
+            <strong>Gráfico circular</strong>
+            <p>Para mostrar proporciones: porcentaje o participación por opción.</p>
           </div>
           <div class="card">
-            <strong>4. Dashboard</strong>
-            <p>Es un conjunto de tablas, gráficas y filtros que ayudan a tomar decisiones.</p>
+            <strong>Dashboard</strong>
+            <p>Para unir varios gráficos y detectar patrones rápidos.</p>
           </div>
         </div>
 
-        <div class="question" style="margin-top: 12px;">
-          <b>Pregunta clave:</b> “¿Qué pregunta estoy intentando responder con estos datos?”
+        <div class="dashboard-visual" style="margin-top: 16px;">
+          <div class="chart-panel">
+            <div class="chart-header">
+              <span>Preferencias del grupo</span>
+              <span style="color:#3b7ad6; font-size: 12px;">Encuesta</span>
+            </div>
+            <div class="donut" aria-label="grafico circular"></div>
+            <div class="legend">
+              <div><span class="dot" style="background:#2c8cff;"></span>Arte 30%</div>
+              <div><span class="dot" style="background:#28b3d8;"></span>Deporte 28%</div>
+              <div><span class="dot" style="background:#2bcf95;"></span>Robótica 22%</div>
+              <div><span class="dot" style="background:#ffc857;"></span>Tecnología 20%</div>
+            </div>
+          </div>
+          <div class="mini-stat">
+            <div class="stat-box">
+              <span style="color:#5c6b7a; font-size:12px;">Tema más votado</span>
+              <strong>Arte</strong>
+            </div>
+            <div class="stat-box">
+              <span style="color:#5c6b7a; font-size:12px;">Idea</span>
+              <strong>Elige la gráfica que responde la pregunta.</strong>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -279,56 +396,54 @@ D          | 0     | 1      | 1</div>
         <span class="time">35–60 min</span>
         <h2>Práctica guiada</h2>
         <div class="mission">
-          <b>Misión:</b> Usa la tabla dinámica que trabajaste en el ciclo anterior y conviértela en un dashboard simplificado.
+          <b>Misión:</b> Crea un mini dashboard con dos gráficos y una conclusión clara.
         </div>
 
         <ol>
-          <li>Abre la hoja de cálculo con tus datos.</li>
-          <li>Selecciona la tabla dinámica y revisa la información.</li>
-          <li>Inserta una gráfica de barras para comparar categorías.</li>
-          <li>Inserta una gráfica de líneas para observar tendencias.</li>
-          <li>Agrega un filtro o slicer para analizar cada categoría.</li>
-          <li>Aplica formato condicional para resaltar resultados importantes.</li>
-          <li>Escribe un título claro y etiquetas que ayuden a entender la gráfica.</li>
+          <li>Abre la hoja con los datos.</li>
+          <li>Elige la información que quieras comparar.</li>
+          <li>Inserta una gráfica de barras.</li>
+          <li>Inserta una gráfica de líneas o circular.</li>
+          <li>Aplica un filtro o slicer.</li>
+          <li>Escribe una conclusión en una frase.</li>
         </ol>
 
-        <div class="question"><b>En tu cuaderno:</b> ¿Qué cambia cuando aplicas un filtro? Escribe tu predicción antes de probarlo.</div>
-        <textarea placeholder="Escribe aquí tu predicción y luego compara con el resultado real."></textarea>
+        <div class="question"><b>En tu cuaderno:</b> Antes de cambiar el filtro, escribe qué esperas que pase.</div>
+        <textarea placeholder="Escribe tu predicción aquí."></textarea>
       </section>
 
       <section>
         <span class="time">60–90 min</span>
-        <h2>Reto individual</h2>
-        <p>Elige uno de estos temas para crear tu propio dashboard.</p>
+        <h2>Reto principal: crea tu dashboard</h2>
 
         <div class="grid">
           <div class="card">
-            <strong>Asistencia escolar</strong>
-            <p>Compara asistencia por día, grupo o curso.</p>
+            <strong>Asistencia</strong>
+            <p>Compara asistencia por día o curso.</p>
           </div>
           <div class="card">
-            <strong>Encuesta de gustos</strong>
-            <p>Analiza preferencias de estudiantes o actividades.</p>
+            <strong>Encuesta</strong>
+            <p>Analiza preferencias de estudiantes.</p>
           </div>
           <div class="card">
-            <strong>Uso de tecnología</strong>
-            <p>Estudia patrones de uso digital durante la semana.</p>
+            <strong>Tecnología</strong>
+            <p>Estudia usos de apps o dispositivos.</p>
           </div>
           <div class="card">
-            <strong>Otro conjunto de datos</strong>
-            <p>Usa información de tu elección y valida que tenga sentido para analizar.</p>
+            <strong>Tu idea</strong>
+            <p>Usa un conjunto de datos que te interese.</p>
           </div>
         </div>
 
+        <div class="question" style="margin-top: 12px;"><b>Tu dashboard debe incluir:</b> dos gráficos, un filtro, un título llamativo y una conclusión en una frase.</div>
+
         <div class="checklist" style="margin-top: 14px;">
-          <label class="check"><input type="checkbox" /> Datos organizados</label>
-          <label class="check"><input type="checkbox" /> Tabla dinámica lista</label>
-          <label class="check"><input type="checkbox" /> Gráfica de barras</label>
-          <label class="check"><input type="checkbox" /> Gráfica de líneas</label>
-          <label class="check"><input type="checkbox" /> Filtro o slicer</label>
-          <label class="check"><input type="checkbox" /> Formato condicional</label>
-          <label class="check"><input type="checkbox" /> Título y etiquetas claros</label>
-          <label class="check"><input type="checkbox" /> Conclusión escrita</label>
+          <label class="check"><input type="checkbox" /> Datos ordenados</label>
+          <label class="check"><input type="checkbox" /> Dos gráficos</label>
+          <label class="check"><input type="checkbox" /> Filtro</label>
+          <label class="check"><input type="checkbox" /> Título claro</label>
+          <label class="check"><input type="checkbox" /> Colores visibles</label>
+          <label class="check"><input type="checkbox" /> Conclusión</label>
         </div>
       </section>
 
