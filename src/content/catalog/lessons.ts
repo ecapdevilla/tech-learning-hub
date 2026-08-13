@@ -2,6 +2,22 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-08-cycle-4-dashboard-data-storytelling",
+    grade: 8,
+    cycle: 4,
+    title: {
+      en: "Cycle 4 · Dynamic Dashboard & Data Storytelling Master Lab",
+      es: "Ciclo 4 · Laboratorio Maestro de Dashboards Dinámicos y Narrativa de Datos",
+    },
+    objective: {
+      en: "Create dynamic dashboards and charts to visualize and interpret data effectively.",
+      es: "Crear dashboards dinámicos y gráficos para visualizar e interpretar datos de manera efectiva.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-08/cycle-4-dashboard-data-storytelling-master-lab.html",
+    tags: ["Cycle 4", "Data Analysis", "Dashboard", "Pivot Table", "Charts", "Excel", "Sheets"],
+  },
+  {
     id: "grade-07-cycle-4-automation-simulation",
     grade: 7,
     cycle: 4,

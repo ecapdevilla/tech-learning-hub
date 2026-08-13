@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>8th Grade · Cycle 4 · Dynamic Dashboard & Data Storytelling Master Lab</title>
+<style>
+:root{
+  --navy:#102b46;--navy2:#173e68;--blue:#2869df;--cyan:#0aa2b8;
+  --green:#168360;--gold:#f3c755;--red:#d85a68;--ink:#1d3247;
+  --muted:#6d8090;--line:#d8e3ed;--soft:#f6f9fc
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:linear-gradient(#f9fbfd,#edf4f8);color:var(--ink);line-height:1.58}
+.top{position:sticky;top:0;z-index:30;background:#102b46f4;color:white;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 4px 18px #0002}
+.top button{border:0;border-radius:999px;padding:8px 13px;font-weight:900;cursor:pointer}.top .active{background:var(--gold)}
+.wrap{max-width:1200px;margin:24px auto 70px;padding:0 16px}
+.hero{padding:42px;border-radius:32px;color:white;background:linear-gradient(135deg,#102b46,#195b86 61%,#0aa2b8);box-shadow:0 20px 48px #17324a20}
+.hero h1{font-size:clamp(39px,6vw,65px);line-height:1;margin:9px 0}.hero p{font-size:19px;max-width:920px}.kicker{font-size:13px;font-weight:900;letter-spacing:.5px}
+.meta{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}.meta div{padding:12px;border:1px solid #ffffff2b;border-radius:15px;background:#ffffff12}
+.section{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 10px 28px #17324a0a}.section h2{margin:0;padding:15px 19px;background:linear-gradient(90deg,#edf7ff,#fff);color:var(--navy);font-size:24px}.body{padding:21px}
+.objective{border-left:7px solid var(--gold);background:#fff9df;border-radius:11px;padding:15px;font-size:18px;font-weight:760}
+.flow{text-align:center;font-weight:950;background:#edf6ff;border-radius:13px;padding:17px;margin-top:14px}
+.timeline,.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fbfdff}.card .emoji{font-size:35px}.card h3{margin:5px 0;color:var(--navy2)}.timeline .card strong{color:var(--blue);font-size:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+label{font-weight:850;display:block;margin:12px 0 5px}input[type=text],input[type=number],input[type=date],textarea,select{width:100%;border:1px solid #b8c9d8;border-radius:11px;padding:11px;font:inherit;background:#fff}textarea{min-height:86px;resize:vertical}
+.note{background:#fff9df;border-left:6px solid var(--gold);padding:14px;border-radius:10px;margin-top:12px}.successbox{background:#eefaf5;border-left:6px solid var(--green);padding:14px;border-radius:10px;margin-top:12px}.question{border-left:5px solid var(--blue);background:#f5f8ff;border-radius:9px;padding:13px;margin:11px 0}
+.code{background:#122236;color:#edf8ff;border-radius:14px;padding:15px;font-family:Consolas,monospace;white-space:pre-wrap}
+.phase{display:inline-block;padding:5px 10px;border-radius:999px;background:#e9fff7;color:#0a684f;font-weight:900}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}.raw{font-family:Consolas,monospace;background:#f7f8fa;border:1px solid var(--line);padding:14px;border-radius:13px;white-space:pre-wrap}.mini-dashboard{border:1px solid var(--line);border-radius:13px;padding:14px;background:#fbfdff}
+.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff}
+.progress-label{display:flex;justify-content:space-between;font-weight:900;margin-top:16px}.progressbar{height:15px;background:#e5edf3;border-radius:999px;overflow:hidden}#bar{height:100%;width:0;background:linear-gradient(90deg,var(--green),#39b58d);transition:.2s}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid var(--line);padding:9px;vertical-align:top}th{background:var(--navy);color:white;text-align:left}td input{width:100%;border:0;background:transparent;font:inherit}
+.rubric th{font-size:14px}.dashboard-shell{border:2px solid #c3d4e3;border-radius:20px;padding:18px;background:linear-gradient(135deg,#fbfdff,#f3fbf8)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.kpi{background:white;border:1px solid var(--line);border-radius:14px;padding:13px;text-align:center}.kpi b{display:block;font-size:26px;color:var(--navy)}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}.chart{background:white;border:1px solid var(--line);border-radius:15px;padding:14px;min-height:280px}
+.bar-row{display:grid;grid-template-columns:110px 1fr 55px;gap:8px;align-items:center;margin:8px 0}.bar-track{height:22px;background:#e8eef4;border-radius:999px;overflow:hidden}.bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:999px}
+.band-row{display:grid;grid-template-columns:150px 1fr 50px;gap:8px;align-items:center;margin:9px 0}.band-fill{height:18px;background:linear-gradient(90deg,var(--green),#53c49e);border-radius:999px}
+.data-controls{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:9px;align-items:end}.data-controls button{height:44px}
+.btn{border:0;border-radius:999px;padding:11px 17px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}.primary{background:var(--blue);color:white}.dark{background:var(--navy);color:white}.green{background:var(--green);color:white}.gold{background:var(--gold);color:#443300}.red{background:var(--red);color:white}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.story{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fff}.story strong{color:var(--blue)}
+.evidence{border:2px solid #bfd0df;border-radius:18px;padding:18px;background:#fbfdff}
+.lang-en,.lang-es{display:none}body[data-lang=en] .lang-en{display:block}body[data-lang=es] .lang-es{display:block}
+@media(max-width:900px){.meta,.timeline,.cards,.grid2,.grid3,.compare,.chart-grid,.checkgrid,.kpis{grid-template-columns:1fr 1fr}.data-controls{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.meta,.timeline,.cards,.grid2,.grid3,.compare,.chart-grid,.checkgrid,.kpis,.data-controls{grid-template-columns:1fr}}
+@media print{.top,.no-print{display:none!important}body{background:#fff}.wrap{max-width:none;margin:0;padding:0}.section,.hero{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body data-lang="en">
+<div class="top"><strong>📊 Tech Learning Hub · 8th Grade · Cycle 4</strong><div><button id="en" class="active">🇺🇸 English</button> <button id="es">🇨🇴 Español</button></div></div>
+
+<main class="wrap">
+<section class="hero">
+<div class="kicker">DATA ANALYSIS · THIRD PERIOD · CYCLE 4</div>
+<h1 class="lang-en">Dynamic Dashboard & Data Storytelling Master Lab</h1>
+<h1 class="lang-es">Laboratorio Maestro de Dashboards Dinámicos y Narrativa de Datos</h1>
+<p class="lang-en">Turn raw data into an interactive dashboard, discover patterns and tell a clear story with evidence.</p>
+<p class="lang-es">Convierte datos crudos en un dashboard interactivo, descubre patrones y cuenta una historia clara con evidencia.</p>
+<div class="meta"><div><b>Grade</b><br>8th</div><div><b>Duration</b><br>120 min</div><div><b>Cycle</b><br>4</div><div><b>Tools</b><br>Excel / Sheets</div><div><b>Plus</b><br>Class Screen-Time Data</div></div>
+</section>
+
+<section class="section"><h2>🎯 Learning Objective</h2><div class="body">
+<div class="objective lang-en">By the end of the session, students will create a dynamic dashboard using pivot tables, charts, slicers and conditional formatting, and will interpret the visualizations to communicate meaningful findings.</div>
+<div class="objective lang-es">Al finalizar la sesión, los estudiantes crearán un dashboard dinámico usando tablas dinámicas, gráficos, segmentadores y formato condicional, e interpretarán las visualizaciones para comunicar hallazgos significativos.</div>
+<div class="flow">RAW DATA → PIVOT TABLE → ANALYZE → VISUALIZE → FILTER → INTERPRET → TELL THE STORY</div>
+</div></section>
+
+<section class="section"><h2>⏱️ 120-Minute Data Mission</h2><div class="body timeline">
+<div class="card"><strong>0–15 min</strong><br><b>DISCOVER</b><br>Raw data vs dashboard · driving question.</div>
+<div class="card"><strong>15–35 min</strong><br><b>UNDERSTAND</b><br>Static vs dynamic · chart selection · dashboard principles.</div>
+<div class="card"><strong>35–75 min</strong><br><b>BUILD</b><br>Pivot table · bar chart · line chart · slicers · formatting.</div>
+<div class="card"><strong>75–120 min</strong><br><b>ANALYZE & SHARE</b><br>Own dashboard · class screen-time dataset · peer review · story.</div>
+</div></section>
+
+<section class="section"><h2>🔎 1. Opening · What Story Does This Data Tell?</h2><div class="body">
+<span class="phase">0–15 min</span>
+<div class="question"><b>Driving Question:</b> “What story does this data tell?”</div>
+<div class="compare">
+<div><h3>RAW DATA</h3><div class="raw">Student | Mon | Tue | Wed
+A       |  1  |  1  |  0
+B       |  1  |  0  |  1
+C       |  1  |  1  |  1
+D       |  0  |  1  |  1</div></div>
+<div><h3>DASHBOARD</h3><div class="mini-dashboard"><b>Attendance Summary</b><p>Highest attendance: Wednesday</p><p>Lowest attendance: Monday</p><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><p>Now the pattern is easier to see.</p></div></div>
+</div>
+<div class="note lang-en">Before touching Excel/Sheets, answer: What became easier to understand after visualizing the data?</div>
+<div class="note lang-es">Antes de tocar Excel/Sheets, responde: ¿Qué fue más fácil de comprender después de visualizar los datos?</div>
+<textarea id="openingFinding"></textarea>
+</div></section>
+
+<section class="section"><h2>🧠 2. Master Class · From Chart to Dashboard</h2><div class="body">
+<span class="phase">15–35 min</span>
+<div class="cards">
+<div class="card"><div class="emoji">📊</div><h3>Static Chart</h3><p class="lang-en">Shows a fixed view. To analyze another part, you often modify the source or chart manually.</p><p class="lang-es">Muestra una vista fija. Para analizar otra parte, normalmente debes modificar manualmente la fuente o el gráfico.</p></div>
+<div class="card"><div class="emoji">🎛️</div><h3>Dynamic Chart</h3><p class="lang-en">Responds to filters, slicers or changes in connected data.</p><p class="lang-es">Responde a filtros, segmentadores o cambios en los datos conectados.</p></div>
+<div class="card"><div class="emoji">📈</div><h3>Line Chart</h3><p class="lang-en">Best for trends over time.</p><p class="lang-es">Ideal para tendencias a través del tiempo.</p></div>
+<div class="card"><div class="emoji">📶</div><h3>Bar Chart</h3><p class="lang-en">Best for comparing categories.</p><p class="lang-es">Ideal para comparar categorías.</p></div>
+</div>
+<div class="question"><b>Professional question before choosing a chart:</b> “What question am I trying to answer?”</div>
+<div class="grid2"><div><label>Question for a Bar Chart</label><textarea id="barQuestion"></textarea></div><div><label>Question for a Line Chart</label><textarea id="lineQuestion"></textarea></div></div>
+<div class="cards" style="margin-top:12px">
+<div class="card"><h3>📋 Pivot Table</h3><p>Summarizes and groups data.</p></div>
+<div class="card"><h3>📊 Chart</h3><p>Transforms values into patterns we can see.</p></div>
+<div class="card"><h3>🎛️ Slicer</h3><p>Lets the user filter interactively.</p></div>
+<div class="card"><h3>🎨 Conditional Formatting</h3><p>Highlights important values automatically.</p></div>
+</div>
+</div></section>
+
+<section class="section"><h2>🛠️ 3. Guided Build · From Cycle 3 Pivot Table to Dashboard</h2><div class="body">
+<span class="phase">35–60 min</span>
+<div class="successbox"><b>Mission:</b> Use the pivot table created in Cycle 3 and transform it into a dashboard.</div>
+<ol>
+<li>Select the Pivot Table from Cycle 3.</li>
+<li>Insert a <b>Bar Chart</b> to compare categories.</li>
+<li>Insert a <b>Line Chart</b> to observe a trend.</li>
+<li>Add at least one <b>Slicer</b>.</li>
+<li>Apply <b>Conditional Formatting</b> to highlight important values.</li>
+<li>Add a clear dashboard title and labels.</li>
+</ol>
+<div class="question">🔮 Predict: What should change when you select one value in the slicer?</div>
+<label>My prediction / Mi predicción</label><textarea id="slicerPrediction"></textarea>
+<label>What actually changed? / ¿Qué cambió realmente?</label><textarea id="slicerResult"></textarea>
+</div></section>
+
+<section class="section"><h2>🚀 4. Individual Dashboard Challenge</h2><div class="body">
+<span class="phase">60–80 min</span>
+<div class="grid2"><div><label>Student / Estudiante</label><input id="student" type="text"></div><div><label>Date / Fecha</label><input id="date" type="date"></div></div>
+<div class="cards">
+<div class="card"><div class="emoji">🏫</div><h3>Mission A</h3><b>School Attendance Dashboard</b><p>Attendance by day, class or group.</p></div>
+<div class="card"><div class="emoji">📝</div><h3>Mission B</h3><b>Student Survey Dashboard</b><p>Preferences, habits or opinions.</p></div>
+<div class="card"><div class="emoji">📱</div><h3>Mission C · PLUS</h3><b>Screen-Time Dashboard</b><p>Analyze the class social-media usage dataset created today.</p></div>
+<div class="card"><div class="emoji">💡</div><h3>Mission D</h3><b>Own Data Story</b><p>Use another approved dataset.</p></div>
+</div>
+<div class="checkgrid" style="margin-top:13px">
+<label class="check"><input class="progress" type="checkbox" value="Clean data"> Clean data</label>
+<label class="check"><input class="progress" type="checkbox" value="Pivot table"> Pivot Table</label>
+<label class="check"><input class="progress" type="checkbox" value="Bar chart"> Bar Chart</label>
+<label class="check"><input class="progress" type="checkbox" value="Line chart"> Line Chart</label>
+<label class="check"><input class="progress" type="checkbox" value="Slicer"> Slicer</label>
+<label class="check"><input class="progress" type="checkbox" value="Conditional formatting"> Conditional Formatting</label>
+<label class="check"><input class="progress" type="checkbox" value="Dashboard labels"> Clear title & labels</label>
+<label class="check"><input class="progress" type="checkbox" value="Data story"> Important finding</label>
+</div>
+<div class="progress-label"><span>DASHBOARD MISSION CONTROL</span><span id="pct">0%</span></div><div class="progressbar"><div id="bar"></div></div>
+</div></section>
+
+<section class="section"><h2>📱 5. PLUS · Class Screen-Time Analyzer</h2><div class="body">
+<span class="phase">80–100 min</span>
+<div class="note lang-en"><b>Privacy rule:</b> Do not enter phone numbers, usernames, passwords or private messages. Use an anonymous code or first-name initial only. The goal is to study class-level patterns, not judge individuals.</div>
+<div class="note lang-es"><b>Regla de privacidad:</b> No ingreses números de teléfono, usuarios, contraseñas ni mensajes privados. Usa solo un código anónimo o inicial. El objetivo es estudiar patrones del grupo, no juzgar individuos.</div>
+<div class="question"><b>Research Question:</b> “How much time does our class spend on social-media apps in a typical day, and what patterns can we discover?”</div>
+
+<div class="data-controls no-print">
+<div><label>Anonymous Code</label><input id="alias" type="text" maxlength="8" placeholder="S01"></div>
+<div><label>Daily social-media minutes</label><input id="minutes" type="number" min="0" max="1440" placeholder="120"></div>
+<div><label>Main app</label><select id="app"><option>TikTok</option><option>Instagram</option><option>YouTube</option><option>WhatsApp</option><option>Facebook</option><option>Snapchat</option><option>Other</option></select></div>
+<button id="addData" class="btn primary">➕ Add</button>
+</div>
+
+<div class="actions no-print"><button id="sampleData" class="btn gold">🧪 Load Demo Data</button><button id="clearData" class="btn red">🗑️ Clear Class Data</button><button id="exportCsv" class="btn dark">📥 Export CSV</button></div>
+
+<div class="dashboard-shell">
+<h3>CLASS SCREEN-TIME DASHBOARD</h3>
+<div class="kpis">
+<div class="kpi"><span>Students</span><b id="kCount">0</b></div>
+<div class="kpi"><span>Average</span><b id="kAvg">0</b><small>min/day</small></div>
+<div class="kpi"><span>Median</span><b id="kMedian">0</b><small>min/day</small></div>
+<div class="kpi"><span>Minimum</span><b id="kMin">0</b><small>min/day</small></div>
+<div class="kpi"><span>Maximum</span><b id="kMax">0</b><small>min/day</small></div>
+</div>
+<div class="chart-grid">
+<div class="chart"><h4>Usage by App</h4><div id="appChart"></div></div>
+<div class="chart"><h4>Daily Usage Bands</h4><div id="bandChart"></div></div>
+</div>
+<div class="story" style="margin-top:14px">
+<strong>Automatic Data Story</strong>
+<p id="autoStory">Add class data to generate a story.</p>
+</div>
+</div>
+
+<div class="grid3" style="margin-top:14px">
+<div><label>Finding #1 · What happened?</label><textarea id="finding1"></textarea></div>
+<div><label>Finding #2 · What pattern?</label><textarea id="finding2"></textarea></div>
+<div><label>Finding #3 · What surprised you?</label><textarea id="finding3"></textarea></div>
+</div>
+<label>Decision: What action could someone take after seeing this dashboard?</label><textarea id="decision"></textarea>
+</div></section>
+
+<section class="section"><h2>🧪 6. Dashboard Testing · Design Debugging</h2><div class="body">
+<span class="phase">100–108 min</span>
+<div class="successbox"><b>Dashboard debugging:</b> TEST → OBSERVE → GET FEEDBACK → IMPROVE → TEST AGAIN.</div>
+<table>
+<tr><th>Test Question</th><th>Could the viewer answer it?</th><th>What should improve?</th></tr>
+<tr><td>What is the most important pattern?</td><td><input id="test1"></td><td><input id="fix1"></td></tr>
+<tr><td>Can the viewer filter the data easily?</td><td><input id="test2"></td><td><input id="fix2"></td></tr>
+<tr><td>Are the labels and charts clear?</td><td><input id="test3"></td><td><input id="fix3"></td></tr>
+</table>
+</div></section>
+
+<section class="section"><h2>🤝 7. Peer Review & Gallery Walk</h2><div class="body">
+<span class="phase">108–114 min</span>
+<div class="grid3"><div><label>👍 I like...</label><textarea id="like"></textarea></div><div><label>💡 I suggest...</label><textarea id="suggest"></textarea></div><div><label>❓ I wonder...</label><textarea id="wonder"></textarea></div></div>
+<div class="question">Without explaining your dashboard, can another student identify your main finding?</div>
+<label>What did your peer understand first?</label><textarea id="peerUnderstood"></textarea>
+</div></section>
+
+<section class="section"><h2>📊 8. Dashboard Rubric</h2><div class="body">
+<table class="rubric">
+<tr><th>Criterion</th><th>4 · Excellent</th><th>3 · Good</th><th>2 · Developing</th><th>1 · Beginning</th></tr>
+<tr><td>Data Preparation</td><td>Data is clean and organized.</td><td>Minor issues.</td><td>Some inconsistencies.</td><td>Needs organization.</td></tr>
+<tr><td>Pivot Analysis</td><td>Summarizes data meaningfully.</td><td>Mostly correct.</td><td>Basic summary.</td><td>Incomplete.</td></tr>
+<tr><td>Chart Selection</td><td>Charts match the questions.</td><td>Mostly appropriate.</td><td>Some mismatch.</td><td>Charts do not support analysis.</td></tr>
+<tr><td>Dynamic Features</td><td>Slicer/filter works clearly.</td><td>Mostly functional.</td><td>Limited interaction.</td><td>No dynamic feature.</td></tr>
+<tr><td>Visual Design</td><td>Clear hierarchy, labels and formatting.</td><td>Clear overall.</td><td>Some clutter.</td><td>Difficult to read.</td></tr>
+<tr><td>Data Story</td><td>Findings and decision are evidence-based.</td><td>Good interpretation.</td><td>Basic description.</td><td>No clear interpretation.</td></tr>
+<tr><td>Peer Review</td><td>Specific and constructive.</td><td>Useful.</td><td>Basic.</td><td>Missing.</td></tr>
+</table>
+</div></section>
+
+<section class="section"><h2>💭 9. Closure · Action & Expression</h2><div class="body">
+<span class="phase">114–120 min</span>
+<div class="question"><b>Reflection:</b> “What makes a dashboard effective?”</div>
+<textarea id="reflection"></textarea>
+<label>What did you learn about your class from the screen-time data?</label><textarea id="classLearning"></textarea>
+<label>How can data visualization help us make better decisions?</label><textarea id="betterDecisions"></textarea>
+<div class="note lang-en"><b>Lasallian closing:</b> Use data responsibly, respect people behind the numbers, and use technology to understand and serve the community.</div>
+<div class="note lang-es"><b>Cierre Lasallista:</b> Usa los datos responsablemente, respeta a las personas detrás de los números y utiliza la tecnología para comprender y servir a la comunidad.</div>
+</div></section>
+
+<section class="section"><h2>📄 10. Final Evidence Record</h2><div class="body">
+<div class="evidence"><p><b>Evidence:</b> 8th Grade · Cycle 4 · Dynamic Dashboard & Data Storytelling</p><p><b>Includes:</b> Chart reasoning · Dashboard progress · Class screen-time findings · Testing · Peer review · Reflection</p><p><b>Recommended filename:</b> <span id="filename">8th-cycle4-student.html</span></p></div>
+<div class="actions no-print"><button id="downloadEvidence" class="btn primary">📥 Download Evidence</button><button id="pdf" class="btn dark">🖨️ Save as PDF</button></div>
+</div></section>
+</main>
+
+<script>
+const formIds=["openingFinding","barQuestion","lineQuestion","slicerPrediction","slicerResult","student","date","finding1","finding2","finding3","decision","test1","fix1","test2","fix2","test3","fix3","like","suggest","wonder","peerUnderstood","reflection","classLearning","betterDecisions"];
+let classData=[];
+
+function setLang(l){document.body.dataset.lang=l;document.getElementById("en").classList.toggle("active",l==="en");document.getElementById("es").classList.toggle("active",l==="es");localStorage.setItem("g8c4-lang",l)}
+document.getElementById("en").onclick=()=>setLang("en");document.getElementById("es").onclick=()=>setLang("es");
+
+function saveForm(){const d={};formIds.forEach(id=>d[id]=document.getElementById(id).value);d.progress=[...document.querySelectorAll(".progress:checked")].map(x=>x.value);localStorage.setItem("g8c4-form",JSON.stringify(d));updateProgress()}
+function restoreForm(){try{const d=JSON.parse(localStorage.getItem("g8c4-form")||"{}");formIds.forEach(id=>{if(d[id]!=null)document.getElementById(id).value=d[id]});document.querySelectorAll(".progress").forEach(x=>x.checked=(d.progress||[]).includes(x.value))}catch(e){}updateProgress()}
+function updateProgress(){const a=[...document.querySelectorAll(".progress")],n=a.filter(x=>x.checked).length,p=Math.round(n/a.length*100);document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"%";const nme=(document.getElementById("student").value||"student").trim().replace(/[^a-z0-9]+/gi,"-");document.getElementById("filename").textContent="8th-cycle4-"+nme+".html"}
+document.querySelectorAll("input,textarea,select").forEach(x=>x.addEventListener("input",saveForm));document.querySelectorAll(".progress").forEach(x=>x.addEventListener("change",saveForm));
+
+function saveClass(){localStorage.setItem("g8c4-class-data",JSON.stringify(classData))}
+function loadClass(){try{classData=JSON.parse(localStorage.getItem("g8c4-class-data")||"[]")}catch(e){classData=[]}renderClassDashboard()}
+
+document.getElementById("addData").onclick=()=>{
+ const alias=(document.getElementById("alias").value||"S"+String(classData.length+1).padStart(2,"0")).trim();
+ const minutes=Number(document.getElementById("minutes").value);
+ const app=document.getElementById("app").value;
+ if(!Number.isFinite(minutes)||minutes<0||minutes>1440){alert("Enter valid minutes between 0 and 1440.");return}
+ classData.push({alias,minutes,app});saveClass();renderClassDashboard();
+ document.getElementById("alias").value="";document.getElementById("minutes").value="";
+};
+
+document.getElementById("sampleData").onclick=()=>{
+ classData=[
+  {alias:"S01",minutes:95,app:"TikTok"},{alias:"S02",minutes:140,app:"Instagram"},
+  {alias:"S03",minutes:75,app:"YouTube"},{alias:"S04",minutes:180,app:"TikTok"},
+  {alias:"S05",minutes:60,app:"WhatsApp"},{alias:"S06",minutes:125,app:"Instagram"},
+  {alias:"S07",minutes:210,app:"TikTok"},{alias:"S08",minutes:45,app:"YouTube"},
+  {alias:"S09",minutes:90,app:"WhatsApp"},{alias:"S10",minutes:155,app:"Instagram"}
+ ];saveClass();renderClassDashboard()
+};
+
+document.getElementById("clearData").onclick=()=>{if(confirm("Clear all class screen-time data?")){classData=[];saveClass();renderClassDashboard()}};
+
+function median(nums){if(!nums.length)return 0;const s=[...nums].sort((a,b)=>a-b),m=Math.floor(s.length/2);return s.length%2?s[m]:Math.round((s[m-1]+s[m])/2)}
+function renderClassDashboard(){
+ const mins=classData.map(x=>x.minutes);
+ const count=mins.length,avg=count?Math.round(mins.reduce((a,b)=>a+b,0)/count):0;
+ document.getElementById("kCount").textContent=count;
+ document.getElementById("kAvg").textContent=avg;
+ document.getElementById("kMedian").textContent=median(mins);
+ document.getElementById("kMin").textContent=count?Math.min(...mins):0;
+ document.getElementById("kMax").textContent=count?Math.max(...mins):0;
+
+ const apps={};classData.forEach(x=>apps[x.app]=(apps[x.app]||0)+1);
+ const maxApp=Math.max(1,...Object.values(apps));
+ document.getElementById("appChart").innerHTML=Object.entries(apps).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<div class="bar-row"><span>'+k+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/maxApp*100)+'%"></div></div><b>'+v+'</b></div>').join("")||"<p>No data yet.</p>";
+
+ const bands={"0–60 min":0,"61–120 min":0,"121–180 min":0,"181+ min":0};
+ mins.forEach(v=>{if(v<=60)bands["0–60 min"]++;else if(v<=120)bands["61–120 min"]++;else if(v<=180)bands["121–180 min"]++;else bands["181+ min"]++});
+ const maxBand=Math.max(1,...Object.values(bands));
+ document.getElementById("bandChart").innerHTML=Object.entries(bands).map(([k,v])=>'<div class="band-row"><span>'+k+'</span><div class="bar-track"><div class="band-fill" style="width:'+(v/maxBand*100)+'%"></div></div><b>'+v+'</b></div>').join("");
+
+ if(!count){document.getElementById("autoStory").textContent="Add class data to generate a story.";return}
+ const topApp=Object.entries(apps).sort((a,b)=>b[1]-a[1])[0];
+ const high=mins.filter(v=>v>180).length;
+ document.getElementById("autoStory").textContent=
+   `Our dataset contains ${count} students. Average reported social-media use is ${avg} minutes per day, while the median is ${median(mins)} minutes. The most common main app is ${topApp[0]} (${topApp[1]} students). ${high} student(s) reported more than 180 minutes per day.`;
+}
+
+document.getElementById("exportCsv").onclick=()=>{
+ const rows=[["AnonymousCode","MinutesPerDay","MainApp"],...classData.map(x=>[x.alias,x.minutes,x.app])];
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
+ const blob=new Blob([csv],{type:"text/csv"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="8th-cycle4-class-screen-time.csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+};
+
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+document.getElementById("downloadEvidence").onclick=()=>{
+ saveForm();const d=JSON.parse(localStorage.getItem("g8c4-form")||"{}"),name=(d.student||"student").trim().replace(/[^a-z0-9]+/gi,"-"),p=Math.round(((d.progress||[]).length/8)*100);
+ const out='<!doctype html><meta charset="utf-8"><title>8th Cycle 4 Evidence</title><style>body{font-family:Arial;max-width:900px;margin:35px auto;line-height:1.5;color:#17324a}h1{color:#102f4d}h2{border-bottom:2px solid #d9e3ef}.box{background:#f5f8fb;padding:13px;border-radius:8px;margin:8px 0}</style><h1>8th Grade · Cycle 4 · Dashboard Evidence</h1><p><b>Student:</b> '+esc(d.student)+' · <b>Date:</b> '+esc(d.date)+' · <b>Progress:</b> '+p+'%</p><h2>Chart Reasoning</h2><div class="box"><b>Bar question:</b> '+esc(d.barQuestion)+'<br><b>Line question:</b> '+esc(d.lineQuestion)+'<br><b>Slicer prediction:</b> '+esc(d.slicerPrediction)+'<br><b>Result:</b> '+esc(d.slicerResult)+'</div><h2>Screen-Time Data Story</h2><div class="box"><b>Finding 1:</b> '+esc(d.finding1)+'<br><b>Finding 2:</b> '+esc(d.finding2)+'<br><b>Finding 3:</b> '+esc(d.finding3)+'<br><b>Decision:</b> '+esc(d.decision)+'</div><h2>Dashboard Testing</h2><div class="box">'+esc(d.test1)+' → '+esc(d.fix1)+'<br>'+esc(d.test2)+' → '+esc(d.fix2)+'<br>'+esc(d.test3)+' → '+esc(d.fix3)+'</div><h2>Peer Review</h2><div class="box"><b>Like:</b> '+esc(d.like)+'<br><b>Suggest:</b> '+esc(d.suggest)+'<br><b>Wonder:</b> '+esc(d.wonder)+'<br><b>Peer understood:</b> '+esc(d.peerUnderstood)+'</div><h2>Reflection</h2><div class="box">'+esc(d.reflection)+'<br><b>Class learning:</b> '+esc(d.classLearning)+'<br><b>Better decisions:</b> '+esc(d.betterDecisions)+'</div>';
+ const blob=new Blob([out],{type:"text/html"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="8th-cycle4-"+name+".html";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+};
+document.getElementById("pdf").onclick=()=>window.print();
+if(!document.getElementById("date").value)document.getElementById("date").value=new Date().toISOString().slice(0,10);
+setLang(localStorage.getItem("g8c4-lang")||"en");restoreForm();loadClass();
+</script>
+</body></html>
