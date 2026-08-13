@@ -2,6 +2,22 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-06-cycle-4-interactive-project",
+    grade: 6,
+    cycle: 4,
+    title: {
+      en: "Cycle 4 · Interactive Project Master Lab",
+      es: "Ciclo 4 · Laboratorio Maestro de Proyecto Interactivo",
+    },
+    objective: {
+      en: "Create a complete interactive project integrating variables, user input, conditionals and loops, with arrays as an advanced challenge.",
+      es: "Crear un proyecto interactivo completo integrando variables, entrada del usuario, condicionales y ciclos, con arreglos como desafío avanzado.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-06/cycle-4-interactive-project-lab.html",
+    tags: ["Cycle 4", "Project", "Variables", "Conditionals", "Loops", "Arrays", "Evidence"],
+  },
+  {
     id: "grade-11-cycle-3-autosolutions-engineering-design-lab",
     grade: 11,
     cycle: 3,
