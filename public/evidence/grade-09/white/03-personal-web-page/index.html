@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Angelcorp</title>
+</head>
+<body
+script>
+
+// Message in the console
+console.log("🚀 My page is ready!");
+
+// Welcome popup message
+alert("Hola, Yo soy Angel y esta es mi pagina web.");
+
+// Message with your name
+console.log("👋 Hello, I am Angel and I am learning JavaScript!");
+console.log('🎯 Today is a great day to learn programming');
+</script>
+  <h1>Hola, soy Angel</h1>
+  <p>This is my first page created with HTML.</p>
+  <p>Me gusta el futbol y los deportes.</p>
+  <button>Click here</button>
+
+</body>
+<style>
+
+/* Styles for the whole page */
+body {
+  background-color: #f0f4f8;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* Styles for the title */
+h1 {
+  color: #16213e;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+/* Styles for paragraphs */
+p {
+  color: #2d3436;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+/* Styles for the button */
+button {
+  background-color: #e94560;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+/* Changes when hovering */
+button:hover {
+  background-color: #c73652;
+  transform: scale(1.05);
+}
+
+</style>
+<body>
+<div>
+
+  <h1 id="tituloPrincipal">Hello, I am [YOUR NAME]!</h1>
+
+  <p id="mensajeTexto">This text will change when you press a button.</p>
+
+  <!-- BUTTONS -->
+  <button onclick="cambiarMensaje('Hello from JavaScript!')">JS Greeting</button>
+
+  <button onclick="cambiarMensaje('I am learning to code!')">Motivational</button>
+
+  <button onclick="mostrarAlerta()">Show Alert</button>
+
+  <button onclick="cambiarColorFondo()">Change Color</button>
+
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+// Function 1: Change the message
+function cambiarMensaje(texto) {
+  const elemento = document.getElementById('mensajeTexto');
+  elemento.textContent = texto;
+  console.log("📝 Message changed to: " + texto);
+}
+
+// Function 2: Show alert
+function mostrarAlerta() {
+  alert("🔔 You clicked the alert button!");
+}
+
+// Function 3: Change background color
+function cambiarColorFondo() {
+  const colores = ['#f0f4f8', '#ff6b6b', '#4ecdc4', '#ffe66d'];
+  const aleatorio = colores[Math.floor(Math.random() * colores.length)];
+  document.body.style.backgroundColor = aleatorio;
+}
+
+</script>
+</body>
+<body>
+<div>
+
+  <!-- TITLES AND TEXTS -->
+  <h1 id="tituloPrincipal">🌐 My Web Page</h1>
+
+  <p id="descripcion1">This is my first interactive web page.</p>
+  <p id="descripcion2">I am learning to program and this is amazing.</p>
+
+  <!-- MESSAGE BOX -->
+  <div id="cajaMensaje">
+    💬 <strong>Message:</strong> Click a button to change the language.
+  </div>
+
+  <!-- LANGUAGE BUTTONS -->
+  <button onclick="cambiarIdioma('es')">🇪🇸 Español</button>
+  <button onclick="cambiarIdioma('en')">🇺🇸 English</button>
+  <button onclick="cambiarIdioma('fr')">🇫🇷 Français</button>
+
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+function cambiarIdioma(idioma) {
+
+  const titulo = document.getElementById('tituloPrincipal');
+  const desc1 = document.getElementById('descripcion1');
+  const desc2 = document.getElementById('descripcion2');
+  const mensaje = document.getElementById('cajaMensaje');
+
+  const textos = {
+    es: {
+      titulo: '🌐 Mi Página Web',
+      desc1: 'Esta es mi primera página web interactiva.',
+      desc2: 'Estoy aprendiendo a programar y esto es increíble.',
+      mensaje: '💬 <strong>Mensaje:</strong> Haz clic en un botón para cambiar el idioma.'
+    },
+    en: {
+      titulo: '🌐 My Web Page',
+      desc1: 'This is my first interactive web page.',
+      desc2: 'I am learning to program and this is amazing.',
+      mensaje: '💬 <strong>Message:</strong> Click a button to change the language.'
+    },
+    fr: {
+      titulo: '🌐 Ma Page Web',
+      desc1: 'Ceci est ma première page web interactive.',
+      desc2: 'J\'apprends à programmer et c\'est incroyable.',
+      mensaje: '💬 <strong>Message:</strong> Cliquez sur un bouton pour changer la langue.'
+    }
+  };
+
+  if (textos[idioma]) {
+    titulo.textContent = textos[idioma].titulo;
+    desc1.textContent = textos[idioma].desc1;
+    desc2.textContent = textos[idioma].desc2;
+    mensaje.innerHTML = textos[idioma].mensaje;
+    console.log("🌍 Language changed to: " + idioma);
+  }
+}
+
+</script>
+</body>
+</html>

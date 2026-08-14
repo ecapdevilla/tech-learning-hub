@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVC Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>🎮 MVC Adventure</h1>
+    <p>Aprende MVC jugando</p>
+</header>
+
+<main>
+
+<section id="inicio" class="pantalla">
+    <h2>Bienvenido al mundo MVC</h2>
+    <p>
+        Supera los retos y demuestra cuánto sabes sobre
+        Modelo, Vista y Controlador.
+    </p>
+
+    <button onclick="iniciarJuego()">Comenzar Juego</button>
+</section>
+
+
+<section id="juego" class="pantalla oculto">
+
+    <h2 id="pregunta"></h2>
+
+    <div id="opciones"></div>
+
+    <p id="resultado"></p>
+
+    <div class="info">
+        <span>Puntos: <b id="puntos">0</b></span>
+        <span>Pregunta: <b id="numero">1</b>/5</span>
+    </div>
+
+</section>
+
+
+<section id="final" class="pantalla oculto">
+
+    <h2>🏆 Juego terminado</h2>
+
+    <p id="puntajeFinal"></p>
+
+    <button onclick="reiniciar()">Jugar otra vez</button>
+
+</section>
+
+
+<section class="creditos">
+
+<h3>Integrantes del grupo</h3>
+
+<p>👨‍💻 Matthew</p>
+<p>👨‍💻 Angelo</p>
+
+</section>
+
+
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Interactivo MVC - Tipo ICFES</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0F2027,#203A43,#2C5364);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.contenedor{
+    width:900px;
+    max-width:100%;
+    background:white;
+    border-radius:15px;
+    padding:30px;
+    box-shadow:0px 10px 25px rgba(0,0,0,.3);
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+header h1{
+    color:#0d6efd;
+    margin-bottom:10px;
+}
+
+header h2{
+    color:#444;
+}
+
+.integrantes{
+    background:#eef4ff;
+    border-left:6px solid #0d6efd;
+    padding:15px;
+    margin-bottom:25px;
+    border-radius:10px;
+}
+
+.integrantes h3{
+    color:#0d6efd;
+    margin-bottom:10px;
+}
+
+.pregunta{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.opciones{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.opciones button{
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#f2f2f2;
+    cursor:pointer;
+    text-align:left;
+    transition:.3s;
+    font-size:17px;
+}
+
+.opciones button:hover{
+    background:#0d6efd;
+    color:white;
+}
+
+.seleccionado{
+    background:#198754 !important;
+    color:white;
+}
+
+#btnSiguiente{
+    width:100%;
+    padding:15px;
+    margin-top:25px;
+    border:none;
+    border-radius:10px;
+    background:#0d6efd;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+#btnSiguiente:hover{
+    background:#084298;
+}
+
+.resultado{
+    margin-top:30px;
+    text-align:center;
+    font-size:22px;
+}
+
+@media(max-width:768px){
+
+.contenedor{
+    padding:20px;
+}
+
+header h1{
+    font-size:28px;
+}
+
+header h2{
+    font-size:20px;
+}
+
+.pregunta{
+    font-size:20px;
+}
+
+.opciones button{
+    font-size:16px;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="contenedor">
+
+<header>
+<h1>QUIZ INTERACTIVO</h1>
+<h2>Conceptos Básicos del Modelo Vista Controlador (MVC)</h2>
+</header>
+
+<div class="integrantes">
+<h3>Integrantes del Grupo</h3>
+<p>✅ Matías Bandera</p>
+<p>✅ Manuela Niño</p>
+<p>✅ Daniela Arrieta</p>
+</div>
+
+<div id="pregunta" class="pregunta"></div>
+
+<div id="opciones" class="opciones"></div>
+
+<button id="btnSiguiente">Siguiente</button>
+
+<div id="resultado" class="resultado"></div>
+
+</div>
+
+<script>
+
+const preguntas=[
+
+{
+pregunta:"1. ¿Cuál es la función principal del Modelo dentro del patrón MVC?",
+opciones:[
+"A. Mostrar la interfaz al usuario.",
+"B. Gestionar los datos y la lógica del negocio.",
+"C. Controlar el diseño de la aplicación.",
+"D. Crear botones y formularios."
+],
+respuesta:1
+},
+
+{
+pregunta:"2. En el patrón MVC, ¿qué componente es responsable de mostrar la información al usuario?",
+opciones:[
+"A. Modelo",
+"B. Controlador",
+"C. Vista",
+"D. Base de datos"
+],
+respuesta:2
+},
+
+{
+pregunta:"3. ¿Cuál es la principal función del Controlador?",
+opciones:[
+"A. Diseñar la interfaz gráfica.",
+"B. Administrar la base de datos.",
+"C. Recibir las acciones del usuario y comunicarlas al Modelo y la Vista.",
+"D. Crear tablas."
+],
+respuesta:2
+},
+
+{
+pregunta:"4. ¿Cuál es una ventaja importante del patrón MVC?",
+opciones:[
+"A. Todo el código queda en un solo archivo.",
+"B. Facilita el mantenimiento y reutilización del código.",
+"C. Elimina la necesidad de programar.",
+"D. Solo sirve para aplicaciones móviles."
+],
+respuesta:1
+},
+
+{
+pregunta:"5. Un usuario presiona un botón para guardar información. ¿Cuál es el flujo correcto en MVC?",
+opciones:[
+"A. Vista → Controlador → Modelo → Vista",
+"B. Modelo → Vista → Controlador",
+"C. Vista → Modelo → Base de datos",
+"D. Base de datos → Vista → Modelo"
+],
+respuesta:0
+},
+
+{
+pregunta:"6. ¿Qué componente contiene las reglas del negocio y el acceso a los datos?",
+opciones:[
+"A. Vista",
+"B. HTML",
+"C. Modelo",
+"D. CSS"
+],
+respuesta:2
+},
+
+{
+pregunta:"7. ¿Cuál de las siguientes tecnologías suele utilizarse para construir la Vista de una aplicación web?",
+opciones:[
+"A. HTML y CSS",
+"B. SQL",
+"C. MySQL",
+"D. Git"
+],
+respuesta:0
+},
+
+{
+pregunta:"8. ¿Por qué MVC facilita el trabajo en equipo?",
+opciones:[
+"A. Porque cada desarrollador puede trabajar en una parte diferente del sistema.",
+"B. Porque elimina el uso de bases de datos.",
+"C. Porque reduce el número de usuarios.",
+"D. Porque solo requiere un programador."
+],
+respuesta:0
+}
+
+];
+
+let indice=0;
+let puntaje=0;
+let seleccion=null;
+
+const pregunta=document.getElementById("pregunta");
+const opciones=document.getElementById("opciones");
+const boton=document.getElementById("btnSiguiente");
+const resultado=document.getElementById("resultado");
+
+function cargarPregunta(){
+
+seleccion=null;
+
+pregunta.innerHTML=preguntas[indice].pregunta;
+
+opciones.innerHTML="";
+
+preguntas[indice].opciones.forEach((texto,i)=>{
+
+const btn=document.createElement("button");
+
+btn.innerHTML=texto;
+
+btn.onclick=function(){
+
+document.querySelectorAll(".opciones button").forEach(b=>b.classList.remove("seleccionado"));
+
+btn.classList.add("seleccionado");
+
+seleccion=i;
+
+};
+
+opciones.appendChild(btn);
+
+});
+
+}
+
+cargarPregunta();
+
+boton.onclick=function(){
+
+if(seleccion==null){
+
+alert("Debe seleccionar una respuesta.");
+
+return;
+
+}
+
+if(seleccion===preguntas[indice].respuesta){
+
+puntaje++;
+
+}
+
+indice++;
+
+if(indice<preguntas.length){
+
+cargarPregunta();
+
+}else{
+
+pregunta.style.display="none";
+opciones.style.display="none";
+boton.style.display="none";
+
+let mensaje="";
+
+if(puntaje==8){
+
+mensaje="🏆 Excelente. Dominas completamente los conceptos de MVC.";
+
+}else if(puntaje>=6){
+
+mensaje="👏 Muy buen resultado. Tienes un buen conocimiento sobre MVC.";
+
+}else if(puntaje>=4){
+
+mensaje="🙂 Buen intento. Aún puedes reforzar algunos conceptos.";
+
+}else{
+
+mensaje="📚 Es recomendable estudiar nuevamente el patrón MVC.";
+
+}
+
+resultado.innerHTML=`
+<h2>Quiz Finalizado</h2>
+<br>
+<h3>Puntaje: ${puntaje} de ${preguntas.length}</h3>
+<br>
+<p>${mensaje}</p>
+<br><hr><br>
+<h3>Integrantes del Grupo</h3>
+<p>Matías Bandera</p>
+<p>Manuela Niño</p>
+<p>Daniela Arrieta</p>
+`;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

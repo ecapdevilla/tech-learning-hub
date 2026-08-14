@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Guardianes del Planeta - ODS 13</title>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+    font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+body{
+
+    margin:0;
+    background:linear-gradient(#56ab2f,#a8e063);
+    text-align:center;
+
+}
+
+
+header{
+
+    background:#145a32;
+    color:white;
+    padding:25px;
+
+}
+
+
+header h1{
+
+    margin:0;
+    font-size:35px;
+
+}
+
+
+.card{
+
+    width:90%;
+    max-width:850px;
+    margin:20px auto;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+
+}
+
+
+/* Integrantes */
+
+.integrantes ul{
+
+    padding:0;
+
+}
+
+
+.integrantes li{
+
+    list-style:none;
+    padding:8px;
+    font-size:18px;
+
+}
+
+
+
+/* Información */
+
+.info{
+
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    font-size:20px;
+    font-weight:bold;
+
+}
+
+
+
+
+/* Zona de juego */
+
+#zonaJuego{
+
+    position:relative;
+    height:420px;
+    overflow:hidden;
+    background:
+    linear-gradient(#87ceeb,#c8f7c5);
+
+    border:5px solid #145a32;
+    border-radius:20px;
+
+}
+
+
+
+/* Jugador */
+
+#jugador{
+
+    position:absolute;
+    bottom:15px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:55px;
+
+}
+
+
+
+
+.objeto{
+
+    position:absolute;
+    top:0;
+    font-size:40px;
+
+}
+
+
+
+
+button{
+
+    margin-top:20px;
+    padding:15px 30px;
+    border:none;
+    border-radius:12px;
+    background:#145a32;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+
+}
+
+
+button:hover{
+
+    background:#0b3d21;
+
+}
+
+
+
+.oculto{
+
+    display:none;
+
+}
+
+
+
+footer{
+
+    color:white;
+    padding:20px;
+
+}
+
+
+
+/* Responsive */
+
+@media(max-width:600px){
+
+header h1{
+
+    font-size:25px;
+
+}
+
+
+#zonaJuego{
+
+    height:350px;
+
+}
+
+
+.objeto{
+
+    font-size:30px;
+
+}
+
+
+#jugador{
+
+    font-size:45px;
+
+}
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🌎 Guardianes del Planeta</h1>
+
+<p>ODS 13: Acción por el clima</p>
+
+</header>
+
+
+
+<section class="card integrantes">
+
+
+<h2>Integrantes del grupo</h2>
+
+
+<ul>
+
+<li>Maryangel Torres</li>
+
+<li>Danna Cabrera</li>
+
+<li>Emma Maldonado</li>
+
+<li>Rodolfo Segura</li>
+
+<li>Jose La Mosa</li>
+
+</ul>
+
+
+</section>
+
+
+
+
+<section class="card">
+
+
+<div class="info">
+
+
+<p>⭐ Puntos: <span id="puntos">0</span></p>
+
+<p>❤️ Vidas: <span id="vidas">3</span></p>
+
+<p>⏱ Tiempo: <span id="tiempo">60</span></p>
+
+
+</div>
+
+
+
+<div id="zonaJuego">
+
+
+<div id="jugador">
+🧑‍🌱
+</div>
+
+
+</div>
+
+
+
+<p>
+
+Usa las teclas ⬅️ ➡️ para mover al guardián.
+
+<br>
+
+Atrapa elementos ecológicos y evita la contaminación.
+
+</p>
+
+
+
+<button onclick="iniciarJuego()">
+
+Iniciar Juego
+
+</button>
+
+
+</section>
+
+
+
+
+<section class="card oculto" id="resultado">
+
+
+<h2>🏆 Resultado Final</h2>
+
+
+<p id="mensaje"></p>
+
+
+<button onclick="reiniciar()">
+
+Jugar nuevamente
+
+</button>
+
+
+</section>
+
+
+
+
+<footer>
+
+Proyecto educativo basado en ODS 13 - Acción por el clima
+
+</footer>
+
+
+
+
+
+<script>
+
+
+const jugador=document.getElementById("jugador");
+
+const zona=document.getElementById("zonaJuego");
+
+
+const puntosTexto=document.getElementById("puntos");
+
+const vidasTexto=document.getElementById("vidas");
+
+const tiempoTexto=document.getElementById("tiempo");
+
+
+
+let puntos=0;
+
+let vidas=3;
+
+let tiempo=60;
+
+
+let juegoActivo=false;
+
+
+let posicion=50;
+
+
+let teclas={};
+
+
+let objetos=[];
+
+
+let intervaloObjetos;
+
+let intervaloTiempo;
+
+
+
+
+// CONTROL DEL TECLADO
+
+
+document.addEventListener("keydown",e=>{
+
+    teclas[e.key]=true;
+
+});
+
+
+document.addEventListener("keyup",e=>{
+
+    teclas[e.key]=false;
+
+});
+
+
+
+
+// MOVIMIENTO OPTIMIZADO
+
+
+function moverJugador(){
+
+
+if(!juegoActivo)return;
+
+
+
+if(teclas["ArrowLeft"]){
+
+    posicion-=1.2;
+
+}
+
+
+
+if(teclas["ArrowRight"]){
+
+    posicion+=1.2;
+
+}
+
+
+
+if(posicion<5){
+
+    posicion=5;
+
+}
+
+
+if(posicion>95){
+
+    posicion=95;
+
+}
+
+
+
+jugador.style.left=posicion+"%";
+
+
+
+requestAnimationFrame(moverJugador);
+
+
+}
+
+
+
+
+
+// CREAR OBJETOS
+
+
+function crearObjeto(){
+
+
+if(!juegoActivo)return;
+
+
+
+let objeto=document.createElement("div");
+
+
+objeto.className="objeto";
+
+
+
+let buenos=["🌳","♻️","💧","🌱"];
+
+let malos=["🗑️","🏭","🔥"];
+
+
+
+let bueno=Math.random()>0.35;
+
+
+
+objeto.innerHTML=bueno ?
+
+buenos[Math.floor(Math.random()*buenos.length)]
+
+:
+
+malos[Math.floor(Math.random()*malos.length)];
+
+
+
+objeto.tipo=bueno?"bueno":"malo";
+
+
+objeto.posX=Math.random()*90;
+
+
+objeto.posY=0;
+
+
+
+objeto.style.left=objeto.posX+"%";
+
+
+
+zona.appendChild(objeto);
+
+
+
+objetos.push(objeto);
+
+
+
+}
+
+
+
+
+
+
+
+// MOVIMIENTO DE OBJETOS
+
+
+function actualizarJuego(){
+
+
+if(!juegoActivo)return;
+
+
+
+objetos.forEach((obj,index)=>{
+
+
+obj.posY+=3;
+
+
+obj.style.top=obj.posY+"px";
+
+
+
+let jugadorX=jugador.offsetLeft;
+
+let objetoX=obj.offsetLeft;
+
+
+
+if(
+
+obj.posY>340 &&
+
+objetoX>jugadorX-40 &&
+
+objetoX<jugadorX+60
+
+){
+
+
+if(obj.tipo==="bueno"){
+
+puntos+=10;
+
+}
+
+else{
+
+vidas--;
+
+}
+
+
+
+actualizarDatos();
+
+
+eliminarObjeto(index);
+
+
+}
+
+
+
+
+if(obj.posY>450){
+
+eliminarObjeto(index);
+
+}
+
+
+
+});
+
+
+
+requestAnimationFrame(actualizarJuego);
+
+
+}
+
+
+
+
+
+function eliminarObjeto(index){
+
+
+if(objetos[index]){
+
+
+objetos[index].remove();
+
+
+objetos.splice(index,1);
+
+
+}
+
+
+}
+
+
+
+
+function actualizarDatos(){
+
+
+puntosTexto.textContent=puntos;
+
+vidasTexto.textContent=vidas;
+
+
+}
+
+
+
+
+
+// INICIAR
+
+
+function iniciarJuego(){
+
+
+
+if(juegoActivo)return;
+
+
+
+juegoActivo=true;
+
+
+
+puntos=0;
+
+vidas=3;
+
+tiempo=60;
+
+
+
+actualizarDatos();
+
+
+tiempoTexto.textContent=60;
+
+
+
+moverJugador();
+
+actualizarJuego();
+
+
+
+
+intervaloObjetos=setInterval(()=>{
+
+
+crearObjeto();
+
+
+},700);
+
+
+
+
+
+intervaloTiempo=setInterval(()=>{
+
+
+tiempo--;
+
+
+tiempoTexto.textContent=tiempo;
+
+
+
+if(tiempo<=0 || vidas<=0){
+
+
+terminarJuego();
+
+
+}
+
+
+},1000);
+
+
+
+}
+
+
+
+
+
+// FINALIZAR
+
+
+function terminarJuego(){
+
+
+juegoActivo=false;
+
+
+
+clearInterval(intervaloObjetos);
+
+clearInterval(intervaloTiempo);
+
+
+
+objetos.forEach(obj=>obj.remove());
+
+
+objetos=[];
+
+
+
+document.getElementById("resultado")
+.classList.remove("oculto");
+
+
+
+document.getElementById("mensaje").innerHTML=
+
+"🌎 Juego terminado<br><br>"+
+
+"⭐ Puntaje: <b>"+puntos+"</b><br><br>"+
+
+
+(puntos>=100 ?
+
+"Excelente trabajo, eres un defensor del planeta 🌱"
+
+:
+
+"Continúa aprendiendo sobre el cuidado ambiental ♻️");
+
+
+}
+
+
+
+
+
+// REINICIO SIN RECARGAR
+
+
+function reiniciar(){
+
+
+document.getElementById("resultado")
+.classList.add("oculto");
+
+
+
+puntos=0;
+
+vidas=3;
+
+tiempo=60;
+
+
+
+posicion=50;
+
+
+actualizarDatos();
+
+
+tiempoTexto.textContent=60;
+
+
+jugador.style.left="50%";
+
+
+}
+
+
+
+
+
+</script>
+
+
+</body>
+
+</html>

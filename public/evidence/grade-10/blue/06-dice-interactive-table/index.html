@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Dados y Tabla Interactiva - Minnie</title>
+    <style>
+        :root {
+            --pink-bg: #ffb6c1;
+            --pink-dark: #ff69b4;
+            --pink-card: #fff0f5;
+            --text-color: #4a2e35;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--pink-bg);
+            background-image: radial-gradient(#ff69b4 15%, transparent 16%), radial-gradient(#ff69b4 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            border: 3px solid var(--pink-dark);
+        }
+
+        header h1 {
+            margin: 0;
+            color: #d1145a;
+            font-size: 1.8rem;
+        }
+
+        header h2 {
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--pink-card);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 2px solid var(--pink-dark);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #d1145a;
+        }
+
+        /* Estilos del Simulador de Dados */
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .die {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border: 3px solid #d1145a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos de la Tabla Interactiva */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        input[type="number"] {
+            padding: 8px;
+            font-size: 1rem;
+            border: 2px solid var(--pink-dark);
+            border-radius: 8px;
+            width: 100px;
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--pink-dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #d1145a;
+        }
+
+        .result-box {
+            margin-top: 15px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            text-align: left;
+            padding-left: 30%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Simulador de Dados & Tabla Interactiva</h1>
+        <h2>Creado con ❤️ por Sofia Bonfante y Maria Juliana</h2>
+    </header>
+
+    <div class="container">
+        
+        <!-- Simulador de Dados -->
+        <div class="card">
+            <h3>🎲 Simulador de Dados</h3>
+            <p>¡Lanza los dados y prueba tu suerte al estilo Minnie!</p>
+            <div class="dice-container">
+                <div class="die" id="dice1">?</div>
+                <div class="die" id="dice2">?</div>
+            </div>
+            <p id="dice-total" style="font-weight: bold; font-size: 1.1rem;"></p>
+            <button onclick="lanzarDados()">¡Lanzar Dados!</button>
+        </div>
+
+        <!-- Tabla de Multiplicar Interactiva -->
+        <div class="card">
+            <h3>✖️ Tabla de Multiplicar Interactiva</h3>
+            <div class="input-group">
+                <label for="numeroTabla">Ingresa un número: </label>
+                <input type="number" id="numeroTabla" min="1" max="100" value="5">
+            </div>
+            <button onclick="generarTabla()">Generar Tabla</button>
+            <div class="result-box" id="resultadoTabla">
+                <!-- Aquí aparecerá la tabla -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Función para el Simulador de Dados
+        function lanzarDados() {
+            const dado1 = Math.floor(Math.random() * 6) + 1;
+            const dado2 = Math.floor(Math.random() * 6) + 1;
+
+            document.getElementById('dice1').innerText = dado1;
+            document.getElementById('dice2').innerText = dado2;
+            
+            const suma = dado1 + dado2;
+            document.getElementById('dice-total').innerText = `Total de la suma: ${suma}`;
+        }
+
+        // Función para la Tabla de Multiplicar Interactiva
+        function generarTabla() {
+            const numero = parseInt(document.getElementById('numeroTabla').value);
+            const contenedor = document.getElementById('resultadoTabla');
+            contenedor.innerHTML = '';
+
+            if (isNaN(numero)) {
+                contenedor.innerHTML = '<span style="color: red;">Por favor ingresa un número válido.</span>';
+                return;
+            }
+
+            let html = '<ul style="list-style-type: none; padding: 0; margin: 0;">';
+            for (let i = 1; i <= 10; i++) {
+                html += `<li>${numero} × ${i} = <strong>${numero * i}</strong></li>`;
+            }
+            html += '</ul>';
+
+            contenedor.innerHTML = html;
+        }
+
+        // Generar una tabla por defecto al cargar la página
+        window.onload = function() {
+            generarTabla();
+        };
+    </script>
+
+</body>
+</html>

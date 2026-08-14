@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ODS 13 - Escapa de la Contaminación</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#00e676,#00b0ff,#ffee58);
+text-align:center;
+overflow:hidden;
+}
+
+#integrantes{
+    position:absolute;
+    top:10px;
+    right:15px;
+    background:rgba(255,255,255,0.85);
+    padding:10px 15px;
+    border-radius:10px;
+    font-size:15px;
+    text-align:left;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+#integrantes h3{
+    margin:0 0 5px 0;
+    color:#00a152;
+}
+
+#integrantes p{
+    margin:3px 0;
+}
+
+h1{
+color:white;
+text-shadow:2px 2px 4px black;
+}
+
+#score{
+font-size:28px;
+color:white;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+#game{
+width:900px;
+height:500px;
+margin:auto;
+background:#87CEEB;
+border:5px solid white;
+border-radius:15px;
+position:relative;
+overflow:hidden;
+}
+
+#player,#enemy{
+width:40px;
+height:40px;
+position:absolute;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+}
+
+#player{
+left:100px;
+top:100px;
+}
+
+#enemy{
+left:700px;
+top:250px;
+}
+
+#gameOver{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:20px;
+border-radius:15px;
+display:none;
+box-shadow:0 0 20px black;
+}
+
+button{
+padding:10px 25px;
+font-size:20px;
+cursor:pointer;
+border:none;
+background:#00c853;
+color:white;
+border-radius:10px;
+}
+
+button:hover{
+background:#009624;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🌍 ODS 13 - Acción por el Clima</h1>
+
+<div id="integrantes">
+    <h3>👥 Integrantes</h3>
+    <p>• Matías Sarmiento</p>
+    <p>• Sebastián Manga</p>
+    <p>• Juan Ramírez</p>
+</div>
+
+<div id="score">Tiempo: 0</div>
+
+<div id="game">
+
+<div id="player">🌳</div>
+
+<div id="enemy">☠️</div>
+
+<div id="gameOver">
+<h2>¡Perdiste!</h2>
+<p>La contaminación alcanzó al árbol.</p>
+<button onclick="reiniciar()">Volver a jugar</button>
+</div>
+
+</div>
+
+<script>
+
+const player=document.getElementById("player");
+const enemy=document.getElementById("enemy");
+const score=document.getElementById("score");
+const gameOver=document.getElementById("gameOver");
+
+let px=100;
+let py=100;
+
+let ex=700;
+let ey=250;
+
+let puntos=0;
+let jugando=true;
+
+let velocidad=1.5;
+
+document.addEventListener("keydown",(e)=>{
+
+if(!jugando){
+
+if(e.code==="Space"){
+reiniciar();
+}
+
+return;
+}
+
+const paso=20;
+
+if(e.key==="ArrowUp") py-=paso;
+if(e.key==="ArrowDown") py+=paso;
+if(e.key==="ArrowLeft") px-=paso;
+if(e.key==="ArrowRight") px+=paso;
+
+px=Math.max(0,Math.min(860,px));
+py=Math.max(0,Math.min(460,py));
+
+player.style.left=px+"px";
+player.style.top=py+"px";
+
+});
+
+setInterval(()=>{
+
+if(!jugando)return;
+
+let dx=px-ex;
+let dy=py-ey;
+
+let distancia=Math.sqrt(dx*dx+dy*dy);
+
+if(distancia>0){
+ex+=dx/distancia*velocidad;
+ey+=dy/distancia*velocidad;
+}
+
+enemy.style.left=ex+"px";
+enemy.style.top=ey+"px";
+
+if(distancia<30){
+jugando=false;
+gameOver.style.display="block";
+}
+
+},20);
+
+setInterval(()=>{
+
+if(!jugando)return;
+
+puntos++;
+
+score.innerHTML="Tiempo: "+puntos;
+
+// aumenta poco a poco la dificultad
+if(velocidad<4){
+velocidad+=0.05;
+}
+
+},1000);
+
+function reiniciar(){
+
+px=100;
+py=100;
+
+ex=700;
+ey=250;
+
+velocidad=1.5;
+puntos=0;
+
+jugando=true;
+
+player.style.left=px+"px";
+player.style.top=py+"px";
+
+enemy.style.left=ex+"px";
+enemy.style.top=ey+"px";
+
+score.innerHTML="Tiempo: 0";
+
+gameOver.style.display="none";
+
+}
+
+</script>
+
+</body>
+</html>

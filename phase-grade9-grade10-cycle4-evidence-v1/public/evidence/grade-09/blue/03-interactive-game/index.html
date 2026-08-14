@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aventura Espacial: Alejandro Martínez</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: #0b0d19;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    #game-container {
+      position: relative;
+      width: 800px;
+      height: 600px;
+      max-width: 100vw;
+      max-height: 100vh;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #00e5ff;
+    }
+
+    canvas {
+      display: block;
+      background: radial-gradient(circle at center, #1a1c2e 0%, #080911 100%);
+    }
+
+    /* UI Overlay */
+    .hud {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .badge {
+      background: rgba(0, 229, 255, 0.15);
+      border: 1px solid #00e5ff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Pantallas (Inicio y Game Over) */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 13, 25, 0.88);
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    h1 {
+      font-size: 42px;
+      color: #00e5ff;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #ff007f;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #cccccc;
+      max-width: 500px;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+    .controls-info {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 12px 20px;
+      margin-bottom: 25px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #00e5ff, #ff007f);
+      border: none;
+      color: white;
+      padding: 14px 36px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.7);
+    }
+
+    /* Autor footer */
+    .author {
+      position: absolute;
+      bottom: 10px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <!-- UI Superior (Puntaje y Salud) -->
+    <div class="hud">
+      <div class="badge">Piloto: Alejandro Martínez</div>
+      <div class="badge">Puntos: <span id="score">0</span></div>
+      <div class="badge">Escudo: <span id="health">100%</span></div>
+    </div>
+
+    <!-- Canvas principal -->
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <!-- Pantalla de Inicio -->
+    <div id="start-screen" class="screen">
+      <h1>DEFENSOR ESPACIAL</h1>
+      <h2>Desarrollado por Alejandro Martínez</h2>
+      <p>Pilota tu nave a través del campo de asteroides. Destrúyelos antes de que te colisionen y recolecta las gemas para sobrevivir.</p>
+      
+      <div class="controls-info">
+        🎮 <strong>Mover:</strong> Flechas / WASD / Mover Ratón<br>
+        🔥 <strong>Disparar:</strong> Barra Espaciadora / Clic Izquierdo
+      </div>
+
+      <button class="btn" onclick="startGame()">DESPEGAR</button>
+      <div class="author">Creado por Alejandro Martínez</div>
+    </div>
+
+    <!-- Pantalla de Game Over -->
+    <div id="gameover-screen" class="screen hidden">
+      <h1 style="color: #ff007f;">MISIÓN FALLIDA</h1>
+      <p>Tu nave fue destruida en el espacio profundo.</p>
+      <p style="font-size: 22px; color: #00e5ff; margin-bottom: 10px;">
+        Puntuación Final: <strong id="final-score">0</strong>
+      </p>
+      <button class="btn" onclick="startGame()">REINTENTAR</button>
+      <div class="author">Desarrollado por Alejandro Martínez</div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // UI Elements
+    const scoreEl = document.getElementById('score');
+    const healthEl = document.getElementById('health');
+    const finalScoreEl = document.getElementById('final-score');
+    const startScreen = document.getElementById('start-screen');
+    const gameoverScreen = document.getElementById('gameover-screen');
+
+    // Estado del juego
+    let isPlaying = false;
+    let score = 0;
+    let health = 100;
+    let animationId;
+    let keys = {};
+    let mouse = { x: canvas.width / 2, y: canvas.height / 2, active: false };
+
+    // Jugador (Nave)
+    const player = {
+      x: canvas.width / 2,
+      y: canvas.height - 80,
+      width: 40,
+      height: 40,
+      speed: 6,
+      color: '#00e5ff',
+      lastShoot: 0
+    };
+
+    // Arrays de objetos
+    let bullets = [];
+    let enemies = [];
+    let gems = [];
+    let particles = [];
+    let stars = [];
+
+    // Generar fondo de estrellas estáticas y en movimiento
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 80; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 0.5,
+          speed: Math.random() * 1.5 + 0.2
+        });
+      }
+    }
+
+    // Eventos de teclado y ratón
+    window.addEventListener('keydown', e => keys[e.code] = true);
+    window.addEventListener('keyup', e => keys[e.code] = false);
+
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.active = true;
+    });
+
+    canvas.addEventListener('mousedown', () => {
+      if (isPlaying) shoot();
+    });
+
+    // Iniciar / Reiniciar Juego
+    function startGame() {
+      score = 0;
+      health = 100;
+      bullets = [];
+      enemies = [];
+      gems = [];
+      particles = [];
+      
+      player.x = canvas.width / 2;
+      player.y = canvas.height - 80;
+
+      scoreEl.textContent = score;
+      healthEl.textContent = health + '%';
+
+      startScreen.classList.add('hidden');
+      gameoverScreen.classList.add('hidden');
+      
+      initStars();
+      isPlaying = true;
+      
+      if (animationId) cancelAnimationFrame(animationId);
+      gameLoop();
+    }
+
+    // Sistema de disparo
+    function shoot() {
+      const now = Date.now();
+      if (now - player.lastShoot > 180) { // Cadencia
+        bullets.push({
+          x: player.x,
+          y: player.y - 20,
+          speed: 10,
+          color: '#ff007f'
+        });
+        player.lastShoot = now;
+      }
+    }
+
+    // Crear partículas para explosiones
+    function createExplosion(x, y, color, count = 12) {
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          vx: (Math.random() - 0.5) * 6,
+          vy: (Math.random() - 0.5) * 6,
+          size: Math.random() * 3 + 1,
+          color: color,
+          alpha: 1
+        });
+      }
+    }
+
+    // Bucle Principal
+    function gameLoop() {
+      if (!isPlaying) return;
+
+      // Limpiar pantalla
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Dibujar Fondo (Estrellas)
+      ctx.fillStyle = '#ffffff';
+      stars.forEach(star => {
+        star.y += star.speed;
+        if (star.y > canvas.height) star.y = 0;
+        ctx.globalAlpha = Math.random() * 0.5 + 0.5;
+        ctx.fillRect(star.x, star.y, star.size, star.size);
+      });
+      ctx.globalAlpha = 1;
+
+      // 2. Control de Movimiento del Jugador
+      if (keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
+      if (keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
+      if (keys['ArrowUp'] || keys['KeyW']) player.y -= player.speed;
+      if (keys['ArrowDown'] || keys['KeyS']) player.y += player.speed;
+
+      if (mouse.active) {
+        player.x += (mouse.x - player.x) * 0.1;
+        player.y += (mouse.y - player.y) * 0.1;
+      }
+
+      if (keys['Space']) shoot();
+
+      // Limitar jugador al lienzo
+      player.x = Math.max(player.width, Math.min(canvas.width - player.width, player.x));
+      player.y = Math.max(player.height, Math.min(canvas.height - player.height, player.y));
+
+      // Dibujar Jugador (Nave Estilizada)
+      ctx.save();
+      ctx.translate(player.x, player.y);
+      
+      // Propulsor (fuego)
+      ctx.beginPath();
+      ctx.fillStyle = Math.random() > 0.5 ? '#ff9900' : '#ff0000';
+      ctx.moveTo(-8, 15);
+      ctx.lineTo(8, 15);
+      ctx.lineTo(0, 25 + Math.random() * 8);
+      ctx.fill();
+
+      // Cuerpo de la nave
+      ctx.beginPath();
+      ctx.fillStyle = player.color;
+      ctx.moveTo(0, -20);
+      ctx.lineTo(18, 15);
+      ctx.lineTo(0, 8);
+      ctx.lineTo(-18, 15);
+      ctx.closePath();
+      ctx.shadowColor = '#00e5ff';
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.restore();
+
+      // 3. Gestionar Balas
+      ctx.fillStyle = '#ff007f';
+      ctx.shadowColor = '#ff007f';
+      ctx.shadowBlur = 8;
+      bullets.forEach((b, index) => {
+        b.y -= b.speed;
+        ctx.fillRect(b.x - 2, b.y, 4, 12);
+
+        if (b.y < -10) bullets.splice(index, 1);
+      });
+      ctx.shadowBlur = 0;
+
+      // 4. Generar y actualizar Enemigos (Asteroides)
+      if (Math.random() < 0.03 + (score * 0.00005)) { // La dificultad sube con el score
+        enemies.push({
+          x: Math.random() * (canvas.width - 40) + 20,
+          y: -30,
+          size: Math.random() * 20 + 15,
+          speed: Math.random() * 3 + 2 + (score * 0.001),
+          hp: Math.random() > 0.7 ? 2 : 1
+        });
+      }
+
+      enemies.forEach((enemy, eIndex) => {
+        enemy.y += enemy.speed;
+
+        // Dibujar Asteroide
+        ctx.beginPath();
+        ctx.arc(enemy.x, enemy.y, enemy.size, 0, Math.PI * 2);
+        ctx.fillStyle = enemy.hp > 1 ? '#a855f7' : '#888888';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Colisión Bala vs Asteroide
+        bullets.forEach((b, bIndex) => {
+          const dist = Math.hypot(b.x - enemy.x, b.y - enemy.y);
+          if (dist < enemy.size) {
+            enemy.hp--;
+            bullets.splice(bIndex, 1);
+
+            if (enemy.hp <= 0) {
+              createExplosion(enemy.x, enemy.y, '#a855f7', 15);
+              
+              // Posibilidad de soltar Gema
+              if (Math.random() < 0.4) {
+                gems.push({ x: enemy.x, y: enemy.y, speed: 2 });
+              }
+
+              score += 10;
+              scoreEl.textContent = score;
+              enemies.splice(eIndex, 1);
+            }
+          }
+        });
+
+        // Colisión Jugador vs Asteroide
+        const playerDist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+        if (playerDist < enemy.size + 15) {
+          createExplosion(enemy.x, enemy.y, '#ff0000', 20);
+          health -= 20;
+          healthEl.textContent = Math.max(0, health) + '%';
+          enemies.splice(eIndex, 1);
+
+          if (health <= 0) gameOver();
+        }
+
+        // Eliminar fuera de pantalla
+        if (enemy.y > canvas.height + 40) {
+          enemies.splice(eIndex, 1);
+        }
+      });
+
+      // 5. Gestionar Gemas
+      gems.forEach((gem, gIndex) => {
+        gem.y += gem.speed;
+
+        // Dibujar Gema
+        ctx.save();
+        ctx.translate(gem.x, gem.y);
+        ctx.rotate(Date.now() * 0.005);
+        ctx.fillStyle = '#00ff66';
+        ctx.shadowColor = '#00ff66';
+        ctx.shadowBlur = 10;
+        ctx.fillRect(-6, -6, 12, 12);
+        ctx.restore();
+
+        // Recoger Gema
+        const dist = Math.hypot(player.x - gem.x, player.y - gem.y);
+        if (dist < 25) {
+          createExplosion(gem.x, gem.y, '#00ff66', 8);
+          score += 25;
+          if (health < 100) {
+            health = Math.min(100, health + 5);
+            healthEl.textContent = health + '%';
+          }
+          scoreEl.textContent = score;
+          gems.splice(gIndex, 1);
+        }
+
+        if (gem.y > canvas.height + 20) gems.splice(gIndex, 1);
+      });
+
+      // 6. Actualizar Partículas (Explosiones)
+      particles.forEach((p, pIndex) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.03;
+
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (p.alpha <= 0) particles.splice(pIndex, 1);
+      });
+      ctx.globalAlpha = 1;
+
+      // Continuar el bucle
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    // Fin del juego
+    function gameOver() {
+      isPlaying = false;
+      finalScoreEl.textContent = score;
+      gameoverScreen.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

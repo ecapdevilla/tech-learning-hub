@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #eef3f8;
+    margin: 0;
+    padding: 40px;
+}
+
+.app {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.dice {
+    font-size: 90px;
+    margin: 25px 0;
+}
+
+button {
+    padding: 12px 22px;
+    margin: 5px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+#history {
+    background: #f6f8fb;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+#histogram {
+    background: #f6f8fb;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+#histogram div {
+    margin: 8px 0;
+    color: #2563eb;
+    font-size: 18px;
+}
+
+section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f6f8fb;
+    border-radius: 15px;
+}
+
+input {
+    padding: 10px;
+    width: 80px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#tableResult {
+    margin-top: 20px;
+    line-height: 1.8;
+    font-size: 18px;
+}

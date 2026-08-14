@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice Simulator</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <main class="app">
+    <h1>🎲 Dice Simulator</h1>
+
+    <div id="dice" class="dice">🎲</div>
+
+    <div class="buttons">
+      <button id="rollBtn">Roll Dice</button>
+      <button id="roll10Btn">Roll 10 Times</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <h2>History</h2>
+    <p id="history">[]</p>
+  </main>
+
+  <script src="js/model.js"></script>
+  <script src="js/view.js"></script>
+  <script src="js/controller.js"></script>
+</body>
+</html>

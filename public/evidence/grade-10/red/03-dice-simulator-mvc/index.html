@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dice Simulator</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <h1>🎲 Dice Simulator</h1>
+
+        <!-- Dado -->
+        <div id="dice" class="dice">🎲</div>
+
+        <!-- Botones del dado -->
+        <div class="buttons">
+
+            <button id="rollBtn">
+                Roll Dice
+            </button>
+
+            <button id="roll10Btn">
+                Roll 10 Times
+            </button>
+
+            <button id="resetBtn">
+                Reset
+            </button>
+
+        </div>
+
+        <!-- Historial -->
+        <h2>History</h2>
+
+        <p id="history">[]</p>
+
+
+        <!-- Histograma -->
+        <h2>📊 Histogram</h2>
+
+        <div id="histogram"></div>
+
+
+        <!-- Tabla de multiplicar -->
+        <section>
+
+            <h2>Multiplication Table</h2>
+
+            <input
+                id="numberInput"
+                type="number"
+                value="5"
+                min="1"
+            >
+
+            <button id="generateBtn">
+                Generate
+            </button>
+
+            <div id="tableResult"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- JavaScript -->
+    <script src="js/model.js"></script>
+    <script src="js/view.js"></script>
+    <script src="js/controller.js"></script>
+
+</body>
+
+</html>

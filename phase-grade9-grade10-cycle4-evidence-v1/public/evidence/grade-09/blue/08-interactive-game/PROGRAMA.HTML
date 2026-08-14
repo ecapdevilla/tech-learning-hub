@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz MVC - Tipo ICFES</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+
+background:linear-gradient(135deg,#0d47a1,#42a5f5);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+min-height:100vh;
+
+padding:20px;
+
+}
+
+.contenedor{
+
+width:100%;
+
+max-width:900px;
+
+}
+
+header{
+
+text-align:center;
+
+color:white;
+
+margin-bottom:20px;
+
+}
+
+header h1{
+
+font-size:40px;
+
+}
+
+header h2{
+
+margin:10px 0;
+
+}
+
+.card{
+
+background:white;
+
+padding:30px;
+
+border-radius:15px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.3);
+
+}
+
+.progreso{
+
+font-size:18px;
+
+font-weight:bold;
+
+margin-bottom:20px;
+
+color:#1565C0;
+
+}
+
+#pregunta{
+
+margin-bottom:20px;
+
+color:#0D47A1;
+
+}
+
+.opcion{
+
+width:100%;
+
+padding:15px;
+
+margin:10px 0;
+
+font-size:16px;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+background:#ECEFF1;
+
+transition:.3s;
+
+text-align:left;
+
+}
+
+.opcion:hover{
+
+background:#BBDEFB;
+
+transform:scale(1.02);
+
+}
+
+.correcta{
+
+background:#4CAF50!important;
+
+color:white;
+
+}
+
+.incorrecta{
+
+background:#E53935!important;
+
+color:white;
+
+}
+
+button{
+
+padding:12px 25px;
+
+background:#1565C0;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-size:16px;
+
+margin-top:20px;
+
+}
+
+button:hover{
+
+background:#0D47A1;
+
+}
+
+.oculto{
+
+display:none;
+
+}
+
+footer{
+
+margin-top:25px;
+
+text-align:center;
+
+color:white;
+
+}
+
+footer h3{
+
+margin-bottom:10px;
+
+}
+
+@media(max-width:768px){
+
+header h1{
+
+font-size:30px;
+
+}
+
+.card{
+
+padding:20px;
+
+}
+
+button{
+
+width:100%;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<header>
+
+<h1>QUIZ INTERACTIVO</h1>
+
+<h2>Modelo - Vista - Controlador (MVC)</h2>
+
+<p>Evaluación Tipo ICFES</p>
+
+</header>
+
+<div class="card">
+
+<div id="quiz">
+
+<div class="progreso">
+
+Pregunta <span id="numeroPregunta">1</span> de 10
+
+</div>
+
+<h2 id="pregunta"></h2>
+
+<div id="opciones"></div>
+
+<button id="btnSiguiente">Siguiente</button>
+
+</div>
+
+<div id="resultado" class="oculto">
+
+<h2>¡Has terminado el cuestionario!</h2>
+
+<h3 id="mensaje"></h3>
+
+<h2 id="puntaje"></h2>
+
+<button onclick="reiniciar()">Volver a Intentar</button>
+
+</div>
+
+</div>
+
+<footer>
+
+<h3>Integrantes del Grupo</h3>
+
+<p><strong>Andres</strong></p>
+
+<p><strong>Hollman</strong></p>
+
+</footer>
+
+</div>
+
+<script>
+
+const preguntas=[
+
+{
+
+pregunta:"1. Una empresa quiere separar la lógica del negocio de la interfaz gráfica para facilitar el mantenimiento del sistema. ¿Qué componente del patrón MVC almacena esa lógica?",
+
+opciones:["Vista","Modelo","Controlador","Servidor"],
+
+respuesta:1
+
+},
+
+{
+
+pregunta:"2. Cuando un usuario hace clic en un botón para guardar información, ¿qué componente recibe inicialmente esa acción?",
+
+opciones:["Modelo","Controlador","Vista","Base de datos"],
+
+respuesta:1
+
+},
+
+{
+
+pregunta:"3. ¿Cuál es la función principal de la Vista dentro del patrón MVC?",
+
+opciones:["Guardar datos","Mostrar información al usuario","Administrar la base de datos","Controlar el servidor"],
+
+respuesta:1
+
+},
+
+{
+
+pregunta:"4. ¿Cuál componente administra los datos y las reglas del negocio?",
+
+opciones:["Vista","Modelo","Controlador","CSS"],
+
+respuesta:1
+
+},
+
+{
+
+pregunta:"5. ¿Cuál es la principal ventaja del patrón MVC?",
+
+opciones:["Eliminar JavaScript","Separar responsabilidades","Aumentar el tamaño del programa","Evitar el uso de HTML"],
+
+respuesta:1
+
+},
+
+{
+
+pregunta:"6. Si únicamente cambia el diseño visual de una aplicación, ¿qué componente debe modificarse?",
+
+opciones:["Vista","Modelo","Controlador","Servidor"],
+
+respuesta:0
+
+},
+
+{
+
+pregunta:"7. ¿Qué componente comunica la Vista con el Modelo?",
+
+opciones:["Controlador","Usuario","CSS","Base de datos"],
+
+respuesta:0
+
+},
+
+{
+
+pregunta:"8. El Modelo normalmente contiene:",
+
+opciones:["Los estilos CSS","Los datos y reglas del negocio","Los botones","Las imágenes"],
+
+respuesta:1
+
+},
+
+{
+
+pregunta:"9. ¿Qué componente muestra los datos provenientes del Modelo?",
+
+opciones:["Servidor","Vista","Controlador","Base de datos"],
+
+respuesta:1
+
+},
+
+{
+
+pregunta:"10. ¿Cuál es el flujo correcto del patrón MVC?",
+
+opciones:[
+
+"Modelo → Vista → Usuario",
+
+"Usuario → Controlador → Modelo → Vista",
+
+"Vista → Modelo → Usuario",
+
+"Modelo → Usuario → Vista"
+
+],
+
+respuesta:1
+
+}
+
+];
+
+let indice=0;
+
+let puntaje=0;
+
+const pregunta=document.getElementById("pregunta");
+
+const opciones=document.getElementById("opciones");
+
+const boton=document.getElementById("btnSiguiente");
+
+const numero=document.getElementById("numeroPregunta");
+
+function cargarPregunta(){
+
+numero.innerHTML=indice+1;
+
+pregunta.innerHTML=preguntas[indice].pregunta;
+
+opciones.innerHTML="";
+
+preguntas[indice].opciones.forEach((texto,i)=>{
+
+const btn=document.createElement("button");
+
+btn.innerHTML=texto;
+
+btn.className="opcion";
+
+btn.onclick=function(){
+
+seleccionar(i,btn);
+
+};
+
+opciones.appendChild(btn);
+
+});
+
+boton.style.display="none";
+
+}
+
+function seleccionar(i,btn){
+
+const botones=document.querySelectorAll(".opcion");
+
+botones.forEach(b=>b.disabled=true);
+
+if(i===preguntas[indice].respuesta){
+
+btn.classList.add("correcta");
+
+puntaje++;
+
+}else{
+
+btn.classList.add("incorrecta");
+
+botones[preguntas[indice].respuesta].classList.add("correcta");
+
+}
+
+boton.style.display="inline-block";
+
+}
+
+boton.onclick=function(){
+
+indice++;
+
+if(indice<preguntas.length){
+
+cargarPregunta();
+
+}else{
+
+mostrarResultado();
+
+}
+
+};
+
+function mostrarResultado(){
+
+document.getElementById("quiz").classList.add("oculto");
+
+document.getElementById("resultado").classList.remove("oculto");
+
+document.getElementById("puntaje").innerHTML="Obtuviste <strong>"+puntaje+"</strong> de <strong>"+preguntas.length+"</strong> respuestas correctas.";
+
+let mensaje="";
+
+if(puntaje==10){
+
+mensaje="🏆 ¡Excelente! Dominas perfectamente el patrón MVC.";
+
+}else if(puntaje>=8){
+
+mensaje="✅ Muy buen resultado. Conoces muy bien MVC.";
+
+}else if(puntaje>=6){
+
+mensaje="👍 Buen trabajo. Sigue practicando algunos conceptos.";
+
+}else{
+
+mensaje="📚 Debes reforzar los conceptos básicos del patrón MVC.";
+
+}
+
+document.getElementById("mensaje").innerHTML=mensaje;
+
+}
+
+function reiniciar(){
+
+indice=0;
+
+puntaje=0;
+
+document.getElementById("resultado").classList.add("oculto");
+
+document.getElementById("quiz").classList.remove("oculto");
+
+cargarPregunta();
+
+}
+
+cargarPregunta();
+
+</script>
+
+</body>
+</html>

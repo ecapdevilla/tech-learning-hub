@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Dados</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .app {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #2563eb;
+        }
+
+        .dice {
+            font-size: 100px;
+            margin: 30px 0;
+        }
+
+        button {
+            padding: 12px 22px;
+            margin: 5px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #history {
+            background: #f6f8fb;
+            padding: 15px;
+            border-radius: 12px;
+            min-height: 25px;
+            word-wrap: break-word;
+        }
+
+        .result {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="app">
+
+        <h1>🎲 Simulador de Dados</h1>
+
+        <div id="dice" class="dice">
+            🎲
+        </div>
+
+        <p class="result" id="result">
+            Presiona un botón para lanzar el dado
+        </p>
+
+        <div>
+            <button onclick="rollDice()">
+                🎲 Lanzar dado
+            </button>
+
+            <button onclick="rollTenTimes()">
+                🔁 Lanzar 10 veces
+            </button>
+
+            <button onclick="resetGame()">
+                ↺ Reiniciar
+            </button>
+        </div>
+
+        <h2>📜 Historial</h2>
+
+        <p id="history">[]</p>
+
+    </main>
+
+    <script>
+
+        // Array que guarda los resultados
+        let rolls = [];
+
+        // Función para lanzar un dado
+        function rollDice() {
+
+            // Genera un número aleatorio del 1 al 6
+            let value = Math.floor(Math.random() * 6) + 1;
+
+            // Guarda el resultado en el array
+            rolls.push(value);
+
+            // Muestra el resultado
+            showResult(value);
+
+            // Actualiza el historial
+            showHistory();
+        }
+
+        // Función para lanzar el dado 10 veces
+        function rollTenTimes() {
+
+            for (let i = 0; i < 10; i++) {
+                let value = Math.floor(Math.random() * 6) + 1;
+
+                rolls.push(value);
+            }
+
+            // Muestra el último resultado
+            let lastValue = rolls[rolls.length - 1];
+
+            showResult(lastValue);
+
+            // Actualiza el historial
+            showHistory();
+        }
+
+        // Muestra el resultado del dado
+        function showResult(value) {
+
+            const dice = document.getElementById("dice");
+            const result = document.getElementById("result");
+
+            dice.textContent = getDiceEmoji(value);
+            result.textContent = "Resultado: " + value;
+        }
+
+        // Convierte el número en un emoji de dado
+        function getDiceEmoji(value) {
+
+            const diceFaces = [
+                "⚀",
+                "⚁",
+                "⚂",
+                "⚃",
+                "⚄",
+                "⚅"
+            ];
+
+            return diceFaces[value - 1];
+        }
+
+        // Muestra el historial
+        function showHistory() {
+
+            document.getElementById("history").textContent =
+                "[" + rolls.join(", ") + "]";
+        }
+
+        // Reinicia el juego
+        function resetGame() {
+
+            rolls = [];
+
+            document.getElementById("dice").textContent = "🎲";
+
+            document.getElementById("result").textContent =
+                "Presiona un botón para lanzar el dado";
+
+            document.getElementById("history").textContent = "[]";
+        }
+
+    </script>
+
+</body>
+</html>

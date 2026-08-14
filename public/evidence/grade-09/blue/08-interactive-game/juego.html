@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoGuardianes - ODS 13</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Arial',sans-serif;
+}
+
+body{
+    background:linear-gradient(#62c370,#b8f2e6);
+    overflow:hidden;
+    height:100vh;
+    text-align:center;
+}
+
+h1{
+    margin-top:15px;
+    color:#075e54;
+    font-size:35px;
+}
+
+.info{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    font-size:20px;
+    margin:10px;
+    color:#064420;
+    font-weight:bold;
+}
+
+#game{
+    width:800px;
+    height:500px;
+    background:
+    linear-gradient(to bottom,#87ceeb 0%,#87ceeb 60%,#55a630 60%);
+    border:4px solid #14532d;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+    border-radius:15px;
+    box-shadow:0 0 20px #14532d;
+}
+
+#player{
+    position:absolute;
+    bottom:20px;
+    left:370px;
+    width:60px;
+    height:60px;
+    background:#1b4332;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:35px;
+}
+
+.object{
+    position:absolute;
+    top:-50px;
+    font-size:35px;
+}
+
+.recycle{
+    color:green;
+}
+
+.trash{
+    color:red;
+}
+
+#message{
+    font-size:25px;
+    color:#064420;
+    margin:10px;
+    font-weight:bold;
+}
+
+button{
+    padding:12px 25px;
+    background:#2d6a4f;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+button:hover{
+    background:#1b4332;
+}
+
+footer{
+    margin-top:10px;
+    color:#064420;
+    font-weight:bold;
+}
+
+@media(max-width:850px){
+    #game{
+        width:95%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🌎 EcoGuardianes: Salva el Planeta</h1>
+
+<p>
+ODS 13: Acción por el clima - Reduce la contaminación y protege la Tierra
+</p>
+
+<div class="info">
+    <span>Puntos: <b id="score">0</b></span>
+    <span>Vidas: ❤️ <b id="lives">3</b></span>
+    <span>Nivel: <b id="level">1</b></span>
+</div>
+
+<div id="game">
+
+    <div id="player">
+        🌱
+    </div>
+
+</div>
+
+<div id="message">
+    Mueve al guardián y recoge reciclaje ♻️
+</div>
+
+<button onclick="restartGame()">Reiniciar Juego</button>
+
+
+<footer>
+Creado por: Andrés Álvarez y Hollman Sánchez
+</footer>
+
+
+<script>
+
+const game=document.getElementById("game");
+const player=document.getElementById("player");
+
+let score=0;
+let lives=3;
+let level=1;
+
+let playerX=370;
+let speed=3;
+
+let objects=[];
+
+let keys={};
+
+document.addEventListener("keydown",e=>{
+    keys[e.key]=true;
+});
+
+document.addEventListener("keyup",e=>{
+    keys[e.key]=false;
+});
+
+
+function movePlayer(){
+
+    if(keys["ArrowLeft"] && playerX>0){
+        playerX-=8;
+    }
+
+    if(keys["ArrowRight"] && playerX<740){
+        playerX+=8;
+    }
+
+    player.style.left=playerX+"px";
+
+}
+
+
+function createObject(){
+
+    let obj=document.createElement("div");
+
+    let good=Math.random()>0.35;
+
+    if(good){
+        obj.innerHTML="♻️";
+        obj.className="object recycle";
+        obj.dataset.type="good";
+    }
+    else{
+        obj.innerHTML="🗑️";
+        obj.className="object trash";
+        obj.dataset.type="bad";
+    }
+
+
+    obj.style.left=Math.random()*750+"px";
+
+    game.appendChild(obj);
+
+    objects.push({
+        element:obj,
+        y:-50
+    });
+
+}
+
+
+function updateObjects(){
+
+    objects.forEach((obj,index)=>{
+
+        obj.y+=speed;
+
+        obj.element.style.top=obj.y+"px";
+
+
+        let ox=obj.element.offsetLeft;
+        let oy=obj.element.offsetTop;
+
+
+        if(
+            ox < playerX+60 &&
+            ox+40 > playerX &&
+            oy > 400
+        ){
+
+            if(obj.element.dataset.type=="good"){
+
+                score+=10;
+
+                document.getElementById("message").innerHTML=
+                "¡Excelente! Ayudas al planeta 🌎";
+
+            }
+            else{
+
+                lives--;
+
+                document.getElementById("message").innerHTML=
+                "¡Cuidado! La contaminación aumenta 😢";
+
+            }
+
+
+            updateStats();
+
+            obj.element.remove();
+
+            objects.splice(index,1);
+
+        }
+
+
+        if(obj.y>520){
+
+            obj.element.remove();
+
+            objects.splice(index,1);
+
+        }
+
+    });
+
+}
+
+
+
+function updateStats(){
+
+document.getElementById("score").innerHTML=score;
+document.getElementById("lives").innerHTML=lives;
+
+if(score>0 && score%100==0){
+
+    level++;
+
+    speed+=0.7;
+
+}
+
+document.getElementById("level").innerHTML=level;
+
+
+if(lives<=0){
+
+    gameOver();
+
+}
+
+}
+
+
+
+function gameOver(){
+
+document.getElementById("message").innerHTML=
+"🌍 Juego terminado. Puntuación: "+score;
+
+objects.forEach(o=>o.element.remove());
+
+objects=[];
+
+speed=0;
+
+}
+
+
+
+function restartGame(){
+
+score=0;
+lives=3;
+level=1;
+speed=3;
+
+playerX=370;
+
+document.getElementById("message").innerHTML=
+"Recolecta reciclaje y salva el planeta ♻️";
+
+updateStats();
+
+}
+
+
+
+function loop(){
+
+movePlayer();
+
+updateObjects();
+
+requestAnimationFrame(loop);
+
+}
+
+
+setInterval(()=>{
+
+if(speed>0){
+createObject();
+}
+
+},900);
+
+
+loop();
+
+
+</script>
+
+</body>
+</html>

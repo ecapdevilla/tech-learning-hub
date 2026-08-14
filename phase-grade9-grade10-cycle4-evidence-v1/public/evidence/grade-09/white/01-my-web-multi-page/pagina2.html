@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sofía, Natalia y Alejandra</title>
+
+  <style>
+    body {
+      background-color: lightblue;
+      color: purple;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .contenedor {
+      background-color: white;
+      max-width: 650px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      color: purple;
+      font-size: 2.5rem;
+    }
+
+    p {
+      color: #333333;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    button {
+      background-color: blue;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin: 8px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #6c5ce7;
+      transform: scale(1.05);
+    }
+
+    #mensaje {
+      color: #e84393;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <h1 id="titulo">🌸 Hola, somos Sofía, Natalia y Alejandra</h1>
+
+    <p id="descripcion">
+      Somos Sofía, Natalia y Alejandra y estamos aprendiendo a crear páginas web con HTML, CSS y JavaScript.
+    </p>
+
+    <p id="gustos">
+      Nos gusta dormir y escuchar música. 🎵
+    </p>
+
+    <button id="saludar" onclick="saludar()">Saludar</button>
+
+    <p id="mensaje"></p>
+
+    <h2>🌎 Idioma / Language</h2>
+
+    <button onclick="cambiarIdioma('es')">🇪🇸 Español</button>
+    <button onclick="cambiarIdioma('en')">🇺🇸 English</button>
+
+  </div>
+
+  <script>
+
+    // Mensaje con nuestros nombres en la consola
+    console.log("👋 Hola, somos Sofía, Natalia y Alejandra y estamos aprendiendo JavaScript.");
+
+    // Función para saludar
+    function saludar() {
+      document.getElementById("mensaje").textContent =
+        "💜 ¡Hola! Somos Sofía, Natalia y Alejandra. ¡Gracias por visitar nuestra página!";
+    }
+
+    // Función para cambiar el idioma
+    function cambiarIdioma(idioma) {
+
+      const titulo = document.getElementById("titulo");
+      const descripcion = document.getElementById("descripcion");
+      const gustos = document.getElementById("gustos");
+      const saludarBtn = document.getElementById("saludar");
+      const mensaje = document.getElementById("mensaje");
+
+      if (idioma === "es") {
+
+        titulo.textContent = "🌸 Hola, somos Sofía, Natalia y Alejandra";
+        descripcion.textContent =
+          "Somos Sofía, Natalia y Alejandra y estamos aprendiendo a crear páginas web con HTML, CSS y JavaScript.";
+        gustos.textContent =
+          "Nos gusta dormir y escuchar música. 🎵";
+        saludarBtn.textContent = "Saludar";
+        mensaje.textContent = "";
+
+        document.title = "Sofía, Natalia y Alejandra";
+
+      } else if (idioma === "en") {
+
+        titulo.textContent = "🌸 Hello, we are Sofía, Natalia and Alejandra";
+        descripcion.textContent =
+          "We are Sofía, Natalia and Alejandra, and we are learning to create web pages with HTML, CSS and JavaScript.";
+        gustos.textContent =
+          "We like sleeping and listening to music. 🎵";
+        saludarBtn.textContent = "Greet";
+        mensaje.textContent = "";
+
+        document.title = "Sofía, Natalia and Alejandra's Web Page";
+      }
+
+      console.log("🌎 Language changed to: " + idioma);
+    }
+
+  </script>
+
+</body>
+</html>

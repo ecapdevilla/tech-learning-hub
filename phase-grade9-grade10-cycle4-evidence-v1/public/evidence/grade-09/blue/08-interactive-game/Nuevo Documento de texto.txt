@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard Analítico - Tienda de Ropa</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f4f6f9;
+}
+
+header{
+    background:#1e293b;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.dashboard{
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.card h2{
+    margin:0;
+    color:#555;
+}
+
+.card h1{
+    color:#2563eb;
+}
+
+.graficos{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+padding:20px;
+
+}
+
+.panel{
+
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+
+}
+
+canvas{
+
+height:350px !important;
+
+}
+
+.prediccion{
+
+padding:20px;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+background:white;
+
+}
+
+th,td{
+
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+
+}
+
+th{
+
+background:#2563eb;
+color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Dashboard Analítico - Tienda de Ropa</h1>
+
+<p>Análisis de ventas y predicción de demanda</p>
+
+</header>
+
+<div class="dashboard">
+
+<div class="card">
+
+<h2>Ventas Totales</h2>
+
+<h1>$520.000</h1>
+
+</div>
+
+<div class="card">
+
+<h2>Clientes</h2>
+
+<h1>3.240</h1>
+
+</div>
+
+<div class="card">
+
+<h2>Productos</h2>
+
+<h1>820</h1>
+
+</div>
+
+<div class="card">
+
+<h2>Ganancia</h2>
+
+<h1>32%</h1>
+
+</div>
+
+</div>
+
+<div class="graficos">
+
+<div class="panel">
+
+<h2>Ventas Mensuales</h2>
+
+<canvas id="ventas"></canvas>
+
+</div>
+
+<div class="panel">
+
+<h2>Categorías</h2>
+
+<canvas id="categorias"></canvas>
+
+</div>
+
+<div class="panel">
+
+<h2>Productos Más Vendidos</h2>
+
+<canvas id="productos"></canvas>
+
+</div>
+
+<div class="panel">
+
+<h2>Predicción Próximos Meses</h2>
+
+<canvas id="forecast"></canvas>
+
+</div>
+
+</div>
+
+<div class="prediccion">
+
+<h2>Predicción de Ventas</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Mes</th>
+
+<th>Ventas Esperadas</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaPrediccion">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+// Datos históricos
+
+const meses=[
+"Ene","Feb","Mar","Abr","May","Jun",
+"Jul","Ago","Sep","Oct","Nov","Dic"
+];
+
+const ventas=[
+12000,
+15000,
+18000,
+20000,
+23000,
+25000,
+27000,
+30000,
+32000,
+34000,
+36000,
+39000
+];
+
+//-----------------------------
+// Predicción sencilla
+//-----------------------------
+
+let futuras=[];
+
+let ultimo=ventas[ventas.length-1];
+
+for(let i=1;i<=6;i++){
+
+ultimo*=1.05;
+
+futuras.push(Math.round(ultimo));
+
+}
+
+const mesesFuturos=[
+"Ene+1",
+"Feb+1",
+"Mar+1",
+"Abr+1",
+"May+1",
+"Jun+1"
+];
+
+//-----------------------------
+
+new Chart(document.getElementById("ventas"),{
+
+type:'line',
+
+data:{
+
+labels:meses,
+
+datasets:[{
+
+label:"Ventas",
+
+data:ventas,
+
+borderColor:"#2563eb",
+
+fill:false,
+
+tension:.4
+
+}]
+
+}
+
+});
+
+//-----------------------------
+
+new Chart(document.getElementById("categorias"),{
+
+type:'pie',
+
+data:{
+
+labels:[
+"Camisas",
+"Pantalones",
+"Zapatos",
+"Chaquetas",
+"Accesorios"
+],
+
+datasets:[{
+
+data:[
+35,
+25,
+15,
+15,
+10
+],
+
+backgroundColor:[
+
+"#2563eb",
+"#16a34a",
+"#f59e0b",
+"#dc2626",
+"#7c3aed"
+
+]
+
+}]
+
+}
+
+});
+
+//-----------------------------
+
+new Chart(document.getElementById("productos"),{
+
+type:'bar',
+
+data:{
+
+labels:[
+"Jeans",
+"Camiseta",
+"Tenis",
+"Chaqueta",
+"Gorra"
+],
+
+datasets:[{
+
+label:"Ventas",
+
+backgroundColor:"#16a34a",
+
+data:[450,600,320,210,180]
+
+}]
+
+}
+
+});
+
+//-----------------------------
+
+new Chart(document.getElementById("forecast"),{
+
+type:'line',
+
+data:{
+
+labels:[...meses,...mesesFuturos],
+
+datasets:[
+
+{
+
+label:"Histórico",
+
+data:[...ventas,...Array(6).fill(null)],
+
+borderColor:"#2563eb"
+
+},
+
+{
+
+label:"Predicción",
+
+data:[
+
+...Array(12).fill(null),
+
+...futuras
+
+],
+
+borderColor:"#dc2626",
+
+borderDash:[10,5]
+
+}
+
+]
+
+}
+
+});
+
+//-----------------------------
+
+let tabla=document.getElementById("tablaPrediccion");
+
+for(let i=0;i<6;i++){
+
+tabla.innerHTML+=`
+
+<tr>
+
+<td>${mesesFuturos[i]}</td>
+
+<td>$ ${futuras[i].toLocaleString()}</td>
+
+</tr>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>

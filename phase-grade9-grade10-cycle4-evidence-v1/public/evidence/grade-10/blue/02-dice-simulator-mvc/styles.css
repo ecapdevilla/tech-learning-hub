@@ -1,0 +1,37 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #eef3f8;
+  margin: 0;
+  padding: 40px;
+}
+
+.app {
+  max-width: 700px;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.dice {
+  font-size: 90px;
+  margin: 25px 0;
+}
+
+button {
+  padding: 12px 22px;
+  margin: 5px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+#history {
+  background: #f6f8fb;
+  padding: 15px;
+  border-radius: 12px;
+}

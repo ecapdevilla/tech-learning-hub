@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Juego de Ping Pong Pastel</title>
+  <style>
+    /* ==========================================================================
+       1. ESTILOS CSS - DISEÑO Y RESPONSIVE
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #f0e6f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Fondo animado con figuras geométricas */
+    #bg-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Contenedor principal del juego */
+    #game-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      height: 100%;
+      max-height: 600px;
+      z-index: 2;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Canvas principal del juego */
+    #pong-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: transparent;
+    }
+
+    /* Sobrecapas (Menús, Pausa, Game Over) */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(247, 240, 252, 0.92);
+      z-index: 10;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Títulos y textos */
+    h1 {
+      font-size: 2.8rem;
+      color: #6b5b95;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      color: #6b5b95;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: #776885;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    /* Paneles de Configuración */
+    .option-group {
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .option-group label {
+      display: block;
+      font-weight: bold;
+      color: #6b5b95;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    /* Botones Pastel */
+    .btn {
+      background-color: #b5ead7;
+      color: #4a5d55;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      flex: 1;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      filter: brightness(1.03);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.active {
+      background-color: #ffb7b2;
+      color: #673a37;
+    }
+
+    .btn-primary {
+      background-color: #ff9aa2;
+      color: #5c2b30;
+      font-size: 1.2rem;
+      padding: 14px 32px;
+      margin-top: 10px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .btn-secondary {
+      background-color: #e2f0cb;
+      color: #485438;
+    }
+
+    .btn-danger {
+      background-color: #ffb7b2;
+      color: #5c2b30;
+    }
+
+    /* HUD de la partida */
+    #hud {
+      position: absolute;
+      top: 15px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 25px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .score-box {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #6b5b95;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 6px 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .hud-controls {
+      pointer-events: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #6b5b95;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Cuenta Regresiva */
+    #countdown {
+      position: absolute;
+      font-size: 6rem;
+      font-weight: bold;
+      color: #ff9aa2;
+      text-shadow: 3px 3px 0px #fff, 6px 6px 0px rgba(0,0,0,0.05);
+      z-index: 6;
+      pointer-events: none;
+      animation: pulse 0.8s infinite alternate;
+    }
+
+    /* Contador de FPS */
+    #fps-counter {
+      position: absolute;
+      bottom: 5px;
+      right: 10px;
+      font-size: 0.75rem;
+      color: #a093b1;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* Animaciones */
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.7; }
+      100% { transform: scale(1.2); opacity: 1; }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .animated-pop {
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div id="game-container">
+    
+    <div id="hud">
+      <div class="score-box" id="score-player">0</div>
+      <div class="hud-controls">
+        <button class="icon-btn" id="btn-pause" title="Pausar">⏸</button>
+      </div>
+      <div class="score-box" id="score-ai">0</div>
+    </div>
+
+    <div id="countdown" class="hidden">3</div>
+
+    <div id="fps-counter">FPS: 60</div>
+
+    <canvas id="pong-canvas"></canvas>
+
+    <div id="menu-overlay" class="overlay">
+      <h1>PING PONG</h1>
+      
+      <div class="option-group">
+        <label>Modo de Control</label>
+        <div class="btn-group">
+          <button class="btn active" id="ctrl-touch">Táctil</button>
+          <button class="btn" id="ctrl-mouse">Mouse (Click)</button>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <label>Dificultad IA</label>
+        <div class="btn-group">
+          <button class="btn" id="diff-easy">Fácil</button>
+          <button class="btn active" id="diff-normal">Normal</button>
+          <button class="btn" id="diff-hard">Difícil</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-start">¡JUGAR!</button>
+    </div>
+
+    <div id="pause-overlay" class="overlay hidden">
+      <h2>JUEGO EN PAUSA</h2>
+      <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 250px;">
+        <button class="btn btn-primary" id="btn-resume">Reanudar</button>
+        <button class="btn btn-secondary" id="btn-restart-pause">Reiniciar</button>
+        <button class="btn btn-danger" id="btn-menu-pause">Menú Principal</button>
+      </div>
+    </div>
+
+    <div id="gameover-overlay" class="overlay hidden">
+      <h2 id="gameover-title" class="animated-pop">¡VICTORIA!</h2>
+      <p id="gameover-msg">¡Has ganado la partida!</p>
+      <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 250px;">
+        <button class="btn btn-primary" id="btn-restart">Jugar de Nuevo</button>
+        <button class="btn btn-secondary" id="btn-menu">Menú Principal</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* ==========================================================================
+       2. SISTEMA DE AUDIO (Web Audio API)
+       ========================================================================== */
+    class SoundController {
+      constructor() {
+        this.ctx = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtx();
+        }
+      }
+
+      playBounce(isWall = false) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = isWall ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(isWall ? 300 : 450, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(isWall ? 150 : 200, this.ctx.currentTime + 0.08);
+
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.08);
+      }
+
+      playScore(isPlayer) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        const startFreq = isPlayer ? 523.25 : 220; // C5 vs A3
+        const endFreq = isPlayer ? 659.25 : 164.81; // E5 vs E3
+
+        osc.frequency.setValueAtTime(startFreq, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(endFreq, this.ctx.currentTime + 0.25);
+
+        gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.25);
+      }
+
+      playWin() {
+        if (!this.ctx) return;
+        const notes = [261.63, 329.63, 392.00, 523.25];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start();
+            osc.stop(this.ctx.currentTime + 0.2);
+          }, idx * 100);
+        });
+      }
+    }
+
+    const audio = new SoundController();
+
+    /* ==========================================================================
+       3. FONDO ANIMADO (Figuras Geométricas Flotantes)
+       ========================================================================== */
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    let bgShapes = [];
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+
+    class BgShape {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * bgCanvas.width;
+        this.y = Math.random() * bgCanvas.height;
+        this.size = Math.random() * 30 + 10;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.01;
+        this.type = Math.floor(Math.random() * 3); // 0: Círculo, 1: Cuadrado, 2: Triángulo
+        // Colores pastel suaves
+        const colors = ['rgba(255, 183, 178, 0.25)', 'rgba(226, 240, 203, 0.25)', 'rgba(181, 234, 215, 0.25)', 'rgba(199, 206, 234, 0.25)'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.rotation += this.rotSpeed;
+
+        if (this.x < -50 || this.x > bgCanvas.width + 50 || this.y < -50 || this.y > bgCanvas.height + 50) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        bgCtx.save();
+        bgCtx.translate(this.x, this.y);
+        bgCtx.rotate(this.rotation);
+        bgCtx.fillStyle = this.color;
+        bgCtx.beginPath();
+
+        if (this.type === 0) {
+          bgCtx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
+        } else if (this.type === 1) {
+          bgCtx.rect(-this.size / 2, -this.size / 2, this.size, this.size);
+        } else {
+          bgCtx.moveTo(0, -this.size / 2);
+          bgCtx.lineTo(this.size / 2, this.size / 2);
+          bgCtx.lineTo(-this.size / 2, this.size / 2);
+          bgCtx.closePath();
+        }
+        bgCtx.fill();
+        bgCtx.restore();
+      }
+    }
+
+    function initBg() {
+      resizeBg();
+      bgShapes = [];
+      for (let i = 0; i < 25; i++) {
+        bgShapes.push(new BgShape());
+      }
+    }
+
+    function renderBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      bgShapes.forEach(shape => {
+        shape.update();
+        shape.draw();
+      });
+    }
+
+    /* ==========================================================================
+       4. SISTEMA DE PARTÍCULAS
+       ========================================================================== */
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = Math.random() * 4 + 2;
+        this.vx = (Math.random() - 0.5) * 6;
+        this.vy = (Math.random() - 0.5) * 6;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.03 + 0.015;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.alpha);
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    /* ==========================================================================
+       5. LÓGICA PRINCIPAL DEL JUEGO DE PONG
+       ========================================================================== */
+    const gameCanvas = document.getElementById('pong-canvas');
+    const ctx = gameCanvas.getContext('2d');
+
+    // Configuración base (Coordenadas Virtuales 800x500 para lógica consistente)
+    const V_WIDTH = 800;
+    const V_HEIGHT = 500;
+    let scale = 1;
+
+    // Estado del Juego
+    const state = {
+      controlMode: 'touch', // 'touch' o 'mouse'
+      difficulty: 'normal',  // 'easy', 'normal', 'hard'
+      playerScore: 0,
+      aiScore: 0,
+      maxScore: 10,
+      isPaused: false,
+      isPlaying: false,
+      isCountingDown: false,
+      isMouseDown: false,
+      mouseY: V_HEIGHT / 2
+    };
+
+    // Parámetros IA por Dificultad
+    const AI_CONFIG = {
+      easy: { speed: 3.5, errorMargin: 45, reactionDelay: 0.1 },
+      normal: { speed: 5.5, errorMargin: 20, reactionDelay: 0.05 },
+      hard: { speed: 8.0, errorMargin: 5, reactionDelay: 0.02 }
+    };
+
+    // Entidades
+    const paddleWidth = 15;
+    const paddleHeight = 90;
+
+    const player = {
+      x: 30,
+      y: V_HEIGHT / 2 - paddleHeight / 2,
+      w: paddleWidth,
+      h: paddleHeight,
+      color: '#ff9aa2',
+      targetY: V_HEIGHT / 2 - paddleHeight / 2
+    };
+
+    const ai = {
+      x: V_WIDTH - 30 - paddleWidth,
+      y: V_HEIGHT / 2 - paddleHeight / 2,
+      w: paddleWidth,
+      h: paddleHeight,
+      color: '#b5ead7',
+      targetY: V_HEIGHT / 2 - paddleHeight / 2,
+      errorOffset: 0
+    };
+
+    const ball = {
+      x: V_WIDTH / 2,
+      y: V_HEIGHT / 2,
+      radius: 9,
+      speed: 6,
+      baseSpeed: 6,
+      maxSpeed: 14,
+      vx: 0,
+      vy: 0,
+      color: '#6b5b95'
+    };
+
+    let particles = [];
+
+    // Ajuste de escala canvas responsive
+    function resizeGameCanvas() {
+      const container = document.getElementById('game-container');
+      const rect = container.getBoundingClientRect();
+      gameCanvas.width = rect.width;
+      gameCanvas.height = rect.height;
+      scale = gameCanvas.width / V_WIDTH;
+    }
+
+    // Creación de partículas
+    function createImpactParticles(x, y, color) {
+      for (let i = 0; i < 12; i++) {
+        particles.push(new Particle(x, y, color));
+      }
+    }
+
+    // Reinicio posición de la pelota
+    function resetBall(winner) {
+      ball.x = V_WIDTH / 2;
+      ball.y = V_HEIGHT / 2;
+      ball.speed = ball.baseSpeed;
+      
+      // Dirección inicial hacia el que perdió el punto
+      const angle = (Math.random() * 0.6 - 0.3); // Angulo inicial suave
+      const dir = winner === 'player' ? 1 : -1;
+      
+      ball.vx = dir * ball.speed * Math.cos(angle);
+      ball.vy = ball.speed * Math.sin(angle);
+      
+      // Reset error offset de la IA
+      ai.errorOffset = (Math.random() - 0.5) * AI_CONFIG[state.difficulty].errorMargin;
+    }
+
+    // Bucle de actualización lógica
+    function updateGame() {
+      if (!state.isPlaying || state.isPaused || state.isCountingDown) return;
+
+      // 1. Movimiento Jugador
+      if (state.controlMode === 'touch') {
+        player.y += (player.targetY - player.y) * 0.2;
+      } else if (state.controlMode === 'mouse') {
+        if (state.isMouseDown) {
+          player.targetY = state.mouseY - player.h / 2;
+          player.y += (player.targetY - player.y) * 0.25;
+        }
+      }
+      // Limites del Jugador
+      player.y = Math.max(10, Math.min(V_HEIGHT - player.h - 10, player.y));
+
+      // 2. Movimiento IA (Inteligencia Artificial con margen de error)
+      const aiConf = AI_CONFIG[state.difficulty];
+      const aiCenter = ai.y + ai.h / 2;
+      let targetPos = ball.y + ai.errorOffset;
+
+      // Solo reacciona si la pelota va hacia la IA
+      if (ball.vx > 0) {
+        if (Math.abs(aiCenter - targetPos) > 10) {
+          if (aiCenter < targetPos) {
+            ai.y += aiConf.speed;
+          } else {
+            ai.y -= aiConf.speed;
+          }
+        }
+      } else {
+        // Regresar suavemente al centro si la pelota se aleja
+        if (Math.abs(aiCenter - V_HEIGHT / 2) > 20) {
+          ai.y += (V_HEIGHT / 2 - aiCenter) * 0.02;
+        }
+      }
+      // Límites de la IA
+      ai.y = Math.max(10, Math.min(V_HEIGHT - ai.h - 10, ai.y));
+
+      // 3. Movimiento de la pelota
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      // Rebote Superior e Inferior
+      if (ball.y - ball.radius <= 0) {
+        ball.y = ball.radius;
+        ball.vy *= -1;
+        audio.playBounce(true);
+        createImpactParticles(ball.x, ball.y, '#c7ceea');
+      } else if (ball.y + ball.radius >= V_HEIGHT) {
+        ball.y = V_HEIGHT - ball.radius;
+        ball.vy *= -1;
+        audio.playBounce(true);
+        createImpactParticles(ball.x, ball.y, '#c7ceea');
+      }
+
+      // Colisión con Paleta Jugador
+      if (
+        ball.x - ball.radius <= player.x + player.w &&
+        ball.x + ball.radius >= player.x &&
+        ball.y >= player.y &&
+        ball.y <= player.y + player.h &&
+        ball.vx < 0
+      ) {
+        handlePaddleHit(player);
+      }
+
+      // Colisión con Paleta IA
+      if (
+        ball.x + ball.radius >= ai.x &&
+        ball.x - ball.radius <= ai.x + ai.w &&
+        ball.y >= ai.y &&
+        ball.y <= ai.y + ai.h &&
+        ball.vx > 0
+      ) {
+        handlePaddleHit(ai);
+        // Recalcular error de IA para el próximo tiro
+        ai.errorOffset = (Math.random() - 0.5) * aiConf.errorMargin;
+      }
+
+      // 4. Anotación de Puntos
+      if (ball.x - ball.radius < 0) {
+        // Punto para IA
+        state.aiScore++;
+        document.getElementById('score-ai').innerText = state.aiScore;
+        audio.playScore(false);
+        checkGameOver();
+        if (state.isPlaying) resetBall('ai');
+      } else if (ball.x + ball.radius > V_WIDTH) {
+        // Punto para Jugador
+        state.playerScore++;
+        document.getElementById('score-player').innerText = state.playerScore;
+        audio.playScore(true);
+        checkGameOver();
+        if (state.isPlaying) resetBall('player');
+      }
+
+      // 5. Actualizar Partículas
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        if (particles[i].alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+    }
+
+    // Cálculo del rebote con ángulo variable según zona de impacto
+    function handlePaddleHit(paddle) {
+      // Incrementar velocidad gradualmente
+      ball.speed = Math.min(ball.maxSpeed, ball.speed + 0.35);
+
+      // Calcular punto de impacto relativo (-1 en la parte superior, 1 en la inferior)
+      const hitSpot = (ball.y - (paddle.y + paddle.h / 2)) / (paddle.h / 2);
+      
+      // Ángulo máximo de salida: 60 grados (Math.PI / 3)
+      const maxAngle = Math.PI / 3;
+      const angle = hitSpot * maxAngle;
+
+      // Determinar dirección X (si es jugador va a la derecha, si es IA a la izquierda)
+      const dir = (paddle === player) ? 1 : -1;
+
+      ball.vx = dir * ball.speed * Math.cos(angle);
+      ball.vy = ball.speed * Math.sin(angle);
+
+      // Corregir posición para evitar solapamientos
+      if (paddle === player) {
+        ball.x = player.x + player.w + ball.radius;
+      } else {
+        ball.x = ai.x - ball.radius;
+      }
+
+      audio.playBounce(false);
+      createImpactParticles(ball.x, ball.y, paddle.color);
+    }
+
+    // Renderizado en Pantalla
+    function renderGame() {
+      ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+      ctx.save();
+      ctx.scale(scale, scale);
+
+      // Línea divisoria central estilo pastel
+      ctx.strokeStyle = 'rgba(107, 91, 149, 0.15)';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([10, 10]);
+      ctx.beginPath();
+      ctx.moveTo(V_WIDTH / 2, 0);
+      ctx.lineTo(V_WIDTH / 2, V_HEIGHT);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Dibujar Jugador (Bordes redondeados)
+      ctx.fillStyle = player.color;
+      drawRoundedRect(ctx, player.x, player.y, player.w, player.h, 8);
+
+      // Dibujar IA
+      ctx.fillStyle = ai.color;
+      drawRoundedRect(ctx, ai.x, ai.y, ai.w, ai.h, 8);
+
+      // Dibujar Pelota
+      ctx.fillStyle = ball.color;
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Dibujar Partículas
+      particles.forEach(p => p.draw(ctx));
+
+      ctx.restore();
+    }
+
+    // Función auxiliar para dibujar rectángulos redondeados
+    function drawRoundedRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Verificación de Fin de Juego
+    function checkGameOver() {
+      if (state.playerScore >= state.maxScore || state.aiScore >= state.maxScore) {
+        state.isPlaying = false;
+        const isWin = state.playerScore >= state.maxScore;
+        
+        const title = document.getElementById('gameover-title');
+        const msg = document.getElementById('gameover-msg');
+        
+        if (isWin) {
+          title.innerText = "¡VICTORIA!";
+          title.style.color = "#ff9aa2";
+          msg.innerText = "¡Has demostrado ser un maestro del Ping Pong!";
+          audio.playWin();
+        } else {
+          title.innerText = "DERROTA";
+          title.style.color = "#6b5b95";
+          msg.innerText = "La IA ha ganado esta vez. ¡Inténtalo de nuevo!";
+        }
+
+        document.getElementById('gameover-overlay').classList.remove('hidden');
+      }
+    }
+
+    /* ==========================================================================
+       6. MEDIDOR DE FPS Y BUCLE PRINCIPAL (requestAnimationFrame)
+       ========================================================================== */
+    let lastTime = performance.now();
+    let frameCount = 0;
+    let fps = 60;
+    const fpsElem = document.getElementById('fps-counter');
+
+    function gameLoop(now) {
+      // Cálculo de FPS
+      frameCount++;
+      if (now - lastTime >= 1000) {
+        fps = frameCount;
+        fpsElem.innerText = `FPS: ${fps}`;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      // Animación de Fondo siempre activa
+      renderBg();
+
+      // Lógica y Render del Juego
+      updateGame();
+      renderGame();
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    /* ==========================================================================
+       7. CONTROL DE FLUJO Y CUENTA REGRESIVA
+       ========================================================================== */
+    function startCountdown(callback) {
+      state.isCountingDown = true;
+      const countElem = document.getElementById('countdown');
+      countElem.classList.remove('hidden');
+      let count = 3;
+      countElem.innerText = count;
+
+      const timer = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countElem.innerText = count;
+        } else {
+          clearInterval(timer);
+          countElem.classList.add('hidden');
+          state.isCountingDown = false;
+          if (callback) callback();
+        }
+      }, 800);
+    }
+
+    function startGame() {
+      audio.init();
+      state.playerScore = 0;
+      state.aiScore = 0;
+      document.getElementById('score-player').innerText = '0';
+      document.getElementById('score-ai').innerText = '0';
+      
+      document.getElementById('menu-overlay').classList.add('hidden');
+      document.getElementById('pause-overlay').classList.add('hidden');
+      document.getElementById('gameover-overlay').classList.add('hidden');
+      
+      resetBall('player');
+      state.isPlaying = true;
+      state.isPaused = false;
+
+      startCountdown();
+    }
+
+    /* ==========================================================================
+       8. GESTIÓN DE EVENTOS DE ENTRADA (Móvil y PC)
+       ========================================================================== */
+    function setupEventListeners() {
+      window.addEventListener('resize', () => {
+        resizeBg();
+        resizeGameCanvas();
+      });
+
+      // Manejo de Interacción Táctil y Mouse en Canvas
+      const container = document.getElementById('game-container');
+
+      function updatePointerPos(clientY) {
+        const rect = gameCanvas.getBoundingClientRect();
+        const relativeY = (clientY - rect.top) / scale;
+        
+        if (state.controlMode === 'touch') {
+          player.targetY = relativeY - player.h / 2;
+        } else {
+          state.mouseY = relativeY;
+        }
+      }
+
+      // Eventos de Mouse
+      container.addEventListener('mousedown', (e) => {
+        state.isMouseDown = true;
+        updatePointerPos(e.clientY);
+      });
+
+      window.addEventListener('mouseup', () => {
+        state.isMouseDown = false;
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (state.controlMode === 'touch' || state.isMouseDown) {
+          updatePointerPos(e.clientY);
+        }
+      });
+
+      // Eventos Táctiles (Mobile)
+      container.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 0) {
+          state.isMouseDown = true;
+          updatePointerPos(e.touches[0].clientY);
+        }
+      }, { passive: true });
+
+      container.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+          updatePointerPos(e.touches[0].clientY);
+        }
+      }, { passive: true });
+
+      container.addEventListener('touchend', () => {
+        state.isMouseDown = false;
+      });
+
+      // Botones de Configuración del Menú
+      document.getElementById('ctrl-touch').addEventListener('click', function() {
+        state.controlMode = 'touch';
+        this.classList.add('active');
+        document.getElementById('ctrl-mouse').classList.remove('active');
+      });
+
+      document.getElementById('ctrl-mouse').addEventListener('click', function() {
+        state.controlMode = 'mouse';
+        this.classList.add('active');
+        document.getElementById('ctrl-touch').classList.remove('active');
+      });
+
+      // Selección Dificultad
+      const diffBtns = {
+        'diff-easy': 'easy',
+        'diff-normal': 'normal',
+        'diff-hard': 'hard'
+      };
+
+      Object.keys(diffBtns).forEach(id => {
+        document.getElementById(id).addEventListener('click', function() {
+          Object.keys(diffBtns).forEach(bId => document.getElementById(bId).classList.remove('active'));
+          this.classList.add('active');
+          state.difficulty = diffBtns[id];
+        });
+      });
+
+      // Botones de Flujo de Juego
+      document.getElementById('btn-start').addEventListener('click', startGame);
+
+      document.getElementById('btn-pause').addEventListener('click', () => {
+        if (!state.isPlaying || state.isCountingDown) return;
+        state.isPaused = true;
+        document.getElementById('pause-overlay').classList.remove('hidden');
+      });
+
+      document.getElementById('btn-resume').addEventListener('click', () => {
+        document.getElementById('pause-overlay').classList.add('hidden');
+        startCountdown(() => {
+          state.isPaused = false;
+        });
+      });
+
+      document.getElementById('btn-restart-pause').addEventListener('click', startGame);
+      
+      document.getElementById('btn-menu-pause').addEventListener('click', () => {
+        state.isPlaying = false;
+        state.isPaused = false;
+        document.getElementById('pause-overlay').classList.add('hidden');
+        document.getElementById('menu-overlay').classList.remove('hidden');
+      });
+
+      document.getElementById('btn-restart').addEventListener('click', startGame);
+
+      document.getElementById('btn-menu').addEventListener('click', () => {
+        document.getElementById('gameover-overlay').classList.add('hidden');
+        document.getElementById('menu-overlay').classList.remove('hidden');
+      });
+    }
+
+    /* ==========================================================================
+       9. INICIALIZACIÓN
+       ========================================================================== */
+    window.onload = () => {
+      initBg();
+      resizeGameCanvas();
+      setupEventListeners();
+      requestAnimationFrame(gameLoop);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Interactivo - MVC</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#1d3557,#457b9d,#a8dadc);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.contenedor{
+    background:white;
+    width:100%;
+    max-width:850px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+    overflow:hidden;
+}
+
+header{
+    background:#1d3557;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+header h1{
+    margin-bottom:10px;
+}
+
+header p{
+    font-size:15px;
+}
+
+#quiz{
+    padding:30px;
+}
+
+#pregunta{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:20px;
+    color:#1d3557;
+}
+
+.opcion{
+    display:block;
+    width:100%;
+    margin:12px 0;
+    padding:15px;
+    border-radius:10px;
+    border:2px solid #457b9d;
+    background:white;
+    cursor:pointer;
+    transition:.3s;
+    font-size:16px;
+}
+
+.opcion:hover{
+    background:#457b9d;
+    color:white;
+}
+
+.correcta{
+    background:#2ecc71!important;
+    color:white;
+}
+
+.incorrecta{
+    background:#e74c3c!important;
+    color:white;
+}
+
+#retro{
+    margin-top:20px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+button{
+    margin-top:25px;
+    background:#1d3557;
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:17px;
+}
+
+button:hover{
+    background:#457b9d;
+}
+
+footer{
+    background:#f1f1f1;
+    padding:20px;
+    text-align:center;
+}
+
+footer h3{
+    color:#1d3557;
+}
+
+footer p{
+    margin-top:8px;
+}
+
+@media(max-width:700px){
+
+#pregunta{
+font-size:19px;
+}
+
+.opcion{
+font-size:15px;
+padding:12px;
+}
+
+header h1{
+font-size:24px;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="contenedor">
+
+<header>
+<h1>QUIZ INTERACTIVO</h1>
+<p>Conceptos Básicos del Patrón MVC (Modelo - Vista - Controlador)</p>
+</header>
+
+<section id="quiz">
+
+<h2 id="pregunta"></h2>
+
+<div id="opciones"></div>
+
+<p id="retro"></p>
+
+<button id="siguiente" style="display:none;">Siguiente</button>
+
+</section>
+
+<footer>
+<h3>Integrantes del Grupo</h3>
+<p><strong>Gabriela</strong></p>
+<p><strong>Antonio</strong></p>
+</footer>
+
+</div>
+
+<script>
+
+const preguntas=[
+
+{
+pregunta:"1. En el patrón MVC, ¿cuál componente se encarga de almacenar y gestionar los datos del sistema?",
+opciones:[
+"Vista",
+"Modelo",
+"Controlador",
+"Servidor"
+],
+respuesta:1
+},
+
+{
+pregunta:"2. ¿Cuál es la función principal de la Vista en MVC?",
+opciones:[
+"Guardar información en la base de datos",
+"Mostrar la información al usuario",
+"Controlar el hardware",
+"Crear usuarios automáticamente"
+],
+respuesta:1
+},
+
+{
+pregunta:"3. El Controlador en MVC tiene como función:",
+opciones:[
+"Administrar la interacción entre Modelo y Vista",
+"Diseñar la interfaz gráfica",
+"Almacenar archivos",
+"Eliminar bases de datos"
+],
+respuesta:0
+},
+
+{
+pregunta:"4. Si un usuario hace clic en un botón de una aplicación MVC, ¿quién recibe inicialmente esa acción?",
+opciones:[
+"Modelo",
+"Vista",
+"Controlador",
+"Base de Datos"
+],
+respuesta:2
+},
+
+{
+pregunta:"5. Una ventaja del patrón MVC es:",
+opciones:[
+"Todo el código queda mezclado",
+"Facilita el mantenimiento y reutilización del código",
+"Elimina la necesidad de programar",
+"Solo funciona en aplicaciones móviles"
+],
+respuesta:1
+},
+
+{
+pregunta:"6. El Modelo puede comunicarse directamente con:",
+opciones:[
+"La base de datos",
+"El teclado",
+"El monitor",
+"La impresora"
+],
+respuesta:0
+},
+
+{
+pregunta:"7. En MVC, la Vista debe:",
+opciones:[
+"Modificar directamente la base de datos",
+"Presentar la información recibida del Modelo",
+"Ejecutar algoritmos complejos",
+"Controlar la red"
+],
+respuesta:1
+},
+
+{
+pregunta:"8. ¿Qué ocurre cuando el Modelo cambia su información?",
+opciones:[
+"La Vista puede actualizar los datos mostrados",
+"Se apaga el sistema",
+"Se elimina el Controlador",
+"Se reinicia el computador"
+],
+respuesta:0
+},
+
+{
+pregunta:"9. MVC ayuda principalmente a:",
+opciones:[
+"Separar responsabilidades del software",
+"Aumentar el tamaño del programa",
+"Eliminar la interfaz gráfica",
+"Reducir la memoria RAM"
+],
+respuesta:0
+},
+
+{
+pregunta:"10. ¿Qué significa la sigla MVC?",
+opciones:[
+"Modelo Vista Controlador",
+"Modelo Virtual Computacional",
+"Memoria Variable Central",
+"Motor Visual de Control"
+],
+respuesta:0
+}
+
+];
+
+let indice=0;
+let puntaje=0;
+
+const pregunta=document.getElementById("pregunta");
+const opciones=document.getElementById("opciones");
+const retro=document.getElementById("retro");
+const siguiente=document.getElementById("siguiente");
+
+function cargarPregunta(){
+
+retro.innerHTML="";
+siguiente.style.display="none";
+
+let actual=preguntas[indice];
+
+pregunta.innerHTML=actual.pregunta;
+
+opciones.innerHTML="";
+
+actual.opciones.forEach((texto,i)=>{
+
+let boton=document.createElement("button");
+
+boton.className="opcion";
+
+boton.innerHTML=texto;
+
+boton.onclick=()=>responder(i);
+
+opciones.appendChild(boton);
+
+});
+
+}
+
+function responder(seleccion){
+
+let botones=document.querySelectorAll(".opcion");
+
+botones.forEach(btn=>btn.disabled=true);
+
+let correcta=preguntas[indice].respuesta;
+
+if(seleccion===correcta){
+
+botones[seleccion].classList.add("correcta");
+
+retro.innerHTML="✅ ¡Respuesta Correcta!";
+
+puntaje++;
+
+}else{
+
+botones[seleccion].classList.add("incorrecta");
+
+botones[correcta].classList.add("correcta");
+
+retro.innerHTML="❌ Respuesta Incorrecta.";
+
+}
+
+siguiente.style.display="inline-block";
+
+}
+
+siguiente.onclick=()=>{
+
+indice++;
+
+if(indice<preguntas.length){
+
+cargarPregunta();
+
+}else{
+
+mostrarResultado();
+
+}
+
+}
+
+function mostrarResultado(){
+
+let mensaje="";
+
+let porcentaje=(puntaje/preguntas.length)*100;
+
+if(porcentaje>=80){
+
+mensaje="🏆 Excelente dominio del tema.";
+
+}else if(porcentaje>=60){
+
+mensaje="👍 Buen desempeño, pero puedes mejorar.";
+
+}else{
+
+mensaje="📚 Debes reforzar los conceptos de MVC.";
+
+}
+
+document.getElementById("quiz").innerHTML=`
+
+<h2 style="text-align:center;color:#1d3557;">
+Quiz Finalizado
+</h2>
+
+<h1 style="text-align:center;margin:20px;">
+${puntaje} / ${preguntas.length}
+</h1>
+
+<h2 style="text-align:center;">
+${mensaje}
+</h2>
+
+<div style="text-align:center;">
+<button onclick="location.reload()">
+Intentar nuevamente
+</button>
+</div>
+
+`;
+
+}
+
+cargarPregunta();
+
+</script>
+
+</body>
+</html>

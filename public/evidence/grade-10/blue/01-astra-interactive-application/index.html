@@ -1,0 +1,3359 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ASTRA — El Jardín de las Estrellas</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#070610;
+    font-family:"Courier New",monospace;
+}
+
+body{
+    color:white;
+}
+
+/* =====================================================
+   CONTENEDOR PRINCIPAL
+===================================================== */
+
+#gameShell{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #2a1c46,
+            #080711 70%
+        );
+}
+
+#gameCanvas{
+    width:min(96vw,1100px);
+    height:min(92vh,690px);
+
+    border:4px solid #fff;
+
+    background:#111;
+
+    image-rendering:pixelated;
+    image-rendering:crisp-edges;
+
+    box-shadow:
+        0 0 0 5px #17121e,
+        0 0 45px rgba(255,79,145,.25);
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+#intro{
+    position:fixed;
+    inset:0;
+
+    z-index:1000;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#05050b;
+
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
+}
+
+#intro.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+#introCanvas{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+}
+
+.introContent{
+    position:relative;
+    z-index:5;
+
+    width:min(850px,90vw);
+
+    text-align:center;
+}
+
+#introText{
+    min-height:160px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    font-size:
+        clamp(15px,2vw,24px);
+
+    line-height:1.8;
+
+    color:#fff8ed;
+
+    text-shadow:
+        3px 3px #000,
+        0 0 15px rgba(255,255,255,.2);
+}
+
+#introTitle{
+    display:none;
+}
+
+#introTitle h1{
+    margin:0;
+
+    font-family:Georgia,serif;
+
+    font-size:
+        clamp(55px,10vw,115px);
+
+    color:#ff4f91;
+
+    text-shadow:
+        5px 5px #291436,
+        0 0 35px #ff4f91;
+}
+
+#introTitle p{
+    margin-top:5px;
+
+    color:#73dfff;
+
+    letter-spacing:5px;
+}
+
+#startButton{
+    display:none;
+
+    margin-top:30px;
+
+    padding:15px 30px;
+
+    background:#ff4f91;
+
+    color:white;
+
+    border:3px solid white;
+
+    font-family:inherit;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+        6px 6px #000;
+
+    transition:.15s;
+}
+
+#startButton:hover{
+    transform:translate(3px,3px);
+
+    box-shadow:
+        3px 3px #000;
+
+    background:#ff76a8;
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+#hud{
+    position:fixed;
+
+    top:15px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:min(1060px,92vw);
+
+    z-index:50;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    pointer-events:none;
+}
+
+.hudBox{
+    padding:9px 14px;
+
+    background:
+        rgba(10,8,18,.9);
+
+    border:2px solid #ff4f91;
+
+    box-shadow:
+        4px 4px #000;
+
+    font-size:13px;
+
+    font-weight:bold;
+}
+
+#regionHud{
+    color:#73dfff;
+}
+
+#starHud{
+    color:#ffd65a;
+}
+
+
+/* =====================================================
+   DIALOGO
+===================================================== */
+
+#dialogue{
+    position:fixed;
+
+    left:50%;
+    bottom:25px;
+
+    transform:
+        translateX(-50%)
+        translateY(30px);
+
+    width:min(850px,90vw);
+
+    padding:20px;
+
+    z-index:150;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(14,10,25,.98),
+            rgba(40,16,50,.98)
+        );
+
+    border:3px solid white;
+
+    box-shadow:
+        8px 8px #000,
+        0 0 30px rgba(255,79,145,.3);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.2s;
+}
+
+#dialogue.active{
+    opacity:1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+
+    pointer-events:auto;
+}
+
+#dialogueName{
+    color:#ff4f91;
+
+    font-weight:bold;
+
+    font-size:17px;
+
+    margin-bottom:10px;
+}
+
+#dialogueText{
+    line-height:1.7;
+
+    min-height:50px;
+}
+
+#dialogueHint{
+    margin-top:12px;
+
+    color:#999;
+
+    font-size:11px;
+}
+
+
+/* =====================================================
+   COMBATE
+===================================================== */
+
+#battle{
+    position:fixed;
+
+    inset:0;
+
+    z-index:300;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(5,4,10,.96);
+}
+
+#battle.active{
+    display:flex;
+}
+
+.battlePanel{
+    width:min(850px,92vw);
+
+    padding:25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #171125,
+            #35153c
+        );
+
+    border:4px solid white;
+
+    box-shadow:
+        10px 10px #000,
+        0 0 50px rgba(255,79,145,.3);
+}
+
+.battleTitle{
+    text-align:center;
+
+    color:#ff4f91;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+}
+
+.battleArena{
+    position:relative;
+
+    height:300px;
+
+    overflow:hidden;
+
+    border:3px solid #6d557b;
+
+    background:
+        linear-gradient(
+            #16162f 0 55%,
+            #352842 55% 100%
+        );
+}
+
+.battleEnemy{
+    position:absolute;
+
+    right:15%;
+    top:20%;
+
+    font-size:90px;
+
+    filter:
+        drop-shadow(
+            7px 8px #000
+        );
+
+    animation:
+        enemyFloat 1.6s ease-in-out infinite;
+}
+
+@keyframes enemyFloat{
+
+    0%,
+    100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+}
+
+.battleCat{
+    position:absolute;
+
+    left:15%;
+    bottom:17%;
+
+    font-size:70px;
+
+    filter:
+        drop-shadow(
+            5px 6px #000
+        );
+}
+
+.hpLabel{
+    margin-top:12px;
+
+    font-size:12px;
+}
+
+.hp{
+    height:18px;
+
+    margin-top:4px;
+
+    background:#250918;
+
+    border:2px solid white;
+}
+
+.hpFill{
+    width:100%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff315f,
+            #ffd04d
+        );
+
+    transition:.3s;
+}
+
+#battleInfo{
+    min-height:25px;
+
+    margin-top:12px;
+
+    color:#ddd;
+
+    font-size:13px;
+}
+
+.battleButtons{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:9px;
+
+    margin-top:18px;
+}
+
+.battleButtons button{
+    padding:13px 7px;
+
+    background:#241935;
+
+    color:white;
+
+    border:2px solid #73dfff;
+
+    font-family:inherit;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.battleButtons button:hover{
+    background:#ff4f91;
+
+    border-color:white;
+}
+
+.battleButtons button:active{
+    transform:scale(.95);
+}
+
+
+/* =====================================================
+   CONTROLES MÓVILES
+===================================================== */
+
+#mobileControls{
+    position:fixed;
+
+    bottom:20px;
+    left:20px;
+
+    z-index:80;
+
+    display:none;
+}
+
+.dpad{
+    display:grid;
+
+    grid-template-columns:
+        52px 52px 52px;
+
+    grid-template-rows:
+        52px 52px 52px;
+}
+
+.dpad button{
+    background:
+        rgba(10,7,20,.8);
+
+    color:white;
+
+    border:2px solid white;
+
+    font-size:20px;
+}
+
+.dpad .up{
+    grid-column:2;
+}
+
+.dpad .left{
+    grid-column:1;
+    grid-row:2;
+}
+
+.dpad .down{
+    grid-column:2;
+    grid-row:3;
+}
+
+.dpad .right{
+    grid-column:3;
+    grid-row:2;
+}
+
+#actionMobile{
+    position:fixed;
+
+    bottom:40px;
+    right:25px;
+
+    z-index:80;
+
+    display:none;
+
+    width:70px;
+    height:70px;
+
+    border-radius:50%;
+
+    background:#ff4f91;
+
+    color:white;
+
+    border:3px solid white;
+
+    font-family:inherit;
+
+    font-weight:bold;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:700px){
+
+    #mobileControls,
+    #actionMobile{
+        display:block;
+    }
+
+    .hudBox{
+        padding:7px;
+
+        font-size:10px;
+    }
+
+    .battleButtons{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     INTRO
+===================================================== -->
+
+<div id="intro">
+
+    <canvas id="introCanvas"></canvas>
+
+    <div class="introContent">
+
+        <div id="introText"></div>
+
+        <div id="introTitle">
+
+            <h1>ASTRA</h1>
+
+            <p>
+                EL JARDÍN DE LAS ESTRELLAS
+            </p>
+
+        </div>
+
+        <button
+            id="startButton"
+            type="button"
+            onclick="startGame()"
+        >
+            COMENZAR VIAJE
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     HUD
+===================================================== -->
+
+<div id="hud">
+
+    <div class="hudBox">
+        🐈 ASTRA
+    </div>
+
+    <div
+        id="regionHud"
+        class="hudBox"
+    >
+        REGIÓN: CASA
+    </div>
+
+    <div
+        id="starHud"
+        class="hudBox"
+    >
+        ⭐ 0 / 5
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JUEGO
+===================================================== -->
+
+<div id="gameShell">
+
+    <canvas
+        id="gameCanvas"
+        width="960"
+        height="600"
+    ></canvas>
+
+</div>
+
+
+<!-- =====================================================
+     DIALOGO
+===================================================== -->
+
+<div id="dialogue">
+
+    <div id="dialogueName">
+        ...
+    </div>
+
+    <div id="dialogueText">
+        ...
+    </div>
+
+    <div id="dialogueHint">
+        [E] [ENTER] [ESPACIO] continuar
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     COMBATE
+===================================================== -->
+
+<div id="battle">
+
+    <div class="battlePanel">
+
+        <div
+            id="battleTitle"
+            class="battleTitle"
+        >
+            REGENTE
+        </div>
+
+        <div class="battleArena">
+
+            <div
+                id="battleEnemy"
+                class="battleEnemy"
+            >
+                🌳
+            </div>
+
+            <div class="battleCat">
+                🐈
+            </div>
+
+        </div>
+
+        <div class="hpLabel">
+            ENERGÍA DEL REGENTE
+        </div>
+
+        <div class="hp">
+
+            <div
+                id="enemyHP"
+                class="hpFill"
+            ></div>
+
+        </div>
+
+        <div id="battleInfo">
+            Elige una acción.
+        </div>
+
+        <div class="battleButtons">
+
+            <button
+                type="button"
+                onclick="battleAction('attack')"
+            >
+                1 · ATACAR
+            </button>
+
+            <button
+                type="button"
+                onclick="battleAction('star')"
+            >
+                2 · ESTRELLA
+            </button>
+
+            <button
+                type="button"
+                onclick="battleAction('defend')"
+            >
+                3 · DEFENDER
+            </button>
+
+            <button
+                type="button"
+                onclick="battleAction('run')"
+            >
+                4 · HUIR
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTROLES MÓVILES
+===================================================== -->
+
+<div id="mobileControls">
+
+    <div class="dpad">
+
+        <button
+            class="up"
+            type="button"
+            onclick="mobileMove(0,-1)"
+        >
+            ▲
+        </button>
+
+        <button
+            class="left"
+            type="button"
+            onclick="mobileMove(-1,0)"
+        >
+            ◀
+        </button>
+
+        <button
+            class="down"
+            type="button"
+            onclick="mobileMove(0,1)"
+        >
+            ▼
+        </button>
+
+        <button
+            class="right"
+            type="button"
+            onclick="mobileMove(1,0)"
+        >
+            ▶
+        </button>
+
+    </div>
+
+</div>
+
+<button
+    id="actionMobile"
+    type="button"
+    onclick="interact()"
+>
+    E
+</button>
+
+
+<script>
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById("gameCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+ctx.imageSmoothingEnabled = false;
+
+
+/* =====================================================
+   INTRO CANVAS
+===================================================== */
+
+const introCanvas =
+    document.getElementById("introCanvas");
+
+const introCtx =
+    introCanvas.getContext("2d");
+
+
+function resizeIntro(){
+
+    introCanvas.width =
+        window.innerWidth;
+
+    introCanvas.height =
+        window.innerHeight;
+
+}
+
+resizeIntro();
+
+window.addEventListener(
+    "resize",
+    resizeIntro
+);
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+const introLines = [
+
+    "Hace mucho, mucho tiempo...",
+
+    "cuando el cielo todavía estaba lleno de estrellas,",
+
+    "cada estrella contenía un sueño.",
+
+    "Una de ellas soñó con encontrar un hogar.",
+
+    "Y cayó sobre un pequeño planeta.",
+
+    "Donde tocó la tierra nació un jardín.",
+
+    "Y en aquel jardín nació un pequeño gato.",
+
+    "Nadie sabía de dónde había venido.",
+
+    "Ni siquiera él.",
+
+    "Pero una noche, una estrella cayó frente a su ventana.",
+
+    "—¡Despierta!",
+
+    "—¡Creo que nos hemos perdido!",
+
+    "Y desde aquella noche...",
+
+    "el cielo comenzó a desaparecer."
+
+];
+
+
+let introIndex=0;
+
+
+function playIntro(){
+
+    const text=
+        document.getElementById(
+            "introText"
+        );
+
+    if(introIndex>=introLines.length){
+
+        text.style.display="none";
+
+        document
+            .getElementById("introTitle")
+            .style.display="block";
+
+        document
+            .getElementById("startButton")
+            .style.display="inline-block";
+
+        return;
+
+    }
+
+    text.textContent=
+        introLines[introIndex];
+
+    introIndex++;
+
+    setTimeout(
+        playIntro,
+        2200
+    );
+
+}
+
+playIntro();
+
+
+/* =====================================================
+   ESTRELLAS DEL INTRO
+===================================================== */
+
+const introStars=[];
+
+
+for(let i=0;i<120;i++){
+
+    introStars.push({
+
+        x:Math.random(),
+
+        y:Math.random(),
+
+        size:
+            Math.random()*3+1,
+
+        speed:
+            Math.random()*.3+.1
+
+    });
+
+}
+
+
+function drawIntro(){
+
+    introCtx.fillStyle="#05050b";
+
+    introCtx.fillRect(
+        0,
+        0,
+        introCanvas.width,
+        introCanvas.height
+    );
+
+
+    for(const star of introStars){
+
+        star.y+=
+            star.speed*.0005;
+
+        if(star.y>1){
+            star.y=0;
+        }
+
+        introCtx.fillStyle=
+            "rgba(255,255,255,.8)";
+
+        introCtx.fillRect(
+
+            star.x*
+            introCanvas.width,
+
+            star.y*
+            introCanvas.height,
+
+            star.size,
+
+            star.size
+
+        );
+
+    }
+
+
+    requestAnimationFrame(
+        drawIntro
+    );
+
+}
+
+drawIntro();
+
+
+/* =====================================================
+   ESTADO DEL JUEGO
+===================================================== */
+
+let gameStarted=false;
+
+let battleActive=false;
+
+let dialogueOpen=false;
+
+let currentRegion=0;
+
+let stars=0;
+
+let gameLevel=1;
+
+let defeatedRegents=[];
+
+let finalBattle=false;
+
+
+/* =====================================================
+   REGIONES
+===================================================== */
+
+const regions=[
+
+    {
+        name:"CASA",
+
+        sky:"#8bd4e8",
+
+        ground:"#88b878",
+
+        description:
+            "El pequeño hogar donde comenzó todo."
+    },
+
+    {
+        name:"PRADERAS DE LUNA",
+
+        sky:"#263957",
+
+        ground:"#506f8d",
+
+        regent:
+            "AURELIA, REINA DE LAS RAÍCES",
+
+        enemy:"🌳"
+    },
+
+    {
+        name:"BOSQUE DE NIEBLA",
+
+        sky:"#142b2a",
+
+        ground:"#294f3c",
+
+        regent:
+            "NIM, GUARDIÁN DEL SUEÑO",
+
+        enemy:"🍄"
+    },
+
+    {
+        name:"MAR DE CRISTAL",
+
+        sky:"#123d58",
+
+        ground:"#277f91",
+
+        regent:
+            "MAREA, VOZ DEL OCÉANO",
+
+        enemy:"🐚"
+    },
+
+    {
+        name:"VALLE DE CENIZA",
+
+        sky:"#311b25",
+
+        ground:"#714538",
+
+        regent:
+            "VARKA, REINA DE CENIZA",
+
+        enemy:"🔥"
+    },
+
+    {
+        name:"CIUDAD VACÍA",
+
+        sky:"#171421",
+
+        ground:"#48404f",
+
+        regent:
+            "EL REY SIN NOMBRE",
+
+        enemy:"👁️"
+    },
+
+    {
+        name:"TIERRA NEGRA",
+
+        sky:"#08080d",
+
+        ground:"#211a28"
+    }
+
+];
+
+
+/* =====================================================
+   JUGADOR
+===================================================== */
+
+const player={
+
+    x:120,
+
+    y:330,
+
+    speed:3.2,
+
+    direction:"down",
+
+    moving:false,
+
+    frame:0
+
+};
+
+
+/* =====================================================
+   OBJETOS
+===================================================== */
+
+let obstacles=[];
+
+let plants=[];
+
+let npcs=[];
+
+let enemies=[];
+
+let regionStar=null;
+
+let exitPortal=null;
+
+let particles=[];
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+const keys={};
+
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        keys[
+            e.key.toLowerCase()
+        ]=true;
+
+
+        const key=
+            e.key.toLowerCase();
+
+
+        if(
+            key==="arrowup" ||
+            key==="arrowdown" ||
+            key==="arrowleft" ||
+            key==="arrowright" ||
+            key===" "
+        ){
+
+            e.preventDefault();
+
+        }
+
+
+        /* combate */
+
+        if(battleActive){
+
+            if(key==="1"){
+                battleAction("attack");
+            }
+
+            if(key==="2"){
+                battleAction("star");
+            }
+
+            if(key==="3"){
+                battleAction("defend");
+            }
+
+            if(key==="4"){
+                battleAction("run");
+            }
+
+            return;
+
+        }
+
+
+        /* dialogo */
+
+        if(dialogueOpen){
+
+            if(
+                key==="e" ||
+                key==="enter" ||
+                key===" "
+            ){
+
+                closeDialogue();
+
+            }
+
+            return;
+
+        }
+
+
+        if(key==="e"){
+
+            interact();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    function(e){
+
+        keys[
+            e.key.toLowerCase()
+        ]=false;
+
+    }
+);
+
+
+/* =====================================================
+   GENERAR REGIÓN
+===================================================== */
+
+function generateRegion(){
+
+    obstacles=[];
+    plants=[];
+    npcs=[];
+    enemies=[];
+
+    player.x=120;
+    player.y=330;
+
+
+    /* obstáculos */
+
+    for(let i=0;i<18;i++){
+
+        obstacles.push({
+
+            x:
+                160+
+                Math.random()*700,
+
+            y:
+                100+
+                Math.random()*300,
+
+            w:
+                25+
+                Math.random()*35,
+
+            h:
+                25+
+                Math.random()*35
+
+        });
+
+    }
+
+
+    /* Casa */
+
+    if(currentRegion===0){
+
+        for(let i=0;i<8;i++){
+
+            plants.push({
+
+                x:
+                    180+
+                    i*75,
+
+                y:430,
+
+                water:0,
+
+                grown:false
+
+            });
+
+        }
+
+
+        npcs.push({
+
+            x:350,
+
+            y:270,
+
+            icon:"⭐",
+
+            name:"LUMI",
+
+            text:
+                "¡Hola! Soy Lumi, una estrella perdida. Ven conmigo. Te enseñaré a moverte y a luchar."
+
+        });
+
+
+        npcs.push({
+
+            x:650,
+
+            y:420,
+
+            icon:"👵",
+
+            name:"ABUELA NARA",
+
+            text:
+                "Cuida las plantas, pequeño gato. Algunas recuerdan cosas que nosotros hemos olvidado."
+
+        });
+
+    }
+
+
+    /* Regente */
+
+    if(regions[currentRegion].regent){
+
+        npcs.push({
+
+            x:720,
+
+            y:270,
+
+            icon:
+                regions[currentRegion].enemy,
+
+            name:
+                regions[currentRegion].regent,
+
+            regent:true,
+
+            defeated:
+                defeatedRegents.includes(
+                    currentRegion
+                )
+
+        });
+
+    }
+
+
+    /* estrella */
+
+    if(
+        currentRegion>0 &&
+        !defeatedRegents.includes(
+            currentRegion
+        )
+    ){
+
+        regionStar={
+
+            x:500,
+
+            y:170,
+
+            collected:false
+
+        };
+
+    }
+
+
+    /* portal */
+
+    exitPortal={
+
+        x:870,
+
+        y:300
+
+    };
+
+
+    /* enemigos */
+
+    if(currentRegion>0){
+
+        for(let i=0;i<5;i++){
+
+            enemies.push({
+
+                x:
+                    250+
+                    Math.random()*500,
+
+                y:
+                    150+
+                    Math.random()*280,
+
+                icon:
+                    currentRegion>=5
+                    ?"👁️"
+                    :"🟣",
+
+                alive:true
+
+            });
+
+        }
+
+    }
+
+
+    updateHUD();
+
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+function updateHUD(){
+
+    document
+        .getElementById("regionHud")
+        .textContent=
+        "REGIÓN: "+
+        regions[currentRegion].name;
+
+
+    document
+        .getElementById("starHud")
+        .textContent=
+        "⭐ "+
+        stars+
+        " / 5";
+
+}
+
+
+/* =====================================================
+   MOVIMIENTO
+===================================================== */
+
+function updatePlayer(){
+
+    if(
+        !gameStarted ||
+        dialogueOpen ||
+        battleActive
+    ){
+
+        return;
+
+    }
+
+
+    let dx=0;
+
+    let dy=0;
+
+
+    if(
+        keys["w"] ||
+        keys["arrowup"]
+    ){
+
+        dy=-1;
+
+        player.direction="up";
+
+    }
+
+
+    if(
+        keys["s"] ||
+        keys["arrowdown"]
+    ){
+
+        dy=1;
+
+        player.direction="down";
+
+    }
+
+
+    if(
+        keys["a"] ||
+        keys["arrowleft"]
+    ){
+
+        dx=-1;
+
+        player.direction="left";
+
+    }
+
+
+    if(
+        keys["d"] ||
+        keys["arrowright"]
+    ){
+
+        dx=1;
+
+        player.direction="right";
+
+    }
+
+
+    player.moving=
+        dx!==0 ||
+        dy!==0;
+
+
+    if(!player.moving){
+
+        return;
+
+    }
+
+
+    const length=
+        Math.hypot(dx,dy);
+
+
+    dx/=length;
+    dy/=length;
+
+
+    const nextX=
+        player.x+
+        dx*
+        player.speed;
+
+
+    const nextY=
+        player.y+
+        dy*
+        player.speed;
+
+
+    if(
+        nextX>25 &&
+        nextX<canvas.width-25 &&
+        !collides(
+            nextX,
+            player.y
+        )
+    ){
+
+        player.x=nextX;
+
+    }
+
+
+    if(
+        nextY>70 &&
+        nextY<canvas.height-45 &&
+        !collides(
+            player.x,
+            nextY
+        )
+    ){
+
+        player.y=nextY;
+
+    }
+
+
+    player.frame+=.2;
+
+}
+
+
+function collides(x,y){
+
+    for(const obstacle of obstacles){
+
+        if(
+
+            x>obstacle.x-18 &&
+
+            x<
+                obstacle.x+
+                obstacle.w+
+                18 &&
+
+            y>obstacle.y-18 &&
+
+            y<
+                obstacle.y+
+                obstacle.h+
+                18
+
+        ){
+
+            return true;
+
+        }
+
+    }
+
+    return false;
+
+}
+
+
+/* =====================================================
+   INTERACTUAR
+===================================================== */
+
+function interact(){
+
+    if(
+        battleActive ||
+        !gameStarted
+    ){
+
+        return;
+
+    }
+
+
+    /* NPC */
+
+    for(const npc of npcs){
+
+        const distance=
+            Math.hypot(
+                player.x-npc.x,
+                player.y-npc.y
+            );
+
+
+        if(distance<70){
+
+            if(npc.regent){
+
+                if(
+                    !defeatedRegents.includes(
+                        currentRegion
+                    )
+                ){
+
+                    startBattle();
+
+                }else{
+
+                    showDialogue(
+                        npc.name,
+                        "Ya has superado esta prueba. El camino continúa."
+                    );
+
+                }
+
+                return;
+
+            }
+
+
+            showDialogue(
+                npc.name,
+                npc.text
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* plantas */
+
+    for(const plant of plants){
+
+        const distance=
+            Math.hypot(
+                player.x-plant.x,
+                player.y-plant.y
+            );
+
+
+        if(distance<55){
+
+            plant.water++;
+
+
+            if(
+                plant.water>=3 &&
+                !plant.grown
+            ){
+
+                plant.grown=true;
+
+                showDialogue(
+                    "HUERTO",
+                    "¡La planta floreció! Por un instante viste una pequeña memoria dentro de sus pétalos."
+                );
+
+            }else{
+
+                showDialogue(
+                    "HUERTO",
+                    "Has cuidado la planta. Necesita "+
+                    Math.max(
+                        0,
+                        3-plant.water
+                    )+
+                    " riegos más."
+
+                );
+
+            }
+
+            return;
+
+        }
+
+    }
+
+
+    /* portal */
+
+    if(exitPortal){
+
+        const distance=
+            Math.hypot(
+                player.x-exitPortal.x,
+                player.y-exitPortal.y
+            );
+
+
+        if(distance<70){
+
+            nextRegion();
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   SIGUIENTE REGIÓN
+===================================================== */
+
+function nextRegion(){
+
+    if(currentRegion===0){
+
+        changeRegion(1);
+
+        return;
+
+    }
+
+
+    if(
+        defeatedRegents.includes(
+            currentRegion
+        )
+    ){
+
+        if(
+            currentRegion<
+            regions.length-1
+        ){
+
+            changeRegion(
+                currentRegion+1
+            );
+
+        }else{
+
+            startFinalBattle();
+
+        }
+
+    }else{
+
+        showDialogue(
+            "CAMINO CERRADO",
+            "Una fuerza extraña bloquea el camino. Primero debes enfrentarte al Regente de esta región."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CAMBIAR REGIÓN
+===================================================== */
+
+function changeRegion(index){
+
+    currentRegion=index;
+
+    gameLevel=
+        Math.min(
+            10,
+            index+1
+        );
+
+    generateRegion();
+
+    showDialogue(
+        regions[currentRegion].name,
+        regions[currentRegion].description ||
+        "Has llegado a una nueva región."
+    );
+
+}
+
+
+/* =====================================================
+   DIÁLOGOS
+===================================================== */
+
+function showDialogue(
+    name,
+    text
+){
+
+    dialogueOpen=true;
+
+    document
+        .getElementById("dialogueName")
+        .textContent=name;
+
+    document
+        .getElementById("dialogueText")
+        .textContent=text;
+
+    document
+        .getElementById("dialogue")
+        .classList.add("active");
+
+}
+
+
+function closeDialogue(){
+
+    dialogueOpen=false;
+
+    document
+        .getElementById("dialogue")
+        .classList.remove("active");
+
+}
+
+
+/* =====================================================
+   COMBATE
+===================================================== */
+
+let enemyHP=100;
+
+let enemyMaxHP=100;
+
+let defending=false;
+
+
+function startBattle(){
+
+    battleActive=true;
+
+    enemyHP=100;
+
+    enemyMaxHP=100;
+
+    defending=false;
+
+    finalBattle=false;
+
+
+    const region=
+        regions[currentRegion];
+
+
+    document
+        .getElementById("battleTitle")
+        .textContent=
+        region.regent;
+
+
+    document
+        .getElementById("battleEnemy")
+        .textContent=
+        region.enemy;
+
+
+    document
+        .getElementById("battleInfo")
+        .textContent=
+        "1 ATACAR · 2 ESTRELLA · 3 DEFENDER · 4 HUIR";
+
+
+    updateBattleHP();
+
+
+    document
+        .getElementById("battle")
+        .classList.add("active");
+
+}
+
+
+/* =====================================================
+   ACCIONES DE COMBATE
+===================================================== */
+
+function battleAction(action){
+
+    if(!battleActive){
+
+        return;
+
+    }
+
+
+    if(action==="attack"){
+
+        const damage=
+            15+
+            Math.floor(
+                Math.random()*11
+            );
+
+
+        enemyHP-=damage;
+
+
+        battleMessage(
+            "🐈 ¡Astra ataca! -"+
+            damage+
+            " HP"
+        );
+
+
+        createParticles(
+            650,
+            180,
+            "#ff4f91"
+        );
+
+    }
+
+
+    else if(action==="star"){
+
+        if(stars<=0){
+
+            battleMessage(
+                "⭐ No tienes fragmentos estelares."
+            );
+
+            return;
+
+        }
+
+
+        stars--;
+
+        updateHUD();
+
+
+        const damage=35;
+
+        enemyHP-=damage;
+
+
+        battleMessage(
+            "⭐ ¡El fragmento estelar responde! -35 HP"
+        );
+
+
+        createParticles(
+            650,
+            180,
+            "#ffd65a"
+        );
+
+    }
+
+
+    else if(action==="defend"){
+
+        defending=true;
+
+
+        battleMessage(
+            "🐈 Astra se prepara para defenderse."
+        );
+
+    }
+
+
+    else if(action==="run"){
+
+        if(finalBattle){
+
+            battleMessage(
+                "No puedes huir de ti mismo."
+            );
+
+            return;
+
+        }
+
+
+        closeBattle();
+
+        return;
+
+    }
+
+
+    updateBattleHP();
+
+
+    if(enemyHP<=0){
+
+        winBattle();
+
+        return;
+
+    }
+
+
+    setTimeout(
+        enemyTurn,
+        500
+    );
+
+}
+
+
+/* =====================================================
+   TURNO ENEMIGO
+===================================================== */
+
+function enemyTurn(){
+
+    if(!battleActive){
+
+        return;
+
+    }
+
+
+    let damage=
+        8+
+        Math.floor(
+            Math.random()*9
+        );
+
+
+    if(defending){
+
+        damage=
+            Math.floor(
+                damage*.35
+            );
+
+        defending=false;
+
+    }
+
+
+    battleMessage(
+        "👑 El Regente responde. -"+
+        damage+
+        " energía."
+    );
+
+}
+
+
+/* =====================================================
+   BARRA HP
+===================================================== */
+
+function updateBattleHP(){
+
+    const percentage=
+        Math.max(
+            0,
+            enemyHP/enemyMaxHP*100
+        );
+
+
+    document
+        .getElementById("enemyHP")
+        .style.width=
+        percentage+
+        "%";
+
+}
+
+
+function battleMessage(text){
+
+    document
+        .getElementById("battleInfo")
+        .textContent=text;
+
+}
+
+
+/* =====================================================
+   GANAR COMBATE
+===================================================== */
+
+function winBattle(){
+
+    battleActive=false;
+
+
+    document
+        .getElementById("battle")
+        .classList.remove("active");
+
+
+    if(finalBattle){
+
+        finishGame();
+
+        return;
+
+    }
+
+
+    defeatedRegents.push(
+        currentRegion
+    );
+
+
+    stars=
+        Math.min(
+            5,
+            stars+1
+        );
+
+
+    updateHUD();
+
+
+    createParticles(
+        player.x,
+        player.y,
+        "#ffd65a"
+    );
+
+
+    generateRegion();
+
+
+    setTimeout(
+        function(){
+
+            showDialogue(
+                regions[currentRegion].regent,
+                getRegentDialogue(
+                    currentRegion
+                )
+            );
+
+        },
+        300
+    );
+
+}
+
+
+/* =====================================================
+   DIÁLOGOS REGENTES
+===================================================== */
+
+function getRegentDialogue(index){
+
+    const texts=[
+
+        "Así que eras tú... Esos ojos. Esa pequeña cicatriz. No había visto esa mirada desde hacía mil años. Toma el fragmento, pequeño gato. Pero recuerda: algunas cosas es mejor no recordarlas.",
+
+        "Tu sombra no coincide con tus pasos. Ahora lo entiendo. Las estrellas no te eligieron. Te estaban esperando.",
+
+        "Escucha el océano. Incluso las olas recuerdan lo que ocurrió. No sigas recogiendo fragmentos si no estás preparado para descubrir quién eras.",
+
+        "Yo también pensé que proteger el mundo significaba protegerlo de ti. Quizá estaba equivocada.",
+
+        "No debiste llegar hasta aquí. Cuando consigas el último fragmento, la persona que duerme dentro de ti despertará."
+
+    ];
+
+
+    return texts[index] ||
+        "El camino continúa. Pero ya nada volverá a ser como antes.";
+
+}
+
+
+/* =====================================================
+   JEFE FINAL
+===================================================== */
+
+function startFinalBattle(){
+
+    if(stars<5){
+
+        showDialogue(
+            "PORTAL",
+            "Necesitas reunir los cinco Fragmentos Estelares antes de entrar."
+        );
+
+        return;
+
+    }
+
+
+    battleActive=true;
+
+    finalBattle=true;
+
+    enemyHP=250;
+
+    enemyMaxHP=250;
+
+
+    document
+        .getElementById("battleTitle")
+        .textContent=
+        "EL CORAZÓN DEL VACÍO";
+
+
+    document
+        .getElementById("battleEnemy")
+        .textContent=
+        "🐈‍⬛";
+
+
+    document
+        .getElementById("battleInfo")
+        .textContent=
+        "1 ATACAR · 2 ESTRELLA · 3 DEFENDER · 4 HUIR";
+
+
+    updateBattleHP();
+
+
+    document
+        .getElementById("battle")
+        .classList.add("active");
+
+}
+
+
+/* =====================================================
+   FINAL
+===================================================== */
+
+function finishGame(){
+
+    document
+        .getElementById("battle")
+        .classList.remove("active");
+
+
+    battleActive=false;
+
+
+    showDialogue(
+        "LUMI",
+        "Lo recuerdas... ¿verdad?"
+    );
+
+
+    setTimeout(
+        function(){
+
+            closeDialogue();
+
+
+            showDialogue(
+                "ASTRA",
+                "No necesito recordar quién fui. Me basta con saber quién soy ahora."
+            );
+
+
+        },
+        3000
+    );
+
+}
+
+
+/* =====================================================
+   MÓVIL
+===================================================== */
+
+function mobileMove(dx,dy){
+
+    if(
+        battleActive ||
+        dialogueOpen
+    ){
+
+        return;
+
+    }
+
+
+    const distance=35;
+
+
+    const newX=
+        player.x+
+        dx*
+        distance;
+
+
+    const newY=
+        player.y+
+        dy*
+        distance;
+
+
+    if(
+        newX>25 &&
+        newX<canvas.width-25 &&
+        !collides(
+            newX,
+            player.y
+        )
+    ){
+
+        player.x=newX;
+
+    }
+
+
+    if(
+        newY>70 &&
+        newY<canvas.height-45 &&
+        !collides(
+            player.x,
+            newY
+        )
+    ){
+
+        player.y=newY;
+
+    }
+
+}
+
+
+/* =====================================================
+   PARTÍCULAS
+===================================================== */
+
+function createParticles(
+    x,
+    y,
+    color
+){
+
+    for(let i=0;i<30;i++){
+
+        particles.push({
+
+            x:x,
+
+            y:y,
+
+            vx:
+                (Math.random()-.5)*7,
+
+            vy:
+                (Math.random()-.5)*7,
+
+            life:1,
+
+            color:color,
+
+            size:
+                2+
+                Math.random()*5
+
+        });
+
+    }
+
+}
+
+
+function updateParticles(){
+
+    for(const p of particles){
+
+        p.x+=p.vx;
+
+        p.y+=p.vy;
+
+        p.vy+=.05;
+
+        p.life-=.025;
+
+    }
+
+
+    particles=
+        particles.filter(
+            p=>p.life>0
+        );
+
+}
+
+
+/* =====================================================
+   ESTRELLAS DEL CIELO
+===================================================== */
+
+const skyStars=[];
+
+
+for(let i=0;i<100;i++){
+
+    skyStars.push({
+
+        x:
+            Math.random()*
+            canvas.width,
+
+        y:
+            Math.random()*400,
+
+        size:
+            Math.random()*2+1,
+
+        phase:
+            Math.random()*
+            Math.PI*2
+
+    });
+
+}
+
+
+function drawSkyStars(time){
+
+    for(const star of skyStars){
+
+        const alpha=
+            .35+
+            Math.sin(
+                time*.002+
+                star.phase
+            )*.35;
+
+
+        ctx.globalAlpha=
+            alpha;
+
+        ctx.fillStyle="#fff";
+
+
+        ctx.fillRect(
+            star.x,
+            star.y,
+            star.size,
+            star.size
+        );
+
+    }
+
+
+    ctx.globalAlpha=1;
+
+}
+
+
+/* =====================================================
+   DIBUJAR MUNDO
+===================================================== */
+
+function drawWorld(time){
+
+    const region=
+        regions[currentRegion];
+
+
+    /* cielo */
+
+    ctx.fillStyle=
+        region.sky;
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /* estrellas */
+
+    drawSkyStars(time);
+
+
+    /* luna */
+
+    ctx.globalAlpha=.15;
+
+    ctx.fillStyle="#fff";
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        820,
+        90,
+        90,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.globalAlpha=1;
+
+
+    /* suelo */
+
+    ctx.fillStyle=
+        region.ground;
+
+    ctx.fillRect(
+        0,
+        420,
+        canvas.width,
+        180
+    );
+
+
+    /* camino */
+
+    ctx.fillStyle=
+        "rgba(255,255,255,.08)";
+
+    ctx.fillRect(
+        0,
+        470,
+        canvas.width,
+        55
+    );
+
+
+    /* obstáculos */
+
+    for(
+        let i=0;
+        i<obstacles.length;
+        i++
+    ){
+
+        const o=
+            obstacles[i];
+
+
+        ctx.fillStyle=
+            currentRegion>=5
+            ?"#27212c"
+            :(i%2===0
+                ?"#36573d"
+                :"#3f6245");
+
+
+        ctx.fillRect(
+            o.x,
+            o.y,
+            o.w,
+            o.h
+        );
+
+
+        ctx.fillStyle=
+            "rgba(255,255,255,.1)";
+
+
+        ctx.fillRect(
+            o.x,
+            o.y,
+            o.w,
+            5
+        );
+
+    }
+
+
+    /* plantas */
+
+    for(const plant of plants){
+
+        ctx.font="28px serif";
+
+        ctx.textAlign="center";
+
+
+        ctx.fillText(
+
+            plant.grown
+                ?"🌸"
+                :"🌱",
+
+            plant.x,
+            plant.y
+
+        );
+
+    }
+
+
+    /* estrella */
+
+    if(
+        regionStar &&
+        !regionStar.collected
+    ){
+
+        drawStar(
+            regionStar.x,
+            regionStar.y,
+            18
+        );
+
+    }
+
+
+    /* portal */
+
+    if(exitPortal){
+
+        drawPortal(
+            exitPortal.x,
+            exitPortal.y
+        );
+
+    }
+
+
+    /* enemigos */
+
+    for(const enemy of enemies){
+
+        if(!enemy.alive)
+            continue;
+
+
+        ctx.font="26px serif";
+
+        ctx.textAlign="center";
+
+
+        ctx.fillText(
+            enemy.icon,
+            enemy.x,
+            enemy.y
+        );
+
+    }
+
+
+    /* NPC */
+
+    for(const npc of npcs){
+
+        ctx.font="34px serif";
+
+        ctx.textAlign="center";
+
+
+        ctx.fillText(
+            npc.icon,
+            npc.x,
+            npc.y
+        );
+
+
+        if(npc.regent){
+
+            ctx.font="10px monospace";
+
+            ctx.fillStyle="#fff";
+
+
+            ctx.fillText(
+                "REGENTE",
+                npc.x,
+                npc.y+27
+            );
+
+        }
+
+    }
+
+
+    /* gato */
+
+    drawCat();
+
+
+    /* partículas */
+
+    drawParticles();
+
+}
+
+
+/* =====================================================
+   GATO PIXEL ART
+===================================================== */
+
+function drawCat(){
+
+    ctx.save();
+
+
+    ctx.translate(
+        player.x,
+        player.y
+    );
+
+
+    const bob=
+        player.moving
+        ?Math.sin(
+            player.frame*8
+        )*2
+        :0;
+
+
+    ctx.translate(
+        0,
+        bob
+    );
+
+
+    /* sombra */
+
+    ctx.fillStyle=
+        "rgba(0,0,0,.3)";
+
+
+    ctx.fillRect(
+        -15,
+        24,
+        30,
+        6
+    );
+
+
+    /* cola */
+
+    ctx.strokeStyle=
+        "#f3e7d3";
+
+    ctx.lineWidth=6;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        12,
+        8
+    );
+
+    ctx.quadraticCurveTo(
+        30,
+        18,
+        22,
+        -1
+    );
+
+    ctx.stroke();
+
+
+    /* cuerpo */
+
+    ctx.fillStyle=
+        "#f3e7d3";
+
+
+    ctx.fillRect(
+        -13,
+        -2,
+        26,
+        25
+    );
+
+
+    /* patas */
+
+    ctx.fillRect(
+        -10,
+        19,
+        7,
+        11
+    );
+
+    ctx.fillRect(
+        3,
+        19,
+        7,
+        11
+    );
+
+
+    /* bufanda */
+
+    ctx.fillStyle=
+        "#ff5a91";
+
+
+    ctx.fillRect(
+        -14,
+        2,
+        28,
+        8
+    );
+
+
+    /* cabeza */
+
+    ctx.fillStyle=
+        "#fff0dc";
+
+
+    ctx.fillRect(
+        -15,
+        -27,
+        30,
+        27
+    );
+
+
+    /* orejas */
+
+    ctx.beginPath();
+
+    ctx.moveTo(-15,-24);
+
+    ctx.lineTo(-9,-39);
+
+    ctx.lineTo(-2,-25);
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(2,-25);
+
+    ctx.lineTo(9,-39);
+
+    ctx.lineTo(15,-24);
+
+    ctx.fill();
+
+
+    /* orejas internas */
+
+    ctx.fillStyle=
+        "#ff9dbb";
+
+
+    ctx.fillRect(
+        -9,
+        -30,
+        4,
+        6
+    );
+
+
+    ctx.fillRect(
+        5,
+        -30,
+        4,
+        6
+    );
+
+
+    /* ojos */
+
+    ctx.fillStyle=
+        "#29213b";
+
+
+    ctx.fillRect(
+        -8,
+        -17,
+        5,
+        5
+    );
+
+
+    ctx.fillRect(
+        4,
+        -17,
+        5,
+        5
+    );
+
+
+    /* nariz */
+
+    ctx.fillStyle=
+        "#e45b7d";
+
+
+    ctx.fillRect(
+        -2,
+        -10,
+        4,
+        3
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   ESTRELLA
+===================================================== */
+
+function drawStar(
+    x,
+    y,
+    size
+){
+
+    ctx.save();
+
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    ctx.rotate(
+        performance.now()*.001
+    );
+
+
+    ctx.fillStyle=
+        "#ffd65a";
+
+
+    ctx.shadowColor=
+        "#ffd65a";
+
+
+    ctx.shadowBlur=18;
+
+
+    ctx.beginPath();
+
+
+    for(let i=0;i<10;i++){
+
+        const angle=
+            i*Math.PI/5;
+
+
+        const radius=
+            i%2===0
+            ?size
+            :size*.42;
+
+
+        const px=
+            Math.cos(angle)*
+            radius;
+
+
+        const py=
+            Math.sin(angle)*
+            radius;
+
+
+        if(i===0){
+
+            ctx.moveTo(px,py);
+
+        }else{
+
+            ctx.lineTo(px,py);
+
+        }
+
+    }
+
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   PORTAL
+===================================================== */
+
+function drawPortal(x,y){
+
+    ctx.save();
+
+
+    const pulse=
+        Math.sin(
+            performance.now()*.004
+        )*4;
+
+
+    ctx.strokeStyle=
+        "#ff4f91";
+
+
+    ctx.lineWidth=7;
+
+
+    ctx.shadowColor=
+        "#ff4f91";
+
+
+    ctx.shadowBlur=20;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        x,
+        y,
+        30+pulse,
+        0,
+        Math.PI*2
+    );
+
+
+    ctx.stroke();
+
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   RECOGER ESTRELLA
+===================================================== */
+
+function checkStar(){
+
+    if(
+        !regionStar ||
+        regionStar.collected
+    ){
+
+        return;
+
+    }
+
+
+    const distance=
+        Math.hypot(
+            player.x-regionStar.x,
+            player.y-regionStar.y
+        );
+
+
+    if(distance<35){
+
+        regionStar.collected=true;
+
+
+        stars=
+            Math.min(
+                5,
+                stars+1
+            );
+
+
+        updateHUD();
+
+
+        createParticles(
+            regionStar.x,
+            regionStar.y,
+            "#ffd65a"
+        );
+
+
+        showDialogue(
+            "FRAGMENTO ESTELAR",
+            "Una estrella ha reconocido tu presencia."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOOP PRINCIPAL
+===================================================== */
+
+function gameLoop(time){
+
+    updatePlayer();
+
+    checkStar();
+
+    updateParticles();
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    drawWorld(time);
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+requestAnimationFrame(
+    gameLoop
+);
+
+
+/* =====================================================
+   CLICK EN EL MAPA
+===================================================== */
+
+canvas.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            !gameStarted ||
+            dialogueOpen ||
+            battleActive
+        ){
+
+            return;
+
+        }
+
+
+        const rect=
+            canvas.getBoundingClientRect();
+
+
+        const scaleX=
+            canvas.width/
+            rect.width;
+
+
+        const scaleY=
+            canvas.height/
+            rect.height;
+
+
+        const x=
+            (event.clientX-
+            rect.left)*
+            scaleX;
+
+
+        const y=
+            (event.clientY-
+            rect.top)*
+            scaleY;
+
+
+        /*
+           El clic mueve al gato
+           hacia la posición seleccionada.
+        */
+
+        if(
+            !collides(x,y) &&
+            y>70 &&
+            y<canvas.height-45
+        ){
+
+            player.x=x;
+
+            player.y=y;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INICIAR JUEGO
+===================================================== */
+
+function startGame(){
+
+    gameStarted=true;
+
+
+    document
+        .getElementById("intro")
+        .classList.add("hide");
+
+
+    generateRegion();
+
+
+    setTimeout(
+        function(){
+
+            showDialogue(
+                "LUMI",
+                "¡Despierta, gatito! Soy Lumi, una estrella perdida. No sé cómo llegué hasta aquí... pero creo que tú puedes ayudarme a volver al cielo."
+            );
+
+        },
+        700
+    );
+
+}
+
+
+/* =====================================================
+   INICIALIZACIÓN
+===================================================== */
+
+/*
+   Importante:
+   dibujamos Casa desde el primer instante.
+   Así el canvas nunca queda simplemente negro
+   mientras la introducción está abierta.
+*/
+
+generateRegion();
+
+</script>
+
+</body>
+</html>
+```

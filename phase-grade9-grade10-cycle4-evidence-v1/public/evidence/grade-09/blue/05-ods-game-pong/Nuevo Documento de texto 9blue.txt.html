@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Interactivo MVC - Tipo ICFES</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Arial,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+header{
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+header h1{
+    font-size:32px;
+}
+
+header p{
+    margin-top:8px;
+}
+
+.integrantes{
+    background:#dbeafe;
+    color:#0f172a;
+    padding:15px;
+}
+
+.integrantes h3{
+    margin-bottom:8px;
+}
+
+.integrantes ul{
+    margin-left:20px;
+}
+
+main{
+    padding:30px;
+}
+
+#pregunta{
+    font-size:23px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.opcion{
+    background:#f1f5f9;
+    border:2px solid transparent;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.opcion:hover{
+    background:#2563eb;
+    color:white;
+}
+
+.correcta{
+    background:#22c55e !important;
+    color:white;
+}
+
+.incorrecta{
+    background:#ef4444 !important;
+    color:white;
+}
+
+button{
+    margin-top:20px;
+    padding:14px 30px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:18px;
+    background:#2563eb;
+    color:white;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+#resultado{
+    text-align:center;
+    display:none;
+}
+
+#resultado h2{
+    font-size:35px;
+    color:#0f172a;
+}
+
+#resultado p{
+    font-size:22px;
+    margin:20px 0;
+}
+
+footer{
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    padding:15px;
+}
+
+@media(max-width:700px){
+
+header h1{
+    font-size:24px;
+}
+
+#pregunta{
+    font-size:19px;
+}
+
+button{
+    width:100%;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<header>
+<h1>Quiz Interactivo - MVC</h1>
+<p>Conceptos Básicos de Modelo - Vista - Controlador</p>
+</header>
+
+<div class="integrantes">
+<h3>Integrantes del Grupo</h3>
+
+<ul>
+<li>Juan Andres</li>
+<li>Sebastian</li>
+<li>Matias</li>
+</ul>
+
+</div>
+
+<main>
+
+<div id="quiz">
+
+<h2 id="pregunta"></h2>
+
+<div id="opciones"></div>
+
+<button id="siguiente">Siguiente</button>
+
+</div>
+
+<div id="resultado">
+
+<h2>Resultado Final</h2>
+
+<p id="puntaje"></p>
+
+<button onclick="location.reload()">Intentar nuevamente</button>
+
+</div>
+
+</main>
+
+<footer>
+
+Aplicación Educativa - Arquitectura MVC | Tipo ICFES
+
+</footer>
+
+</div>
+
+<script>
+
+const preguntas=[
+
+{
+pregunta:"1. Un estudiante desarrolla una aplicación para registrar las notas de un colegio. Quiere que la información se almacene correctamente, sin importar cómo se vea la interfaz. ¿Qué componente de MVC debe encargarse de esa función?",
+opciones:[
+"Vista",
+"Modelo",
+"Controlador",
+"Navegador"
+],
+respuesta:1
+},
+
+{
+pregunta:"2. En una aplicación web el usuario hace clic en el botón 'Guardar'. ¿Cuál es el componente que recibe la acción del usuario y decide qué hacer con ella?",
+opciones:[
+"Modelo",
+"Vista",
+"Controlador",
+"Base de datos"
+],
+respuesta:2
+},
+
+{
+pregunta:"3. Un diseñador cambia los colores, botones y menús de una aplicación sin modificar la lógica del programa. ¿Qué componente está modificando?",
+opciones:[
+"Vista",
+"Modelo",
+"Controlador",
+"Servidor"
+],
+respuesta:0
+},
+
+{
+pregunta:"4. ¿Cuál de las siguientes afirmaciones describe mejor una ventaja del patrón MVC?",
+opciones:[
+"Mezcla toda la lógica y el diseño en un solo archivo.",
+"Facilita el mantenimiento separando responsabilidades.",
+"Solo funciona en aplicaciones móviles.",
+"Evita completamente el uso de bases de datos."
+],
+respuesta:1
+},
+
+{
+pregunta:"5. Una empresa desea actualizar únicamente el diseño de su sistema sin afectar el funcionamiento interno. Gracias al patrón MVC esto es posible porque:",
+opciones:[
+"El Modelo controla el diseño.",
+"La Vista está separada del Modelo y del Controlador.",
+"El Controlador almacena los datos.",
+"Todo el código está unido."
+],
+respuesta:1
+}
+
+];
+
+let indice=0;
+let puntos=0;
+
+const pregunta=document.getElementById("pregunta");
+const opciones=document.getElementById("opciones");
+const siguiente=document.getElementById("siguiente");
+
+mostrarPregunta();
+
+function mostrarPregunta(){
+
+siguiente.style.display="none";
+
+pregunta.innerHTML=preguntas[indice].pregunta;
+
+opciones.innerHTML="";
+
+preguntas[indice].opciones.forEach((texto,i)=>{
+
+const div=document.createElement("div");
+
+div.className="opcion";
+
+div.innerHTML=texto;
+
+div.onclick=()=>seleccionar(div,i);
+
+opciones.appendChild(div);
+
+});
+
+}
+
+function seleccionar(elemento,opcion){
+
+const lista=document.querySelectorAll(".opcion");
+
+lista.forEach(e=>e.style.pointerEvents="none");
+
+if(opcion===preguntas[indice].respuesta){
+
+elemento.classList.add("correcta");
+
+puntos++;
+
+}else{
+
+elemento.classList.add("incorrecta");
+
+lista[preguntas[indice].respuesta].classList.add("correcta");
+
+}
+
+siguiente.style.display="inline-block";
+
+}
+
+siguiente.onclick=function(){
+
+indice++;
+
+if(indice<preguntas.length){
+
+mostrarPregunta();
+
+}else{
+
+document.getElementById("quiz").style.display="none";
+
+document.getElementById("resultado").style.display="block";
+
+let mensaje="";
+
+if(puntos==5){
+
+mensaje="¡Excelente! Dominas muy bien los conceptos básicos de MVC.";
+
+}else if(puntos>=4){
+
+mensaje="Muy buen trabajo. Comprendes la mayoría de los conceptos.";
+
+}else if(puntos>=3){
+
+mensaje="Buen intento. Sigue practicando la arquitectura MVC.";
+
+}else{
+
+mensaje="Necesitas reforzar los conceptos de Modelo, Vista y Controlador.";
+
+}
+
+document.getElementById("puntaje").innerHTML=
+"Obtuviste <b>"+puntos+"</b> de <b>"+preguntas.length+
+"</b> respuestas correctas.<br><br>"+mensaje;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

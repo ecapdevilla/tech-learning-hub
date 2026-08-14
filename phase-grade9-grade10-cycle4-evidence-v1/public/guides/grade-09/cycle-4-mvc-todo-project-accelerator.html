@@ -1,0 +1,119 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>9th Grade · Cycle 4 MVC To-Do Project Accelerator</title>
+<style>
+:root{--n:#10283f;--b:#176d9d;--g:#168063;--gold:#d5a126;--line:#d8e5ee;--ink:#263b4c}
+*{box-sizing:border-box}body{margin:0;background:#f4f8fb;color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.55}.w{max-width:1120px;margin:auto;padding:22px 14px 70px}
+.hero{padding:40px;border-radius:28px;color:#fff;background:radial-gradient(circle at 90% 10%,#ffffff18,transparent 25%),linear-gradient(135deg,#10283f,#176d9d 62%,#168063);box-shadow:0 18px 45px #10283f22}.hero h1{font-size:clamp(42px,7vw,70px);line-height:.98;margin:10px 0}.pill{display:inline-block;padding:6px 10px;border:1px solid #ffffff36;background:#ffffff12;border-radius:999px;font-weight:900}.hero a{display:inline-block;margin:12px 7px 0 0;padding:10px 14px;background:#fff;color:#10283f;border-radius:11px;text-decoration:none;font-weight:900}
+.card{margin-top:17px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:23px;box-shadow:0 8px 25px #10283f0b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.route{display:flex;gap:7px;flex-wrap:wrap;align-items:center;font-weight:900}.route span{background:#edf4f7;padding:7px 10px;border-radius:999px}.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.level{padding:14px;border-radius:14px;background:#f5f9fc;border:1px solid var(--line)}.level b{display:block;color:#10283f}.code{white-space:pre-wrap;background:#102536;color:#eef8ff;padding:18px;border-radius:14px;font-family:ui-monospace,Consolas,monospace}.gold{border-left:6px solid var(--gold);background:#fff9e9}.green{border-left:6px solid var(--g);background:#edfff7}li{margin:7px 0}.check{list-style:none;padding:0}.check li:before{content:"☐ ";font-weight:900;color:#168063}@media(max-width:900px){.levels{grid-template-columns:1fr 1fr}}@media(max-width:700px){.grid{grid-template-columns:1fr}}@media(max-width:480px){.levels{grid-template-columns:1fr}}
+</style></head><body><main class="w">
+<section class="hero"><span class="pill">9TH GRADE · CYCLE 4 · MVC + JAVASCRIPT</span><h1>Smart To-Do · Software Architecture Challenge</h1><p><b>Mission:</b> build, document and present a functional To-Do List application using MVC architecture to solve a real organization problem in the school or community.</p>
+<a href="/guides/grade-09/mvc-introduction-cycle1.html">Review MVC Introduction</a></section>
+<section class="card"><h2>🎯 What you must build</h2><p>Your application must use <b>Model–View–Controller</b> and work with three connected entities: <b>User, Task and Category</b>. The technology stack is HTML, CSS and JavaScript. Your solution must connect to a real organizational need and an ODS.</p></section>
+<section class="card"><h2>🧭 Complete route</h2><div class="route"><span>PROBLEM</span>→<span>ODS</span>→<span>USERS</span>→<span>DATA MODEL</span>→<span>MVC DIAGRAM</span>→<span>MODEL</span>→<span>VIEW</span>→<span>CONTROLLER</span>→<span>MVP</span>→<span>TEST</span>→<span>REFACTOR</span>→<span>DOCUMENT</span>→<span>PITCH</span></div></section>
+<section class="card gold"><h2>⚡ Acceleration rule</h2><p><b>Do not restart if you already have useful work.</b> Identify your current level and continue from there. If you are beginning, start with the real problem and data model before writing code.</p></section>
+<section class="card"><h2>Project levels</h2><div class="levels">
+<div class="level"><b>LEVEL 1</b>Problem + ODS + Users + MVC Diagram</div>
+<div class="level"><b>LEVEL 2</b>User, Task, Category models + basic UI</div>
+<div class="level"><b>LEVEL 3</b>Create / Edit / Complete / Delete / Filter</div>
+<div class="level"><b>LEVEL 4</b>Validation + localStorage + search + statistics + responsive UI</div>
+<div class="level"><b>LEVEL 5</b>Testing + refactor + documentation + ODS reflection + pitch</div>
+</div></section>
+<section class="grid">
+<article class="card"><h2>MODEL · What does the system know?</h2><div class="code">USER
+id
+name
+
+CATEGORY
+id
+name
+color
+
+TASK
+id
+title
+description
+status
+userId
+categoryId
+createdAt</div></article>
+<article class="card"><h2>VIEW · What does the user see?</h2><div class="code">SMART TO-DO
+
+[ + NEW TASK ]
+
+TASK: Math homework
+CATEGORY: Academic
+USER: Emma
+STATUS: Pending
+
+[ EDIT ] [ COMPLETE ] [ DELETE ]
+
+FILTER: All / Pending / Done</div></article>
+</section>
+<section class="card"><h2>CONTROLLER · What happens when the user acts?</h2><div class="code">USER CLICKS "ADD TASK"
+        ↓
+CONTROLLER READS FORM
+        ↓
+VALIDATES DATA
+        ↓
+MODEL CREATES TASK
+        ↓
+MODEL DATA CHANGES
+        ↓
+VIEW RENDERS AGAIN</div></section>
+<section class="grid">
+<article class="card"><h2>Minimum functional requirements</h2><ul class="check"><li>Create users</li><li>Create categories</li><li>Create tasks</li><li>Assign task to a user</li><li>Assign category to a task</li><li>Edit task</li><li>Mark complete / pending</li><li>Delete task</li><li>Filter tasks</li><li>Prevent invalid empty records</li></ul></article>
+<article class="card"><h2>Professional upgrades</h2><ul class="check"><li>localStorage persistence</li><li>Search</li><li>Task counters / statistics</li><li>Responsive design</li><li>Useful empty states</li><li>Confirmation for destructive actions</li><li>Clean MVC file organization</li><li>Readable comments</li></ul></article>
+</section>
+<section class="card"><h2>Suggested project structure</h2><div class="code">smart-todo/
+│
+├── index.html
+├── styles.css
+└── js/
+    ├── model.js
+    ├── view.js
+    └── controller.js</div></section>
+<section class="card"><h2>Test before you call it ready</h2><div class="code">TEST | ACTION | EXPECTED | ACTUAL | PASS/FAIL | FIX
+01   | Create task
+02   | Empty title
+03   | Edit task
+04   | Complete task
+05   | Delete task
+06   | Filter tasks
+07   | Refresh browser / persistence</div></section>
+<section class="card green"><h2>🏁 Evidence required for the complete sequence</h2><ul class="check"><li>MVC architecture sketches / diagrams</li><li>Team engineering log</li><li>Complete functional JavaScript with comments</li><li>HTML/CSS interface</li><li>Screenshots / screen recordings</li><li>Technical system documentation</li><li>ODS reflection</li><li>Oral presentation and pitch</li><li>Self and peer assessment</li><li>Final STEM portfolio</li></ul></section>
+<section class="card"><h2>📱 No computer right now?</h2><p>Use the phone only as a reference tool. In your notebook or a shared document you can finish the problem definition, ODS connection, data model, MVC diagram, wireframe, pseudocode, test cases and task assignment so the next computer session begins with implementation.</p></section>
+<section class="card"><h2>Project Accelerator Card</h2><div class="code">TEAM:
+PROJECT NAME:
+
+REAL ORGANIZATION PROBLEM:
+TARGET USERS:
+ODS + WHY:
+
+USER ENTITY:
+TASK ENTITY:
+CATEGORY ENTITY:
+
+MODEL RESPONSIBILITIES:
+VIEW RESPONSIBILITIES:
+CONTROLLER RESPONSIBILITIES:
+
+FEATURES ALREADY WORKING:
+[ ] Users
+[ ] Categories
+[ ] Create Task
+[ ] Edit
+[ ] Complete
+[ ] Delete
+[ ] Filter
+[ ] Persistence
+[ ] Validation
+[ ] Responsive UI
+
+CURRENT BUG / BLOCKER:
+
+NEXT ACTION 1:
+NEXT ACTION 2:
+NEXT ACTION 3:
+
+EVIDENCE WE WILL SHOW:</div></section>
+</main></body></html>

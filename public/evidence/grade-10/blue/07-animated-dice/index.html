@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dado Animado</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #111827, #2563eb);
+            font-family: Arial, sans-serif;
+        }
+
+        .contenedor {
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        .juego {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .jugador {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            min-width: 160px;
+        }
+
+        .dado {
+            width: 150px;
+            height: 150px;
+            background: white;
+            color: #111827;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 90px;
+            font-weight: bold;
+            margin: 30px auto;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        .girar {
+            animation: girar 0.8s ease;
+        }
+
+        @keyframes girar {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            25% {
+                transform: rotate(90deg) scale(1.2);
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1);
+            }
+
+            75% {
+                transform: rotate(270deg) scale(1.2);
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button:hover {
+            background: #16a34a;
+            transform: scale(1.05);
+        }
+
+        #resultado {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>🎲 Dado</h1>
+
+        <div class="juego">
+
+            <div class="jugador">
+                👤<br>
+                Luis Canedo
+            </div>
+
+            <div>
+                <div id="dado" class="dado">⚀</div>
+
+                <button onclick="tirarDado()">
+                    🎲 Tirar dado
+                </button>
+            </div>
+
+            <div class="jugador">
+                👤<br>
+                Sofia Hernandez
+            </div>
+
+        </div>
+
+        <div id="resultado">
+            ¡Pulsa el botón para jugar!
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const caras = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
+        let turno = 0;
+
+        function tirarDado() {
+
+            const dado = document.getElementById("dado");
+            const resultadoTexto = document.getElementById("resultado");
+
+            // Animación
+            dado.classList.remove("girar");
+            void dado.offsetWidth;
+            dado.classList.add("girar");
+
+            let cambios = 0;
+
+            const animacion = setInterval(() => {
+
+                const numero = Math.floor(Math.random() * 6);
+
+                dado.textContent = caras[numero];
+
+                cambios++;
+
+                if (cambios >= 8) {
+
+                    clearInterval(animacion);
+
+                    const resultado =
+                        Math.floor(Math.random() * 6) + 1;
+
+                    dado.textContent = caras[resultado - 1];
+
+                    // Elegir jugador
+                    const jugador =
+                        turno === 0
+                        ? "Luis Canedo"
+                        : "Sofia Hernandez";
+
+                    resultadoTexto.innerHTML =
+                        "🎉 " + jugador +
+                        " sacó un <strong>" +
+                        resultado +
+                        "</strong>";
+
+                    // Cambiar turno
+                    turno = turno === 0 ? 1 : 0;
+                }
+
+            }, 100);
+        }
+
+    </script>
+
+</body>
+</html>

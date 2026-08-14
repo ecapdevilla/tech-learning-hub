@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sofía, Natalia y Alejandra</title>
+
+  <style>
+    /* ESTILOS DE LA PÁGINA */
+    body {
+      background-color: lightblue;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .contenedor {
+      background-color: white;
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      color: purple;
+      text-align: center;
+      font-size: 2.5rem;
+    }
+
+    p {
+      color: #2d3436;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    button {
+      background-color: blue;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin: 8px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #c73652;
+      transform: scale(1.05);
+    }
+
+    #mensaje {
+      color: #e84393;
+      font-weight: bold;
+      margin: 20px;
+    }
+
+    #cajaMensaje {
+      background-color: #fce4ec;
+      padding: 15px;
+      border-radius: 15px;
+      margin: 20px 0;
+      color: #6c3483;
+    }
+
+    h2 {
+      color: #e84393;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <!-- TÍTULO -->
+    <h1 id="tituloPrincipal">
+      🌸 Hola, somos Sofía, Natalia y Alejandra
+    </h1>
+
+    <!-- DESCRIPCIÓN -->
+    <p id="descripcion1">
+      Somos Sofía, Natalia y Alejandra y estamos aprendiendo a crear páginas web con HTML, CSS y JavaScript.
+    </p>
+
+    <!-- HOBBIES -->
+    <p id="descripcion2">
+      Nos gusta dormir y escuchar música. 🎵
+    </p>
+
+    <!-- MENSAJE -->
+    <div id="cajaMensaje">
+      💬 <strong>Mensaje:</strong> Haz clic en un botón para cambiar el idioma.
+    </div>
+
+    <!-- BOTONES INTERACTIVOS -->
+    <button id="saludar" onclick="saludar()">
+      Saludar
+    </button>
+
+    <button onclick="cambiarMensaje('¡Hola! Somos Sofía, Natalia y Alejandra!')">
+      Greeting
+    </button>
+
+    <button onclick="cambiarMensaje('¡Estamos aprendiendo a programar! 💻')">
+      Motivational
+    </button>
+
+    <button onclick="mostrarAlerta()">
+      Show Alert
+    </button>
+
+    <button onclick="cambiarColorFondo()">
+      Change Color
+    </button>
+
+    <p id="mensaje"></p>
+
+    <!-- IDIOMAS -->
+    <h2>🌎 Cambiar idioma / Change language</h2>
+
+    <button onclick="cambiarIdioma('es')">
+      🇪🇸 Español
+    </button>
+
+    <button onclick="cambiarIdioma('en')">
+      🇺🇸 English
+    </button>
+
+    <button onclick="cambiarIdioma('fr')">
+      🇫🇷 Français
+    </button>
+
+    <button onclick="cambiarIdioma('de')">
+      🇩🇪 Deutsch
+    </button>
+
+  </div>
+
+
+  <!-- JAVASCRIPT -->
+  <script>
+
+    // Mensajes en la consola
+    console.log("🚀 Nuestra página está lista!");
+    console.log("👋 Hola, somos Sofía, Natalia y Alejandra y estamos aprendiendo JavaScript!");
+    console.log("🎯 Hoy es un gran día para aprender programación.");
+
+    // MENSAJE DE BIENVENIDA
+    alert("Hello! We are Sofía, Natalia and Alejandra and this is our page.");
+
+
+    // FUNCIÓN PARA SALUDAR
+    function saludar() {
+      document.getElementById("mensaje").textContent =
+        "💜 ¡Hola! Somos Sofía, Natalia y Alejandra. ¡Gracias por visitar nuestra página!";
+    }
+
+
+    // FUNCIÓN PARA CAMBIAR MENSAJE
+    function cambiarMensaje(texto) {
+      const elemento = document.getElementById("mensaje");
+
+      elemento.textContent = texto;
+
+      console.log("📝 Message changed to: " + texto);
+    }
+
+
+    // FUNCIÓN PARA MOSTRAR ALERTA
+    function mostrarAlerta() {
+      alert("🔔 ¡Sofía, Natalia y Alejandra les dicen hola!");
+    }
+
+
+    // FUNCIÓN PARA CAMBIAR COLOR
+    function cambiarColorFondo() {
+
+      const colores = [
+        "lightblue",
+        "pink",
+        "#ff6b6b",
+        "#4ecdc4",
+        "#ffe66d"
+      ];
+
+      const aleatorio =
+        colores[Math.floor(Math.random() * colores.length)];
+
+      document.body.style.backgroundColor = aleatorio;
+    }
+
+
+    // FUNCIÓN PARA CAMBIAR IDIOMA
+    function cambiarIdioma(idioma) {
+
+      const titulo =
+        document.getElementById("tituloPrincipal");
+
+      const desc1 =
+        document.getElementById("descripcion1");
+
+      const desc2 =
+        document.getElementById("descripcion2");
+
+      const mensaje =
+        document.getElementById("cajaMensaje");
+
+      const saludarBtn =
+        document.getElementById("saludar");
+
+
+      const textos = {
+
+        // ESPAÑOL
+        es: {
+          titulo: "🌸 Hola, somos Sofía, Natalia y Alejandra",
+
+          desc1:
+            "Somos Sofía, Natalia y Alejandra y estamos aprendiendo a crear páginas web con HTML, CSS y JavaScript.",
+
+          desc2:
+            "Nos gusta dormir y escuchar música. 🎵",
+
+          mensaje:
+            "💬 <strong>Mensaje:</strong> Haz clic en un botón para cambiar el idioma.",
+
+          boton:
+            "Saludar"
+        },
+
+
+        // INGLÉS
+        en: {
+          titulo:
+            "🌸 Hello, we are Sofía, Natalia and Alejandra",
+
+          desc1:
+            "We are Sofía, Natalia and Alejandra and we are learning to create web pages with HTML, CSS and JavaScript.",
+
+          desc2:
+            "We like sleeping and listening to music. 🎵",
+
+          mensaje:
+            "💬 <strong>Message:</strong> Click a button to change the language.",
+
+          boton:
+            "Greet"
+        },
+
+
+        // FRANCÉS
+        fr: {
+          titulo:
+            "🌸 Bonjour, nous sommes Sofía, Natalia et Alejandra",
+
+          desc1:
+            "Nous sommes Sofía, Natalia et Alejandra et nous apprenons à créer des pages web avec HTML, CSS et JavaScript.",
+
+          desc2:
+            "Nous aimons dormir et écouter de la musique. 🎵",
+
+          mensaje:
+            "💬 <strong>Message:</strong> Cliquez sur un bouton pour changer la langue.",
+
+          boton:
+            "Saluer"
+        },
+
+
+        // ALEMÁN
+        de: {
+          titulo:
+            "🌸 Hallo, wir sind Sofía, Natalia und Alejandra",
+
+          desc1:
+            "Wir sind Sofía, Natalia und Alejandra und wir lernen, Webseiten mit HTML, CSS und JavaScript zu erstellen.",
+
+          desc2:
+            "Wir schlafen gerne und hören gerne Musik. 🎵",
+
+          mensaje:
+            "💬 <strong>Nachricht:</strong> Klicke auf einen Knopf, um die Sprache zu ändern.",
+
+          boton:
+            "Begrüßen"
+        }
+      };
+
+
+      // CAMBIAR TODOS LOS TEXTOS
+      if (textos[idioma]) {
+
+        titulo.textContent =
+          textos[idioma].titulo;
+
+        desc1.textContent =
+          textos[idioma].desc1;
+
+        desc2.textContent =
+          textos[idioma].desc2;
+
+        mensaje.innerHTML =
+          textos[idioma].mensaje;
+
+        saludarBtn.textContent =
+          textos[idioma].boton;
+
+        console.log(
+          "🌎 Language changed to: " + idioma
+        );
+      }
+    }
+
+  </script>
+
+</body>
+</html>

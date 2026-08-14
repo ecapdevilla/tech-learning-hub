@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>EcoCatch - ODS 12</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+background:#bdecb6;
+}
+
+#juego{
+width:400px;
+height:500px;
+margin:20px auto;
+border:3px solid #333;
+background:#fff;
+position:relative;
+overflow:hidden;
+}
+
+#jugador{
+width:70px;
+height:20px;
+background:green;
+position:absolute;
+bottom:10px;
+left:165px;
+border-radius:10px;
+}
+
+.objeto{
+width:30px;
+height:30px;
+position:absolute;
+font-size:25px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🌎 EcoCatch - ODS 12</h2>
+<p>Puntos: <span id="puntos">0</span></p>
+
+<div id="juego">
+<div id="jugador"></div>
+</div>
+
+<script>
+
+//========= MODELO ==========
+class Modelo{
+constructor(){
+this.puntos=0;
+}
+}
+
+//========= VISTA ==========
+class Vista{
+actualizar(p){
+document.getElementById("puntos").textContent=p;
+}
+}
+
+//========= CONTROLADOR ==========
+class Controlador{
+
+constructor(){
+this.modelo=new Modelo();
+this.vista=new Vista();
+
+this.jugador=document.getElementById("jugador");
+this.area=document.getElementById("juego");
+
+this.x=165;
+
+document.addEventListener("keydown",e=>{
+
+if(e.key=="ArrowLeft" && this.x>0)
+this.x-=20;
+
+if(e.key=="ArrowRight" && this.x<330)
+this.x+=20;
+
+this.jugador.style.left=this.x+"px";
+
+});
+
+setInterval(()=>this.crearObjeto(),1000);
+
+}
+
+crearObjeto(){
+
+let obj=document.createElement("div");
+obj.className="objeto";
+
+let reciclable=Math.random()>0.3;
+
+obj.innerHTML=reciclable?"♻️":"🔋";
+
+let x=Math.random()*360;
+
+obj.style.left=x+"px";
+obj.style.top="0px";
+
+this.area.appendChild(obj);
+
+let y=0;
+
+let caer=setInterval(()=>{
+
+y+=5;
+obj.style.top=y+"px";
+
+if(y>460){
+
+let jugadorX=this.x;
+
+if(x>jugadorX-20 && x<jugadorX+70){
+
+if(reciclable){
+this.modelo.puntos+=10;
+}else{
+this.modelo.puntos-=5;
+}
+
+this.vista.actualizar(this.modelo.puntos);
+
+}
+
+obj.remove();
+clearInterval(caer);
+
+}
+
+},40);
+
+}
+
+}
+
+new Controlador();
+
+</script>
+
+</body>
+</html>
