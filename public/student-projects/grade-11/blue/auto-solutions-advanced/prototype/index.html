@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AUTO-SOLUTIONS - Ingeniería de Sistemas Robóticos con Interfaz Web (ESP32, Wokwi, STEM y ODS)">
+  <title>AUTO-SOLUTIONS | Robótica, Web & Sostenibilidad ODS</title>
+
+  <!-- Google Fonts & Chart.js Library -->
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>.tlh11bar{max-width:1200px;margin:10px auto;padding:0 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh11bar a,.tlh11bar span{padding:9px 13px;border-radius:999px;font-weight:800;text-decoration:none}.tlh11bar a{background:#102b46;color:#fff}.tlh11bar span{background:#edf7ff;color:#102b46;border:1px solid #cae1ef}</style></head>
+<body><div class="tlh11bar"><a href="/students/grade/11/blue/auto-solutions-advanced/index.html">← Project Progress</a><span>Mateo · Juan · Luis · Jose · Santiago · Juan</span></div>
+
+  <div id="app-container">
+    
+    <!-- Header Navigation Bar -->
+    <header>
+      <div class="nav-wrapper">
+        <div class="brand">
+          <div class="brand-icon">🤖</div>
+          <div class="brand-text">
+            <h1>AUTO-SOLUTIONS</h1>
+            <span>Robótica + Interfaz Web ESP32</span>
+          </div>
+        </div>
+
+        <nav class="nav-tabs">
+          <button class="nav-tab active" data-tab="tab-dashboard">📊 Telemetría</button>
+          <button class="nav-tab" data-tab="tab-wokwi">🔌 Simulador Wokwi</button>
+          <button class="nav-tab" data-tab="tab-stem">🧮 Módulo STEM</button>
+          <button class="nav-tab" data-tab="tab-bitacora">👥 Roles & Bitácora</button>
+          <button class="nav-tab" data-tab="tab-apa">📝 Doc. APA 7</button>
+          <button class="nav-tab" data-tab="tab-rubrica">🏆 Rúbrica</button>
+        </nav>
+
+        <div class="header-actions">
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            <span>ESP32 WiFi: SIMULADO</span>
+          </div>
+          <div style="font-size: 0.85rem; text-align: right;">
+            <div id="user-name-display" style="font-weight: 700;">Estudiante STEM</div>
+            <div id="user-role-display" style="font-size: 0.75rem; color: var(--text-muted);">11° Blue</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Project Selection Sub-Bar (Chips for 5 ABP Projects) -->
+    <div class="project-selector-bar">
+      <div class="project-chips">
+        <button class="project-chip active" data-project="riego_inteligente">
+          <span>💧 Riego Inteligente</span>
+          <span class="sdg-tag bg-sdg-6">ODS 6</span>
+        </button>
+        <button class="project-chip" data-project="seguridad_pir">
+          <span>🔐 Sistema de Seguridad</span>
+          <span class="sdg-tag bg-sdg-11">ODS 11</span>
+        </button>
+        <button class="project-chip" data-project="clasificacion_residuos">
+          <span>♻️ Clasificador Residuos</span>
+          <span class="sdg-tag bg-sdg-9">ODS 9</span>
+        </button>
+        <button class="project-chip" data-project="monitoreo_ambiental">
+          <span>🌡️ Monitoreo Ambiental</span>
+          <span class="sdg-tag bg-sdg-3">ODS 3</span>
+        </button>
+        <button class="project-chip" data-project="huerta_escolar">
+          <span>🌱 Huerta Sostenible</span>
+          <span class="sdg-tag bg-sdg-13">ODS 13</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Dynamic Content Container -->
+    <main>
+
+      <!-- TAB 1: DASHBOARD TELEMETRÍA -->
+      <section id="tab-dashboard" class="tab-content active">
+        <div class="dashboard-grid">
+          
+          <!-- Hero Project Overview Banner -->
+          <div class="glass-panel hero-card">
+            <div class="hero-info">
+              <h2 id="project-title">Riego Inteligente y Eficiencia Hídrica</h2>
+              <p>Solución robótica automatizada para optimizar el consumo de agua en cultivos mediante microcontrolador ESP32, sensores de humedad/temperatura y servoválvulas de control remoto.</p>
+              <div class="hero-badge-group">
+                <span class="badge" id="project-sdg-tag">ODS 6 (Agua Limpia y Saneamiento) / ODS 13 (Acción por el Clima)</span>
+                <span class="badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Tecnología + Matemáticas + Ciencias</span>
+              </div>
+            </div>
+            <div>
+              <button class="btn-primary" onclick="window.telemetry.exportCSV()">📥 Exportar CSV Logs</button>
+            </div>
+          </div>
+
+          <!-- Sensor Telemetry Cards (Dynamically Rendered by TelemetryEngine) -->
+          <div id="metrics-cards-container" style="grid-column: span 12; display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem;">
+            <!-- JS inserts cards here -->
+          </div>
+
+          <!-- Chart.js Live Chart Container -->
+          <div class="glass-panel chart-container-card">
+            <div class="chart-header">
+              <h3>📈 Telemetría de Sensores en Tiempo Real</h3>
+              <div class="chart-actions">
+                <button class="btn-sm" onclick="window.telemetry.startLiveSimulation()">▶ Reanudar Simulación</button>
+                <button class="btn-sm" onclick="window.telemetry.initChart()">🔄 Reset Chart</button>
+              </div>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="telemetryChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Actuator Control Panel -->
+          <div class="glass-panel controls-card">
+            <h3>⚡ Control Remoto de Actuadores</h3>
+            
+            <div class="control-item">
+              <div class="control-label">
+                <span class="control-name">Bomba de Agua / Actuador Principal</span>
+                <span class="control-desc">Encendido/Apagado de relé o motor</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggle-actuator-1">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="control-item servo-slider-group" style="flex-direction: column; align-items: stretch;">
+              <div class="servo-slider-header">
+                <span>Servomotor SG90 (Válvula / Compuerta)</span>
+                <span id="servo-angle-val" style="color: var(--accent-cyan); font-weight: 700;">90°</span>
+              </div>
+              <input type="range" id="servo-angle-slider" min="0" max="180" value="90">
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+                <span>0° (Cerrado)</span>
+                <span>Ancho Pulso: <strong id="servo-pwm-calc" style="color:#fff;">1500 µs</strong></span>
+                <span>180° (Abierto)</span>
+              </div>
+            </div>
+
+            <div class="control-item">
+              <div class="control-label">
+                <span class="control-name">Zumbador / Alarma Sonora</span>
+                <span class="control-desc">Notificación sonora de emergencia</span>
+              </div>
+              <button class="btn-sm" style="background: var(--accent-rose); border: none; color: white;" onclick="window.telemetry.startLiveSimulation()">🔔 Probar Alarma</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 2: WOKWI SIMULATOR & ARCHITECTURE -->
+      <section id="tab-wokwi" class="tab-content">
+        <div class="wokwi-tab-container">
+          
+          <div class="glass-panel wokwi-frame-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2 id="wokwi-project-name">Simulación ESP32 en Wokwi</h2>
+                <p id="wokwi-project-desc" style="color: var(--text-muted); font-size: 0.9rem;">Ejecuta el código en C++ directamente dentro del microcontrolador simulado.</p>
+              </div>
+              <a href="https://wokwi.com" target="_blank" class="btn-primary" style="text-decoration: none;">🌐 Abrir en Wokwi.com</a>
+            </div>
+
+            <!-- Visual Architecture Diagram Card -->
+            <div style="background: rgba(0,0,0,0.4); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center;">
+              <h4 style="color: var(--accent-cyan); margin-bottom: 0.75rem;">📡 Diagrama de Arquitectura del Sistema (Hardware ↔ Web)</h4>
+              <div style="display: flex; justify-content: space-around; align-items: center; font-size: 0.85rem; flex-wrap: wrap; gap: 1rem;">
+                <div style="background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--accent-cyan);">
+                  🧠 <strong>ESP32 Wokwi</strong><br><small>Sensores DHT22 / PIR / ADC</small>
+                </div>
+                <div style="color: var(--accent-amber); font-weight: 700;">📡 WiFi / HTTP REST / JSON ➔</div>
+                <div style="background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--accent-emerald);">
+                  🌐 <strong>Interfaz Web JS</strong><br><small>Chart.js + Dashboard</small>
+                </div>
+                <div style="color: var(--accent-amber); font-weight: 700;">💾 LocalStorage ➔</div>
+                <div style="background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--accent-purple);">
+                  📊 <strong>Historial & CSV</strong><br><small>Análisis STEM & APA</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Code Preview Container -->
+            <div style="background: #000; padding: 1rem; border-radius: var(--radius-md); font-family: monospace; font-size: 0.85rem; color: #10b981; overflow-x: auto;">
+              <div style="color: #6b7280; margin-bottom: 0.5rem;">// Archivo: wokwi/riego_inteligente/sketch.ino</div>
+              <pre>
+#include &lt;WiFi.h&gt;
+#include &lt;ESP32Servo.h&gt;
+
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
+
+const int POT_PIN = 34; // Sensor de Humedad Analog
+const int SERVO_PIN = 18; // ServomotorSG90
+Servo servoVálvula;
+
+void setup() {
+  Serial.begin(115200);
+  servoVálvula.attach(SERVO_PIN);
+  WiFi.begin(ssid, password);
+  Serial.println("Conectando a WiFi Wokwi...");
+}
+
+void loop() {
+  int sensorVal = analogRead(POT_PIN);
+  float humedadPct = (sensorVal / 4095.0) * 100.0;
+  
+  if (humedadPct &lt; 40.0) {
+    servoVálvula.write(180); // Abrir Válvula
+  } else {
+    servoVálvula.write(0); // Cerrar Válvula
+  }
+  delay(1000);
+}
+              </pre>
+            </div>
+          </div>
+
+          <!-- Wokwi Setup Guide -->
+          <div class="glass-panel wokwi-instructions">
+            <h3>📋 Instrucciones para Simular</h3>
+            <div class="step-list">
+              <div class="step-item">
+                <span class="step-num">1</span>
+                <div><strong>Abre Wokwi.com:</strong> Selecciona un proyecto nuevo tipo "ESP32 DevKit v1".</div>
+              </div>
+              <div class="step-item">
+                <span class="step-num">2</span>
+                <div><strong>Copiar diagram.json:</strong> Copia la disposición de pines ubicada en la carpeta <code>wokwi/</code> del proyecto.</div>
+              </div>
+              <div class="step-item">
+                <span class="step-num">3</span>
+                <div><strong>Cargar sketch.ino:</strong> Pega el código Arduino C++ provisto.</div>
+              </div>
+              <div class="step-item">
+                <span class="step-num">4</span>
+                <div><strong>Iniciar Simulación:</strong> Haz clic en el botón verde "Play" ▶ para iniciar la transmisión.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 3: MÓDULO STEM (MATEMÁTICAS & CIENCIAS) -->
+      <section id="tab-stem" class="tab-content">
+        <div class="stem-grid">
+
+          <!-- Calc 1: ADC ESP32 -->
+          <div class="glass-panel calc-card">
+            <div class="calc-header">
+              <span style="font-size: 1.5rem;">📐</span>
+              <div>
+                <h3>Matemáticas: Conversión ADC 12-bits ESP32</h3>
+                <small style="color: var(--text-muted);">Conversión de lectura analógica (0 a 4095) a Voltaje y Porcentaje.</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Valor Analógico RAW (0 - 4095):</label>
+              <input type="number" id="input-adc-raw" class="form-control" value="2048" min="0" max="4095">
+            </div>
+
+            <button class="btn-primary" id="btn-calc-adc">Calcular Voltaje V(x)</button>
+
+            <div class="calc-result-box">
+              <span class="result-title">Resultados de Conversión:</span>
+              <div style="display: flex; justify-content: space-between;">
+                <div>Voltaje: <span class="result-val" id="res-adc-volt">1.65 V</span></div>
+                <div>Porcentaje: <span class="result-val" id="res-adc-pct">50.0 %</span></div>
+              </div>
+              <small style="color: var(--text-muted);">$V_{out} = \frac{RAW}{4095} \times 3.3V$</small>
+            </div>
+          </div>
+
+          <!-- Calc 2: Evapotranspiración & Ciencias -->
+          <div class="glass-panel calc-card">
+            <div class="calc-header">
+              <span style="font-size: 1.5rem;">🌱</span>
+              <div>
+                <h3>Ciencias Naturales: Evapotranspiración Hídrica</h3>
+                <small style="color: var(--text-muted);">Estimación del requerimiento de agua en cultivos (Fórmula Hargreaves).</small>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+              <div class="form-group">
+                <label>T° Max (°C):</label>
+                <input type="number" id="input-tmax" class="form-control" value="30">
+              </div>
+              <div class="form-group">
+                <label>T° Min (°C):</label>
+                <input type="number" id="input-tmin" class="form-control" value="18">
+              </div>
+              <div class="form-group">
+                <label>Humedad (%):</label>
+                <input type="number" id="input-hum" class="form-control" value="60">
+              </div>
+            </div>
+
+            <button class="btn-primary" id="btn-calc-et0">Calcular Demanda Hídrica (ET0)</button>
+
+            <div class="calc-result-box">
+              <span class="result-title">Resultados Agro-Climáticos:</span>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>ET0: <span class="result-val" id="res-et0-val">4.12 mm/día</span></div>
+                <div>Agua: <span class="result-val" id="res-water-demand">4.12 L/m²</span></div>
+              </div>
+              <div id="res-et-recom" style="color: var(--accent-emerald); font-weight: 700; font-size: 0.85rem;">Riego Moderado / Suficiente 🌿</div>
+            </div>
+          </div>
+
+          <!-- Calc 3: Calidad de Aire -->
+          <div class="glass-panel calc-card" style="grid-column: span 12;">
+            <div class="calc-header">
+              <span style="font-size: 1.5rem;">🍃</span>
+              <div>
+                <h3>Ciencias Naturales: Calidad del Aire (AQI) y Sensación Térmica</h3>
+                <small style="color: var(--text-muted);">Evaluación del confort en aulas y entornos comunitarios.</small>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label>Temperatura (°C):</label>
+                <input type="number" id="input-air-temp" class="form-control" value="28">
+              </div>
+              <div class="form-group">
+                <label>Humedad Relativa (%):</label>
+                <input type="number" id="input-air-hum" class="form-control" value="65">
+              </div>
+              <div class="form-group">
+                <label>Concentración CO2/PPM:</label>
+                <input type="number" id="input-air-ppm" class="form-control" value="650">
+              </div>
+            </div>
+
+            <button class="btn-primary" id="btn-calc-air">Evaluar Calidad de Aire</button>
+
+            <div class="calc-result-box">
+              <div style="display: flex; justify-content: space-around;">
+                <div>Índice de Calor: <span class="result-val" id="res-heat-index">30.2 °C</span></div>
+                <div>Categoría AQI: <span class="result-val" id="res-aqi-status" style="color: var(--accent-emerald);">Excelente 🍃</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 4: ROLES & BITÁCORA DE INGENIERÍA ABP -->
+      <section id="tab-bitacora" class="tab-content">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          
+          <div class="glass-panel" style="padding: 1.5rem;">
+            <h2>👥 Matriz de Roles del Equipo de Ingeniería (4-5 Estudiantes)</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Asignación de responsabilidades para el proyecto ABP AUTO-SOLUTIONS.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+              <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⚙️</div>
+                <h4 style="color: var(--accent-cyan);">Ingeniero de Hardware</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Responsable de circuitos, sensores en Wokwi, ESP32 y cableado.</p>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">💻</div>
+                <h4 style="color: var(--accent-blue);">Ingeniero de Software</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Responsable del código C++ Arduino, lógica de bucles y calibración.</p>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌐</div>
+                <h4 style="color: var(--accent-emerald);">Desarrollador Web</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Responsable del Dashboard HTML/CSS/JS, Chart.js y estilos glassmorphism.</p>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">📝</div>
+                <h4 style="color: var(--accent-amber);">Documentador APA</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Responsable de la redacción del informe científico y normas APA 7.</p>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🎤</div>
+                <h4 style="color: var(--accent-purple);">Líder de Innovación & ODS</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Coordinación general, articulación con ODS y presentación oral.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-panel" style="padding: 1.5rem;">
+            <h2>📋 Bitácora de Ingeniería (9 Pasos ABP)</h2>
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Paso</th>
+                  <th>Etapa del Proceso</th>
+                  <th>Actividad Realizada</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Paso 1</strong></td>
+                  <td>Identificar el Problema</td>
+                  <td>Selección del problema comunitario y conexión con ODS 3, 6, 9, 11 y 13.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 2</strong></td>
+                  <td>Formar Equipos</td>
+                  <td>Asignación de los 5 roles de ingeniería y nombres de proyecto.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 3</strong></td>
+                  <td>Investigar y Planificar</td>
+                  <td>Elección de sensores (DHT22, HC-SR04, POT) y microcontrolador ESP32.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 4</strong></td>
+                  <td>Diseñar el Prototipo</td>
+                  <td>Creación del diagrama de arquitectura y esquemático Wokwi.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 5</strong></td>
+                  <td>Construir y Programar</td>
+                  <td>Desarrollo del código C++ en Wokwi y Dashboard en HTML/CSS/JS.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 6</strong></td>
+                  <td>Probar y Recolectar Datos</td>
+                  <td>Pruebas de latencia, gráficos en tiempo real y cálculo estadístico STEM.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 7</strong></td>
+                  <td>Mejorar el Diseño</td>
+                  <td>Optimización del consumo energético y refinamiento de la interfaz web.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 8</strong></td>
+                  <td>Preparar Presentación</td>
+                  <td>Redacción de informe APA 7 y diseño del Stand para Feria STEM.</td>
+                  <td><span class="status-ok">✔ Completado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paso 9</strong></td>
+                  <td>Feria STEM de Innovación</td>
+                  <td>Exhibición interactiva, demostración en vivo y evaluación por rúbrica.</td>
+                  <td><span class="status-ok">◐ Validación final pendiente</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 5: DOCUMENTACIÓN APA 7MA EDICIÓN -->
+      <section id="tab-apa" class="tab-content">
+        <div class="glass-panel doc-viewer-card">
+          <h1>AUTO-SOLUTIONS: Sistema Robótico Basado en ESP32 con Interfaz Web Sostenible</h1>
+          <p style="color: var(--accent-cyan); font-weight: 600;">Artículo de Investigación Científica - Formato APA 7ma Edición</p>
+          <p><strong>Autores:</strong> Equipo #1 de Ingeniería Robótica (11° Grade, 2026)<br>
+          <strong>Institución:</strong> Área de Tecnología, Matemáticas y Ciencias Naturales</p>
+
+          <h2>Resumen</h2>
+          <p>El presente proyecto aborda el diseño, simulación e implementación de un sistema robótico inteligente basado en el microcontrolador ESP32 integrado con una interfaz web en tiempo real desarrollada en HTML5, CSS3, JavaScript y Chart.js. Mediante la metodología de Aprendizaje Basado en Proyectos (ABP) y el enfoque STEM, se desarrolló una solución automatizada para el monitoreo ambiental y gestión eficiente de recursos en la comunidad escolar, alineada con los Objetivos de Desarrollo Sostenible (ODS 6, 9, 11 y 13). Los resultados evidencian la viabilidad de la telemetría inalámbrica simulada a través de Wokwi, incluyendo telemetría simulada y mecanismos de control que aún deben ser validados mediante pruebas documentadas.</p>
+
+          <h2>1. Introducción</h2>
+          <p>La automatización de procesos mediante la Robótica e Internet de las Cosas (IoT) representa uno de los pilares fundamentales de la Cuarta Revolución Industrial. Sin embargo, su verdadero valor radica en la capacidad de resolver problemas reales comunitarios bajo una perspectiva ética y ambientalmente sostenible. La pregunta orientadora planteada fue: <em>¿Cómo podemos integrar un sistema robótico con una interfaz web para crear una solución automatizada que aborde un problema real de nuestra comunidad, considerando las implicaciones éticas y alineándonos con los ODS?</em></p>
+
+          <h2>2. Metodología</h2>
+          <p>Se siguió el Proceso de Diseño en Ingeniería en 9 etapas. El hardware simulado en Wokwi incluyó un microcontrolador ESP32, sensores DHT22 (temperatura/humedad), potenciómetros analógicos (simulación de humedad del suelo) y actuadores como servomotores SG90 y LEDs. La interfaz web utiliza un diseño glassmorphism responsivo con almacenamiento persistente en <code>localStorage</code> y calculadoras estadísticas STEM integradas.</p>
+
+          <div class="apa-citation-box">
+            <strong>Cita sugerida en norma APA:</strong><br>
+            Equipo de Ingeniería STEM. (2026). <em>AUTO-SOLUTIONS: Ingeniería de Sistemas Robóticos con Interfaz Web y Enfoque ODS</em>. Documentación Técnica del Proyecto, Institución Educativa.
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: RÚBRICA DE EVALUACIÓN AUTOMATIZADA -->
+      <section id="tab-rubrica" class="tab-content">
+        <div class="glass-panel" style="padding: 1.5rem;">
+          <h2>🏆 Rúbrica Oficial de Evaluación (Total: 40 Puntos / Calificación: Pendiente)</h2>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">Criterios de evaluación del proyecto AUTO-SOLUTIONS.</p>
+
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Criterio de Evaluación</th>
+                <th>Excelente (4 pts)</th>
+                <th>Bueno (3 pts)</th>
+                <th>Aceptable (2 pts)</th>
+                <th>Necesita Mejorar (1 pt)</th>
+                <th>Puntaje</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Funcionalidad del Sistema</strong></td>
+                <td>El sistema simulado funciona perfectamente. Robot y web integrados sin errores.</td>
+                <td>Funciona con mínimos errores. Módulos integrados.</td>
+                <td>Funciona parcialmente.</td>
+                <td>Errores graves o no funciona.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>2. Uso de Sensores y Actuadores</strong></td>
+                <td>Múltiples sensores y actuadores usados correctamente y de forma creativa.</td>
+                <td>Sensores y actuadores usados correctamente.</td>
+                <td>Uso básico con algunos errores.</td>
+                <td>Incorrecto o nulo.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>3. Comunicación WiFi</strong></td>
+                <td>Comunicación WiFi simulada correctamente. Envía y recibe datos en tiempo real.</td>
+                <td>WiFi funcional.</td>
+                <td>Errores de conexión menores.</td>
+                <td>Sin comunicación.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>4. Interfaz Web</strong></td>
+                <td>Interfaz atractiva glassmorphism, responsive, con gráficos Chart.js y login.</td>
+                <td>Interfaz clara y funcional.</td>
+                <td>Interfaz básica.</td>
+                <td>Interfaz confusa.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>5. Gestión de Datos</strong></td>
+                <td>Gestión eficiente en localStorage/JSON. Incluye historial, estadísticos y CSV.</td>
+                <td>Gestión correcta de datos.</td>
+                <td>Gestión limitada.</td>
+                <td>Sin gestión de datos.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>6. Documentación (APA 7)</strong></td>
+                <td>Documentación completa en formato APA 7 con máxima claridad.</td>
+                <td>Documentación adecuada APA.</td>
+                <td>Básica con errores.</td>
+                <td>Incompleta.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>7. Trabajo en Equipo</strong></td>
+                <td>Participación activa de los 5 roles con excelente comunicación.</td>
+                <td>Buena comunicación y roles claros.</td>
+                <td>Participación parcial.</td>
+                <td>Conflictos o inasistencia.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>8. Reflexión Ética y ODS</strong></td>
+                <td>Reflexión profunda sobre ética y sostenibilidad articulada con ODS.</td>
+                <td>Reflexión adecuada con ODS.</td>
+                <td>Reflexión básica.</td>
+                <td>Sin reflexión.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>9. Presentación Oral</strong></td>
+                <td>Demostración clara, organizada y profesional con demostración en vivo.</td>
+                <td>Presentación organizada.</td>
+                <td>Presentación básica.</td>
+                <td>Incompleta o confusa.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+              <tr>
+                <td><strong>10. Utilidad Comunitaria</strong></td>
+                <td>Resuelve un problema real comunitario de manera sostenible y ética.</td>
+                <td>Resuelve problema real.</td>
+                <td>Aborda problema de forma básica.</td>
+                <td>No resuelve problema.</td>
+                <td><strong style="color: var(--accent-emerald);">4 / 4</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-emerald); padding: 1rem; border-radius: var(--radius-md); text-align: center; margin-top: 1.5rem;">
+            <h3 style="color: var(--accent-emerald);">PUNTUACIÓN: pendiente de evaluación docente</h3>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>Proyecto AUTO-SOLUTIONS | Tecnología, Matemáticas y Ciencias Naturales 11° (Tercer Periodo 2026)</p>
+      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem;">Construido con HTML5, CSS Vanilla, JavaScript, Chart.js, Wokwi Simulator & Metodología ABP / ODS</p>
+    </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/stem_calculator.js"></script>
+  <script src="js/telemetry.js"></script>
+  <script src="js/app.js"></script>
+
+<!-- TLH-11BLUE-SPRINT-LINK -->
+<a href="/guides/grade-11/blue-engineering-sprint.html" style="position:fixed;right:14px;bottom:14px;z-index:99999;padding:10px 13px;border-radius:999px;background:#0d253f;color:white;text-decoration:none;font:800 12px Segoe UI,Arial;box-shadow:0 8px 24px rgba(0,0,0,.25)">📘 Sprint Guide</a>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaSmart - Dashboard ODS 6</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌱 AquaSmart: Riego Sostenible</h1>
+      <p>Monitoreo IoT en Tiempo Real | ODS 6 & ODS 13</p>
+    </header>
+
+    <div class="metrics-grid">
+      <div class="card">
+        <h3>Temperatura</h3>
+        <p class="value" id="tempVal">-- °C</p>
+      </div>
+      <div class="card">
+        <h3>Humedad Aire</h3>
+        <p class="value" id="humAireVal">-- %</p>
+      </div>
+      <div class="card">
+        <h3>Humedad Suelo</h3>
+        <p class="value" id="humSueloVal">-- %</p>
+      </div>
+      <div class="card">
+        <h3>Estado Válvula</h3>
+        <p class="value status" id="estadoVal">CERRADA</p>
+        <button id="btnToggle" onclick="toggleRiego()">Abrir / Cerrar</button>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <canvas id="sensorChart"></canvas>
+    </div>
+  </div>
+  <script src="app.js"></script>
+<div style="max-width:900px;margin:20px auto;padding:16px;border-radius:12px;background:#fff8e5;border-left:5px solid #d49c1d;font-family:Segoe UI,Arial">
+<b>Project status:</b> the submitted HTML references <code>styles.css</code> and <code>app.js</code>, but those implementation files were not provided with working content. This page is therefore evidence of a dashboard structure, not a completed application.
+</div></body>
+</html>

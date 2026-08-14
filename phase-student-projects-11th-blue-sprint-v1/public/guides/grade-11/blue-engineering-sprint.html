@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11th Blue · Engineering Sprint 1</title>
+<style>
+:root{--navy:#0d253f;--blue:#176ca1;--green:#15805c;--gold:#e0ae38;--line:#d9e6ef;--ink:#25394b}
+*{box-sizing:border-box}body{margin:0;background:#f4f8fb;color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.55}.wrap{max-width:1100px;margin:auto;padding:24px 15px 70px}
+.hero{padding:40px;border-radius:28px;color:#fff;background:radial-gradient(circle at 90% 10%,#ffffff18,transparent 25%),linear-gradient(135deg,#0d253f,#176ca1 62%,#118578)}.hero h1{font-size:clamp(40px,7vw,70px);line-height:1;margin:8px 0}.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#ffffff14;border:1px solid #ffffff35;font-weight:900}.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.buttons a{background:#fff;color:#0d253f;text-decoration:none;padding:10px 14px;border-radius:11px;font-weight:900}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:23px;margin-top:18px}.timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.t{padding:13px;border-radius:13px;background:#eef6ff}.t b{display:block;color:var(--navy)}.pipeline{display:flex;gap:7px;flex-wrap:wrap;align-items:center;font-weight:900}.pipeline span{background:#eef3f7;padding:8px 11px;border-radius:999px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.box{background:#f8fbfd;border:1px solid var(--line);border-radius:15px;padding:17px}.deliverable{background:#edfff7;border-left:6px solid var(--green)}.phone{background:#fff8e7;border-left:6px solid var(--gold)}.template{background:#102536;color:#eef8ff;padding:18px;border-radius:14px;white-space:pre-wrap;font-family:ui-monospace,Consolas,monospace}.check li{margin:8px 0}@media(max-width:800px){.timeline{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}}@media(max-width:500px){.timeline{grid-template-columns:1fr}}
+</style></head><body><main class="wrap">
+<section class="hero"><span class="pill">11TH BLUE · CYCLE 4 · 60 MINUTES</span><h1>Engineering Project Review & Sprint 1</h1>
+<p><b>Class objective:</b> identify the real current stage of the team project and complete the next engineering milestone for a robotic system that integrates sensors, actuators, ESP32/WiFi and a web monitoring/control interface.</p>
+<div class="buttons"><a href="/students/grade/11/blue">🌟 Open 11th Blue Projects</a><a href="/guides/grade-11/cycle-4-dynamic-web-interface-dashboard.html">Open Cycle 4 Guide</a></div></section>
+
+<section class="card"><h2>1. Find your real stage</h2><div class="pipeline"><span>IDEA</span>→<span>ARCHITECTURE</span>→<span>PROTOTYPE</span>→<span>SIMULATION</span>→<span>INTEGRATION</span>→<span>TESTING</span>→<span>DOCUMENTATION</span></div>
+<p>Do not say “finished” because you created folders or a nice interface. Evidence determines the stage.</p></section>
+
+<section class="card"><h2>2. One-hour class plan</h2><div class="timeline">
+<div class="t"><b>0–5</b>Open your team page.</div><div class="t"><b>5–12</b>Read what is already completed.</div><div class="t"><b>12–22</b>Define one final problem and solution.</div><div class="t"><b>22–35</b>Draw system architecture.</div><div class="t"><b>35–45</b>Design input/process/output + dashboard.</div><div class="t"><b>45–55</b>Write 3 tests and next tasks.</div><div class="t"><b>55–60</b>60-second team pitch.</div>
+</div></section>
+
+<section class="grid">
+<article class="card"><h2>3. Architecture you must be able to explain</h2>
+<div class="template">REAL PROBLEM
+      ↓
+SENSOR / INPUT
+      ↓
+ESP32
+      ↓
+PROCESS / CONDITION
+      ↓
+ACTUATOR / OUTPUT
+      ↓
+WiFi / DATA
+      ↓
+WEB DASHBOARD
+      ↓
+USER DECISION / MONITORING</div></article>
+<article class="card"><h2>4. Minimum technical decisions</h2><ul class="check">
+<li>Problem and target user</li><li>ESP32</li><li>At least one justified sensor</li><li>At least one justified actuator</li><li>Decision rule: IF condition → action</li><li>What data will travel over WiFi</li><li>What the web dashboard must show</li><li>ODS relationship</li></ul></article>
+</section>
+
+<section class="card phone"><h2>📱 No computer lab? The sprint still works.</h2>
+<p>With one phone per group, use the public project page only as reference. The actual deliverable can be written in a notebook or shared Google Doc. Do not waste the hour trying to code an entire Wokwi simulation from the phone.</p></section>
+
+<section class="card deliverable"><h2>✅ Deliverable at the end of the hour: Project Sprint Card v1</h2>
+<div class="template">PROJECT NAME:
+TEAM:
+
+1. REAL PROBLEM:
+2. TARGET USER:
+3. FINAL SOLUTION:
+4. SENSOR(S):
+5. ACTUATOR(S):
+6. ESP32 DECISION RULE:
+7. DATA SENT BY WiFi:
+8. WEB DASHBOARD MUST SHOW:
+9. ODS:
+10. THREE TESTS:
+   T1:
+   T2:
+   T3:
+11. NEXT THREE TASKS:
+   A:
+   B:
+   C:</div></section>
+
+<section class="card"><h2>Teacher checkpoint</h2><ul class="check">
+<li>☐ The team selected ONE concrete problem.</li><li>☐ The sensor and actuator have a reason to exist.</li><li>☐ They can explain Input → Process → Output.</li><li>☐ They drew the dashboard before coding it.</li><li>☐ They wrote at least three test cases.</li><li>☐ Their claimed progress matches actual evidence.</li></ul></section>
+</main></body></html>

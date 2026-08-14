@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentación AUTO-SOLUTIONS | Robótica & Web ESP32</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Presentation Specific Styles */
+    body {
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .slide-deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90%;
+      max-width: 1200px;
+      height: 82vh;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95) translateY(20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      background: rgba(17, 24, 39, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+
+    .slide-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.1);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-y: auto;
+    }
+
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Presentation Controls */
+    .controls-nav {
+      position: fixed;
+      bottom: 25px;
+      right: 40px;
+      display: flex;
+      gap: 0.75rem;
+      z-index: 1000;
+    }
+
+    .btn-nav {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: all 0.2s;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    .btn-nav:hover {
+      background: var(--accent-cyan);
+      color: black;
+      transform: translateY(-2px);
+    }
+
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 1001;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 16.66%;
+      background: linear-gradient(to right, var(--accent-cyan), var(--accent-blue));
+      transition: width 0.4s ease;
+    }
+
+    /* Team Cards Layout */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .member-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s;
+    }
+
+    .member-card:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.08);
+      transform: translateY(-3px);
+    }
+
+    .member-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .member-info h4 {
+      font-size: 1.05rem;
+      color: var(--text-main);
+    }
+
+    .member-info p {
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progress-bar"></div>
+  </div>
+
+  <div class="slide-deck">
+
+    <!-- SLIDE 1: PORTADA & INTEGRANTES -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-header">
+        <div class="brand">
+          <div class="brand-icon">🤖</div>
+          <div class="brand-text">
+            <h1>AUTO-SOLUTIONS</h1>
+            <span>Feria STEM de Innovación 2026</span>
+          </div>
+        </div>
+        <span class="slide-tag">Diapositiva 1 / 6</span>
+      </div>
+
+      <div class="slide-body">
+        <div style="text-align: center; margin-bottom: 1rem;">
+          <h2 style="font-size: 2.25rem; background: linear-gradient(to right, #fff, var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Ingeniería de Sistemas Robóticos con Interfaz Web
+          </h2>
+          <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 800px; margin: 0.5rem auto;">
+            Solución Automatizada Integrada (ESP32 + Wokwi + HTML5/JS + ODS) para la Comunidad Escolar.
+          </p>
+          <div style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem; margin-top: 0.25rem;">
+            Tecnología 11° Grade (Tercer Periodo 2026)
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.1rem; color: var(--accent-amber); margin-bottom: 0.5rem; text-align: center;">
+          👥 Equipo de Ingeniería Robótica (Integrantes):
+        </h3>
+
+        <div class="team-grid">
+          <div class="member-card">
+            <div class="member-avatar">JB</div>
+            <div class="member-info">
+              <h4>Juan</h4>
+              <p>⚙️ Ingeniero de Hardware</p>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">MA</div>
+            <div class="member-info">
+              <h4>Mateo Arrieta</h4>
+              <p>💻 Ingeniero de Software</p>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">LC</div>
+            <div class="member-info">
+              <h4>Luis</h4>
+              <p>🌐 Desarrollador Web</p>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">JT</div>
+            <div class="member-info">
+              <h4>Jose</h4>
+              <p>📝 Documentador APA 7</p>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">CB</div>
+            <div class="member-info">
+              <h4>Camilo Brito</h4>
+              <p>🎤 Líder de Innovación & ODS</p>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar">SM</div>
+            <div class="member-info">
+              <h4>Santiago</h4>
+              <p>🔬 Coordinador STEM & QA</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Presiona las flechas ➔ o la barra espaciadora para avanzar</span>
+        <span>Presentación para el Docente de Tecnología</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: PREGUNTA ORIENTADORA Y PROBLEMA -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <h2>🔍 Paso 1: El Problema Comunitario y los ODS</h2>
+        <span class="slide-tag">Diapositiva 2 / 6</span>
+      </div>
+
+      <div class="slide-body">
+        <div style="background: rgba(6, 182, 212, 0.08); border-left: 4px solid var(--accent-cyan); padding: 1.25rem; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+          <h3 style="color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 0.5rem;">❓ Pregunta Orientadora:</h3>
+          <p style="font-size: 1.05rem; font-style: italic; color: #e5e7eb;">
+            "¿Cómo podemos integrar un sistema robótico con una interfaz web para crear una solución automatizada que aborde un problema real de nuestra comunidad, considerando las implicaciones éticas y ambientales, y alineándonos con los Objetivos de Desarrollo Sostenible (ODS)?"
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+          <div class="glass-panel" style="padding: 1.25rem;">
+            <h4 style="color: var(--accent-emerald); margin-bottom: 0.5rem;">🌱 Impacto Ambiental y Social:</h4>
+            <ul style="margin-left: 1.25rem; font-size: 0.95rem; color: var(--text-muted);">
+              <li>Pérdida ineficiente de agua en el riego de plantas del colegio.</li>
+              <li>Falta de control térmico y de calidad de aire en las aulas de clase.</li>
+              <li>Necesidad de sistemas automáticos de alerta de intrusos y reciclaje.</li>
+            </ul>
+          </div>
+
+          <div class="glass-panel" style="padding: 1.25rem;">
+            <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">🎯 Alineación con los ODS:</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+              <span class="badge" style="background: var(--sdg-3); color: #fff;">ODS 3: Salud y Bienestar</span>
+              <span class="badge" style="background: var(--sdg-6); color: #fff;">ODS 6: Agua Limpia</span>
+              <span class="badge" style="background: var(--sdg-9); color: #fff;">ODS 9: Industria e Innovación</span>
+              <span class="badge" style="background: var(--sdg-11); color: #fff;">ODS 11: Ciudades Sostenibles</span>
+              <span class="badge" style="background: var(--sdg-13); color: #fff;">ODS 13: Acción por el Clima</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Metodología ABP (Aprendizaje Basado en Proyectos)</span>
+        <span>AUTO-SOLUTIONS 2026</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: ARQUITECTURA DEL SISTEMA ROBOT-WEB -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <h2>🛠️ Arquitectura del Sistema (Robot ESP32 ↔ Web)</h2>
+        <span class="slide-tag">Diapositiva 3 / 6</span>
+      </div>
+
+      <div class="slide-body">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: center;">
+          
+          <div class="glass-panel" style="padding: 1.5rem; border-top: 4px solid var(--accent-cyan);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📡</div>
+            <h3 style="color: var(--accent-cyan); font-size: 1.1rem;">1. Hardware & Wokwi</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+              Microcontrolador <strong>ESP32 DevKit v1</strong>, Sensores analógicos/digitales (DHT22, PIR, HC-SR04, Potenciómetro) y actuadores (Servo SG90, LED, Buzzer).
+            </p>
+          </div>
+
+          <div class="glass-panel" style="padding: 1.5rem; border-top: 4px solid var(--accent-blue);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🌐</div>
+            <h3 style="color: var(--accent-blue); font-size: 1.1rem;">2. Comunicación WiFi</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+              Conexión WiFi simulada enviando tramas de datos <strong>JSON</strong> cada 2000 ms a la interfaz web con latencia inferior a 200 ms.
+            </p>
+          </div>
+
+          <div class="glass-panel" style="padding: 1.5rem; border-top: 4px solid var(--accent-emerald);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
+            <h3 style="color: var(--accent-emerald); font-size: 1.1rem;">3. Dashboard Web SPA</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+              Interfaz responsiva HTML5/CSS Glassmorphic, gráficos en tiempo real con <strong>Chart.js</strong> y almacenamiento local <code>localStorage</code>.
+            </p>
+          </div>
+
+        </div>
+
+        <div style="background: rgba(0,0,0,0.4); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center; margin-top: 1rem;">
+          <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">⚡ Control Bidireccional Remoto:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-main);">
+            El usuario puede visualizar las variables físicas en vivo y pulsar interruptores en la pantalla web para accionar válvulas o alarmas en el robot de forma remota.
+          </p>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Integración Hardware C++ ↔ Software JavaScript</span>
+        <span>AUTO-SOLUTIONS 2026</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: DEMOSTRACIÓN DE LOS 5 MÓDULOS -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <h2>💧 Demostración de los 5 Módulos de Proyecto</h2>
+        <span class="slide-tag">Diapositiva 4 / 6</span>
+      </div>
+
+      <div class="slide-body">
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
+          
+          <div class="glass-panel" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 2rem;">💧</div>
+            <h4 style="font-size: 0.9rem; color: var(--accent-cyan);">Riego Inteligente</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Control automático de servoválvula según humedad del suelo.</p>
+          </div>
+
+          <div class="glass-panel" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 2rem;">🔐</div>
+            <h4 style="font-size: 0.9rem; color: var(--accent-amber);">Seguridad PIR</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Detección de intrusos con ultrasonido y alarma sonora.</p>
+          </div>
+
+          <div class="glass-panel" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 2rem;">♻️</div>
+            <h4 style="font-size: 0.9rem; color: var(--accent-emerald);">Reciclaje</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Conteo de objetos y separación automatizada por servomotor.</p>
+          </div>
+
+          <div class="glass-panel" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 2rem;">🌡️</div>
+            <h4 style="font-size: 0.9rem; color: var(--accent-rose);">Aire & Clima</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Monitoreo DHT22 de aulas y encendido de ventilación.</p>
+          </div>
+
+          <div class="glass-panel" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 2rem;">🌱</div>
+            <h4 style="font-size: 0.9rem; color: var(--accent-purple);">Huerta Sostenible</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Registro multifactorial de radiación solar y humedad.</p>
+          </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+          <a href="index.html" target="_blank" class="btn-primary" style="display: inline-flex; text-decoration: none; padding: 0.85rem 2rem; font-size: 1rem;">
+            🖥️ Abrir Dashboard Web Interactivo en Vivo
+          </a>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>5 Soluciones Automatizadas para la Escuela</span>
+        <span>AUTO-SOLUTIONS 2026</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: INTEGRACIÓN STEM (MATEMÁTICAS & CIENCIAS) -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <h2>🧮 Integración STEM: Matemáticas y Ciencias Naturales</h2>
+        <span class="slide-tag">Diapositiva 5 / 6</span>
+      </div>
+
+      <div class="slide-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          
+          <div class="glass-panel" style="padding: 1.5rem;">
+            <h3 style="color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 0.75rem;">➕ Aplicación de Matemáticas:</h3>
+            <ul style="font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.5rem;">
+              <li><strong>Conversión ADC 12-Bits:</strong> $V_{out} = \frac{\text{RAW}}{4095} \times 3.3\,\text{V}$</li>
+              <li><strong>Estadística Descriptiva:</strong> Cálculo en tiempo real de la media ($\mu$) y desviación estándar ($\sigma$) de las lecturas.</li>
+              <li><strong>Geometría PWM:</strong> Conversión de distancias a ancho de pulso microsegundos ($500\,\mu s - 2500\,\mu s$) para el Servomotor SG90.</li>
+            </ul>
+          </div>
+
+          <div class="glass-panel" style="padding: 1.5rem;">
+            <h3 style="color: var(--accent-emerald); font-size: 1.1rem; margin-bottom: 0.75rem;">🔬 Aplicación de Ciencias Naturales:</h3>
+            <ul style="font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.5rem;">
+              <li><strong>Evapotranspiración ($ET_0$):</strong> Modelo agroclimático Hargreaves para calcular la demanda hídrica en Litros por $m^2$.</li>
+              <li><strong>Calidad del Aire & Confort:</strong> Cálculo de la sensación térmica (*Heat Index*) y niveles aceptables de $CO_2$ en PPM.</li>
+              <li><strong>Ciclo del Agua y Energía:</strong> Reducción directa del desperdicio de agua y ahorro de energía eléctrica.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Transversalidad STEM en Grado 11°</span>
+        <span>AUTO-SOLUTIONS 2026</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: CONCLUSIÓN Y RÚBRICA -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <h2>🏆 Conclusiones y Evaluación por Rúbrica</h2>
+        <span class="slide-tag">Diapositiva 6 / 6</span>
+      </div>
+
+      <div class="slide-body">
+        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-emerald); padding: 1.25rem; border-radius: var(--radius-md); text-align: center;">
+          <h3 style="color: var(--accent-emerald); font-size: 1.5rem;">PUNTUACIÓN OBTENIDA: Pendiente (Pendiente de evaluación)</h3>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.25rem;">
+            El proyecto cumple rigurosamente con los 10 criterios de la rúbrica oficial (Funcionalidad, Sensores/Actuadores, WiFi, Interfaz Web, Datos, APA 7, Trabajo en Equipo, ODS, Presentación y Utilidad).
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+          <div class="glass-panel" style="padding: 1.25rem;">
+            <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">📑 Entregables Completados:</h4>
+            <ul style="font-size: 0.85rem; color: var(--text-muted);">
+              <li>✔ Dashboard Web Interactivo SPA ([index.html](index.html)).</li>
+              <li>✔ Informe de Investigación Norma APA 7 ([docs/documentacion_apa.md](docs/documentacion_apa.md)).</li>
+              <li>✔ Bitácora de Ingeniería y Roles ([docs/bitacora_ingenieria.md](docs/bitacora_ingenieria.md)).</li>
+              <li>✔ Códigos ESP32 C++ para Wokwi ([wokwi/](wokwi/)).</li>
+            </ul>
+          </div>
+
+          <div class="glass-panel" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">¡Gracias por su Atención, Profesor!</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Estamos listos para la demostración en vivo.</p>
+            <a href="index.html" class="btn-primary" style="margin-top: 0.75rem; text-decoration: none;">Ir al Sistema Robótico ➔</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Feria STEM Auto-Solutions 2026</span>
+        <span>Grado 11° Blue</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Slide Navigation Controls -->
+  <div class="controls-nav">
+    <button class="btn-nav" id="btn-prev" onclick="changeSlide(-1)">◀</button>
+    <button class="btn-nav" id="btn-next" onclick="changeSlide(1)">▶</button>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+
+    function changeSlide(direction) {
+      const prevSlide = document.getElementById(`slide-${currentSlide}`);
+      currentSlide += direction;
+
+      if (currentSlide < 1) currentSlide = 1;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
+
+      const nextSlide = document.getElementById(`slide-${currentSlide}`);
+
+      if (prevSlide && nextSlide && prevSlide !== nextSlide) {
+        prevSlide.classList.remove('active');
+        nextSlide.classList.add('active');
+      }
+
+      // Update Progress Bar
+      const pct = (currentSlide / totalSlides) * 100;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+    }
+
+    // Keyboard Shortcuts Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      }
+    });
+  </script>
+</body>
+</html>
