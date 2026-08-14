@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Proyecto de Análisis de Datos para la Mejora de Nuestra Comunidad</title>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+:root{
+    --primary:#2563eb;
+    --secondary:#0ea5e9;
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#dc2626;
+    --background:#f1f5f9;
+    --card:#ffffff;
+    --text:#1e293b;
+    --border:#e2e8f0;
+}
+
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+
+body{
+    background:var(--background);
+    color:var(--text);
+    line-height:1.6;
+}
+
+
+header{
+    background:linear-gradient(135deg,#2563eb,#0ea5e9);
+    color:white;
+    padding:50px 20px;
+    text-align:center;
+}
+
+
+header h1{
+    font-size:2.4rem;
+    margin-bottom:15px;
+}
+
+
+header p{
+    max-width:900px;
+    margin:auto;
+    font-size:1.1rem;
+}
+
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:30px auto;
+}
+
+
+.card{
+    background:var(--card);
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+
+.card h2{
+    color:var(--primary);
+    margin-bottom:15px;
+}
+
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+
+.badge{
+    display:inline-block;
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding:8px 14px;
+    border-radius:20px;
+    margin:5px;
+    font-size:.9rem;
+}
+
+
+.integrantes{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+    margin-top:20px;
+}
+
+
+.persona{
+    background:white;
+    color:#2563eb;
+    padding:10px 18px;
+    border-radius:25px;
+    font-weight:bold;
+}
+
+
+form{
+    display:grid;
+    gap:15px;
+}
+
+
+input,select,button{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    font-size:1rem;
+}
+
+
+button{
+    background:var(--primary);
+    color:white;
+    cursor:pointer;
+    border:none;
+    transition:.3s;
+}
+
+
+button:hover{
+    background:#1d4ed8;
+}
+
+
+.cards-data{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
+
+
+.student-card{
+    border-left:5px solid var(--primary);
+    background:#f8fafc;
+    padding:15px;
+    border-radius:12px;
+}
+
+
+.metric{
+    background:#eff6ff;
+    padding:20px;
+    text-align:center;
+    border-radius:15px;
+}
+
+
+.metric strong{
+    display:block;
+    font-size:2rem;
+    color:var(--primary);
+}
+
+
+.chart-container{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+}
+
+
+canvas{
+    max-height:350px;
+}
+
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+}
+
+
+.step{
+    background:#f8fafc;
+    padding:20px;
+    border-radius:15px;
+    border-top:5px solid var(--secondary);
+}
+
+
+footer{
+    text-align:center;
+    padding:25px;
+    background:#0f172a;
+    color:white;
+}
+
+
+@media(max-width:600px){
+
+header h1{
+    font-size:1.7rem;
+}
+
+.container{
+    width:95%;
+}
+
+}
+
+</style>
+
+<style>
+.tlh-showcase-bar{max-width:1200px;margin:12px auto;display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 14px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.tlh-showcase-bar a,.tlh-showcase-authors{padding:9px 14px;border-radius:999px;font-weight:800;text-decoration:none}
+.tlh-showcase-bar a{background:#102b46;color:#fff;border:1px solid #3182a7}
+.tlh-showcase-authors{background:#edf7ff;color:#102b46;border:1px solid #c9e2f3;font-size:.88rem}
+</style></head>
+
+
+<body><div class="tlh-showcase-bar"><a href="/students/grade/8/blue">← 8th Blue Projects</a><div class="tlh-showcase-authors">Created by: Thomas · Samuel · Alejandro · Samuel</div></div>
+
+
+<header>
+
+<h1>
+Proyecto de Análisis de Datos para la Mejora de Nuestra Comunidad
+</h1>
+
+<p>
+Aplicación de Tecnología, Matemáticas, Ciencias Naturales e Inteligencia Artificial para resolver problemas reales
+</p>
+
+
+<div class="integrantes">
+
+<div class="persona">Thomas</div>
+<div class="persona">Samuel</div>
+<div class="persona">Alejandro</div>
+<div class="persona">Samuel</div>
+
+</div>
+
+
+<div style="margin-top:20px">
+
+<span class="badge">ODS 4 Educación de Calidad</span>
+<span class="badge">ODS 9 Innovación e Infraestructura</span>
+<span class="badge">ODS 11 Ciudades y Comunidades Sostenibles</span>
+<span class="badge">ODS 13 Acción por el Clima</span>
+
+</div>
+
+
+</header>
+
+
+
+<div class="container">
+
+
+
+<section class="card">
+
+<h2>Pregunta orientadora del proyecto</h2>
+
+<p>
+¿Cómo podemos usar la recolección, el análisis y la visualización de datos,
+junto con herramientas de inteligencia artificial, para identificar y proponer
+soluciones a un problema real en nuestra escuela o comunidad, contribuyendo
+a los Objetivos de Desarrollo Sostenible?
+</p>
+
+</section>
+
+
+
+
+<section class="card">
+
+<h2>Introducción del proyecto</h2>
+
+
+<p>
+La ciencia de datos es una disciplina que permite recolectar, organizar,
+analizar e interpretar información para descubrir patrones y tomar mejores
+decisiones.
+</p>
+
+<br>
+
+<p>
+Los datos obtenidos de una comunidad permiten comprender necesidades reales,
+identificar problemas y crear estrategias de solución basadas en evidencia.
+</p>
+
+<br>
+
+<p>
+Este proyecto integra tecnología, matemáticas y ciencias naturales mediante
+la recopilación de información, el análisis estadístico y la utilización
+responsable de herramientas de inteligencia artificial para encontrar
+patrones útiles.
+</p>
+
+
+</section>
+
+
+
+
+
+<section class="card">
+
+<h2>Encuesta interactiva</h2>
+
+<p>
+Completa la encuesta para alimentar el sistema de análisis de datos.
+</p>
+
+
+<form id="surveyForm">
+
+
+<input 
+type="text"
+id="nombre"
+placeholder="Nombre del estudiante"
+required>
+
+
+<select id="curso" required>
+
+<option value="">Seleccione curso</option>
+<option>6°</option>
+<option>7°</option>
+<option>8°</option>
+<option>9°</option>
+<option>10°</option>
+<option>11°</option>
+
+</select>
+
+
+
+<input 
+type="number"
+id="nota"
+placeholder="Nota (0-100)"
+min="0"
+max="100"
+required>
+
+
+<button type="submit">
+Enviar encuesta
+</button>
+
+
+</form>
+
+
+</section>
+
+
+
+
+
+<section class="card">
+
+<h2>Datos recolectados</h2>
+
+<div id="database" class="cards-data">
+
+<p>
+Aún no existen datos registrados.
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section class="card">
+
+<h2>Análisis de datos</h2>
+
+
+<div class="grid">
+
+
+<div class="metric">
+
+<strong id="total">
+0
+</strong>
+
+Estudiantes encuestados
+
+</div>
+
+
+
+<div class="metric">
+
+<strong id="promedio">
+0
+</strong>
+
+Promedio general
+
+</div>
+
+
+
+<div class="metric">
+
+<strong id="mayor">
+-
+</strong>
+
+Curso con mayor promedio
+
+</div>
+
+
+
+<div class="metric">
+
+<strong id="menor">
+-
+</strong>
+
+Curso con menor promedio
+
+</div>
+
+
+</div>
+
+
+</section>
+<!-- ================================
+     VISUALIZACIÓN DE DATOS
+================================ -->
+
+<section class="card">
+
+<h2>Visualización de datos</h2>
+
+
+<div class="grid">
+
+<div class="chart-container">
+
+<h3>Promedio de notas por curso</h3>
+
+<canvas id="barChart"></canvas>
+
+</div>
+
+
+
+<div class="chart-container">
+
+<h3>Distribución de estudiantes por curso</h3>
+
+<canvas id="pieChart"></canvas>
+
+</div>
+
+
+
+<div class="chart-container">
+
+<h3>Evolución de notas según respuestas</h3>
+
+<canvas id="lineChart"></canvas>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+<!-- ================================
+     INTELIGENCIA ARTIFICIAL
+================================ -->
+
+
+<section class="card">
+
+<h2>Análisis mediante Inteligencia Artificial</h2>
+
+
+<p id="aiResult">
+Esperando información de la encuesta para generar análisis inteligente.
+</p>
+
+
+</section>
+
+
+
+
+
+<!-- ================================
+     RESPUESTA ORIENTADORA
+================================ -->
+
+
+<section class="card">
+
+<h2>Respuesta a la pregunta orientadora</h2>
+
+
+<p id="answer">
+
+La respuesta será generada automáticamente después de recolectar datos.
+
+</p>
+
+
+</section>
+
+
+
+
+
+
+<!-- ================================
+     PROPUESTAS
+================================ -->
+
+
+<section class="card">
+
+<h2>Propuestas de solución</h2>
+
+
+<div id="solutions" class="cards-data">
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- ================================
+     METODOLOGÍA
+================================ -->
+
+
+<section class="card">
+
+<h2>Metodología del proyecto</h2>
+
+
+<div class="steps">
+
+
+<div class="step">
+<h3>Paso 1</h3>
+<p>Identificación del problema.</p>
+</div>
+
+
+<div class="step">
+<h3>Paso 2</h3>
+<p>Diseño de encuesta.</p>
+</div>
+
+
+<div class="step">
+<h3>Paso 3</h3>
+<p>Recolección de datos.</p>
+</div>
+
+
+<div class="step">
+<h3>Paso 4</h3>
+<p>Organización y limpieza.</p>
+</div>
+
+
+<div class="step">
+<h3>Paso 5</h3>
+<p>Análisis matemático.</p>
+</div>
+
+
+<div class="step">
+<h3>Paso 6</h3>
+<p>Visualización de información.</p>
+</div>
+
+
+<div class="step">
+<h3>Paso 7</h3>
+<p>Propuesta de soluciones.</p>
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+</div>
+
+
+<footer>
+
+Proyecto STEM - Ciencia de Datos e Inteligencia Artificial
+
+</footer>
+
+
+
+
+
+<script>
+
+
+// =================================
+// BASE DE DATOS LOCAL
+// =================================
+
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+
+
+const form = document.getElementById("surveyForm");
+
+
+
+form.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+
+let student = {
+
+nombre:
+document.getElementById("nombre").value,
+
+curso:
+document.getElementById("curso").value,
+
+nota:
+Number(document.getElementById("nota").value)
+
+};
+
+
+students.push(student);
+
+
+localStorage.setItem(
+"students",
+JSON.stringify(students)
+);
+
+
+form.reset();
+
+
+updateDashboard();
+
+
+});
+
+
+
+
+
+// =================================
+// MOSTRAR DATOS
+// =================================
+
+
+function showDatabase(){
+
+
+let container =
+document.getElementById("database");
+
+
+
+container.innerHTML="";
+
+
+
+if(students.length===0){
+
+container.innerHTML=
+"<p>Aún no existen datos registrados.</p>";
+
+return;
+
+}
+
+
+
+students.forEach((s,index)=>{
+
+
+let card=document.createElement("div");
+
+
+card.className="student-card";
+
+
+card.innerHTML=`
+
+<h3>${s.nombre}</h3>
+
+<p>
+<b>Curso:</b> ${s.curso}
+</p>
+
+<p>
+<b>Nota:</b> ${s.nota}
+</p>
+
+`;
+
+
+container.appendChild(card);
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// =================================
+// ANALISIS ESTADÍSTICO
+// =================================
+
+
+function calculateData(){
+
+
+
+let total = students.length;
+
+
+
+let average = 0;
+
+
+
+if(total>0){
+
+average =
+students.reduce(
+(a,b)=>a+b.nota,0
+)/total;
+
+}
+
+
+
+document.getElementById("total")
+.textContent=total;
+
+
+
+document.getElementById("promedio")
+.textContent=
+average.toFixed(2);
+
+
+
+
+let courses =
+[
+"6°",
+"7°",
+"8°",
+"9°",
+"10°",
+"11°"
+];
+
+
+
+let averages={};
+
+
+
+courses.forEach(c=>{
+
+
+let values =
+students
+.filter(s=>s.curso===c)
+.map(s=>s.nota);
+
+
+
+averages[c] =
+values.length
+?
+values.reduce((a,b)=>a+b,0)/values.length
+:
+0;
+
+
+});
+
+
+
+let validCourses =
+Object.entries(averages)
+.filter(x=>x[1]>0);
+
+
+
+if(validCourses.length){
+
+
+let max =
+validCourses.sort(
+(a,b)=>b[1]-a[1]
+)[0];
+
+
+let min =
+validCourses.sort(
+(a,b)=>a[1]-b[1]
+)[0];
+
+
+
+document.getElementById("mayor")
+.textContent=
+max[0];
+
+
+
+document.getElementById("menor")
+.textContent=
+min[0];
+
+
+}
+
+
+
+return {
+
+average,
+
+averages
+
+};
+
+
+}
+
+
+
+
+
+
+// =================================
+// GRAFICOS
+// =================================
+
+
+let barChart;
+let pieChart;
+let lineChart;
+
+
+
+
+function updateCharts(data){
+
+
+
+let courses =
+Object.keys(data.averages);
+
+
+
+let values =
+Object.values(data.averages);
+
+
+
+
+
+if(barChart)
+barChart.destroy();
+
+
+barChart =
+new Chart(
+document.getElementById("barChart"),
+{
+
+type:"bar",
+
+data:{
+
+labels:courses,
+
+datasets:[{
+
+label:"Promedio",
+
+data:values,
+
+backgroundColor:"#2563eb"
+
+}]
+
+}
+
+});
+
+
+
+
+
+
+let counts={};
+
+
+
+students.forEach(s=>{
+
+counts[s.curso]=
+(counts[s.curso]||0)+1;
+
+});
+
+
+
+
+if(pieChart)
+pieChart.destroy();
+
+
+
+pieChart =
+new Chart(
+document.getElementById("pieChart"),
+{
+
+type:"pie",
+
+data:{
+
+labels:Object.keys(counts),
+
+datasets:[{
+
+data:Object.values(counts),
+
+backgroundColor:[
+
+"#2563eb",
+"#0ea5e9",
+"#16a34a",
+"#f59e0b",
+"#dc2626",
+"#9333ea"
+
+]
+
+}]
+
+}
+
+});
+
+
+
+
+
+if(lineChart)
+lineChart.destroy();
+
+
+
+lineChart =
+new Chart(
+document.getElementById("lineChart"),
+{
+
+type:"line",
+
+data:{
+
+labels:
+students.map(
+(s,i)=>"R"+(i+1)
+),
+
+
+datasets:[{
+
+label:"Notas",
+
+data:
+students.map(
+s=>s.nota
+),
+
+borderColor:"#16a34a",
+
+backgroundColor:"#dcfce7",
+
+tension:.3
+
+}]
+
+}
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+// =================================
+// IA SIMULADA
+// =================================
+
+
+function artificialIntelligence(data){
+
+
+
+let text="";
+
+
+
+if(students.length===0){
+
+text=
+"Agrega información para realizar un análisis inteligente.";
+
+}
+
+else if(data.average>=70){
+
+
+text=
+
+"La inteligencia artificial identifica un desempeño académico favorable. "
++
+"Los resultados muestran fortalezas en el aprendizaje. "
++
+"Se recomienda mantener las estrategias actuales, compartir buenas prácticas "
++
+"y fortalecer los procesos exitosos.";
+
+
+}
+
+
+else{
+
+
+text=
+
+"La inteligencia artificial detecta oportunidades de mejora. "
++
+"Los datos muestran la necesidad de implementar acompañamiento académico, "
++
+"tutorías y estrategias de apoyo según las dificultades encontradas.";
+
+}
+
+
+
+document.getElementById("aiResult")
+.textContent=text;
+
+
+}
+
+
+
+
+
+
+
+// =================================
+// RESPUESTA ORIENTADORA
+// =================================
+
+
+function generateAnswer(data){
+
+
+
+let response = `
+
+Los datos recolectados mediante encuestas permitieron construir una base de información
+sobre la situación académica de nuestra comunidad educativa.
+
+
+Después de organizar los resultados mediante herramientas digitales similares a una hoja
+de cálculo, se realizó un análisis matemático para calcular promedios, comparar cursos
+e identificar patrones.
+
+
+La visualización mediante gráficos facilitó comprender la información y la inteligencia
+artificial ayudó a interpretar los resultados para encontrar oportunidades de mejora.
+
+
+Con estos datos podemos proponer acciones como acompañamiento académico, fortalecimiento
+de estrategias educativas y creación de soluciones adaptadas a las necesidades reales.
+
+
+Este proyecto contribuye a los Objetivos de Desarrollo Sostenible relacionados con la
+educación de calidad, innovación tecnológica, comunidades sostenibles y acción por el clima.
+
+
+El promedio actual obtenido por la comunidad encuestada es:
+${data.average.toFixed(2)}.
+`;
+
+
+
+document.getElementById("answer")
+.textContent=response;
+
+
+}
+
+
+
+
+
+
+// =================================
+// PROPUESTAS DINÁMICAS
+// =================================
+
+
+function generateSolutions(data){
+
+
+
+let box =
+document.getElementById("solutions");
+
+
+
+box.innerHTML="";
+
+
+
+let ideas=[];
+
+
+
+if(data.average<70){
+
+
+ideas=[
+
+"Crear grupos de apoyo académico.",
+
+"Implementar tutorías entre estudiantes.",
+
+"Analizar dificultades específicas por curso.",
+
+"Crear planes personalizados de mejora."
+
+];
+
+
+}
+
+else{
+
+
+ideas=[
+
+"Mantener estrategias educativas exitosas.",
+
+"Compartir buenas prácticas entre cursos.",
+
+"Crear proyectos de aprendizaje colaborativo.",
+
+"Fortalecer la innovación educativa."
+
+];
+
+
+}
+
+
+
+ideas.forEach(i=>{
+
+
+let card=document.createElement("div");
+
+
+card.className="student-card";
+
+
+card.innerHTML=
+"<h3>Propuesta</h3><p>"+i+"</p>";
+
+
+
+box.appendChild(card);
+
+
+});
+
+
+}
+
+
+
+
+
+
+// =================================
+// ACTUALIZAR TODO
+// =================================
+
+
+function updateDashboard(){
+
+
+showDatabase();
+
+
+
+let data =
+calculateData();
+
+
+
+updateCharts(data);
+
+
+
+artificialIntelligence(data);
+
+
+
+generateAnswer(data);
+
+
+
+generateSolutions(data);
+
+
+
+}
+
+
+
+updateDashboard();
+
+
+
+</script>
+
+
+</body>
+</html>

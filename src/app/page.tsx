@@ -67,7 +67,16 @@ export default function Home() {
         <HomeFeatures />
       </section>
 
-              <section className="gamification-home-entry">
+                      <section className="student-projects-home-entry" style={{ marginTop: "28px", marginBottom: "28px" }}>
+          <a href="/students" className="feature-card" style={{ display: "block" }}>
+            <span className="feature-icon">🌟</span>
+            <div>
+              <span className="section-kicker">Grades 6–11 · Student Portfolio</span>
+              <h3>Student Projects & Learning Sequences</h3>
+              <p>Created by our students. Shared with our families and community. Explore projects by grade and classroom.</p>
+            </div>
+          </a>
+        </section><section className="gamification-home-entry">
           <a href="/gamification" className="feature-card">
             <span className="feature-icon">🎮</span>
             <div>

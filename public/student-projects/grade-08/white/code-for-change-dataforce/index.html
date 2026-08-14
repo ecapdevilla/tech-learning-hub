@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code for Change | Equipo DataForce</title>
+
+    <!-- Chart.js para gráficos interactivos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ===== ESTILOS GLOBALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a1628;
+            --primary-light: #1a3a5c;
+            --secondary: #00d4aa;
+            --secondary-light: #00f5c8;
+            --accent: #ffd93d;
+            --accent-light: #ffe680;
+            --purple: #7c3aed;
+            --pink: #ec4899;
+            --bg-light: #f0f4f8;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-dark: #0a1628;
+            --text-muted: #64748b;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.12);
+            --radius: 24px;
+            --radius-sm: 16px;
+            --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            background-image: radial-gradient(ellipse at 10% 20%, rgba(0, 212, 170, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        /* ===== ENCABEZADO ===== */
+        .header {
+            background: linear-gradient(145deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: var(--radius);
+            padding: 2.8rem 3rem 2.2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 212, 170, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 60%, var(--secondary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header h1 i {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-right: 0.5rem;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            font-weight: 400;
+            margin-top: 0.2rem;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .badge-ods {
+            background: rgba(255, 217, 61, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 217, 61, 0.2);
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            white-space: nowrap;
+            -webkit-text-fill-color: white;
+        }
+
+        .badge-ods i {
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent);
+        }
+
+        /* ===== EQUIPO ===== */
+        .team-banner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2.5rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 2;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 500;
+            font-size: 1rem;
+            -webkit-text-fill-color: white;
+        }
+
+        .team-member .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: white;
+            -webkit-text-fill-color: white;
+            box-shadow: 0 4px 16px rgba(0, 212, 170, 0.3);
+            flex-shrink: 0;
+        }
+
+        .team-member .role-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.15rem 0.7rem;
+            border-radius: 20px;
+            opacity: 0.8;
+            margin-left: 0.2rem;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .team-member .avatar.leader {
+            background: linear-gradient(135deg, var(--accent), #f59e0b);
+            box-shadow: 0 4px 16px rgba(255, 217, 61, 0.3);
+        }
+
+        .team-member .crown {
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent);
+            font-size: 0.8rem;
+            margin-left: 0.1rem;
+        }
+
+        /* ===== NAVEGACIÓN RÁPIDA ===== */
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .quick-nav a {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .quick-nav a:hover {
+            border-color: var(--secondary);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 212, 170, 0.15);
+            background: white;
+        }
+
+        .quick-nav a i {
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+
+        /* ===== TARJETAS DE SECCIÓN ===== */
+        .section-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+            padding: 2.2rem 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+        }
+
+        .section-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .section-card h2 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-card h2 i {
+            background: linear-gradient(135deg, var(--secondary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.8rem;
+        }
+
+        .section-card .section-sub {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--secondary);
+            padding-left: 1.2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.05), transparent);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 800px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .section-card {
+                padding: 1.5rem;
+            }
+            .header {
+                padding: 1.8rem 1.5rem;
+            }
+        }
+
+        /* ===== ESTADÍSTICAS / KPIs ===== */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .kpi-item {
+            background: linear-gradient(145deg, #ffffff, var(--bg-light));
+            padding: 1.3rem 1rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--transition);
+        }
+
+        .kpi-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .kpi-item .number {
+            font-size: 2.4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .kpi-item .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== GRÁFICOS ===== */
+        .chart-wrapper {
+            background: linear-gradient(145deg, #ffffff, var(--bg-light));
+            border-radius: var(--radius-sm);
+            padding: 1.2rem;
+            margin-top: 0.8rem;
+            position: relative;
+            height: 220px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .chart-wrapper canvas {
+            max-height: 200px;
+            max-width: 100%;
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 700px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+            .chart-wrapper {
+                height: 200px;
+            }
+        }
+
+        /* ===== ENCUESTA ===== */
+        .survey-form {
+            background: linear-gradient(145deg, #ffffff, var(--bg-light));
+            border-radius: var(--radius-sm);
+            padding: 2rem 2.2rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .survey-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .survey-form label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-dark);
+        }
+
+        .survey-form label .required {
+            color: #ef4444;
+        }
+
+        .survey-form .form-control {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            background: white;
+            transition: var(--transition);
+        }
+
+        .survey-form .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.1);
+        }
+
+        .survey-form .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            padding-top: 0.3rem;
+        }
+
+        .survey-form .radio-group label {
+            font-weight: 500;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .survey-form .radio-group input[type="radio"] {
+            accent-color: var(--secondary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .survey-form .checkbox-group {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            padding-top: 0.3rem;
+        }
+
+        .survey-form .checkbox-group label {
+            font-weight: 500;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .survey-form .checkbox-group input[type="checkbox"] {
+            accent-color: var(--secondary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .survey-form .btn-submit {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            color: white;
+            border: none;
+            padding: 0.9rem 2.8rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 16px rgba(0, 212, 170, 0.3);
+        }
+
+        .survey-form .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4);
+        }
+
+        .survey-form .btn-submit i {
+            margin-right: 0.6rem;
+        }
+
+        .survey-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1.2rem;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.2rem;
+        }
+
+        /* ===== PROPUESTA ===== */
+        .solution-box {
+            background: linear-gradient(145deg, #e6f7f2, #d4ede2);
+            border-radius: var(--radius-sm);
+            padding: 2rem 2.2rem;
+            border-left: 6px solid var(--secondary);
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution-box::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 212, 170, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .solution-box h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .solution-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .solution-box ul li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .solution-box ul li i {
+            color: var(--secondary);
+            margin-top: 0.2rem;
+            font-size: 1.1rem;
+        }
+
+        /* ===== ODS BADGES ===== */
+        .ods-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 217, 61, 0.12);
+            color: #b7950b;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 217, 61, 0.15);
+        }
+
+        .ods-tag i {
+            color: var(--accent);
+        }
+
+        /* ===== IA CARDS ===== */
+        .ia-card {
+            background: linear-gradient(145deg, #ffffff, var(--bg-light));
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--transition);
+        }
+
+        .ia-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .ia-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.1rem;
+        }
+
+        .ia-card .chatgpt-icon {
+            color: #10a37f;
+        }
+        .ia-card .teachable-icon {
+            color: #6c5ce7;
+        }
+
+        /* ===== PIE DE PÁGINA ===== */
+        .footer {
+            text-align: center;
+            padding: 2.5rem 0 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+
+        .footer i {
+            color: #ef4444;
+        }
+
+        .footer .footer-heart {
+            color: #ef4444;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* ===== ANIMACIONES ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.7s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+        .delay-5 {
+            animation-delay: 0.5s;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.2rem;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateX(-50%) translateY(20px);
+            pointer-events: none;
+            z-index: 999;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toast-message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-message i {
+            color: var(--secondary);
+            margin-right: 0.7rem;
+        }
+
+        /* ===== BADGE DE LÍDER ===== */
+        .leader-badge {
+            background: linear-gradient(135deg, var(--accent), #f59e0b);
+            color: var(--primary);
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+            -webkit-text-fill-color: var(--primary);
+        }
+    </style>
+
+<style>
+.tlh-project-bar{
+ max-width:1300px;margin:0 auto 14px;display:flex;gap:10px;align-items:center;
+ justify-content:space-between;flex-wrap:wrap;font-family:'Inter','Segoe UI',sans-serif
+}
+.tlh-project-bar a,.tlh-project-authors{
+ border-radius:999px;padding:10px 16px;font-weight:800;text-decoration:none
+}
+.tlh-project-bar a{background:#0a1628;color:#fff;border:1px solid #00d4aa}
+.tlh-project-authors{background:#e7f8f4;color:#0a1628;border:1px solid #b7e8dc;font-size:.9rem}
+</style>
+
+</head>
+<body>
+<div class="tlh-project-bar">
+<a href="/students/grade/8/white">← 8th White Projects</a>
+<div class="tlh-project-authors">Created by: Natalia · Sofía · Joshua · Nicolás</div>
+</div>
+
+    <div class="container">
+
+        <!-- ========================================================= -->
+        <!-- ENCABEZADO -->
+        <!-- ========================================================= -->
+        <header class="header fade-in">
+            <div class="header-top">
+                <div>
+                    <h1><i class="fas fa-chart-line"></i> Code for Change</h1>
+                    <div class="subtitle">
+                        <i class="fas fa-microscope" style="opacity:0.7;"></i>
+                        Ciencia de Datos · STEM · ODS
+                    </div>
+                </div>
+                <div class="badge-ods">
+                    <i class="fas fa-bullseye"></i> ODS 11 · 12 · 13
+                </div>
+            </div>
+
+            <!-- Equipo con nuevos roles -->
+            <div class="team-banner">
+                <span class="team-member">
+                    <span class="avatar leader">N</span>
+                    Natalia
+                    <span class="role-tag"><i class="fas fa-crown crown"></i> Líder</span>
+                </span>
+                <span class="team-member">
+                    <span class="avatar">S</span>
+                    Sofía
+                    <span class="role-tag">Visualizadora</span>
+                </span>
+                <span class="team-member">
+                    <span class="avatar">J</span>
+                    Joshua
+                    <span class="role-tag">Presentador</span>
+                </span>
+                <span class="team-member">
+                    <span class="avatar">N</span>
+                    Nicolás
+                    <span class="role-tag">IA &amp; Analista</span>
+                </span>
+                <span style="margin-left:auto; font-size:0.85rem; opacity:0.7; -webkit-text-fill-color: rgba(255,255,255,0.6);">
+                    <i class="fas fa-calendar-alt"></i> Jul – Sep 2026
+                </span>
+            </div>
+        </header>
+
+        <!-- ========================================================= -->
+        <!-- NAVEGACIÓN RÁPIDA -->
+        <!-- ========================================================= -->
+        <nav class="quick-nav fade-in delay-1">
+            <a href="#problema"><i class="fas fa-question-circle"></i> Problema</a>
+            <a href="#encuesta"><i class="fas fa-clipboard-list"></i> Encuesta</a>
+            <a href="#datos"><i class="fas fa-database"></i> Datos</a>
+            <a href="#graficos"><i class="fas fa-chart-pie"></i> Visualización</a>
+            <a href="#ia"><i class="fas fa-robot"></i> IA</a>
+            <a href="#solucion"><i class="fas fa-lightbulb"></i> Solución</a>
+        </nav>
+
+        <!-- ========================================================= -->
+        <!-- PASO 1: PROBLEMA Y PREGUNTA ORIENTADORA -->
+        <!-- ========================================================= -->
+        <section id="problema" class="section-card fade-in delay-1">
+            <h2><i class="fas fa-search"></i> Problema &amp; Pregunta</h2>
+            <div class="section-sub">
+                <strong>Contexto:</strong> En nuestra escuela, se genera una gran cantidad de residuos plásticos y
+                orgánicos, pero el reciclaje es casi nulo. No sabemos cuánto se desperdicia ni qué tipo de residuos
+                predominan.
+            </div>
+
+            <div style="background: linear-gradient(145deg, #f8fafc, #f1f5f9); border-radius: var(--radius-sm); padding: 1.8rem; margin-top: 0.5rem; border-left: 4px solid var(--secondary);">
+                <p style="font-weight: 700; font-size: 1.15rem; color: var(--primary);">
+                    <i class="fas fa-quote-left" style="color: var(--secondary); opacity:0.5; margin-right: 0.5rem;"></i>
+                    ¿Cómo podemos usar la recolección, análisis y visualización de datos, junto con herramientas de
+                    inteligencia artificial, para identificar y proponer soluciones al problema de los residuos en
+                    nuestra escuela, contribuyendo a los ODS?
+                </p>
+                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1rem;">
+                    <span class="ods-tag"><i class="fas fa-recycle"></i> ODS 11</span>
+                    <span class="ods-tag"><i class="fas fa-trash-alt"></i> ODS 12</span>
+                    <span class="ods-tag"><i class="fas fa-tree"></i> ODS 13</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ENCUESTA (PASO 4) -->
+        <!-- ========================================================= -->
+        <section id="encuesta" class="section-card fade-in delay-1">
+            <h2><i class="fas fa-clipboard-list"></i> Encuesta de Residuos</h2>
+            <div class="section-sub">
+                Diseñada por el equipo <strong>DataForce</strong> para recolectar información sobre hábitos de reciclaje en la escuela.
+            </div>
+
+            <div class="survey-form">
+                <form id="surveyForm" onsubmit="return handleSurvey(event)">
+
+                    <!-- Pregunta 1 -->
+                    <div class="form-group">
+                        <label>1. ¿En qué grado estudias? <span class="required">*</span></label>
+                        <select class="form-control" id="grado" required>
+                            <option value="">Selecciona tu grado</option>
+                            <option value="9°">9°</option>
+                            <option value="10°">10°</option>
+                            <option value="11°">11°</option>
+                        </select>
+                    </div>
+
+                    <!-- Pregunta 2 -->
+                    <div class="form-group">
+                        <label>2. ¿Con qué frecuencia reciclas en la escuela? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="frecuencia" value="Siempre" required /> Siempre</label>
+                            <label><input type="radio" name="frecuencia" value="A veces" /> A veces</label>
+                            <label><input type="radio" name="frecuencia" value="Nunca" /> Nunca</label>
+                        </div>
+                    </div>
+
+                    <!-- Pregunta 3 -->
+                    <div class="form-group">
+                        <label>3. ¿Qué tipo de residuos generas más en la escuela? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="residuo" value="Plástico" required /> Plástico (botellas, empaques)</label>
+                            <label><input type="radio" name="residuo" value="Papel" /> Papel / Cartón</label>
+                            <label><input type="radio" name="residuo" value="Orgánico" /> Orgánico (comida)</label>
+                            <label><input type="radio" name="residuo" value="Otros" /> Otros</label>
+                        </div>
+                    </div>
+
+                    <!-- Pregunta 4 -->
+                    <div class="form-group">
+                        <label>4. ¿Sabes cómo separar correctamente los residuos? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="conocimiento" value="Sí" required /> Sí</label>
+                            <label><input type="radio" name="conocimiento" value="No" /> No</label>
+                        </div>
+                    </div>
+
+                    <!-- Pregunta 5 -->
+                    <div class="form-group">
+                        <label>5. ¿Qué crees que la escuela debería mejorar para fomentar el reciclaje? <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="mejora" value="Más contenedores" /> Más contenedores</label>
+                            <label><input type="checkbox" name="mejora" value="Talleres" /> Talleres educativos</label>
+                            <label><input type="checkbox" name="mejora" value="Carteles" /> Carteles informativos</label>
+                            <label><input type="checkbox" name="mejora" value="Incentivos" /> Incentivos / concursos</label>
+                            <label><input type="checkbox" name="mejora" value="Otros" /> Otros</label>
+                        </div>
+                    </div>
+
+                    <!-- Pregunta 6 (abierta) -->
+                    <div class="form-group">
+                        <label>6. ¿Tienes alguna sugerencia adicional para mejorar el manejo de residuos en la escuela?</label>
+                        <textarea class="form-control" id="sugerencia" rows="2" placeholder="Escribe tu sugerencia aquí..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Enviar encuesta
+                    </button>
+
+                    <div class="survey-note">
+                        <i class="fas fa-lock" style="opacity:0.5;"></i> Esta encuesta es anónima y los datos se usarán exclusivamente para fines académicos.
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- PASO 5: RECOLECCIÓN Y ANÁLISIS DE DATOS -->
+        <!-- ========================================================= -->
+        <section id="datos" class="section-card fade-in delay-2">
+            <h2><i class="fas fa-table"></i> Recolección &amp; Análisis</h2>
+            <div class="section-sub">
+                Encuesta aplicada a <strong>64 estudiantes</strong> de grados 9° a 11°. Datos organizados en Google Sheets
+                con tablas dinámicas.
+            </div>
+
+            <!-- KPIs -->
+            <div class="kpi-grid">
+                <div class="kpi-item">
+                    <div class="number">64</div>
+                    <div class="label">Encuestados</div>
+                </div>
+                <div class="kpi-item">
+                    <div class="number">78%</div>
+                    <div class="label">Nunca recicla</div>
+                </div>
+                <div class="kpi-item">
+                    <div class="
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="index.html"
+  download="code-for-change-dataforce.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>

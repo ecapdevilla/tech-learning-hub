@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Encuesta - ¿Quién conoce mejor a Elisany?</title>
+    <style>
+        /* === RESET Y ESTILOS GENERALES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f3e7e9 0%, #e3d7e8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 35px 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #4a2c5e;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            font-size: 16px;
+            color: #7a5a8c;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .presentado {
+            text-align: center;
+            font-size: 14px;
+            color: #9b7aaa;
+            background: #f5eff8;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 0 auto 25px;
+            width: auto;
+            letter-spacing: 0.5px;
+        }
+
+        .presentado-wrapper {
+            text-align: center;
+        }
+
+        .pregunta {
+            background: #faf7fc;
+            padding: 18px 20px;
+            border-radius: 18px;
+            margin-bottom: 18px;
+            border-left: 6px solid #b38ec9;
+            transition: 0.2s;
+        }
+
+        .pregunta:hover {
+            background: #f5edfa;
+        }
+
+        .pregunta p {
+            font-weight: 600;
+            color: #3d244e;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .opciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+        }
+
+        .opciones label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            color: #3d2a47;
+            cursor: pointer;
+            background: white;
+            padding: 6px 14px 6px 10px;
+            border-radius: 30px;
+            border: 1.5px solid #ddd0e5;
+            transition: 0.2s;
+        }
+
+        .opciones label:hover {
+            border-color: #b38ec9;
+            background: #f8f0fd;
+        }
+
+        .opciones input[type="radio"] {
+            accent-color: #8b5aa6;
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0 20px;
+        }
+
+        .btn-enviar {
+            background: linear-gradient(145deg, #8b5aa6, #6b3f84);
+            border: none;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            padding: 14px 50px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 18px rgba(107, 63, 132, 0.35);
+            letter-spacing: 1px;
+        }
+
+        .btn-enviar:hover {
+            transform: scale(1.03);
+            background: linear-gradient(145deg, #7a4b94, #5c3374);
+            box-shadow: 0 10px 22px rgba(107, 63, 132, 0.45);
+        }
+
+        .btn-enviar:active {
+            transform: scale(0.96);
+        }
+
+        /* ---- RESULTADO ---- */
+        #resultado {
+            margin-top: 25px;
+            padding: 25px 20px;
+            border-radius: 25px;
+            background: #f5eff8;
+            text-align: center;
+            display: none;
+            border: 2px dashed #b38ec9;
+        }
+
+        #resultado.mostrar {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        #resultado h2 {
+            color: #3d244e;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        #puntaje {
+            font-size: 48px;
+            font-weight: 800;
+            color: #6b3f84;
+            margin: 5px 0;
+        }
+
+        #calificacion {
+            font-size: 22px;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 8px 0 5px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .detalle-respuestas {
+            margin-top: 18px;
+            text-align: left;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 18px;
+            font-size: 15px;
+            color: #3d2a47;
+            line-height: 1.8;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .detalle-respuestas span.correcta {
+            color: #2a7a4b;
+            font-weight: 600;
+        }
+        .detalle-respuestas span.incorrecta {
+            color: #b13e4b;
+            font-weight: 600;
+        }
+
+        .btn-reiniciar {
+            margin-top: 18px;
+            background: transparent;
+            border: 2px solid #8b5aa6;
+            color: #6b3f84;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 32px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-reiniciar:hover {
+            background: #8b5aa6;
+            color: white;
+        }
+
+        .contador-preguntas {
+            text-align: center;
+            font-size: 14px;
+            color: #9b7aaa;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 550px) {
+            .container { padding: 20px 15px; }
+            h1 { font-size: 22px; }
+            .opciones { gap: 8px 12px; }
+            .opciones label { font-size: 14px; padding: 4px 12px 4px 8px; }
+            .btn-enviar { font-size: 17px; padding: 12px 30px; }
+            #puntaje { font-size: 36px; }
+        }
+    </style>
+
+<style>
+.tech-learning-back{position:fixed;top:12px;left:12px;z-index:9999;background:#102b46;color:#fff!important;
+padding:9px 13px;border-radius:999px;text-decoration:none;font:700 13px 'Segoe UI',Arial,sans-serif;
+box-shadow:0 5px 18px rgba(0,0,0,.18)}
+@media(max-width:600px){.tech-learning-back{position:static;display:inline-block;margin:10px}}
+</style>
+
+</head>
+<body>
+<a class="tech-learning-back" href="/students/grade/6/red">← 6th Red Projects</a>
+
+<div class="container">
+
+    <h1>🎀 ¿Quién conoce mejor a Elisany? 🎀</h1>
+    <div class="subtitulo">Responde y descubre tu nivel</div>
+
+    <div class="presentado-wrapper">
+        <span class="presentado">📌 Presentado por: Elisany · Sofía · María Margarita</span>
+    </div>
+
+    <div class="contador-preguntas">📝 10 preguntas · ¡Demuestra cuánto la conoces!</div>
+
+    <!-- FORMULARIO DE ENCUESTA -->
+    <form id="encuestaForm">
+        <!-- 1️⃣ COMIDA FAVORITA -->
+        <div class="pregunta">
+            <p>1️⃣ ¿Cuál es la comida favorita de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p1" value="cordonblue" /> Cordón Blue</label>
+                <label><input type="radio" name="p1" value="pizza" /> Pizza</label>
+                <label><input type="radio" name="p1" value="sushi" /> Sushi</label>
+                <label><input type="radio" name="p1" value="pasta" /> Pasta</label>
+            </div>
+        </div>
+
+        <!-- 2️⃣ COLOR FAVORITO -->
+        <div class="pregunta">
+            <p>2️⃣ ¿Cuál es el color favorito de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p2" value="lila" /> Lila</label>
+                <label><input type="radio" name="p2" value="beige" /> Beige</label>
+                <label><input type="radio" name="p2" value="rosa" /> Rosa</label>
+                <label><input type="radio" name="p2" value="negro" /> Negro</label>
+            </div>
+        </div>
+
+        <!-- 3️⃣ ANIMAL FAVORITO -->
+        <div class="pregunta">
+            <p>3️⃣ ¿Cuál es el animal favorito de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p3" value="leon" /> León</label>
+                <label><input type="radio" name="p3" value="perro" /> Perro</label>
+                <label><input type="radio" name="p3" value="gato" /> Gato</label>
+                <label><input type="radio" name="p3" value="conejo" /> Conejo</label>
+            </div>
+        </div>
+
+        <!-- 4️⃣ CANCIÓN FAVORITA -->
+        <div class="pregunta">
+            <p>4️⃣ ¿Cuál es la canción favorita de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p4" value="hmh" /> HMH - Santos Bravos</label>
+                <label><input type="radio" name="p4" value="perfect" /> Perfect - Ed Sheeran</label>
+                <label><input type="radio" name="p4" value="shallow" /> Shallow - Lady Gaga</label>
+                <label><input type="radio" name="p4" value="despacito" /> Despacito - Luis Fonsi</label>
+            </div>
+        </div>
+
+        <!-- 5️⃣ PELÍCULA FAVORITA -->
+        <div class="pregunta">
+            <p>5️⃣ ¿Cuál es la película favorita de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p5" value="harrypotter" /> Harry Potter</label>
+                <label><input type="radio" name="p5" value="titanic" /> Titanic</label>
+                <label><input type="radio" name="p5" value="interestelar" /> Interestelar</label>
+                <label><input type="radio" name="p5" value="prettywoman" /> Pretty Woman</label>
+            </div>
+        </div>
+
+        <!-- 6️⃣ CANTANTE FAVORITO -->
+        <div class="pregunta">
+            <p>6️⃣ ¿Cuál es el cantante favorito de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p6" value="santosbravos" /> Santos Bravos</label>
+                <label><input type="radio" name="p6" value="badbunny" /> Bad Bunny</label>
+                <label><input type="radio" name="p6" value="taylor" /> Taylor Swift</label>
+                <label><input type="radio" name="p6" value="karolg" /> Karol G</label>
+            </div>
+        </div>
+
+        <!-- 7️⃣ POSTRE FAVORITO -->
+        <div class="pregunta">
+            <p>7️⃣ ¿Cuál es el postre favorito de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p7" value="cheesecake" /> Cheesecake</label>
+                <label><input type="radio" name="p7" value="tiramisu" /> Tiramisú</label>
+                <label><input type="radio" name="p7" value="brownie" /> Brownie</label>
+                <label><input type="radio" name="p7" value="flan" /> Flan</label>
+            </div>
+        </div>
+
+        <!-- 8️⃣ LUGAR FAVORITO -->
+        <div class="pregunta">
+            <p>8️⃣ ¿Cuál es el lugar favorito de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p8" value="playa" /> Playa</label>
+                <label><input type="radio" name="p8" value="montana" /> Montaña</label>
+                <label><input type="radio" name="p8" value="ciudad" /> Ciudad</label>
+                <label><input type="radio" name="p8" value="campo" /> Campo</label>
+            </div>
+        </div>
+
+        <!-- 9️⃣ HOBBY FAVORITO -->
+        <div class="pregunta">
+            <p>9️⃣ ¿Cuál es el hobby favorito de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p9" value="leeryver" /> Leer y ver TV</label>
+                <label><input type="radio" name="p9" value="leer" /> Leer</label>
+                <label><input type="radio" name="p9" value="bailar" /> Bailar</label>
+                <label><input type="radio" name="p9" value="viajar" /> Viajar</label>
+            </div>
+        </div>
+
+        <!-- 🔟 MAYOR SUEÑO -->
+        <div class="pregunta">
+            <p>🔟 ¿Cuál es el mayor sueño de Elisany?</p>
+            <div class="opciones">
+                <label><input type="radio" name="p10" value="viajarmundo" /> Viajar por el mundo</label>
+                <label><input type="radio" name="p10" value="familia" /> Tener una familia</label>
+                <label><input type="radio" name="p10" value="exito" /> Ser exitosa profesionalmente</label>
+                <label><input type="radio" name="p10" value="casa" /> Tener su propia casa</label>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button type="button" class="btn-enviar" id="btnCalificar">📊 Ver mi resultado</button>
+        </div>
+    </form>
+
+    <!-- RESULTADO -->
+    <div id="resultado">
+        <h2>✨ Resultado ✨</h2>
+        <div id="puntaje">0 / 10</div>
+        <div id="calificacion">🌟 ¡Perfecta!</div>
+
+        <div class="detalle-respuestas" id="detalle">
+            <!-- Aquí se inyecta el detalle con JS -->
+        </div>
+
+        <button class="btn-reiniciar" id="btnReiniciar">🔄 Volver a intentar</button>
+    </div>
+
+</div>
+
+<script>
+    (function() {
+        // === RESPUESTAS CORRECTAS (ACTUALIZADAS) ===
+        const correctas = {
+            p1: ['cordonblue'],          // Comida favorita: Cordón Blue
+            p2: ['lila', 'beige'],       // Color favorito: Lila o Beige
+            p3: ['leon'],                // Animal favorito: León
+            p4: ['hmh'],                 // Canción favorita: HMH - Santos Bravos
+            p5: ['harrypotter'],         // Película favorita: Harry Potter
+            p6: ['santosbravos'],        // Cantante favorito: Santos Bravos
+            p7: ['cheesecake'],          // Postre favorito: Cheesecake
+            p8: ['playa'],               // Lugar favorito: Playa
+            p9: ['leeryver'],            // Hobby favorito: Leer y ver TV
+            p10: ['viajarmundo']         // Mayor sueño: Viajar por el mundo
+        };
+
+        // === ELEMENTOS DOM ===
+        const form = document.getElementById('encuestaForm');
+        const btnCalificar = document.getElementById('btnCalificar');
+        const resultadoDiv = document.getElementById('resultado');
+        const puntajeSpan = document.getElementById('puntaje');
+        const calificacionSpan = document.getElementById('calificacion');
+        const detalleDiv = document.getElementById('detalle');
+        const btnReiniciar = document.getElementById('btnReiniciar');
+
+        // === TEXTOS PARA MOSTRAR EN EL DETALLE ===
+        const textosPreguntas = {
+            p1: 'Comida favorita',
+            p2: 'Color favorito',
+            p3: 'Animal favorito',
+            p4: 'Canción favorita',
+            p5: 'Película favorita',
+            p6: 'Cantante favorito',
+            p7: 'Postre favorito',
+            p8: 'Lugar favorito',
+            p9: 'Hobby favorito',
+            p10: 'Mayor sueño'
+        };
+
+        const textoOpciones = {
+            cordonblue: 'Cordón Blue',
+            pizza: 'Pizza',
+            sushi: 'Sushi',
+            pasta: 'Pasta',
+            lila: 'Lila',
+            beige: 'Beige',
+            rosa: 'Rosa',
+            negro: 'Negro',
+            leon: 'León',
+            perro: 'Perro',
+            gato: 'Gato',
+            conejo: 'Conejo',
+            hmh: 'HMH - Santos Bravos',
+            perfect: 'Perfect - Ed Sheeran',
+            shallow: 'Shallow - Lady Gaga',
+            despacito: 'Despacito - Luis Fonsi',
+            harrypotter: 'Harry Potter',
+            titanic: 'Titanic',
+            interestelar: 'Interestelar',
+            prettywoman: 'Pretty Woman',
+            santosbravos: 'Santos Bravos',
+            badbunny: 'Bad Bunny',
+            taylor: 'Taylor Swift',
+            karolg: 'Karol G',
+            cheesecake: 'Cheesecake',
+            tiramisu: 'Tiramisú',
+            brownie: 'Brownie',
+            flan: 'Flan',
+            playa: 'Playa',
+            montana: 'Montaña',
+            ciudad: 'Ciudad',
+            campo: 'Campo',
+            leeryver: 'Leer y ver TV',
+            leer: 'Leer',
+            bailar: 'Bailar',
+            viajar: 'Viajar',
+            viajarmundo: 'Viajar por el mundo',
+            familia: 'Tener una familia',
+            exito: 'Ser exitosa profesionalmente',
+            casa: 'Tener su propia casa'
+        };
+
+        const respuestasCorrectasTexto = {
+            p1: 'Cordón Blue',
+            p2: 'Lila o Beige',
+            p3: 'León',
+            p4: 'HMH - Santos Bravos',
+            p5: 'Harry Potter',
+            p6: 'Santos Bravos',
+            p7: 'Cheesecake',
+            p8: 'Playa',
+            p9: 'Leer y ver TV',
+            p10: 'Viajar por el mundo'
+        };
+
+        // === FUNCIÓN PARA CALIFICAR ===
+        function calificar() {
+            const preguntas = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10'];
+            const respuestasSeleccionadas = [];
+            let todasRespondidas = true;
+
+            preguntas.forEach((preg) => {
+                const seleccionado = document.querySelector(`input[name="${preg}"]:checked`);
+                if (!seleccionado) {
+                    todasRespondidas = false;
+                }
+                respuestasSeleccionadas.push(seleccionado);
+            });
+
+            if (!todasRespondidas) {
+                alert('⚠️ Por favor, responde TODAS las preguntas antes de calificar.');
+                return;
+            }
+
+            const respuestas = {};
+            preguntas.forEach((preg, index) => {
+                respuestas[preg] = respuestasSeleccionadas[index].value;
+            });
+
+            // Calcular puntaje
+            let puntaje = 0;
+            const detalles = [];
+
+            preguntas.forEach((preg) => {
+                const esCorrecta = correctas[preg].includes(respuestas[preg]);
+                if (esCorrecta) puntaje++;
+                detalles.push({
+                    pregunta: textosPreguntas[preg],
+                    seleccionado: textoOpciones[respuestas[preg]] || respuestas[preg],
+                    correcto: esCorrecta,
+                    respuestaCorrecta: respuestasCorrectasTexto[preg]
+                });
+            });
+
+            // === MOSTRAR RESULTADO ===
+            puntajeSpan.textContent = `${puntaje} / 10`;
+
+            // Calificación según puntaje
+            let calificacion = '';
+            let emoji = '';
+            const porcentaje = puntaje / 10;
+            
+            if (porcentaje === 1) {
+                calificacion = '¡Eres su alma gemela! 💜';
+                emoji = '👑';
+            } else if (porcentaje >= 0.8) {
+                calificacion = '¡Casi perfecto, excelente amigo/a! 🌟';
+                emoji = '💫';
+            } else if (porcentaje >= 0.6) {
+                calificacion = 'Bien, pero puedes conocerla más 🧡';
+                emoji = '🤗';
+            } else if (porcentaje >= 0.4) {
+                calificacion = '¿Seguro que conoces a Elisany? 😅';
+                emoji = '😅';
+            } else {
+                calificacion = '¡Necesitas pasar más tiempo con ella! 🙈';
+                emoji = '🙈';
+            }
+            calificacionSpan.textContent = `${emoji} ${calificacion}`;
+
+            // Construir detalle de respuestas
+            let detalleHTML = '<strong>🔍 Detalle de tus respuestas:</strong><br>';
+            detalles.forEach((item, index) => {
+                const estado = item.correcto ? '✅ Correcta' : '❌ Incorrecta';
+                const clase = item.correcto ? 'correcta' : 'incorrecta';
+                detalleHTML += `
+                    <div style="margin-top: 6px; padding-bottom: 4px; border-bottom: 1px solid #f0eaf3;">
+                        <strong>${index+1}. ${item.pregunta}:</strong> 
+                        "${item.seleccionado}" 
+                        <span class="${clase}">— ${estado}</span>
+                        ${!item.correcto ? ` <span style="color:#6b3f84; font-weight:500;">(Correcta: ${item.respuestaCorrecta})</span>` : ''}
+                    </div>
+                `;
+            });
+            detalleDiv.innerHTML = detalleHTML;
+
+            // Ocultar formulario, mostrar resultado
+            form.style.display = 'none';
+            resultadoDiv.classList.add('mostrar');
+        }
+
+        // === REINICIAR ===
+        function reiniciar() {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => r.checked = false);
+
+            resultadoDiv.classList.remove('mostrar');
+            form.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // === EVENTOS ===
+        btnCalificar.addEventListener('click', calificar);
+        btnReiniciar.addEventListener('click', reiniciar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && form.style.display !== 'none') {
+                calificar();
+            }
+        });
+
+    })();
+</script>
+
+</body>
+</html>

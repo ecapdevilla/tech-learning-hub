@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Proyecto CODE FOR CHANGE | Tecnología 8°</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+
+background:#eef5ff;
+color:#222;
+
+}
+
+header{
+
+background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);
+color:white;
+padding:70px 20px;
+text-align:center;
+
+}
+
+header h1{
+
+font-size:45px;
+margin-bottom:15px;
+
+}
+
+header h2{
+
+font-size:24px;
+font-weight:400;
+
+}
+
+header p{
+
+margin-top:15px;
+font-size:18px;
+
+}
+
+nav{
+
+background:#0d47a1;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+position:sticky;
+top:0;
+z-index:999;
+
+}
+
+nav a{
+
+color:white;
+text-decoration:none;
+padding:18px 20px;
+transition:.4s;
+font-weight:600;
+
+}
+
+nav a:hover{
+
+background:#1565c0;
+
+}
+
+section{
+
+width:90%;
+max-width:1200px;
+margin:auto;
+padding:60px 20px;
+
+}
+
+.card{
+
+background:white;
+padding:30px;
+margin-bottom:30px;
+border-radius:15px;
+box-shadow:0px 5px 15px rgba(0,0,0,.15);
+
+}
+
+h2{
+
+color:#0d47a1;
+margin-bottom:20px;
+font-size:32px;
+
+}
+
+h3{
+
+margin-top:25px;
+margin-bottom:15px;
+color:#1565c0;
+
+}
+
+p{
+
+line-height:1.8;
+
+}
+
+ul{
+
+margin-left:25px;
+line-height:2;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+
+}
+
+table th{
+
+background:#1976d2;
+color:white;
+padding:15px;
+
+}
+
+table td{
+
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+
+}
+
+table tr:nth-child(even){
+
+background:#f5f5f5;
+
+}
+
+.integrantes{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:30px;
+
+}
+
+.persona{
+
+background:#1976d2;
+color:white;
+padding:20px;
+border-radius:15px;
+text-align:center;
+transition:.4s;
+
+}
+
+.persona:hover{
+
+transform:scale(1.05);
+
+}
+
+.persona h3{
+
+color:white;
+
+}
+
+.ods{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+
+}
+
+.ods div{
+
+background:#ffffff;
+border-left:8px solid #1976d2;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,.15);
+
+}
+
+input,select{
+
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:15px;
+border-radius:8px;
+border:1px solid #ccc;
+
+}
+
+button{
+
+padding:15px 35px;
+background:#1976d2;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+transition:.4s;
+
+}
+
+button:hover{
+
+background:#0d47a1;
+
+}
+
+canvas{
+
+background:white;
+padding:20px;
+border-radius:15px;
+margin-top:30px;
+
+}
+
+footer{
+
+background:#0d47a1;
+color:white;
+padding:40px;
+text-align:center;
+margin-top:50px;
+
+}
+
+@media(max-width:768px){
+
+header h1{
+
+font-size:30px;
+
+}
+
+nav{
+
+flex-direction:column;
+
+}
+
+nav a{
+
+text-align:center;
+
+}
+
+}
+
+</style>
+
+<style>
+.tlh-showcase-bar{max-width:1200px;margin:12px auto;display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 14px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.tlh-showcase-bar a,.tlh-showcase-authors{padding:9px 14px;border-radius:999px;font-weight:800;text-decoration:none}
+.tlh-showcase-bar a{background:#102b46;color:#fff;border:1px solid #3182a7}
+.tlh-showcase-authors{background:#edf7ff;color:#102b46;border:1px solid #c9e2f3;font-size:.88rem}
+</style></head>
+
+<body><div class="tlh-showcase-bar"><a href="/students/grade/8/blue">← 8th Blue Projects</a><div class="tlh-showcase-authors">Created by: Felipe · Gian Marco · David · Daniel · Samuel</div></div>
+
+<header>
+
+<h1>PROYECTO CODE FOR CHANGE</h1>
+
+<h2>Tecnología 8° - Análisis del Uso de la Tecnología y el Tiempo Frente a Pantallas</h2>
+
+<p>
+Proyecto Integrador STEM<br>
+Tecnología • Matemáticas • Ciencias Naturales
+</p>
+
+</header>
+
+<nav>
+
+<a href="#integrantes">Integrantes</a>
+<a href="#problema">Problema</a>
+<a href="#objetivos">Objetivos</a>
+<a href="#roles">Roles</a>
+<a href="#investigacion">Investigación</a>
+<a href="#encuesta">Encuesta</a>
+<a href="#datos">Datos</a>
+<a href="#graficos">Gráficos</a>
+<a href="#ia">IA</a>
+<a href="#propuesta">Propuesta</a>
+<a href="#conclusiones">Conclusiones</a>
+
+</nav>
+
+<section id="integrantes">
+
+<div class="card">
+
+<h2>Integrantes del Equipo</h2>
+
+<div class="integrantes">
+
+<div class="persona">
+
+<h3>Felipe</h3>
+
+<p>Recolector de Datos</p>
+
+</div>
+
+<div class="persona">
+
+<h3>Gian Marco</h3>
+
+<p>Analista de Datos</p>
+
+</div>
+
+<div class="persona">
+
+<h3>David</h3>
+
+<p>Visualizador</p>
+
+</div>
+
+<div class="persona">
+
+<h3>Daniel</h3>
+
+<p>Investigador de IA</p>
+
+</div>
+
+<div class="persona">
+
+<h3>Samuel</h3>
+
+<p>Presentador</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section><section id="problema">
+
+<div class="card">
+
+<h2>🌍 Objetivos de Desarrollo Sostenible (ODS)</h2>
+
+<div class="ods">
+
+<div>
+
+<h3>🎓 ODS 4</h3>
+
+<p><b>Educación de Calidad</b></p>
+
+<p>
+Promover oportunidades de aprendizaje mediante el uso responsable de la tecnología y el análisis de datos.
+</p>
+
+</div>
+
+<div>
+
+<h3>❤️ ODS 3</h3>
+
+<p><b>Salud y Bienestar</b></p>
+
+<p>
+Fomentar hábitos saludables reduciendo el uso excesivo de dispositivos electrónicos y promoviendo un mejor descanso.
+</p>
+
+</div>
+
+<div>
+
+<h3>💡 ODS 9</h3>
+
+<p><b>Industria, Innovación e Infraestructura</b></p>
+
+<p>
+Aplicar herramientas digitales e Inteligencia Artificial para resolver problemas reales mediante el análisis de datos.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📌 Problema Identificado</h2>
+
+<p>
+
+Actualmente muchos estudiantes utilizan teléfonos celulares, redes sociales,
+videojuegos y plataformas digitales durante varias horas al día.
+Este comportamiento puede afectar la concentración, disminuir el tiempo dedicado
+al estudio, alterar los hábitos de sueño y reducir el rendimiento académico.
+
+</p>
+
+<br>
+
+<p>
+
+A través del análisis de datos se pretende identificar patrones de uso
+de la tecnología y proponer soluciones que beneficien a la comunidad educativa.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>❓ Pregunta Orientadora</h2>
+
+<p style="font-size:22px;font-weight:bold;text-align:center;color:#1565c0;">
+
+¿Cómo influye el tiempo de uso de dispositivos electrónicos en el rendimiento
+académico y los hábitos de estudio de los estudiantes de grado 8°?
+
+</p>
+
+</div>
+
+</section>
+
+<section id="objetivos">
+
+<div class="card">
+
+<h2>🎯 Objetivo General</h2>
+
+<p>
+
+Analizar mediante herramientas tecnológicas el tiempo que los estudiantes
+dedican al uso de dispositivos electrónicos para proponer estrategias que
+promuevan un uso responsable de la tecnología y mejoren el rendimiento académico.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>✅ Objetivos Específicos</h2>
+
+<ul>
+
+<li>Diseñar una encuesta para recolectar información.</li>
+
+<li>Aplicar la encuesta a estudiantes de grado octavo.</li>
+
+<li>Organizar los datos utilizando Microsoft Excel o Google Sheets.</li>
+
+<li>Realizar limpieza y análisis de los datos mediante tablas dinámicas.</li>
+
+<li>Calcular promedios, porcentajes, moda y otros indicadores estadísticos.</li>
+
+<li>Crear gráficos y visualizaciones interactivas.</li>
+
+<li>Utilizar ChatGPT como herramienta de Inteligencia Artificial para analizar los resultados.</li>
+
+<li>Proponer soluciones fundamentadas en evidencia.</li>
+
+</ul>
+
+</div>
+
+</section>
+
+<section id="roles">
+
+<div class="card">
+
+<h2>👥 Roles del Equipo</h2>
+
+<table>
+
+<tr>
+
+<th>Integrante</th>
+
+<th>Rol</th>
+
+<th>Responsabilidad</th>
+
+</tr>
+
+<tr>
+
+<td>Felipe</td>
+
+<td>Recolector de Datos</td>
+
+<td>Diseñar la encuesta y recolectar la información.</td>
+
+</tr>
+
+<tr>
+
+<td>Gian Marco</td>
+
+<td>Analista de Datos</td>
+
+<td>Organizar la base de datos y realizar los cálculos.</td>
+
+</tr>
+
+<tr>
+
+<td>David</td>
+
+<td>Visualizador</td>
+
+<td>Diseñar los gráficos y el tablero de datos.</td>
+
+</tr>
+
+<tr>
+
+<td>Daniel</td>
+
+<td>Investigador de IA</td>
+
+<td>Analizar patrones utilizando ChatGPT.</td>
+
+</tr>
+
+<tr>
+
+<td>Samuel</td>
+
+<td>Presentador</td>
+
+<td>Exponer el proyecto y explicar los resultados.</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</section>
+
+<section id="investigacion">
+
+<div class="card">
+
+<h2>📚 Investigación</h2>
+
+<h3>¿Qué es la Ciencia de Datos?</h3>
+
+<p>
+
+La Ciencia de Datos es una disciplina que permite recopilar,
+organizar, limpiar, analizar e interpretar información con el fin
+de descubrir patrones y facilitar la toma de decisiones.
+
+</p>
+
+<h3>¿Qué es la Inteligencia Artificial?</h3>
+
+<p>
+
+La Inteligencia Artificial (IA) es una tecnología capaz de procesar grandes
+cantidades de información para identificar patrones, realizar predicciones
+y apoyar la solución de problemas.
+
+</p>
+
+<h3>¿Por qué son importantes los datos?</h3>
+
+<p>
+
+Los datos permiten comprender mejor la realidad, identificar problemas,
+comparar situaciones y proponer soluciones basadas en evidencia.
+
+</p>
+
+<h3>Herramientas utilizadas en este proyecto</h3>
+
+<ul>
+
+<li>Microsoft Excel</li>
+
+<li>Google Sheets</li>
+
+<li>Google Forms</li>
+
+<li>Chart.js</li>
+
+<li>ChatGPT</li>
+
+<li>Canva</li>
+
+<li>PowerPoint</li>
+
+</ul>
+
+</div>
+
+</section><section id="encuesta">
+
+<div class="card">
+
+<h2>📝 Encuesta sobre el Uso de la Tecnología</h2>
+
+<p>
+Esta encuesta tiene como propósito conocer los hábitos de uso de dispositivos
+electrónicos de los estudiantes de grado 8°. La información será utilizada
+únicamente con fines académicos.
+</p>
+
+<form id="encuestaForm">
+
+<label><b>Nombre del estudiante</b></label>
+<input type="text" id="nombre" placeholder="Escribe tu nombre" required>
+
+<label><b>Edad</b></label>
+<input type="number" id="edad" min="10" max="20" required>
+
+<label><b>Curso</b></label>
+<select id="curso" required>
+<option value="">Seleccione...</option>
+<option>8°A</option>
+<option>8°B</option>
+<option>8°C</option>
+<option>8°D</option>
+</select>
+
+<label><b>¿Tienes teléfono celular?</b></label>
+<select id="celular" required>
+<option value="">Seleccione...</option>
+<option>Sí</option>
+<option>No</option>
+</select>
+
+<label><b>¿Cuántas horas al día usas dispositivos electrónicos?</b></label>
+<select id="horas" required>
+<option value="">Seleccione...</option>
+<option>Menos de 1 hora</option>
+<option>1 - 2 horas</option>
+<option>3 - 4 horas</option>
+<option>Más de 5 horas</option>
+</select>
+
+<label><b>¿Para qué utilizas más el celular?</b></label>
+<select id="uso" required>
+<option value="">Seleccione...</option>
+<option>Estudiar</option>
+<option>Redes Sociales</option>
+<option>Videojuegos</option>
+<option>Ver Videos</option>
+<option>Otro</option>
+</select>
+
+<label><b>¿Crees que el uso del celular afecta tus estudios?</b></label>
+<select id="afecta" required>
+<option value="">Seleccione...</option>
+<option>Sí</option>
+<option>No</option>
+</select>
+
+<label><b>¿Duermes menos de 8 horas?</b></label>
+<select id="sueno" required>
+<option value="">Seleccione...</option>
+<option>Sí</option>
+<option>No</option>
+</select>
+
+<label><b>¿Cuál es tu rendimiento académico?</b></label>
+<select id="promedio" required>
+<option value="">Seleccione...</option>
+<option>Superior</option>
+<option>Alto</option>
+<option>Básico</option>
+<option>Bajo</option>
+</select>
+
+<label><b>¿Utilizas el celular durante las clases?</b></label>
+<select id="clases" required>
+<option value="">Seleccione...</option>
+<option>Nunca</option>
+<option>Algunas veces</option>
+<option>Siempre</option>
+</select>
+
+<label><b>¿Consideras importante aprender sobre el uso responsable de la tecnología?</b></label>
+<select id="responsable" required>
+<option value="">Seleccione...</option>
+<option>Sí</option>
+<option>No</option>
+</select>
+
+<br><br>
+
+<button type="submit">Guardar Respuesta</button>
+
+</form>
+
+<br>
+
+<div id="mensaje"
+style="
+display:none;
+padding:15px;
+background:#4CAF50;
+color:white;
+border-radius:10px;
+font-weight:bold;
+text-align:center;">
+Respuesta registrada correctamente.
+</div>
+
+</div>
+
+</section>
+
+<section id="datos">
+
+<div class="card">
+
+<h2>📊 Organización de los Datos</h2>
+
+<p>
+Después de aplicar la encuesta, la información será organizada en una hoja de
+cálculo de Microsoft Excel o Google Sheets para facilitar su análisis.
+</p>
+
+<h3>Columnas de la Base de Datos</h3>
+
+<table>
+
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+
+<tr>
+<td>Nombre</td>
+<td>Nombre del estudiante</td>
+</tr>
+
+<tr>
+<td>Edad</td>
+<td>Edad del estudiante</td>
+</tr>
+
+<tr>
+<td>Curso</td>
+<td>Curso al que pertenece</td>
+</tr>
+
+<tr>
+<td>Tiene celular</td>
+<td>Sí o No</td>
+</tr>
+
+<tr>
+<td>Horas de uso</td>
+<td>Tiempo diario frente a pantallas</td>
+</tr>
+
+<tr>
+<td>Uso principal</td>
+<td>Actividad que realiza con mayor frecuencia</td>
+</tr>
+
+<tr>
+<td>Afecta estudios</td>
+<td>Percepción del estudiante</td>
+</tr>
+
+<tr>
+<td>Horas de sueño</td>
+<td>Descanso diario</td>
+</tr>
+
+<tr>
+<td>Rendimiento</td>
+<td>Superior, Alto, Básico o Bajo</td>
+</tr>
+
+<tr>
+<td>Uso en clase</td>
+<td>Frecuencia de uso del celular</td>
+</tr>
+
+<tr>
+<td>Uso responsable</td>
+<td>Opinión sobre educación digital</td>
+</tr>
+
+</table>
+
+<br>
+
+<h3>Fórmulas recomendadas en Excel</h3>
+
+<ul>
+
+<li><b>=PROMEDIO()</b></li>
+
+<li><b>=CONTARA()</b></li>
+
+<li><b>=MAX()</b></li>
+
+<li><b>=MIN()</b></li>
+
+<li><b>=MODA()</b></li>
+
+<li><b>=(Cantidad/Total)*100</b></li>
+
+</ul>
+
+<h3>Tablas Dinámicas</h3>
+
+<ul>
+
+<li>Horas de uso por curso.</li>
+
+<li>Promedio académico según horas de uso.</li>
+
+<li>Uso del celular durante las clases.</li>
+
+<li>Cantidad de estudiantes por tipo de uso.</li>
+
+</ul>
+
+</div>
+
+</section><!-- ===================== DASHBOARD ===================== -->
+
+<section id="graficos">
+
+<div class="card">
+
+<h2>📊 Dashboard de Análisis de Datos</h2>
+
+<p>
+Los siguientes gráficos permiten visualizar la información obtenida en la encuesta.
+Los datos se actualizarán automáticamente cuando se registren respuestas.
+</p>
+
+<h3>📱 Horas de uso de dispositivos electrónicos</h3>
+
+<canvas id="graficoHoras" height="120"></canvas>
+
+<br><br>
+
+<h3>🎮 Uso principal del celular</h3>
+
+<canvas id="graficoUso" height="120"></canvas>
+
+<br><br>
+
+<h3>📚 Rendimiento Académico</h3>
+
+<canvas id="graficoPromedio" height="120"></canvas>
+
+<br><br>
+
+<h3>🏫 Uso del celular durante las clases</h3>
+
+<canvas id="graficoClases" height="120"></canvas>
+
+</div>
+
+</section>
+
+<!-- ===================== IA ===================== -->
+
+<section id="ia">
+
+<div class="card">
+
+<h2>🤖 Uso de Inteligencia Artificial</h2>
+
+<p>
+
+En este proyecto se emplea ChatGPT como herramienta de Inteligencia Artificial
+para interpretar la información obtenida en la encuesta.
+
+</p>
+
+<h3>Preguntas realizadas a la IA</h3>
+
+<ul>
+
+<li>¿Qué patrones se observan en los datos?</li>
+
+<li>¿Existe relación entre el tiempo frente a pantallas y el rendimiento académico?</li>
+
+<li>¿Qué hábitos pueden mejorarse?</li>
+
+<li>¿Qué estrategias ayudarían a disminuir el uso excesivo del celular?</li>
+
+</ul>
+
+<h3>Patrones esperados</h3>
+
+<ul>
+
+<li>Los estudiantes que utilizan el celular durante más de cinco horas al día suelen presentar menor concentración.</li>
+
+<li>Las redes sociales representan el uso más frecuente de los dispositivos.</li>
+
+<li>Los estudiantes que duermen menos de ocho horas presentan un rendimiento académico inferior.</li>
+
+<li>La mayoría considera importante aprender sobre el uso responsable de la tecnología.</li>
+
+</ul>
+
+</div>
+
+</section>
+
+<!-- ===================== PROPUESTA ===================== -->
+
+<section id="propuesta">
+
+<div class="card">
+
+<h2>💡 Propuesta de Solución</h2>
+
+<h3>Proyecto: "Conéctate para Aprender"</h3>
+
+<p>
+
+Con base en los resultados obtenidos mediante el análisis de datos,
+se propone desarrollar una campaña escolar para fomentar el uso responsable
+de la tecnología.
+
+</p>
+
+<h3>Acciones propuestas</h3>
+
+<ul>
+
+<li>Charlas sobre bienestar digital.</li>
+
+<li>Talleres para estudiantes y padres.</li>
+
+<li>Horarios de estudio sin celular.</li>
+
+<li>Uso del teléfono únicamente con fines académicos durante las clases.</li>
+
+<li>Campañas de desconexión digital.</li>
+
+<li>Concursos sobre buenas prácticas tecnológicas.</li>
+
+<li>Seguimiento periódico mediante nuevas encuestas.</li>
+
+</ul>
+
+<h3>Impacto esperado</h3>
+
+<ul>
+
+<li>Mayor concentración.</li>
+
+<li>Mejor rendimiento académico.</li>
+
+<li>Reducción del uso excesivo del celular.</li>
+
+<li>Mejor calidad del sueño.</li>
+
+<li>Mayor conciencia sobre ciudadanía digital.</li>
+
+</ul>
+
+</div>
+
+</section>
+
+<!-- ===================== CONCLUSIONES ===================== -->
+
+<section id="conclusiones">
+
+<div class="card">
+
+<h2>📌 Conclusiones</h2>
+
+<p>
+
+El análisis de datos permitió comprender mejor los hábitos tecnológicos de los
+estudiantes de grado octavo.
+
+</p>
+
+<ul>
+
+<li>La ciencia de datos ayuda a tomar decisiones fundamentadas.</li>
+
+<li>Excel facilita la organización y análisis de la información.</li>
+
+<li>Los gráficos permiten interpretar los resultados rápidamente.</li>
+
+<li>La Inteligencia Artificial identifica patrones relevantes.</li>
+
+<li>El proyecto fortalece las competencias STEM.</li>
+
+<li>Contribuye al cumplimiento de los Objetivos de Desarrollo Sostenible.</li>
+
+</ul>
+
+</div>
+
+</section>
+
+<!-- ===================== HERRAMIENTAS ===================== -->
+
+<section>
+
+<div class="card">
+
+<h2>🛠 Herramientas Utilizadas</h2>
+
+<table>
+
+<tr>
+
+<th>Herramienta</th>
+
+<th>Uso</th>
+
+</tr>
+
+<tr>
+
+<td>Google Forms</td>
+
+<td>Encuestas</td>
+
+</tr>
+
+<tr>
+
+<td>Microsoft Excel</td>
+
+<td>Análisis de Datos</td>
+
+</tr>
+
+<tr>
+
+<td>Google Sheets</td>
+
+<td>Organización de Datos</td>
+
+</tr>
+
+<tr>
+
+<td>Chart.js</td>
+
+<td>Visualización de Datos</td>
+
+</tr>
+
+<tr>
+
+<td>ChatGPT</td>
+
+<td>Análisis mediante IA</td>
+
+</tr>
+
+<tr>
+
+<td>Canva</td>
+
+<td>Presentación</td>
+
+</tr>
+
+<tr>
+
+<td>PowerPoint</td>
+
+<td>Exposición</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</section>
+
+<footer>
+
+<h2>Proyecto CODE FOR CHANGE</h2>
+
+<p>
+
+Tecnología 8° • STEM • Ciencia de Datos • Inteligencia Artificial
+
+</p>
+
+<p>
+
+Integrantes:
+
+Felipe • Gian Marco • David • Daniel • Samuel
+
+</p>
+
+</footer>
+
+<script>//==============================
+// PROYECTO CODE FOR CHANGE
+// PARTE 5A - JAVASCRIPT
+// Pegar debajo de <script>
+//==============================
+
+const respuestas = [];
+
+const formulario = document.getElementById("encuestaForm");
+const mensaje = document.getElementById("mensaje");
+
+let graficoHoras;
+let graficoUso;
+let graficoPromedio;
+let graficoClases;
+
+formulario.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const estudiante={
+
+nombre:document.getElementById("nombre").value,
+
+edad:Number(document.getElementById("edad").value),
+
+curso:document.getElementById("curso").value,
+
+celular:document.getElementById("celular").value,
+
+horas:document.getElementById("horas").value,
+
+uso:document.getElementById("uso").value,
+
+afecta:document.getElementById("afecta").value,
+
+sueno:document.getElementById("sueno").value,
+
+promedio:document.getElementById("promedio").value,
+
+clases:document.getElementById("clases").value,
+
+responsable:document.getElementById("responsable").value
+
+};
+
+respuestas.push(estudiante);
+
+mensaje.style.display="block";
+
+setTimeout(function(){
+
+mensaje.style.display="none";
+
+},2500);
+
+formulario.reset();
+
+actualizarDashboard();
+
+});
+
+function contar(campo,valor){
+
+return respuestas.filter(r=>r[campo]===valor).length;
+
+}
+
+function actualizarDashboard(){
+
+const horas=[
+
+contar("horas","Menos de 1 hora"),
+
+contar("horas","1 - 2 horas"),
+
+contar("horas","3 - 4 horas"),
+
+contar("horas","Más de 5 horas")
+
+];
+
+const uso=[
+
+contar("uso","Estudiar"),
+
+contar("uso","Redes Sociales"),
+
+contar("uso","Videojuegos"),
+
+contar("uso","Ver Videos"),
+
+contar("uso","Otro")
+
+];
+
+const promedio=[
+
+contar("promedio","Superior"),
+
+contar("promedio","Alto"),
+
+contar("promedio","Básico"),
+
+contar("promedio","Bajo")
+
+];
+
+const clases=[
+
+contar("clases","Nunca"),
+
+contar("clases","Algunas veces"),
+
+contar("clases","Siempre")
+
+];
+
+if(graficoHoras){
+
+graficoHoras.data.datasets[0].data=horas;
+graficoHoras.update();
+
+graficoUso.data.datasets[0].data=uso;
+graficoUso.update();
+
+graficoPromedio.data.datasets[0].data=promedio;
+graficoPromedio.update();
+
+graficoClases.data.datasets[0].data=clases;
+graficoClases.update();
+
+return;
+
+}
+
+crearGraficos(horas,uso,promedio,clases);
+
+}
+
+function crearGraficos(horas,uso,promedio,clases){
+
+const ctx1=document.getElementById("graficoHoras");
+
+graficoHoras=new Chart(ctx1,{
+
+type:"bar",
+
+data:{
+
+labels:[
+
+"<1 Hora",
+
+"1-2 Horas",
+
+"3-4 Horas",
+
+">5 Horas"
+
+],
+
+datasets:[{
+
+label:"Cantidad de estudiantes",
+
+data:horas,
+
+backgroundColor:[
+
+"#1565C0",
+
+"#26A69A",
+
+"#FFB300",
+
+"#E53935"
+
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{display:false}
+
+}
+
+}
+
+});
+
+const ctx2=document.getElementById("graficoUso");
+
+graficoUso=new Chart(ctx2,{
+
+type:"pie",
+
+data:{
+
+labels:[
+
+"Estudiar",
+
+"Redes Sociales",
+
+"Videojuegos",
+
+"Videos",
+
+"Otro"
+
+],
+
+datasets:[{
+
+data:uso,
+
+backgroundColor:[
+
+"#1E88E5",
+
+"#43A047",
+
+"#FB8C00",
+
+"#8E24AA",
+
+"#EF5350"
+
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true
+
+}
+
+});
+const ctx3=document.getElementById("graficoPromedio");
+
+graficoPromedio=new Chart(ctx3,{
+
+type:"doughnut",
+
+data:{
+
+labels:[
+
+"Superior",
+
+"Alto",
+
+"Básico",
+
+"Bajo"
+
+],
+
+datasets:[{
+
+label:"Rendimiento",
+
+data:promedio,
+
+backgroundColor:[
+
+"#2E7D32",
+
+"#43A047",
+
+"#FDD835",
+
+"#D32F2F"
+
+],
+
+borderWidth:1
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+position:"bottom"
+
+},
+
+title:{
+
+display:true,
+
+text:"Rendimiento Académico"
+
+}
+
+}
+
+}
+
+});
+
+const ctx4=document.getElementById("graficoClases");
+
+graficoClases=new Chart(ctx4,{
+
+type:"bar",
+
+data:{
+
+labels:[
+
+"Nunca",
+
+"Algunas veces",
+
+"Siempre"
+
+],
+
+datasets:[{
+
+label:"Uso del celular durante clases",
+
+data:clases,
+
+backgroundColor:[
+
+"#1976D2",
+
+"#FF9800",
+
+"#D32F2F"
+
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:false
+
+},
+
+title:{
+
+display:true,
+
+text:"Uso del Celular Durante las Clases"
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true
+
+}
+
+}
+
+}
+
+});
+
+mostrarEstadisticas();
+
+}
+
+function mostrarEstadisticas(){
+
+let estadisticas=document.getElementById("estadisticas");
+
+if(!estadisticas){
+
+estadisticas=document.createElement("div");
+
+estadisticas.id="estadisticas";
+
+estadisticas.className="card";
+
+document.getElementById("graficos").appendChild(estadisticas);
+
+}
+
+const total=respuestas.length;
+
+const usanMas5=contar("horas","Más de 5 horas");
+
+const usanRedes=contar("uso","Redes Sociales");
+
+const superior=contar("promedio","Superior");
+
+const alto=contar("promedio","Alto");
+
+const basico=contar("promedio","Básico");
+
+const bajo=contar("promedio","Bajo");
+
+const siempre=contar("clases","Siempre");
+
+estadisticas.innerHTML=`
+
+<h2>📈 Estadísticas Generales</h2>
+
+<table>
+
+<tr>
+
+<th>Total de Encuestas</th>
+
+<td>${total}</td>
+
+</tr>
+
+<tr>
+
+<th>Más de 5 horas frente a pantallas</th>
+
+<td>${usanMas5}</td>
+
+</tr>
+
+<tr>
+
+<th>Uso principal: Redes Sociales</th>
+
+<td>${usanRedes}</td>
+
+</tr>
+
+<tr>
+
+<th>Rendimiento Superior</th>
+
+<td>${superior}</td>
+
+</tr>
+
+<tr>
+
+<th>Rendimiento Alto</th>
+
+<td>${alto}</td>
+
+</tr>
+
+<tr>
+
+<th>Rendimiento Básico</th>
+
+<td>${basico}</td>
+
+</tr>
+
+<tr>
+
+<th>Rendimiento Bajo</th>
+
+<td>${bajo}</td>
+
+</tr>
+
+<tr>
+
+<th>Usan el celular siempre en clase</th>
+
+<td>${siempre}</td>
+
+</tr>
+
+</table>
+
+`;
+
+}
+
+actualizarDashboard();//==========================================
+// FUNCIONES ADICIONALES
+//==========================================
+
+function generarConclusiones(){
+
+if(respuestas.length===0){
+
+return "Aún no existen respuestas registradas.";
+
+}
+
+let conclusion="";
+
+const mas5=contar("horas","Más de 5 horas");
+const redes=contar("uso","Redes Sociales");
+const estudiar=contar("uso","Estudiar");
+const siempre=contar("clases","Siempre");
+
+conclusion+="Se registraron "+respuestas.length+" encuestas.<br><br>";
+
+if(mas5>0){
+
+conclusion+="• Un grupo de estudiantes utiliza dispositivos electrónicos durante más de cinco horas al día.<br>";
+
+}
+
+if(redes>=estudiar){
+
+conclusion+="• Las redes sociales representan uno de los usos más frecuentes del teléfono celular.<br>";
+
+}else{
+
+conclusion+="• El uso académico del celular presenta una participación importante.<br>";
+
+}
+
+if(siempre>0){
+
+conclusion+="• Algunos estudiantes utilizan el celular durante las clases, por lo que se recomienda fortalecer las estrategias de uso responsable.<br>";
+
+}
+
+conclusion+="<br><b>Recomendación:</b> Promover campañas de bienestar digital, pausas activas, horarios de estudio sin distracciones y el uso responsable de la tecnología.";
+
+return conclusion;
+
+}
+
+function mostrarConclusiones(){
+
+let caja=document.getElementById("resultadoIA");
+
+if(!caja){
+
+caja=document.createElement("div");
+
+caja.id="resultadoIA";
+
+caja.className="card";
+
+document.getElementById("ia").appendChild(caja);
+
+}
+
+caja.innerHTML=`
+
+<h2>🤖 Análisis Automático (Simulación IA)</h2>
+
+<p>${generarConclusiones()}</p>
+
+`;
+
+}
+
+setInterval(function(){
+
+if(respuestas.length>0){
+
+mostrarConclusiones();
+
+}
+
+},2000);
+
+//==========================================
+// EXPORTAR DATOS A JSON
+//==========================================
+
+function descargarJSON(){
+
+const datos=JSON.stringify(respuestas,null,2);
+
+const blob=new Blob([datos],{type:"application/json"});
+
+const enlace=document.createElement("a");
+
+enlace.href=URL.createObjectURL(blob);
+
+enlace.download="datos_encuesta.json";
+
+enlace.click();
+
+}
+
+//==========================================
+// BOTÓN DE EXPORTACIÓN
+//==========================================
+
+const boton=document.createElement("button");
+
+boton.innerHTML="📥 Descargar Resultados";
+
+boton.style.marginTop="20px";
+
+boton.onclick=descargarJSON;
+
+document.getElementById("graficos").appendChild(boton);
+
+//==========================================
+// ANIMACIÓN DE APARICIÓN
+//==========================================
+
+const secciones=document.querySelectorAll("section");
+
+const observador=new IntersectionObserver(function(entradas){
+
+entradas.forEach(function(entrada){
+
+if(entrada.isIntersecting){
+
+entrada.target.animate(
+
+[
+
+{opacity:0,transform:"translateY(40px)"},
+
+{opacity:1,transform:"translateY(0px)"}
+
+],
+
+{
+
+duration:700,
+
+fill:"forwards"
+
+}
+
+);
+
+}
+
+});
+
+});
+
+secciones.forEach(function(sec){
+
+observador.observe(sec);
+
+});
+
+//==========================================
+// MENSAJE DE BIENVENIDA
+//==========================================
+
+window.onload=function(){
+
+console.log("Proyecto CODE FOR CHANGE cargado correctamente.");
+
+alert("Bienvenido al Proyecto CODE FOR CHANGE.\n\nExplora la encuesta, registra respuestas y observa el análisis de datos en tiempo real.");
+
+}
+
+</script>
+
+
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="index.html"
+  download="speedmax-code-for-change.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>
+</body>
+
+</html>

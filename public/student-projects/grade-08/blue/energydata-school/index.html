@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EnergyData School</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+font-family:"Segoe UI",Arial;
+}
+
+
+body{
+margin:0;
+background:#eef7f5;
+color:#263238;
+}
+
+
+header{
+background:linear-gradient(135deg,#004d40,#0288d1);
+color:white;
+padding:40px;
+text-align:center;
+}
+
+
+header h1{
+font-size:45px;
+margin:0;
+}
+
+
+nav{
+background:#003c34;
+padding:15px;
+text-align:center;
+}
+
+
+nav a{
+color:white;
+text-decoration:none;
+margin:20px;
+font-weight:bold;
+}
+
+
+.container{
+padding:25px;
+}
+
+
+.card{
+background:white;
+border-radius:20px;
+padding:25px;
+margin-bottom:25px;
+box-shadow:0 5px 15px #bbb;
+}
+
+
+
+.dashboard{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+
+}
+
+
+.indicador{
+
+background:linear-gradient(135deg,#e0f2f1,#ffffff);
+padding:20px;
+border-radius:15px;
+text-align:center;
+
+}
+
+
+.indicador h3{
+
+color:#00695c;
+
+}
+
+
+
+.icono{
+
+font-size:45px;
+
+}
+
+
+
+input,select{
+
+width:90%;
+padding:12px;
+margin:8px;
+border-radius:10px;
+border:1px solid #aaa;
+
+}
+
+
+button{
+
+background:#00897b;
+color:white;
+border:0;
+padding:12px 25px;
+border-radius:10px;
+cursor:pointer;
+
+}
+
+
+button:hover{
+
+background:#00695c;
+
+}
+
+
+
+
+table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+
+th{
+
+background:#00796b;
+color:white;
+
+}
+
+
+td,th{
+
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+
+}
+
+
+
+
+.barra{
+
+height:30px;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+
+}
+
+
+.progreso{
+
+height:100%;
+background:linear-gradient(90deg,#00c853,#64dd17);
+color:white;
+text-align:center;
+
+}
+
+
+
+
+.grafico div{
+
+margin:12px;
+background:#0288d1;
+color:white;
+padding:10px;
+border-radius:10px;
+
+}
+
+
+
+.recomendacion{
+
+background:#fff8e1;
+border-left:8px solid #ffb300;
+padding:20px;
+border-radius:15px;
+
+}
+
+
+
+
+.imagenes{
+
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+
+}
+
+
+.imagenes div{
+
+background:#e0f7fa;
+padding:20px;
+border-radius:15px;
+text-align:center;
+width:220px;
+
+}
+
+
+.imagenes img{
+
+width:90px;
+
+}
+
+
+
+
+footer{
+
+background:#003c34;
+color:white;
+padding:20px;
+text-align:center;
+
+}
+
+
+</style>
+
+
+<style>
+.tlh-showcase-bar{max-width:1200px;margin:12px auto;display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 14px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.tlh-showcase-bar a,.tlh-showcase-authors{padding:9px 14px;border-radius:999px;font-weight:800;text-decoration:none}
+.tlh-showcase-bar a{background:#102b46;color:#fff;border:1px solid #3182a7}
+.tlh-showcase-authors{background:#edf7ff;color:#102b46;border:1px solid #c9e2f3;font-size:.88rem}
+</style></head>
+
+
+<body><div class="tlh-showcase-bar"><a href="/students/grade/8/blue">← 8th Blue Projects</a><div class="tlh-showcase-authors">Created by: Esteban · Andres · Silva · Moises</div></div>
+
+
+
+<header>
+
+<h1>⚡ EnergyData School</h1>
+
+<p>
+Sistema inteligente de análisis del consumo energético escolar
+</p>
+
+</header>
+
+
+
+
+<nav>
+
+<a href="#dashboard">Dashboard</a>
+<a href="#encuesta">Encuesta</a>
+<a href="#datos">Datos</a>
+<a href="#analisis">Análisis</a>
+
+</nav>
+
+
+
+
+
+
+<div class="container">
+
+
+
+<section class="card" id="dashboard">
+
+<h2>📊 Panel de control energético</h2>
+
+
+<div class="dashboard">
+
+
+<div class="indicador">
+
+<div class="icono">⚡</div>
+
+<h3>Registros</h3>
+
+<p id="registros">0</p>
+
+</div>
+
+
+
+<div class="indicador">
+
+<div class="icono">🏫</div>
+
+<h3>Zona mayor consumo</h3>
+
+<p id="zonaMayor">---</p>
+
+</div>
+
+
+
+<div class="indicador">
+
+<div class="icono">📈</div>
+
+<h3>Eficiencia</h3>
+
+<p id="eficiencia">0%</p>
+
+</div>
+
+
+
+<div class="indicador">
+
+<div class="icono">💡</div>
+
+<h3>Consumo estimado</h3>
+
+<p id="consumo">0 kWh</p>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="card">
+
+<h2>🖼️ Áreas de análisis energético</h2>
+
+
+<div class="imagenes">
+
+
+<div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/1048/1048949.png">
+
+<h3>Iluminación</h3>
+
+<p>Control de luces y ahorro.</p>
+
+</div>
+
+
+<div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png">
+
+<h3>Tecnología</h3>
+
+<p>Computadores y equipos.</p>
+
+</div>
+
+
+<div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/3094/3094856.png">
+
+<h3>Energía limpia</h3>
+
+<p>Sostenibilidad escolar.</p>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="card" id="encuesta">
+
+
+<h2>📋 Encuesta de recolección de datos</h2>
+
+
+<input id="nombre" placeholder="Nombre del registro">
+
+
+<select id="zona">
+
+<option>Aula</option>
+<option>Laboratorio</option>
+<option>Biblioteca</option>
+<option>Cafetería</option>
+<option>Oficinas</option>
+
+</select>
+
+
+
+<input id="horas" type="number" placeholder="Horas de uso diario">
+
+
+
+<select id="equipo">
+
+<option>Luces</option>
+<option>Computadores</option>
+<option>Aire acondicionado</option>
+<option>Ventiladores</option>
+
+</select>
+
+
+
+<select id="ahorro">
+
+<option>Siempre apaga equipos</option>
+<option>A veces apaga equipos</option>
+<option>Nunca apaga equipos</option>
+
+</select>
+
+
+
+<button onclick="guardar()">
+
+Registrar dato
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="card" id="datos">
+
+
+<h2>📑 Base de datos energética</h2>
+
+
+<table id="tabla">
+
+
+<tr>
+
+<th>ID</th>
+<th>Zona</th>
+<th>Horas</th>
+<th>Equipo</th>
+<th>Consumo</th>
+<th>Ahorro</th>
+
+</tr>
+
+
+</table>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="card" id="analisis">
+
+
+<h2>📈 Análisis de datos</h2>
+
+
+<h3>Consumo energético estimado</h3>
+
+
+<div class="barra">
+
+<div class="progreso" id="barra">
+
+0%
+
+</div>
+
+</div>
+
+
+
+<h3>Consumo por zonas</h3>
+
+
+<div class="grafico" id="grafico">
+
+</div>
+
+
+
+<div class="recomendacion">
+
+<h3>🤖 Análisis inteligente</h3>
+
+<p id="ia">
+
+Esperando datos...
+
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<footer>
+
+Proyecto Ciencia de Datos + Objetivos de Desarrollo Sostenible
+
+</footer>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+let datos=[];
+
+
+
+function guardar(){
+
+
+let registro={
+
+
+zona:document.getElementById("zona").value,
+
+
+horas:Number(document.getElementById("horas").value),
+
+
+equipo:document.getElementById("equipo").value,
+
+
+ahorro:document.getElementById("ahorro").value
+
+
+};
+
+
+
+datos.push(registro);
+
+
+
+mostrar();
+
+analizar();
+
+
+}
+
+
+
+
+
+
+function mostrar(){
+
+
+let tabla=document.getElementById("tabla");
+
+tabla.innerHTML=`
+
+<tr>
+<th>ID</th>
+<th>Zona</th>
+<th>Horas</th>
+<th>Equipo</th>
+<th>Consumo</th>
+<th>Ahorro</th>
+</tr>`;
+
+
+datos.forEach((d,i)=>{
+
+
+let consumo=d.horas*5;
+
+
+tabla.innerHTML+=`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>${d.zona}</td>
+
+<td>${d.horas}</td>
+
+<td>${d.equipo}</td>
+
+<td>${consumo} kWh</td>
+
+<td>${d.ahorro}</td>
+
+
+</tr>`;
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+function analizar(){
+
+
+let total=0;
+
+
+let zonas={};
+
+
+
+datos.forEach(d=>{
+
+
+let energia=d.horas*5;
+
+
+total+=energia;
+
+
+
+if(!zonas[d.zona]){
+
+zonas[d.zona]=0;
+
+}
+
+
+zonas[d.zona]+=energia;
+
+
+
+});
+
+
+
+let mayor="---";
+let valor=0;
+
+
+for(let z in zonas){
+
+if(zonas[z]>valor){
+
+valor=zonas[z];
+
+mayor=z;
+
+}
+
+}
+
+
+
+document.getElementById("registros").innerHTML=datos.length;
+
+
+document.getElementById("zonaMayor").innerHTML=mayor;
+
+
+document.getElementById("consumo").innerHTML=
+total+" kWh";
+
+
+
+let eficiencia=Math.max(100-total,0);
+
+
+document.getElementById("eficiencia").innerHTML=
+eficiencia+"%";
+
+
+
+let porcentaje=Math.min(total/5,100);
+
+
+document.getElementById("barra").style.width=
+porcentaje+"%";
+
+
+document.getElementById("barra").innerHTML=
+porcentaje.toFixed(0)+"%";
+
+
+
+mostrarGrafico(zonas);
+
+
+}
+
+
+
+
+
+function mostrarGrafico(zonas){
+
+
+let grafico=document.getElementById("grafico");
+
+
+grafico.innerHTML="";
+
+
+for(let z in zonas){
+
+
+grafico.innerHTML+=`
+
+<div>
+
+${z}: ${zonas[z]} kWh
+
+</div>
+
+
+`;
+
+
+}
+
+
+}
+
+
+
+
+
+function analizarIA(){
+
+
+}
+
+
+
+setInterval(()=>{
+
+
+if(datos.length>0){
+
+
+let horas=datos.reduce((a,b)=>a+b.horas,0);
+
+
+if(horas>30){
+
+document.getElementById("ia").innerHTML=
+
+"Se detecta alto consumo energético. Recomendación: reducir horas de equipos encendidos y mejorar hábitos.";
+
+}
+
+else{
+
+document.getElementById("ia").innerHTML=
+
+"El consumo está dentro de un rango eficiente. Mantener las prácticas actuales.";
+
+}
+
+
+}
+
+
+},1000);
+
+
+
+</script>
+
+
+
+
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="index.html"
+  download="energydata-school.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>
+</body>
+</html>

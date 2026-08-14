@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta - Proyecto de Datos y ODS</title>
+    <style>
+        /* ===== RESET Y ESTILOS GENERALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f0f4f8;
+            color: #1a2a3a;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            padding: 40px 50px;
+        }
+
+        /* ===== ENCABEZADO ===== */
+        .header {
+            background: linear-gradient(135deg, #0b2b44 0%, #1a5a7a 100%);
+            color: white;
+            margin: -40px -50px 30px -50px;
+            padding: 35px 50px 25px 50px;
+            border-bottom: 6px solid #f9a826;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header .ods-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        /* ===== EQUIPO ===== */
+        .team-section {
+            background: #f7fafc;
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 25px;
+            border-left: 6px solid #f9a826;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .team-section .team-label {
+            font-weight: 700;
+            color: #0b2b44;
+            font-size: 0.95rem;
+        }
+
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 5px 14px 5px 10px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            font-size: 0.85rem;
+        }
+
+        .team-member .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a5a7a, #3a8db5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .team-member .role-tag {
+            font-size: 0.6rem;
+            background: #eef2f6;
+            padding: 1px 8px;
+            border-radius: 20px;
+            color: #2c5f7a;
+            font-weight: 500;
+        }
+
+        /* ===== ENCUESTA ===== */
+        .encuesta-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0b2b44;
+            border-bottom: 4px solid #f9a826;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .encuesta-intro {
+            background: #f0f6fd;
+            border-radius: 12px;
+            padding: 16px 22px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3a8db5;
+        }
+
+        .encuesta-intro p {
+            margin-bottom: 6px;
+        }
+
+        .encuesta-intro strong {
+            color: #0b2b44;
+        }
+
+        /* ===== PREGUNTAS ===== */
+        .pregunta {
+            background: white;
+            border: 2px solid #e8edf3;
+            border-radius: 16px;
+            padding: 22px 26px;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+
+        .pregunta:hover {
+            border-color: #b8cdde;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .pregunta .pregunta-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .pregunta .pregunta-icon {
+            font-size: 1.8rem;
+        }
+
+        .pregunta .pregunta-texto {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0b2b44;
+        }
+
+        .pregunta .pregunta-ods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        .pregunta .pregunta-ods .ods-mini {
+            background: #0b2b44;
+            color: white;
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .pregunta .pregunta-ods .ods-mini:nth-child(2) { background: #1a6b3c; }
+        .pregunta .pregunta-ods .ods-mini:nth-child(3) { background: #f9a826; color: #1a2a3a; }
+
+        /* ===== OPCIONES ===== */
+        .opciones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .opcion {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f7fafc;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .opcion:hover {
+            background: #eef4fa;
+            border-color: #b8cdde;
+        }
+
+        .opcion input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #f9a826;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .opcion label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #2d4054;
+        }
+
+        .opcion .opcion-emoji {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 700px) {
+            .opciones {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== BOTÓN ENVIAR ===== */
+        .btn-enviar {
+            background: #f9a826;
+            color: #0b2b44;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: block;
+            margin: 20px auto 10px auto;
+            width: fit-content;
+        }
+
+        .btn-enviar:hover {
+            background: #e8951a;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(249, 168, 38, 0.3);
+        }
+
+        .btn-enviar:active {
+            transform: scale(0.98);
+        }
+
+        /* ===== RESULTADO SIMULADO ===== */
+        .resultado-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 16px;
+            padding: 20px 26px;
+            margin-top: 25px;
+            border-left: 6px solid #2e7d32;
+            display: none;
+        }
+
+        .resultado-box.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resultado-box h3 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+
+        .resultado-box ul {
+            padding-left: 20px;
+            color: #2d4054;
+        }
+
+        .resultado-box ul li {
+            margin-bottom: 4px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 2px solid #eef2f6;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #5a6f83;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+            .header {
+                margin: -20px -16px 20px -16px;
+                padding: 25px 20px 20px 20px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .team-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .team-grid {
+                justify-content: center;
+            }
+            .team-member {
+                font-size: 0.75rem;
+                padding: 4px 10px 4px 8px;
+            }
+            .pregunta {
+                padding: 16px 18px;
+            }
+            .pregunta .pregunta-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .pregunta .pregunta-ods {
+                margin-left: 0;
+            }
+            .encuesta-title {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            .team-member .role-tag {
+                display: none;
+            }
+            .opcion {
+                padding: 8px 12px;
+            }
+            .opcion label {
+                font-size: 0.85rem;
+            }
+            .btn-enviar {
+                padding: 12px 28px;
+                font-size: 1rem;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+
+<style>
+.tlh-top{max-width:1000px;margin:0 auto 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tlh-top a,.tlh-auth{padding:9px 14px;border-radius:999px;text-decoration:none;font-weight:800}
+.tlh-top a{background:#0b2b44;color:#fff} .tlh-auth{background:#fff3d9;color:#0b2b44;border:1px solid #f9a826}
+.real-survey{background:linear-gradient(135deg,#eaf4ff,#edfff5);border:2px solid #b8cdde;border-radius:18px;padding:22px 24px;margin-bottom:25px}
+.real-survey h2{color:#0b2b44;margin-bottom:8px} .real-survey p{margin-bottom:14px}
+.real-survey a{display:inline-block;background:linear-gradient(135deg,#0b2b44,#1a5a7a);color:white;text-decoration:none;padding:12px 18px;border-radius:12px;font-weight:800}
+</style>
+</head>
+<body>
+<div class="tlh-top"><a href="/students/grade/8/white">← 8th White Projects</a><div class="tlh-auth">Andrés · Santiago · Paula · Fiorela · Daniel</div></div>
+
+<div class="container">
+
+    <!-- ======================================== -->
+    <!-- ENCABEZADO                               -->
+    <!-- ======================================== -->
+    <div class="header">
+        <h1>📋 Encuesta de Proyecto</h1>
+        <div class="subtitle">Datos para transformar nuestra escuela y comunidad</div>
+        <div class="ods-badge">🌍 ODS 4 · 9 · 11 · 13</div>
+    </div>
+
+    <section class="real-survey">
+<h2>📊 Encuesta oficial del Grupo 2</h2>
+<p>Participa en la recolección real de datos del proyecto. Las respuestas serán utilizadas por el equipo para analizar hábitos, sostenibilidad y oportunidades de mejora en la comunidad escolar.</p>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSc-uDNqZAHuPjJ6blkjvM3boSyfQVdKU31LLT-StHgckDJNCQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">📝 Abrir encuesta real en Google Forms ↗</a>
+</section>
+
+    <!-- ======================================== -->
+    <!-- EQUIPO                                   -->
+    <!-- ======================================== -->
+    <div class="team-section">
+        <span class="team-label">👥 Equipo investigador:</span>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="avatar">A</div>
+                <span><strong>Andrés</strong></span>
+                <span class="role-tag">📋 Recolector</span>
+            </div>
+            <div class="team-member">
+                <div class="avatar">S</div>
+                <span><strong>Santiago</strong></span>
+                <span class="role-tag">📊 Analista</span>
+            </div>
+            <div class="team-member">
+                <div class="avatar">P</div>
+                <span><strong>Paula</strong></span>
+                <span class="role-tag">📈 Visualizador</span>
+            </div>
+            <div class="team-member">
+                <div class="avatar">F</div>
+                <span><strong>Fiorela</strong></span>
+                <span class="role-tag">🤖 IA</span>
+            </div>
+            <div class="team-member">
+                <div class="avatar">D</div>
+                <span><strong>Daniel</strong></span>
+                <span class="role-tag">🎤 Presentador</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- INTRO ENCUESTA                           -->
+    <!-- ======================================== -->
+    <h2 class="encuesta-title">📝 Encuesta de recolección de datos</h2>
+
+    <div class="encuesta-intro">
+        <p><strong>📌 Instrucciones:</strong> Responde cada pregunta seleccionando la opción que mejor refleje tu realidad.</p>
+        <p><strong>🔒 Privacidad:</strong> Esta encuesta es <strong>anónima</strong>. Los datos se usarán solo para fines educativos y de mejora de la comunidad.</p>
+        <p><strong>⏱️ Tiempo estimado:</strong> 5 minutos.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- FORMULARIO                               -->
+    <!-- ======================================== -->
+    <form id="encuestaForm">
+
+        <!-- ===== PREGUNTA 1: RECICLAJE ===== -->
+        <div class="pregunta">
+            <div class="pregunta-header">
+                <span class="pregunta-icon">♻️</span>
+                <span class="pregunta-texto">1. ¿Con qué frecuencia separas los residuos para reciclar?</span>
+                <div class="pregunta-ods">
+                    <span class="ods-mini">🌿 ODS 13</span>
+                    <span class="ods-mini">🏙️ ODS 11</span>
+                </div>
+            </div>
+            <div class="opciones">
+                <div class="opcion">
+                    <input type="radio" name="p1" id="p1a" value="Siempre">
+                    <label for="p1a"><span class="opcion-emoji">🌟</span> Siempre lo hago</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p1" id="p1b" value="Casi siempre">
+                    <label for="p1b"><span class="opcion-emoji">👍</span> Casi siempre</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p1" id="p1c" value="A veces">
+                    <label for="p1c"><span class="opcion-emoji">🤔</span> A veces</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p1" id="p1d" value="Nunca">
+                    <label for="p1d"><span class="opcion-emoji">😞</span> Nunca lo hago</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PREGUNTA 2: CONSUMO DE AGUA ===== -->
+        <div class="pregunta">
+            <div class="pregunta-header">
+                <span class="pregunta-icon">🚰</span>
+                <span class="pregunta-texto">2. ¿Cuánto tiempo dejas correr el agua al lavarte las manos?</span>
+                <div class="pregunta-ods">
+                    <span class="ods-mini">💧 ODS 6</span>
+                    <span class="ods-mini">🌿 ODS 13</span>
+                </div>
+            </div>
+            <div class="opciones">
+                <div class="opcion">
+                    <input type="radio" name="p2" id="p2a" value="Menos de 10 segundos">
+                    <label for="p2a"><span class="opcion-emoji">⏱️</span> Menos de 10 segundos</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p2" id="p2b" value="10-20 segundos">
+                    <label for="p2b"><span class="opcion-emoji">⏱️</span> 10-20 segundos</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p2" id="p2c" value="20-40 segundos">
+                    <label for="p2c"><span class="opcion-emoji">⏱️</span> 20-40 segundos</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p2" id="p2d" value="Más de 40 segundos">
+                    <label for="p2d"><span class="opcion-emoji">⏱️</span> Más de 40 segundos</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PREGUNTA 3: USO DE ENERGÍA ===== -->
+        <div class="pregunta">
+            <div class="pregunta-header">
+                <span class="pregunta-icon">⚡</span>
+                <span class="pregunta-texto">3. ¿Apagas las luces y equipos electrónicos cuando no los usas?</span>
+                <div class="pregunta-ods">
+                    <span class="ods-mini">🌿 ODS 13</span>
+                    <span class="ods-mini">🏭 ODS 9</span>
+                </div>
+            </div>
+            <div class="opciones">
+                <div class="opcion">
+                    <input type="radio" name="p3" id="p3a" value="Siempre">
+                    <label for="p3a"><span class="opcion-emoji">💡</span> Siempre</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p3" id="p3b" value="Casi siempre">
+                    <label for="p3b"><span class="opcion-emoji">💡</span> Casi siempre</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p3" id="p3c" value="A veces">
+                    <label for="p3c"><span class="opcion-emoji">💡</span> A veces</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p3" id="p3d" value="Nunca">
+                    <label for="p3d"><span class="opcion-emoji">💡</span> Nunca</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PREGUNTA 4: HÁBITOS ALIMENTICIOS ===== -->
+        <div class="pregunta">
+            <div class="pregunta-header">
+                <span class="pregunta-icon">🍎</span>
+                <span class="pregunta-texto">4. ¿Cuántas frutas o verduras consumes al día?</span>
+                <div class="pregunta-ods">
+                    <span class="ods-mini">📚 ODS 4</span>
+                    <span class="ods-mini">🌿 ODS 13</span>
+                </div>
+            </div>
+            <div class="opciones">
+                <div class="opcion">
+                    <input type="radio" name="p4" id="p4a" value="5 o más">
+                    <label for="p4a"><span class="opcion-emoji">🥗</span> 5 o más porciones</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p4" id="p4b" value="3-4">
+                    <label for="p4b"><span class="opcion-emoji">🥗</span> 3-4 porciones</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p4" id="p4c" value="1-2">
+                    <label for="p4c"><span class="opcion-emoji">🥗</span> 1-2 porciones</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p4" id="p4d" value="Ninguna">
+                    <label for="p4d"><span class="opcion-emoji">🍔</span> Ninguna</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PREGUNTA 5: USO DE TECNOLOGÍA ===== -->
+        <div class="pregunta">
+            <div class="pregunta-header">
+                <span class="pregunta-icon">📱</span>
+                <span class="pregunta-texto">5. ¿Cuántas horas al día usas dispositivos electrónicos (celular, tablet, computadora)?</span>
+                <div class="pregunta-ods">
+                    <span class="ods-mini">📚 ODS 4</span>
+                    <span class="ods-mini">🏭 ODS 9</span>
+                </div>
+            </div>
+            <div class="opciones">
+                <div class="opcion">
+                    <input type="radio" name="p5" id="p5a" value="Menos de 2 horas">
+                    <label for="p5a"><span class="opcion-emoji">📵</span> Menos de 2 horas</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p5" id="p5b" value="2-4 horas">
+                    <label for="p5b"><span class="opcion-emoji">📱</span> 2-4 horas</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p5" id="p5c" value="4-6 horas">
+                    <label for="p5c"><span class="opcion-emoji">📱</span> 4-6 horas</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p5" id="p5d" value="Más de 6 horas">
+                    <label for="p5d"><span class="opcion-emoji">📱</span> Más de 6 horas</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PREGUNTA 6: ÁREAS VERDES ===== -->
+        <div class="pregunta">
+            <div class="pregunta-header">
+                <span class="pregunta-icon">🌳</span>
+                <span class="pregunta-texto">6. ¿Con qué frecuencia visitas o usas áreas verdes (parques, jardines, zonas con árboles)?</span>
+                <div class="pregunta-ods">
+                    <span class="ods-mini">🌿 ODS 13</span>
+                    <span class="ods-mini">🏙️ ODS 11</span>
+                </div>
+            </div>
+            <div class="opciones">
+                <div class="opcion">
+                    <input type="radio" name="p6" id="p6a" value="Diariamente">
+                    <label for="p6a"><span class="opcion-emoji">🌳</span> Diariamente</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p6" id="p6b" value="Varias veces por semana">
+                    <label for="p6b"><span class="opcion-emoji">🌳</span> Varias veces por semana</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p6" id="p6c" value="Una vez por semana">
+                    <label for="p6c"><span class="opcion-emoji">🌳</span> Una vez por semana</label>
+                </div>
+                <div class="opcion">
+                    <input type="radio" name="p6" id="p6d" value="Casi nunca">
+                    <label for="p6d"><span class="opcion-emoji">🏢</span> Casi nunca</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================== -->
+        <!-- BOTÓN ENVIAR                             -->
+        <!-- ======================================== -->
+        <button type="button" class="btn-enviar" id="enviarBtn">📊 Enviar respuestas</button>
+
+    </form>
+
+    <!-- ======================================== -->
+    <!-- RESULTADO SIMULADO                       -->
+    <!-- ======================================== -->
+    <div class="resultado-box" id="resultadoBox">
+        <h3>✅ ¡Respuestas registradas!</h3>
+        <p>Tus respuestas han sido guardadas. Ahora el equipo analizará los datos para generar soluciones.</p>
+        <p><strong>📈 Próximos pasos:</strong></p>
+        <ul>
+            <li>El <strong>Analista de Datos</strong> (Santiago) procesará las respuestas.</li>
+            <li>El <strong>Visualizador</strong> (Paula) creará gráficos y tableros.</li>
+            <li>El <strong>Investigador de IA</strong> (Fiorela) buscará patrones con herramientas de IA.</li>
+            <li>El <strong>Recolector</strong> (Andrés) organizará los datos recolectados.</li>
+            <li>El <strong>Presentador</strong> (Daniel) preparará la exposición final.</li>
+        </ul>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- FOOTER                                   -->
+    <!-- ======================================== -->
+    <div class="footer">
+        Proyecto de Ciencia de Datos e Inteligencia Artificial · ODS 4, 6, 9, 11 y 13<br>
+        Equipo: Andrés · Santiago · Paula · Fiorela · Daniel
+    </div>
+
+</div>
+
+<!-- ======================================== -->
+<!-- SCRIPT                                   -->
+<!-- ======================================== -->
+<script>
+    document.getElementById('enviarBtn').addEventListener('click', function() {
+        const preguntas = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'];
+        let todasRespondidas = true;
+        let respuestas = {};
+
+        preguntas.forEach(function(p) {
+            const seleccionado = document.querySelector(`input[name="${p}"]:checked`);
+            if (seleccionado) {
+                respuestas[p] = seleccionado.value;
+            } else {
+                todasRespondidas = false;
+            }
+        });
+
+        if (!todasRespondidas) {
+            alert('⚠️ Por favor, responde todas las preguntas antes de enviar.');
+            return;
+        }
+
+        // Mostrar el resultado
+        const resultadoBox = document.getElementById('resultadoBox');
+        resultadoBox.classList.add('show');
+
+        // Mostrar las respuestas en consola (para simular el registro de datos)
+        console.log('📋 Respuestas de la encuesta:');
+        console.table(respuestas);
+
+        // Deshabilitar el botón para evitar múltiples envíos
+        document.getElementById('enviarBtn').disabled = true;
+        document.getElementById('enviarBtn').textContent = '✅ ¡Enviado!';
+        document.getElementById('enviarBtn').style.background = '#2e7d32';
+        document.getElementById('enviarBtn').style.color = 'white';
+
+        // Scroll suave al resultado
+        resultadoBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+</script>
+
+
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="index.html"
+  download="grupo-2-datos-ods.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>
+</body>
+</html>

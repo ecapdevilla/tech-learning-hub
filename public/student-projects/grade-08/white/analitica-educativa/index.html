@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code for Change - Análisis del Rendimiento Académico</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --bg: #f0fdf4;
+            --text: #0f172a;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 0.3rem 0;
+            font-size: 1.15rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .team-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .team-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .team-list li {
+            background: #f0fdf4;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            border: 1px solid #d1fae5;
+        }
+
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .step-header h3 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .step-content {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .badge {
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        button.toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary);
+            color: white;
+            margin-top: 3rem;
+        }
+
+        .survey-card {
+            margin: 0 0 2rem 0;
+            padding: 1.6rem;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #eff6ff, #ecfdf5);
+            border: 1px solid #bfdbfe;
+            box-shadow: 0 8px 24px rgba(30,58,138,.08);
+        }
+        .survey-card h2 { margin: 0 0 .45rem; color: var(--primary); }
+        .survey-card p { margin: .35rem 0 1rem; }
+        .survey-actions { display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
+        .survey-btn {
+            display:inline-flex; align-items:center; gap:.55rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color:#fff; text-decoration:none; font-weight:800;
+            padding:.85rem 1.15rem; border-radius:10px;
+            box-shadow:0 6px 16px rgba(30,58,138,.18);
+        }
+        .survey-note { font-size:.88rem; color:#475569; }
+        .tlh-project-bar{
+            max-width:1100px;margin:14px auto 0;padding:0 1rem;
+            display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap
+        }
+        .tlh-project-bar a,.tlh-authors{
+            border-radius:999px;padding:9px 14px;font-weight:700;text-decoration:none
+        }
+        .tlh-project-bar a{background:#1e3a8a;color:white}
+        .tlh-authors{background:#dbeafe;color:#1e3a8a;border:1px solid #bfdbfe;font-size:.88rem}
+
+    </style>
+</head>
+<body>
+<div class="tlh-project-bar">
+<a href="/students/grade/8/white">← 8th White Projects</a>
+<div class="tlh-authors">Created by: Camilo · Dimas · Mathias · Mathias · Danna · Santi</div>
+</div>
+
+    <header>
+        <h1>📊 CODE FOR CHANGE</h1>
+        <p>📈 Ciencia de Datos e IA para Optimizar el Rendimiento Académico</p>
+        <p><strong>Cronograma:</strong> 10 de Julio al 1 de Septiembre de 2026</p>
+    </header>
+
+    <div class="container">
+        
+
+        <section class="survey-card" id="encuesta">
+            <h2>📝 Encuesta del Proyecto · Academic Performance Survey</h2>
+            <p>
+                Esta encuesta es parte de la fase de recolección de datos del proyecto.
+                Sus respuestas permitirán al equipo analizar hábitos de estudio,
+                rendimiento académico y posibles patrones para construir conclusiones basadas en evidencia.
+            </p>
+            <div class="survey-actions">
+                <a class="survey-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScoaZH8oBb2bu9fBAc3JqgP2SHZQFcIzsKj7GXMwAu7hkp5FQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">
+                    📊 Abrir encuesta en Google Forms ↗
+                </a>
+                <span class="survey-note">Se abrirá en una nueva pestaña.</span>
+            </div>
+        </section>
+
+        <!-- Tarjeta de Equipo -->
+        <div class="team-card">
+            <h3>👥 Equipo de Investigación: Analítica Educativa</h3>
+            <p><strong>Docente Guía:</strong> Estiben Capdevilla</p>
+            <p><strong>Integrantes del Equipo:</strong></p>
+            <ul class="team-list">
+                <li>📋 Camilo</li>
+                <li>📊 Dimas</li>
+                <li>📈 Mathias</li>
+                <li>📚 Mathias</li>
+                <li>🤖 Danna</li>
+                <li>🎤 Santi</li>
+            </ul>
+        </div>
+
+        <!-- Contenedor de Pasos -->
+        <div class="steps-container" id="stepsContainer">
+            <!-- Los pasos se inyectarán dinámicamente mediante JavaScript -->
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Proyecto STEM enfocado en el análisis de datos académicos para la mejora continua 📚</p>
+    </footer>
+
+    <script>
+        const pasosData = [
+            {
+                step: "Paso 1",
+                title: "Identificar el Problema y Pregunta Orientadora",
+                content: "<strong>Enfoque ODS 4 (Educación de Calidad).</strong> Investigamos las causas directas e indirectas de la variación en el rendimiento académico escolar mediante analítica de datos.<br><br><em>Pregunta Orientadora:</em> ¿Cómo podemos usar la recolección de datos educativos, su análisis estadístico y modelos de inteligencia artificial para identificar los factores que afectan el rendimiento académico y proponer soluciones basadas en evidencia?"
+            },
+            {
+                step: "Paso 2",
+                title: "Formar los Equipos de Investigación",
+                content: "Organización de roles y responsabilidades de los investigadores:<br><ul><li><strong>Camilo:</strong> Recolector de Datos (Diseño de encuestas y recopilación de notas/hábitos).</li><li><strong>Dimas:</strong> Analista de Datos (Limpieza, filtrado y modelado en hojas de cálculo).</li><li><strong>Mathias:</strong> Visualizador (Creación de gráficos de correlación y tableros).</li><li><strong>Mathias:</strong> Co-analista e infraestructura de datos (Validación de fuentes secundarias y registros).</li><li><strong>Danna:</strong> Investigadora de IA (Modelado predictivo básico y detección de patrones).</li><li><strong>Santi:</strong> Presentador (Liderazgo de exposición, pitch y defensa del proyecto).</li></ul>"
+            },
+            {
+                step: "Paso 3",
+                title: "Investigar y Planificar",
+                content: "Indagación teórica sobre métricas académicas, estadística descriptiva, funciones avanzadas en hojas de cálculo, aprendizaje automático básico para educación y pautas éticas para el resguardo de la privacidad estudiantil."
+            },
+            {
+                step: "Paso 4",
+                title: "Diseñar el Plan de Recolección de Datos",
+                content: "Diseño de formularios en Google Forms orientados a registrar hábitos de estudio, horas de sueño, materias de mayor dificultad y métodos de aprendizaje, estableciendo el tamaño de la muestra representativa."
+            },
+            {
+                step: "Paso 5",
+                title: "Recolectar, Organizar y Analizar Datos",
+                content: "Aplicación de encuestas a la comunidad escolar, estructuración de bases de datos en Excel o Google Sheets, depuración de anomalías, cálculo de promedios ponderados, modas y medianas del rendimiento."
+            },
+            {
+                step: "Paso 6",
+                title: "Crear Tableros y Visualizaciones",
+                content: "Construcción de tableros interactivos (dashboards) conectando gráficos de barras, dispersión y líneas para evidenciar de manera visual el impacto de los hábitos de estudio en las calificaciones finales."
+            },
+            {
+                step: "Paso 7",
+                title: "Aplicar Inteligencia Artificial",
+                content: "Uso de herramientas de IA (ChatGPT o Gemini) para consultar tendencias sobre rendimiento educativo, procesar lenguaje natural en respuestas abiertas y experimentar con clasificación de datos."
+            },
+            {
+                step: "Paso 8",
+                title: "Proponer una Solución",
+                content: "Diseño de una propuesta estratégica basada en los hallazgos numéricos (por ejemplo, un programa focalizado de tutorías o talleres de optimización del tiempo de estudio) alineada de forma directa con el ODS 4."
+            },
+            {
+                step: "Paso 9",
+                title: "Preparar la Presentación del Proyecto",
+                content: "Elaboración de recursos visuales en Canva/PowerPoint, ensayo de la demostración del tablero analítico interactivo y preparación del pitch de 2 minutos para resumir la investigación."
+            },
+            {
+                step: "Paso 10",
+                title: "Feria STEM de Datos e Innovación",
+                content: "Exhibición final del proyecto bajo la supervisión del profesor Estiben Capdevilla en la Feria Code for Change, compartiendo los resultados analíticos y las soluciones educativas con toda la comunidad."
+            }
+        ];
+
+        const container = document.getElementById('stepsContainer');
+
+        pasosData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'step-card';
+            
+            card.innerHTML = `
+                <div class="step-header" onclick="toggleStep(${index})">
+                    <div>
+                        <span class="badge">${item.step}</span>
+                        <h3 style="display:inline-block; margin-left:10px;">${item.title}</h3>
+                    </div>
+                    <button class="toggle-btn" id="btn-${index}">▼</button>
+                </div>
+                <div class="step-content" id="content-${index}">
+                    <p>${item.content}</p>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        });
+
+        function toggleStep(index) {
+            const content = document.getElementById(`content-${index}`);
+            const btn = document.getElementById(`btn-${index}`);
+            
+            content.classList.toggle('active');
+            if (content.classList.contains('active')) {
+                btn.textContent = '▲';
+            } else {
+                btn.textContent = '▼';
+            }
+        }
+    </script>
+
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="index.html"
+  download="analitica-educativa.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>
+</body>
+</html>

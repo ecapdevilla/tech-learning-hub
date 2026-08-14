@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartLunch IA · Ecológico</title>
+  <!-- Fuente más orgánica y suave -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f2f7f2;
+      font-family: 'Inter', sans-serif;
+      color: #1e2f1e;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    /* contenedor general con sensación ecológica */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #ffffffdd;
+      backdrop-filter: blur(2px);
+      border-radius: 40px 40px 30px 30px;
+      box-shadow: 0 20px 40px -12px rgba(30, 50, 30, 0.25);
+      padding: 20px 30px 10px;
+      border: 1px solid #cde0cd;
+    }
+
+    /* HEADER con degradado tierra/verde */
+    header {
+      background: linear-gradient(145deg, #2b5e2b, #3f7e3f, #5f9e5f);
+      color: #f4faf4;
+      padding: 40px 30px 30px;
+      border-radius: 32px 32px 24px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 -4px 0 #1e3d1e;
+      margin-bottom: 20px;
+    }
+
+    header::after {
+      content: "🌱";
+      position: absolute;
+      font-size: 100px;
+      right: 20px;
+      bottom: -10px;
+      opacity: 0.15;
+      transform: rotate(10deg);
+    }
+
+    header h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      text-shadow: 0 4px 12px rgba(0, 20, 0, 0.3);
+    }
+
+    header h1 span {
+      display: inline-block;
+      background: #e7f5e7;
+      color: #1f4a1f;
+      padding: 0 14px;
+      border-radius: 60px;
+      font-size: 2rem;
+      margin-left: 8px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 16px auto 0;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 12px 24px;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      border: 1px solid #b3d9b3;
+      font-weight: 400;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 12px;
+      background: #e4f0e4;
+      padding: 14px 20px;
+      border-radius: 60px;
+      margin: 18px 0 24px;
+      border: 1px solid #bdd6bd;
+    }
+
+    nav a {
+      color: #1a3a1a;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      background: transparent;
+      border: 1px solid transparent;
+    }
+
+    nav a:hover {
+      background: #3c7a3c;
+      color: white;
+      border-color: #2f642f;
+      box-shadow: 0 4px 10px rgba(50, 100, 50, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* secciones con aire orgánico */
+    section {
+      background: #fafffa;
+      padding: 28px 30px;
+      border-radius: 28px;
+      margin: 28px 0;
+      box-shadow: 0 6px 18px rgba(70, 100, 70, 0.08);
+      border: 1px solid #dcecdc;
+      transition: all 0.15s;
+    }
+
+    section:hover {
+      border-color: #b4d0b4;
+      box-shadow: 0 10px 25px rgba(60, 100, 60, 0.10);
+    }
+
+    h2 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #1b4b1b;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      letter-spacing: -0.3px;
+      border-left: 6px solid #4d8f4d;
+      padding-left: 18px;
+    }
+
+    h2::before {
+      content: "🌿";
+      font-size: 1.8rem;
+      margin-right: 6px;
+    }
+
+    /* lista con viñetas ecológicas */
+    ul {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+    }
+
+    ul li {
+      background: #eaf5ea;
+      padding: 8px 20px 8px 16px;
+      border-radius: 40px;
+      font-weight: 500;
+      border: 1px solid #c6dec6;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    ul li::before {
+      content: "🍃";
+      font-size: 1.2rem;
+    }
+
+    /* proceso (grid) */
+    .proceso {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .paso {
+      background: #e3f2e3;
+      padding: 20px 12px;
+      border-radius: 60px 16px 60px 16px;
+      text-align: center;
+      font-weight: 600;
+      border: 1px solid #b3d3b3;
+      box-shadow: 0 4px 0 #8fb88f;
+      transition: 0.1s ease;
+      font-size: 0.95rem;
+      backdrop-filter: blur(2px);
+    }
+
+    .paso:hover {
+      transform: scale(0.97);
+      background: #d0e8d0;
+      border-color: #7fb07f;
+    }
+
+    /* tabla */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+      margin: 16px 0 8px;
+    }
+
+    table th {
+      background: #2b642b;
+      color: white;
+      padding: 14px 12px;
+      border-radius: 40px 40px 12px 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    table td {
+      background: #f2faf2;
+      padding: 14px 12px;
+      border-radius: 20px;
+      border: 1px solid #d0e4d0;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    table tr td:first-child {
+      border-radius: 40px 8px 8px 40px;
+    }
+    table tr td:last-child {
+      border-radius: 8px 40px 40px 8px;
+    }
+
+    /* formulario */
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      margin: 8px 0 18px;
+      border: 2px solid #d1e2d1;
+      border-radius: 40px;
+      background: #fafffa;
+      font-size: 1rem;
+      transition: 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #3e7a3e;
+      outline: none;
+      box-shadow: 0 0 0 4px #c6e0c6;
+      background: white;
+    }
+
+    textarea {
+      border-radius: 28px;
+      resize: vertical;
+    }
+
+    button {
+      background: #2c6e2c;
+      color: white;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+      box-shadow: 0 6px 0 #1b4a1b;
+      border: 1px solid #4b8f4b;
+      letter-spacing: 0.3px;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #1f571f;
+      transform: translateY(2px);
+      box-shadow: 0 3px 0 #1b4a1b;
+    }
+
+    #mensaje {
+      margin-top: 20px;
+      padding: 14px 20px;
+      background: #daf1da;
+      border-radius: 60px;
+      color: #124012;
+      font-weight: 600;
+      border-left: 6px solid #2f852f;
+    }
+
+    /* robot animado */
+    .robot {
+      font-size: 80px;
+      text-align: center;
+      animation: flotar 3s infinite ease-in-out;
+      filter: drop-shadow(0 12px 12px rgba(40, 80, 40, 0.15));
+    }
+
+    @keyframes flotar {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* footer */
+    footer {
+      background: #1b3f1b;
+      color: #e4f3e4;
+      text-align: center;
+      padding: 28px 20px;
+      border-radius: 40px 40px 20px 20px;
+      margin: 30px 0 10px;
+      border-top: 4px solid #7fb07f;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    footer small {
+      opacity: 0.8;
+      display: block;
+      margin-top: 8px;
+    }
+
+    /* ajustes responsive */
+    @media (max-width: 600px) {
+      .container { padding: 12px; }
+      header h1 { font-size: 2.2rem; }
+      nav a { padding: 6px 14px; font-size: 0.85rem; }
+      section { padding: 20px 16px; }
+    }
+
+    /* detalles extra: iconos */
+    .icon-verde {
+      background: #cde6cd;
+      border-radius: 40px;
+      padding: 2px 16px;
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .badge-ods {
+      background: #e2f0e2;
+      border-radius: 40px;
+      padding: 6px 18px;
+      border: 1px solid #99bb99;
+      font-weight: 500;
+    }
+
+    .ods-list li::before {
+      content: "🌍";
+    }
+  </style>
+<style>
+.tlh-showcase-bar{max-width:1200px;margin:12px auto;display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 14px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.tlh-showcase-bar a,.tlh-showcase-authors{padding:9px 14px;border-radius:999px;font-weight:800;text-decoration:none}
+.tlh-showcase-bar a{background:#102b46;color:#fff;border:1px solid #3182a7}
+.tlh-showcase-authors{background:#edf7ff;color:#102b46;border:1px solid #c9e2f3;font-size:.88rem}
+</style></head>
+<body><div class="tlh-showcase-bar"><a href="/students/grade/8/blue">← 8th Blue Projects</a><div class="tlh-showcase-authors">Created by: Gabriela · Laura · Gabriella · Jorge · María Catalina</div></div>
+<div class="container">
+
+  <header>
+    <h1>🤖 SmartLunch <span>IA</span></h1>
+    <p>🌱 Robots inteligentes · filas ágiles · cafetería escolar sostenible</p>
+  </header>
+
+  <nav>
+    <a href="#equipo">🌿 Equipo</a>
+    <a href="#problema">🍂 Problema</a>
+    <a href="#investigacion">📊 Investigación</a>
+    <a href="#proceso">🔄 Proceso</a>
+    <a href="#encuesta">📋 Encuesta</a>
+    <a href="#plan">📅 Plan</a>
+  </nav>
+
+  <!-- robot sección principal -->
+  <section style="background: #ecf6ec; text-align: center; padding: 20px;">
+    <div class="robot">🤖</div>
+    <p style="font-size: 1.1rem; font-weight: 400; color: #1f471f;">♻️ innovación con conciencia ecológica</p>
+  </section>
+
+  <!-- equipo -->
+  <section id="equipo">
+    <h2>Integrantes</h2>
+    <ul>
+      <li>Gabriela</li>
+      <li>Laura</li>
+      <li>Gabriella</li>
+      <li>Jorge</li>
+      <li>María Catalina</li>
+    </ul>
+  </section>
+
+  <!-- problema -->
+  <section id="problema">
+    <h2>Problema identificado</h2>
+    <p style="font-size: 1.1rem; background: #eaf5ea; padding: 20px 24px; border-radius: 40px; border-left: 8px solid #3f8a3f;">
+      ⏳ Durante los descansos se forman largas filas en la cafetería. Esto ocasiona pérdida de tiempo, desorden y hace que algunos estudiantes no alcancen a comprar sus alimentos. 
+      <br><br>
+      Nuestro proyecto propone el diseño de robots inteligentes que ayuden a organizar la fila, entregar pedidos sencillos y agilizar la atención utilizando Ciencia de Datos e Inteligencia Artificial.
+    </p>
+  </section>
+
+  <!-- investigación -->
+  <section id="investigacion">
+    <h2>Temas de investigación</h2>
+    <ul>
+      <li>¿Qué es la Ciencia de Datos?</li>
+      <li>Recolección de datos mediante encuestas</li>
+      <li>Fuentes confiables</li>
+      <li>Organización de datos en Excel</li>
+      <li>Tablas dinámicas y funciones avanzadas</li>
+      <li>Gráficos estadísticos</li>
+      <li>Inteligencia Artificial y reconocimiento de patrones</li>
+      <li>Ética y privacidad de los datos</li>
+      <li>Objetivos de Desarrollo Sostenible</li>
+    </ul>
+  </section>
+
+  <!-- proceso -->
+  <section id="proceso">
+    <h2>Mapa del proceso de investigación</h2>
+    <div class="proceso">
+      <div class="paso">1️⃣ Detectar el problema</div>
+      <div class="paso">2️⃣ Diseñar encuesta</div>
+      <div class="paso">3️⃣ Aplicar encuesta</div>
+      <div class="paso">4️⃣ Organizar datos</div>
+      <div class="paso">5️⃣ Analizar resultados</div>
+      <div class="paso">6️⃣ Diseñar el robot</div>
+      <div class="paso">7️⃣ Presentar propuesta</div>
+      <div class="paso">8️⃣ Evaluar mejoras</div>
+    </div>
+  </section>
+
+  <!-- encuesta -->
+  <section id="encuesta">
+    <h2>Encuesta · participación</h2>
+    <form onsubmit="guardar(event)" style="display: flex; flex-direction: column; gap: 6px;">
+      <label style="font-weight: 500;">⏱️ ¿Cuánto tiempo esperas en la fila?</label>
+      <select>
+        <option>Menos de 5 minutos</option>
+        <option>5 a 10 minutos</option>
+        <option>Más de 10 minutos</option>
+      </select>
+
+      <label style="font-weight: 500;">🤖 ¿Crees que un robot ayudaría a organizar la cafetería?</label>
+      <select>
+        <option>Sí</option>
+        <option>No</option>
+        <option>No estoy seguro</option>
+      </select>
+
+      <label style="font-weight: 500;">🧠 ¿Qué función debería tener el robot?</label>
+      <textarea rows="3" placeholder="Escribe tu idea..."></textarea>
+
+      <button type="submit">🌱 Guardar encuesta (simulación)</button>
+    </form>
+    <p id="mensaje"></p>
+  </section>
+
+  <!-- plan de trabajo -->
+  <section id="plan">
+    <h2>Plan de trabajo</h2>
+    <table>
+      <tr><th>Actividad</th><th>Responsable</th><th>Fecha</th></tr>
+      <tr><td>Investigar Ciencia de Datos</td><td>Gabriela</td><td>Semana 1</td></tr>
+      <tr><td>Diseñar encuesta</td><td>Laura</td><td>Semana 1</td></tr>
+      <tr><td>Aplicar encuestas</td><td>Gabriella</td><td>Semana 2</td></tr>
+      <tr><td>Organizar datos en Excel</td><td>Jorge</td><td>Semana 2</td></tr>
+      <tr><td>Diseñar el robot</td><td>María Catalina</td><td>Semana 3</td></tr>
+      <tr><td>Presentación final</td><td>Todo el equipo</td><td>Semana 4</td></tr>
+    </table>
+  </section>
+
+  <!-- Ciencia de datos -->
+  <section>
+    <h2>Uso de la Ciencia de Datos</h2>
+    <p style="background: #e7f3e7; padding: 18px 24px; border-radius: 40px; border: 1px solid #bcd6bc;">
+      📊 Los datos obtenidos mediante las encuestas permitirán identificar los horarios con mayor congestión, el tiempo promedio de espera y las funciones que debería realizar el robot. 
+      Posteriormente, estos datos serán organizados en Excel, analizados mediante tablas dinámicas y representados con gráficos para apoyar la toma de decisiones.
+    </p>
+  </section>
+
+  <!-- IA -->
+  <section>
+    <h2>Inteligencia Artificial</h2>
+    <p style="background: #e7f3e7; padding: 18px 24px; border-radius: 40px; border: 1px solid #bcd6bc;">
+      🧠 La Inteligencia Artificial permitirá que el robot aprenda cuáles son las horas con mayor cantidad de estudiantes, identifique patrones en las filas y ayude a distribuir mejor la atención en la cafetería.
+    </p>
+  </section>
+
+  <!-- ODS -->
+  <section>
+    <h2>Objetivos de Desarrollo Sostenible (ODS)</h2>
+    <ul class="ods-list" style="list-style: none; display: flex; flex-wrap: wrap; gap: 12px;">
+      <li style="background: #d7ecd7; border-radius: 60px; padding: 8px 24px;">ODS 4 · Educación de Calidad</li>
+      <li style="background: #d7ecd7; border-radius: 60px; padding: 8px 24px;">ODS 9 · Industria, Innovación e Infraestructura</li>
+      <li style="background: #d7ecd7; border-radius: 60px; padding: 8px 24px;">ODS 11 · Ciudades y Comunidades Sostenibles</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span style="font-size: 1.3rem;">🌿 SmartLunch IA</span><br>
+    Ciencia de Datos · Inteligencia Artificial · Robótica Escolar
+    <small>♻️ diseñado con conciencia ecológica</small>
+  </footer>
+
+</div>
+
+<script>
+  function guardar(e) {
+    e.preventDefault();
+    const msg = document.getElementById("mensaje");
+    msg.innerHTML = "✅ ¡Encuesta registrada con éxito! (simulación ecológica) 🌱";
+    msg.style.background = "#daf1da";
+    msg.style.padding = "14px 20px";
+    msg.style.borderRadius = "60px";
+    msg.style.borderLeft = "6px solid #2f852f";
+  }
+</script>
+
+</body>
+</html>

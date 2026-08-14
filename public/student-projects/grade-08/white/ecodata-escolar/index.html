@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)file:///C:/Users/BTO09-USER/Desktop/proyect%20ods%208/indexz.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>EcoData Escolar | Code for Change</title>
+
+  <style>
+
+    :root {
+      --verde: #16a34a;
+      --verde-oscuro: #14532d;
+      --verde-claro: #dcfce7;
+      --azul: #0ea5e9;
+      --amarillo: #facc15;
+      --fondo: #f0fdf4;
+      --blanco: #ffffff;
+      --texto: #17251b;
+      --gris: #64748b;
+      --borde: #dbe7df;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(20, 83, 45, 0.97);
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 15px rgba(0,0,0,.15);
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: var(--amarillo);
+    }
+
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      padding: 70px 8%;
+      color: white;
+      background:
+        linear-gradient(rgba(20,83,45,.9), rgba(6,78,59,.92));
+    }
+
+    .hero-content {
+      max-width: 950px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      padding: 8px 16px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.7rem, 6vw, 5rem);
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: #86efac;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 750px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 22px;
+      background: var(--amarillo);
+      color: #422006;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    section {
+      padding: 70px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 800px;
+      margin: auto auto 40px;
+    }
+
+    .section-title span {
+      color: var(--verde);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-title h2 {
+      font-size: 2.4rem;
+      margin: 8px 0;
+    }
+
+    .section-title p {
+      color: var(--gris);
+    }
+
+    .problem-grid,
+    .members,
+    .ods-grid,
+    .ai-grid,
+    .schedule {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card,
+    .member,
+    .week {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      border: 1px solid var(--borde);
+      box-shadow: 0 8px 25px rgba(20,83,45,.07);
+    }
+
+    .card:hover,
+    .member:hover,
+    .week:hover {
+      transform: translateY(-4px);
+      transition: .3s;
+    }
+
+    .icon {
+      font-size: 2.3rem;
+    }
+
+    .card h3,
+    .member h3 {
+      color: var(--verde-oscuro);
+      margin: 8px 0;
+    }
+
+    .card p,
+    .member p {
+      color: var(--gris);
+    }
+
+    .question {
+      background: linear-gradient(135deg, #14532d, #166534);
+      color: white;
+      text-align: center;
+    }
+
+    .question-box {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 20px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .avatar {
+      width: 75px;
+      height: 75px;
+      margin: auto;
+      border-radius: 50%;
+      background: var(--verde-claro);
+      color: var(--verde-oscuro);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .member {
+      text-align: center;
+    }
+
+    .ods {
+      background: #f8fafc;
+    }
+
+    .ods-card {
+      color: white;
+      padding: 25px;
+      border-radius: 18px;
+      min-height: 190px;
+    }
+
+    .ods4 { background: #c5192d; }
+    .ods9 { background: #fd6925; }
+    .ods11 { background: #f99d26; }
+    .ods13 { background: #3f7e44; }
+
+    .ods-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .timeline {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .step {
+      padding: 20px;
+      margin-bottom: 15px;
+      background: white;
+      border-left: 5px solid var(--verde);
+      border-radius: 10px;
+    }
+
+    .step h3 {
+      color: var(--verde-oscuro);
+    }
+
+    /* ENCUESTA */
+
+    .survey-section {
+      background: #ecfdf5;
+    }
+
+    .survey {
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.08);
+    }
+
+    .question-form {
+      margin-bottom: 25px;
+    }
+
+    .question-form label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: var(--verde-oscuro);
+    }
+
+    .question-form select,
+    .question-form input,
+    .question-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: white;
+    }
+
+    .question-form textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .survey-note {
+      background: #f0fdf4;
+      border-left: 4px solid var(--verde);
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      color: #365314;
+    }
+
+    .success {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: bold;
+    }
+
+    .data-section {
+      background: white;
+    }
+
+    .data-list {
+      max-width: 850px;
+      margin: auto;
+      list-style: none;
+    }
+
+    .data-list li {
+      background: #f8fafc;
+      margin-bottom: 12px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border-left: 4px solid var(--verde);
+    }
+
+    .ai {
+      background: linear-gradient(135deg, #0f172a, #164e63);
+      color: white;
+    }
+
+    .ai-card {
+      padding: 25px;
+      background: rgba(255,255,255,.08);
+      border-radius: 16px;
+    }
+
+    .ai-card h3 {
+      color: #7dd3fc;
+      margin-bottom: 10px;
+    }
+
+    .ethics {
+      background: #fff7ed;
+    }
+
+    .ethics-box {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .ethics-item {
+      background: white;
+      padding: 17px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border-left: 5px solid #f97316;
+    }
+
+    .conclusion {
+      text-align: center;
+      background: var(--verde-claro);
+    }
+
+    .conclusion-box {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    footer {
+      background: #052e16;
+      color: #bbf7d0;
+      text-align: center;
+      padding: 35px;
+    }
+
+    footer strong {
+      color: white;
+    }
+
+    @media(max-width:750px) {
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      section {
+        padding: 55px 6%;
+      }
+
+      .survey {
+        padding: 20px;
+      }
+    }
+
+  </style>
+
+<style>
+.tlh-project-bar{
+  max-width:1200px;margin:14px auto;display:flex;gap:10px;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;padding:0 16px;
+  font-family:Arial,Helvetica,sans-serif
+}
+.tlh-project-bar a,.tlh-project-authors{
+  border-radius:999px;padding:10px 16px;font-weight:800;text-decoration:none
+}
+.tlh-project-bar a{background:#14532d;color:#fff;border:1px solid #86efac}
+.tlh-project-authors{background:#dcfce7;color:#14532d;border:1px solid #bbf7d0;font-size:.9rem}
+</style>
+
+</head>
+
+<body>
+<div class="tlh-project-bar">
+<a href="/students/grade/8/white">← 8th White Projects</a>
+<div class="tlh-project-authors">Created by: Lucía · José Ignacio · Jesús · Salomón · Samantha · Diego</div>
+</div>
+
+<nav>
+
+  <div class="logo">
+    🌱 EcoData Escolar
+  </div>
+
+  <ul>
+    <li><a href="#problema">Problema</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#encuesta">Encuesta</a></li>
+    <li><a href="#datos">Datos</a></li>
+    <li><a href="#ods">ODS</a></li>
+  </ul>
+
+</nav>
+
+
+<header class="hero">
+
+  <div class="hero-content">
+
+    <div class="badge">
+      💻 CODE FOR CHANGE · Ciencia de Datos + IA
+    </div>
+
+    <h1>
+      EcoData <span>Escolar</span>
+    </h1>
+
+    <p>
+      Ciencia de Datos e Inteligencia Artificial para conocer,
+      analizar y reducir los residuos que generamos en nuestra escuela.
+    </p>
+
+    <a href="#encuesta" class="btn">
+      📝 Responder encuesta
+    </a>
+
+  </div>
+
+</header>
+
+
+<section id="problema">
+
+  <div class="section-title">
+
+    <span>01 · Nuestro problema</span>
+
+    <h2>
+      ¿Cuántos residuos generamos?
+    </h2>
+
+    <p>
+      Queremos investigar qué tipo de basura generamos,
+      dónde se concentra y cuáles son nuestros hábitos de reciclaje.
+    </p>
+
+  </div>
+
+  <div class="problem-grid">
+
+    <div class="card">
+      <div class="icon">🗑️</div>
+      <h3>Generación</h3>
+      <p>
+        Mediremos qué cantidad de residuos se produce
+        durante la jornada escolar.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">♻️</div>
+      <h3>Reciclaje</h3>
+      <p>
+        Investigaremos qué porcentaje de estudiantes
+        separa correctamente los residuos.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>Ciencia de Datos</h3>
+      <p>
+        Convertiremos las respuestas en tablas,
+        porcentajes y gráficos.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🤖</div>
+      <h3>Inteligencia Artificial</h3>
+      <p>
+        Buscaremos patrones y posibles soluciones
+        utilizando herramientas de IA.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="question">
+
+  <div class="question-box">
+
+    <h2>❓ Pregunta orientadora</h2>
+
+    <br>
+
+    <p>
+      <strong>
+        ¿Cómo podemos utilizar la recolección, el análisis y
+        la visualización de datos, junto con herramientas de
+        Inteligencia Artificial, para identificar los principales
+        problemas de generación de residuos en nuestra escuela
+        y diseñar estrategias para reducirlos?
+      </strong>
+    </p>
+
+  </div>
+
+</section>
+
+
+<section id="equipo">
+
+  <div class="section-title">
+
+    <span>02 · Equipo</span>
+
+    <h2>
+      Nuestro equipo de investigación
+    </h2>
+
+  </div>
+
+  <div class="members">
+
+    <div class="member">
+      <div class="avatar">L</div>
+      <h3>Lucía</h3>
+      <p>📋 Recolección de datos</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">JI</div>
+      <h3>José Ignacio</h3>
+      <p>📊 Análisis de datos</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">J</div>
+      <h3>Jesús</h3>
+      <p>📈 Visualización</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">S</div>
+      <h3>Salomón</h3>
+      <p>🤖 Inteligencia Artificial</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">SA</div>
+      <h3>Samantha</h3>
+      <p>🎤 Presentación</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">DC</div>
+      <h3>Diego</h3>
+      <p>🔬 Ciencias Naturales y ODS</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ENCUESTA -->
+
+<section class="survey-section" id="encuesta">
+
+  <div class="section-title">
+
+    <span>03 · Recolección de datos</span>
+
+    <h2>
+      📝 Encuesta sobre residuos escolares
+    </h2>
+
+    <p>
+      Tus respuestas nos ayudarán a conocer los hábitos
+      ambientales de nuestra comunidad educativa.
+    </p>
+
+  </div>
+
+
+  <div class="survey">
+
+    <div class="survey-note">
+
+      🔐 <strong>Privacidad:</strong>
+      Esta encuesta no solicita nombres, contraseñas ni información
+      personal. Las respuestas serán utilizadas únicamente
+      para el proyecto escolar EcoData.
+
+    </div>
+
+
+    <!--
+      IMPORTANTE:
+
+      Reemplazar AQUI_VA_LA_URL_DE_APPS_SCRIPT
+      por la URL de implementación de Google Apps Script.
+    -->
+
+    <form id="surveyForm" onsubmit="return mostrarMensaje(event)">
+
+      <div class="question-form">
+
+        <label>
+          1. ¿En qué grado estás?
+        </label>
+
+        <select name="grado" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>6°</option>
+          <option>7°</option>
+          <option>8°</option>
+          <option>9°</option>
+          <option>10°</option>
+          <option>11°</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          2. ¿Con qué frecuencia separas los residuos?
+        </label>
+
+        <select name="separacion" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Siempre</option>
+          <option>Casi siempre</option>
+          <option>A veces</option>
+          <option>Nunca</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          3. ¿Qué tipo de residuo generas con mayor frecuencia?
+        </label>
+
+        <select name="residuo" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Plástico</option>
+          <option>Papel o cartón</option>
+          <option>Residuos orgánicos</option>
+          <option>Vidrio</option>
+          <option>Otro</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          4. ¿Conoces los puntos de reciclaje de la escuela?
+        </label>
+
+        <select name="puntos" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Sí</option>
+          <option>No</option>
+          <option>No estoy seguro/a</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          5. ¿Consideras que hay suficientes recipientes
+          para separar residuos?
+        </label>
+
+        <select name="recipientes" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Sí</option>
+          <option>No</option>
+          <option>Hay algunos, pero no son suficientes</option>
+          <option>No sé</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          6. ¿Qué tan importante consideras reciclar?
+        </label>
+
+        <select name="importancia" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Muy importante</option>
+          <option>Importante</option>
+          <option>Poco importante</option>
+          <option>Nada importante</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          7. ¿Qué haces normalmente con una botella plástica?
+        </label>
+
+        <select name="botella" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>La deposito en reciclaje</option>
+          <option>La reutilizo</option>
+          <option>La deposito en cualquier recipiente</option>
+          <option>La dejo donde la terminé de usar</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          8. ¿En qué lugar de la escuela observas más basura?
+        </label>
+
+        <select name="lugar" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Salones</option>
+          <option>Patio</option>
+          <option>Cafetería</option>
+          <option>Baños</option>
+          <option>Pasillos</option>
+          <option>Otro</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          9. ¿Cuál crees que es la principal causa
+          del exceso de residuos?
+        </label>
+
+        <select name="causa" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Falta de educación ambiental</option>
+          <option>Pocos recipientes</option>
+          <option>Falta de reciclaje</option>
+          <option>Uso excesivo de plásticos</option>
+          <option>Falta de responsabilidad</option>
+          <option>Otro</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          10. ¿Qué solución propondrías para reducir la basura?
+        </label>
+
+        <textarea name="solucion" placeholder="Escribe tu propuesta..." required=""></textarea>
+
+      </div>
+
+
+      <button class="btn" type="submit">
+        🚀 Enviar encuesta
+      </button>
+
+
+      <div class="success" id="mensaje">
+
+        ✅ ¡Respuesta enviada!
+        Gracias por contribuir al proyecto EcoData Escolar.
+
+      </div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<section id="datos" class="data-section">
+
+  <div class="section-title">
+
+    <span>04 · Datos</span>
+
+    <h2>
+      ¿Qué haremos con las respuestas?
+    </h2>
+
+    <p>
+      Cada respuesta llegará a Google Sheets y posteriormente
+      será analizada por nuestro equipo.
+    </p>
+
+  </div>
+
+  <ul class="data-list">
+
+    <li>📊 Calcular el porcentaje de estudiantes que reciclan.</li>
+
+    <li>♻️ Identificar el residuo más frecuente.</li>
+
+    <li>🏫 Identificar las zonas donde se produce más basura.</li>
+
+    <li>📈 Crear gráficos con los resultados.</li>
+
+    <li>🧮 Calcular promedios y porcentajes.</li>
+
+    <li>🤖 Utilizar IA para encontrar patrones.</li>
+
+    <li>💡 Diseñar soluciones basadas en evidencia.</li>
+
+  </ul>
+
+</section>
+
+
+<section class="ai">
+
+  <div class="section-title">
+
+    <span style="color:#7dd3fc">
+      05 · Inteligencia Artificial
+    </span>
+
+    <h2>
+      IA para transformar nuestros datos
+    </h2>
+
+    <p>
+      La inteligencia artificial será una herramienta
+      de apoyo para interpretar los resultados.
+    </p>
+
+  </div>
+
+  <div class="ai-grid">
+
+    <div class="ai-card">
+
+      <h3>🔎 Patrones</h3>
+
+      <p>
+        Identificaremos relaciones entre hábitos,
+        lugares y tipos de residuos.
+      </p>
+
+    </div>
+
+    <div class="ai-card">
+
+      <h3>📊 Análisis</h3>
+
+      <p>
+        Compararemos los resultados obtenidos
+        mediante tablas y gráficos.
+      </p>
+
+    </div>
+
+    <div class="ai-card">
+
+      <h3>💡 Soluciones</h3>
+
+      <p>
+        Evaluaremos propuestas para disminuir
+        la generación de residuos.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="ods">
+
+  <div class="section-title">
+
+    <span>06 · ODS</span>
+
+    <h2>
+      Objetivos de Desarrollo Sostenible
+    </h2>
+
+  </div>
+
+  <div class="ods-grid">
+
+    <div class="ods-card ods4">
+
+      <div class="ods-number">04</div>
+
+      <h3>Educación de Calidad</h3>
+
+      <p>
+        Aprendemos utilizando ciencia,
+        tecnología y datos.
+      </p>
+
+    </div>
+
+    <div class="ods-card ods9">
+
+      <div class="ods-number">09</div>
+
+      <h3>Innovación</h3>
+
+      <p>
+        Utilizamos tecnología e IA para
+        encontrar soluciones.
+      </p>
+
+    </div>
+
+    <div class="ods-card ods11">
+
+      <div class="ods-number">11</div>
+
+      <h3>Comunidades Sostenibles</h3>
+
+      <p>
+        Buscamos una escuela más limpia
+        y sostenible.
+      </p>
+
+    </div>
+
+    <div class="ods-card ods13">
+
+      <div class="ods-number">13</div>
+
+      <h3>Acción por el Clima</h3>
+
+      <p>
+        Promovemos hábitos que reduzcan
+        nuestro impacto ambiental.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section>
+
+  <div class="section-title">
+
+    <span>07 · Cronograma</span>
+
+    <h2>
+      Plan de trabajo
+    </h2>
+
+    <p>
+      10 de julio – 1 de septiembre de 2026
+    </p>
+
+  </div>
+
+  <div class="timeline">
+
+    <div class="step">
+      <h3>Semana 1 · Identificar</h3>
+      <p>Definir problema, pregunta y ODS.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 2 · Investigar</h3>
+      <p>Diseñar encuesta y metodología.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 3 · Recolectar</h3>
+      <p>Aplicar encuesta y recoger información.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 4 · Organizar</h3>
+      <p>Limpiar y organizar los datos.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 5 · Analizar</h3>
+      <p>Calcular porcentajes, promedios y tendencias.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 6 · Visualizar</h3>
+      <p>Crear gráficos y tablero.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 7 · IA</h3>
+      <p>Buscar patrones y desarrollar propuestas.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 8 · Presentar</h3>
+      <p>Presentación y conclusiones finales.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="ethics">
+
+  <div class="section-title">
+
+    <span>08 · Ética</span>
+
+    <h2>
+      Uso responsable de los datos
+    </h2>
+
+  </div>
+
+  <div class="ethics-box">
+
+    <div class="ethics-item">
+      🔐 No recopilaremos información personal innecesaria.
+    </div>
+
+    <div class="ethics-item">
+      📋 Las personas conocerán el propósito de la encuesta.
+    </div>
+
+    <div class="ethics-item">
+      📊 Los resultados serán presentados de forma honesta.
+    </div>
+
+    <div class="ethics-item">
+      🤖 Las respuestas generadas por IA serán verificadas.
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="conclusion">
+
+  <div class="conclusion-box">
+
+    <h2>
+      🌱 De los datos a la acción
+    </h2>
+
+    <p>
+      Nuestro objetivo es utilizar información real para comprender
+      el problema de los residuos y proponer soluciones que puedan
+      mejorar nuestra escuela y nuestra comunidad.
+    </p>
+
+  </div>
+
+</section>
+
+
+<footer>
+
+  <p>
+    <strong>🌱 EcoData Escolar</strong>
+  </p>
+
+  <p>
+    CODE FOR CHANGE · Ciencia de Datos e Inteligencia Artificial
+  </p>
+
+  <p>
+    Lucía · José Ignacio · Jesús · Salomón · Samantha · Diego
+  </p>
+
+  <p>
+    Proyecto escolar · 2026
+  </p>
+
+</footer>
+
+
+
+
+
+<script>
+
+  function mostrarMensaje(event) {
+    event.preventDefault();
+    const mensaje = document.getElementById("mensaje");
+    mensaje.style.display = "block";
+    setTimeout(function() {
+      document.getElementById("surveyForm").reset();
+      mensaje.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+    return false;
+  }, 700);
+
+  }
+
+</script>
+
+
+
+
+
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="index.html"
+  download="ecodata-escolar.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>
+</body></html>
