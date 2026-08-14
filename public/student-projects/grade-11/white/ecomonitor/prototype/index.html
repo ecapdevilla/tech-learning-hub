@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌱 EcoMonitor · Paso 3</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ========== RESET Y VARIABLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fondo: #f8f5ee;
+            --verde-suave: #dce8d5;
+            --verde-medio: #7da07d;
+            --verde-oscuro: #2d4a2d;
+            --coral: #e8987a;
+            --arena: #eee0ce;
+            --blanco: #ffffff;
+            --sombra: 0 15px 40px rgba(0, 0, 0, 0.05);
+            --radio: 30px;
+            --padding: 28px;
+            --transicion: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--fondo);
+            color: #2c3e2c;
+            line-height: 1.6;
+        }
+
+        /* ========== NAVEGACIÓN ========== */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(248, 245, 238, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(125, 160, 125, 0.2);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .nav-bar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--verde-oscuro);
+        }
+        .nav-bar .logo span {
+            color: var(--coral);
+        }
+        .nav-bar .logo .icono {
+            background: var(--verde-medio);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--verde-oscuro);
+            background: var(--blanco);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transition: var(--transicion);
+            border: 1px solid transparent;
+        }
+        .nav-links a:hover {
+            background: var(--verde-medio);
+            color: white;
+            border-color: var(--verde-medio);
+            transform: translateY(-2px);
+        }
+
+        /* ========== CONTENEDOR ========== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        /* ========== SECCIÓN ========== */
+        .seccion {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2.5rem 0;
+            border-bottom: 2px dashed rgba(125, 160, 125, 0.2);
+            scroll-margin-top: 80px;
+        }
+        .seccion:last-child {
+            border-bottom: none;
+        }
+
+        .seccion-titulo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--verde-oscuro);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .seccion-titulo .emoji-grande {
+            font-size: 2.8rem;
+        }
+        .seccion-sub {
+            color: #5a735a;
+            font-weight: 400;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--coral);
+            padding-left: 18px;
+        }
+
+        /* ========== TARJETAS ========== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .card {
+            background: var(--blanco);
+            border-radius: var(--radio);
+            padding: var(--padding);
+            box-shadow: var(--sombra);
+            transition: var(--transicion);
+            border: 1px solid rgba(125, 160, 125, 0.1);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.07);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--verde-oscuro);
+            margin-bottom: 1.2rem;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--verde-suave);
+        }
+        .card-header .icono {
+            font-size: 1.8rem;
+        }
+
+        .chip {
+            display: inline-block;
+            background: var(--verde-suave);
+            color: var(--verde-oscuro);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin: 3px 4px 3px 0;
+        }
+        .chip.coral {
+            background: #fce4d6;
+            color: #a55a3a;
+        }
+        .chip.arena {
+            background: var(--arena);
+            color: #7a6248;
+        }
+        .chip.blanco {
+            background: var(--fondo);
+        }
+
+        .badge-equipo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--blanco);
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            box-shadow: var(--sombra);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        .badge-equipo .nom {
+            background: var(--verde-suave);
+            padding: 2px 14px;
+            border-radius: 40px;
+        }
+        .badge-equipo .nom.coral {
+            background: var(--coral);
+            color: white;
+        }
+
+        /* ========== TABLAS ========== */
+        .tabla-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;
+            font-size: 0.9rem;
+        }
+        .tabla-mini .item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--fondo);
+            padding: 5px 14px;
+            border-radius: 40px;
+        }
+
+        /* ========== ARQUITECTURA ========== */
+        .arquitectura {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .arquitectura .fila {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .arquitectura .bloque {
+            background: var(--fondo);
+            border-radius: 20px;
+            padding: 8px 22px;
+            font-weight: 600;
+            border-left: 5px solid var(--verde-medio);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            font-size: 0.9rem;
+        }
+        .arquitectura .flecha {
+            font-size: 1.6rem;
+            color: var(--coral);
+        }
+
+        /* ========== WIREFRAME ========== */
+        .wireframe-box {
+            background: #eef3e8;
+            border-radius: 20px;
+            padding: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            line-height: 1.7;
+            color: #1f3a1f;
+            border: 2px dashed var(--verde-medio);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* ========== PLAN ========== */
+        .plan-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #ecf3ea;
+        }
+        .plan-item:last-child {
+            border-bottom: none;
+        }
+        .plan-semana {
+            font-weight: 700;
+            color: var(--verde-oscuro);
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+        .plan-detalle {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+        .plan-detalle strong {
+            color: var(--verde-medio);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer-final {
+            margin-top: 3rem;
+            text-align: center;
+            background: var(--blanco);
+            border-radius: 60px;
+            padding: 1.2rem 2rem;
+            box-shadow: var(--sombra);
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .footer-final .nom {
+            background: var(--verde-suave);
+            padding: 2px 16px;
+            border-radius: 40px;
+            margin: 0 4px;
+        }
+        .footer-final .nom.coral {
+            background: var(--coral);
+            color: white;
+        }
+        .footer-final .corazon {
+            color: #d66a5a;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 700px) {
+            .nav-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .seccion-titulo {
+                font-size: 1.7rem;
+            }
+            .tabla-mini {
+                grid-template-columns: 1fr;
+            }
+            .wireframe-box {
+                font-size: 0.55rem;
+                padding: 12px;
+            }
+            .plan-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .plan-semana {
+                min-width: auto;
+            }
+        }
+
+        /* ========== UTILITARIOS ========== */
+        .text-center {
+            text-align: center;
+        }
+        .mt-1 {
+            margin-top: 1rem;
+        }
+        .mt-2 {
+            margin-top: 2rem;
+        }
+        .gap-1 {
+            gap: 0.5rem;
+        }
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .deco-line {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--verde-medio), var(--coral));
+            border-radius: 10px;
+            margin: 12px 0 16px 0;
+        }
+    </style>
+<style>.tlhbar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlhbar a,.tlhbar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlhbar a{background:#10283f;color:white}.tlhbar span{background:#edf7ff;color:#10283f}</style></head>
+<body><div class="tlhbar"><a href="/student-projects/grade-11/white/ecomonitor/index.html">← Project Progress</a><span>Anniah · Mariana · Jesus</span></div>
+
+    <!-- ============================================================ -->
+    <!-- BARRA DE NAVEGACIÓN                                           -->
+    <!-- ============================================================ -->
+    <nav class="nav-bar">
+        <div class="logo">
+            <span class="icono">🌱</span>
+            Eco<span>Monitor</span>
+        </div>
+        <div class="nav-links">
+            <a href="#investigacion">🔍 Investigación</a>
+            <a href="#arquitectura">🧩 Arquitectura</a>
+            <a href="#wireframe">🎨 Wireframe</a>
+            <a href="#plan">📋 Plan</a>
+            <a href="#etica">🌍 Ética</a>
+            <a href="#equipo">💖 Equipo</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- CONTENEDOR PRINCIPAL                                          -->
+    <!-- ============================================================ -->
+    <div class="container">
+
+        <!-- ========================================================== -->
+        <!-- SECCIÓN 1: INVESTIGACIÓN                                    -->
+        <!-- ========================================================== -->
+        <section class="seccion" id="investigacion">
+            <div class="seccion-titulo">
+                <span class="emoji-grande">🔍</span> Investigación
+                <span style="font-size:1rem; font-weight:400; color:#7a967a; margin-left:10px;">· Componentes</span>
+            </div>
+            <div class="seccion-sub">
+                Sensores, actuadores, microcontrolador, comunicación e interfaz web.
+            </div>
+
+            <div class="grid">
+                <!-- Sensores -->
+                <div class="card">
+                    <div class="card-header"><span class="icono">📡</span> Sensores</div>
+                    <div class="tabla-mini">
+                        <div class="item">📏 Ultrasónico</div>
+                        <div class="item">🌡️ DHT11</div>
+                        <div class="item">💧 Humedad suelo</div>
+                        <div class="item">👀 PIR</div>
+                        <div class="item">☀️ LDR (luz)</div>
+                    </div>
+                    <div style="margin-top:14px; font-size:0.85rem; color:#4d6b4d;">
+                        <strong>Rangos:</strong> Ultrasónico 2–400cm · DHT11 0–50°C · Suelo analógico 0–1023
+                    </div>
+                </div>
+
+                <!-- Actuadores -->
+                <div class="card">
+                    <div class="card-header"><span class="icono">⚙️</span> Actuadores</div>
+                    <div class="flex-wrap">
+                        <span class="chip">Servomotor SG90</span>
+                        <span class="chip coral">LEDs</span>
+                        <span class="chip arena">Zumbador</span>
+                        <span class="chip">Motor DC + Puente H</span>
+                    </div>
+                    <div style="margin-top:12px; font-size:0.85rem; color:#4d6b4d;">
+                        <strong>Aplicaciones:</strong> compuertas, riego, alertas, indicadores.
+                    </div>
+                </div>
+
+                <!-- Microcontrolador + Comunicación -->
+                <div class="card">
+                    <div class="card-header"><span class="icono">📶</span> ESP32 · Comunicación</div>
+                    <div class="flex-wrap">
+                        <span class="chip blanco">📶 WiFi</span>
+                        <span class="chip blanco">📱 Bluetooth</span>
+                        <span class="chip blanco">⚡ Múltiples GPIO</span>
+                    </div>
+                    <div style="margin-top:10px;">
+                        <span class="chip" style="background:#d4e0d4;">Simulación en Wokwi</span>
+                    </div>
+                    <div style="margin-top:12px; font-size:0.85rem; color:#4d6b4d;">
+                        <strong>Interfaz web:</strong> HTML · CSS · JS · Chart.js · localStorage / JSON
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badge con los nombres -->
+            <div class="flex-wrap" style="justify-content:center; margin-top:1.8rem;">
+                <span class="badge-equipo">
+                    🌟 Investigación por
+                    <span class="nom coral">Anniah</span>
+                    <span class="nom">Mariana</span>
+                    <span class="nom">Jesus</span>
+                </span>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- SECCIÓN 2: ARQUITECTURA                                     -->
+        <!-- ========================================================== -->
+        <section class="seccion" id="arquitectura">
+            <div class="seccion-titulo">
+                <span class="emoji-grande">🧩</span> Arquitectura del Sistema
+            </div>
+            <div class="seccion-sub">
+                Flujo de datos: desde los sensores hasta la interfaz de usuario.
+            </div>
+
+            <div class="card" style="max-width:100%;">
+                <div class="arquitectura">
+                    <div class="fila">
+                        <span class="bloque" style="border-left-color:#d4a373;">🌿 Sensores</span>
+                        <span class="flecha">➡️</span>
+                        <span class="bloque" style="border-left-color:#f5a58c;">📡 ESP32 + WiFi</span>
+                        <span class="flecha">➡️</span>
+                        <span class="bloque" style="border-left-color:#b0a3a0;">💻 Servidor / API</span>
+                        <span class="flecha">➡️</span>
+                        <span class="bloque" style="border-left-color:#7da07d;">🖥️ Dashboard</span>
+                    </div>
+                    <div class="fila">
+                        <span class="bloque" style="border-left-color:#d4a373;">⚙️ Actuadores</span>
+                        <span class="flecha">⬅️</span>
+                        <span class="bloque" style="border-left-color:#f5a58c;">📡 ESP32</span>
+                        <span class="flecha">⬅️</span>
+                        <span class="bloque" style="border-left-color:#b0a3a0;">💻 Servidor</span>
+                        <span class="flecha">⬅️</span>
+                        <span class="bloque" style="border-left-color:#7da07d;">🖥️ Dashboard</span>
+                    </div>
+                    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-top:6px; font-size:0.9rem; background:var(--fondo); border-radius:60px; padding:8px 18px;">
+                        <span>💾 <strong>Almacenamiento:</strong> localStorage · JSON</span>
+                        <span>🔗 <strong>Comunicación:</strong> API REST / WebSocket</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-wrap" style="justify-content:center; margin-top:1.5rem;">
+                <span class="badge-equipo">
+                    🏗️ Arquitectura por
+                    <span class="nom coral">Anniah</span>
+                    <span class="nom">Mariana</span>
+                    <span class="nom">Jesus</span>
+                </span>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- SECCIÓN 3: WIREFRAME                                        -->
+        <!-- ========================================================== -->
+        <section class="seccion" id="wireframe">
+            <div class="seccion-titulo">
+                <span class="emoji-grande">🎨</span> Wireframe · Interfaz Web
+            </div>
+            <div class="seccion-sub">
+                Diseño de baja fidelidad para el dashboard de EcoMonitor.
+            </div>
+
+            <div class="grid" style="grid-template-columns:1fr 1fr;">
+                <div class="card">
+                    <div class="card-header"><span class="icono">🖥️</span> Dashboard</div>
+                    <div class="wireframe-box">
+┌────────────────────────────────────────────┐
+│ 🌱 EcoMonitor  ·  Dashboard  ·  10:30 AM  │
+├────────────────────────────────────────────┤
+│ ┌──────────┐ ┌──────────┐ ┌────────────┐  │
+│ │ 🌡️ CLIMA  │ │ 💧 SUELO  │ │ ⚙️ CONTROL │  │
+│ │ 26°C 65%  │ │ 35%  60%  │ │ [Abrir]    │  │
+│ │ [gráfico] │ │ [Riego]   │ │ [Cerrar]   │  │
+│ └──────────┘ └──────────┘ └────────────┘  │
+│ ┌────────────────────────────────────────┐  │
+│ │ 📋 ALERTAS: ⚠️ Mov · 💧 Riego · 🔥    │  │
+│ └────────────────────────────────────────┘  │
+└────────────────────────────────────────────┘
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="icono">📱</span> Elementos Clave</div>
+                    <ul style="list-style:none; display:flex; flex-direction:column; gap:10px; font-size:0.95rem;">
+                        <li>📊 <strong>Gráficos en tiempo real</strong> con Chart.js</li>
+                        <li>🎛️ <strong>Controles manuales</strong> para actuadores</li>
+                        <li>🚨 <strong>Panel de alertas</strong> con eventos recientes</li>
+                        <li>⚙️ <strong>Configuración de umbrales</strong> (temp, humedad, etc.)</li>
+                        <li>📱 <strong>Diseño responsivo</strong> para móviles y tablets</li>
+                    </ul>
+                    <div style="margin-top:14px; background:var(--fondo); border-radius:16px; padding:10px 14px; font-size:0.85rem;">
+                        💡 <strong>Tecnologías:</strong> HTML5 · CSS3 · JavaScript · Chart.js · Fetch API
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-wrap" style="justify-content:center; margin-top:1.5rem;">
+                <span class="badge-equipo">
+                    ✏️ Wireframe por
+                    <span class="nom coral">Anniah</span>
+                    <span class="nom">Mariana</span>
+                    <span class="nom">Jesus</span>
+                </span>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- SECCIÓN 4: PLAN DE DESARROLLO + SELECCIÓN                   -->
+        <!-- ========================================================== -->
+        <section class="seccion" id="plan">
+            <div class="seccion-titulo">
+                <span class="emoji-grande">📋</span> Plan de Desarrollo
+            </div>
+            <div class="seccion-sub">
+                Cronograma de 4 semanas y selección de componentes.
+            </div>
+
+            <div class="grid">
+                <!-- Selección -->
+                <div class="card">
+                    <div class="card-header"><span class="icono">✅</span> Componentes Seleccionados</div>
+                    <div class="tabla-mini" style="grid-template-columns:1fr 1fr 1fr; font-size:0.8rem;">
+                        <div class="item">🔹 ESP32</div>
+                        <div class="item">🔹 DHT11</div>
+                        <div class="item">🔹 Humedad suelo</div>
+                        <div class="item">🔹 Ultrasónico</div>
+                        <div class="item">🔹 LDR</div>
+                        <div class="item">🔹 Servomotor</div>
+                        <div class="item">🔹 Motor DC</div>
+                        <div class="item">🔹 Zumbador</div>
+                        <div class="item">🔹 LED RGB</div>
+                    </div>
+                    <div style="margin-top:12px; font-size:0.85rem; color:#4d6b4d;">
+                        <strong>Cantidad:</strong> 1 ESP32 · 1 DHT11 · 2 humedad suelo · 1 ultrasónico · 1 LDR · 1 servo · 1 motor · 1 zumbador · 1 LED RGB
+                    </div>
+                </div>
+
+                <!-- Cronograma -->
+                <div class="card">
+                    <div class="card-header"><span class="icono">🗓️</span> Cronograma (4 semanas)</div>
+                    <div class="plan-item">
+                        <div class="plan-semana">Sem 1</div>
+                        <div class="plan-detalle"><strong>Investigación</strong> · datasheets, librerías, ejemplos de código</div>
+                    </div>
+                    <div class="plan-item">
+                        <div class="plan-semana">Sem 2</div>
+                        <div class="plan-detalle"><strong>Simulación Wokwi</strong> · ESP32 + sensores/actuadores · pruebas</div>
+                    </div>
+                    <div class="plan-item">
+                        <div class="plan-semana">Sem 3</div>
+                        <div class="plan-detalle"><strong>Frontend</strong> · HTML+CSS+JS · Chart.js · datos mock</div>
+                    </div>
+                    <div class="plan-item">
+                        <div class="plan-semana">Sem 4</div>
+                        <div class="plan-detalle"><strong>Integración & pruebas</strong> · ajustes, documentación, presentación</div>
+                    </div>
+                    <div style="margin-top:14px; background:var(--fondo); border-radius:16px; padding:8px 14px; font-size:0.85rem; text-align:center;">
+                        🛠️ <strong>Herramientas:</strong> Wokwi · VS Code · GitHub · Figma · Canva
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-wrap" style="justify-content:center; margin-top:1.5rem;">
+                <span class="badge-equipo">
+                    📅 Planificación por
+                    <span class="nom coral">Anniah</span>
+                    <span class="nom">Mariana</span>
+                    <span class="nom">Jesus</span>
+                </span>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- SECCIÓN 5: CIENCIAS NATURALES + ÉTICA                       -->
+        <!-- ========================================================== -->
+        <section class="seccion" id="etica">
+            <div class="seccion-titulo">
+                <span class="emoji-grande">🌍</span> Ciencias Naturales · Ética
+            </div>
+            <div class="seccion-sub">
+                Sostenibilidad, ciclo del agua, energía y responsabilidad social.
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header"><span class="icono">🌊</span> Ciencias Naturales</div>
+                    <ul style="list-style:none; display:flex; flex-direction:column; gap:12px; font-size:0.95rem;">
+                        <li>💧 <strong>Ciclo del agua</strong> — el sistema optimiza el riego imitando la retención y liberación natural.</li>
+                        <li>⚡ <strong>Energía</strong> — uso de componentes de bajo consumo y modos de sleep en el ESP32.</li>
+                        <li>♻️ <strong>Residuos</strong> — posibilidad de monitorear composteras para reducir residuos orgánicos.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span class="icono">🤝</span> Ética y Sostenibilidad</div>
+                    <ul style="list-style:none; display:flex; flex-direction:column; gap:12px; font-size:0.95rem;">
+                        <li>🔒 <strong>Privacidad</strong> — datos almacenados localmente, sin exposición externa.</li>
+                        <li>🌱 <strong>Consumo responsable</strong> — ahorro de agua y energía eléctrica.</li>
+                        <li>♿ <strong>Accesibilidad</strong> — interfaz clara, inclusiva y fácil de usar.</li>
+                        <li>🔧 <strong>Mantenimiento</strong> — diseño modular para facilitar reparaciones y alargar la vida útil.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex-wrap" style="justify-content:center; margin-top:1.5rem;">
+                <span class="badge-equipo">
+                    🌱 Ética y sostenibilidad por
+                    <span class="nom coral">Anniah</span>
+                    <span class="nom">Mariana</span>
+                    <span class="nom">Jesus</span>
+                </span>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- SECCIÓN 6: EQUIPO (cierre)                                  -->
+        <!-- ========================================================== -->
+        <section class="seccion" id="equipo" style="min-height:50vh; justify-content:center; align-items:center; text-align:center;">
+            <div style="max-width:700px; margin:0 auto;">
+                <div style="font-size:4rem; margin-bottom:0.5rem;">💖</div>
+                <h2 style="font-size:2.8rem; font-weight:700; color:var(--verde-oscuro);">Nuestro Equipo</h2>
+                <div style="width:80px; height:4px; background:linear-gradient(90deg, var(--verde-medio), var(--coral)); margin:0.8rem auto 1.5rem;"></div>
+
+                <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem; margin:2rem 0;">
+                    <div style="background:var(--blanco); border-radius:30px; padding:1.5rem 2.2rem; box-shadow:var(--sombra); min-width:180px;">
+                        <div style="font-size:2.5rem;">🌸</div>
+                        <div style="font-weight:700; font-size:1.2rem; color:var(--verde-oscuro);">Anniah</div>
+                        <div style="font-size:0.85rem; color:#5a735a;">Investigación · Frontend</div>
+                    </div>
+                    <div style="background:var(--blanco); border-radius:30px; padding:1.5rem 2.2rem; box-shadow:var(--sombra); min-width:180px;">
+                        <div style="font-size:2.5rem;">🌿</div>
+                        <div style="font-weight:700; font-size:1.2rem; color:var(--verde-oscuro);">Mariana</div>
+                        <div style="font-size:0.85rem; color:#5a735a;">Arquitectura · Wokwi</div>
+                    </div>
+                    <div style="background:var(--blanco); border-radius:30px; padding:1.5rem 2.2rem; box-shadow:var(--sombra); min-width:180px;">
+                        <div style="font-size:2.5rem;">🌻</div>
+                        <div style="font-weight:700; font-size:1.2rem; color:var(--verde-oscuro);">Jesus</div>
+                        <div style="font-size:0.85rem; color:#5a735a;">Planificación · Documentación</div>
+                    </div>
+                </div>
+
+                <div style="background:var(--blanco); border-radius:60px; padding:1.2rem 2rem; box-shadow:var(--sombra); display:inline-block; margin-top:1rem;">
+                    <span style="font-weight:600; font-size:1.1rem;">
+                        🌱 EcoMonitor · Paso 3 · 2026
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- FOOTER FINAL                                                -->
+        <!-- ========================================================== -->
+        <div style="text-align:center; margin-top:2rem; padding:1.5rem 0; border-top:1px solid rgba(125,160,125,0.2);">
+            <div class="footer-final">
+                <span>Hecho con <span class="corazon">❤️</span> por</span>
+                <span class="nom coral">Anniah</span>
+                <span class="nom">Mariana</span>
+                <span class="nom">Jesus</span>
+                <span style="margin-left:12px; font-weight:300; color:#7a967a;">· 2026 ·</span>
+            </div>
+            <p style="margin-top:1rem; font-size:0.8rem; color:#8aa88a;">
+                ✦ Paso 3: Investigar y Planificar · Diseño aesthetic ✦
+            </p>
+        </div>
+
+    </div>
+    <!-- fin container -->
+
+</body>
+</html>

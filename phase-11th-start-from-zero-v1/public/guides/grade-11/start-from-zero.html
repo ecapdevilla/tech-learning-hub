@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11th Grade · Start From Zero</title>
+<style>
+:root{--navy:#10283f;--blue:#176d9d;--green:#168063;--gold:#d7a126;--line:#d7e5ee;--ink:#263b4c}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#f7fbfd,#eef5f8);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:22px 14px 70px}
+.hero{padding:38px;border-radius:28px;color:#fff;background:radial-gradient(circle at 90% 10%,#ffffff18,transparent 25%),linear-gradient(135deg,#10283f,#176d9d 62%,#168063)}
+.hero h1{font-size:clamp(40px,7vw,68px);line-height:1;margin:8px 0}
+.pill{display:inline-block;padding:6px 10px;border:1px solid #ffffff36;background:#ffffff12;border-radius:999px;font-weight:900}
+.card{margin-top:17px;background:#fff;border:1px solid var(--line);border-radius:19px;padding:22px;box-shadow:0 8px 25px #10283f0b}
+.route{display:flex;gap:7px;align-items:center;flex-wrap:wrap;font-weight:900}
+.route span{background:#edf4f7;padding:7px 10px;border-radius:999px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.box{padding:17px;border:1px solid var(--line);border-radius:15px;background:#f8fbfd}
+.template{white-space:pre-wrap;background:#102536;color:#eef8ff;padding:18px;border-radius:13px;font-family:ui-monospace,Consolas,monospace}
+.phone{background:#fff8e7;border-left:6px solid var(--gold)}
+.done{background:#edfff7;border-left:6px solid var(--green)}
+li{margin:7px 0}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.actions a{padding:10px 14px;border-radius:11px;text-decoration:none;background:#fff;color:#10283f;font-weight:900}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero">
+<span class="pill">11TH GRADE · CYCLE 4 · START HERE</span>
+<h1>Start From Zero · Engineering Launchpad</h1>
+<p>This route is for teams that have not started, have no usable evidence yet, or need to restart with a clear engineering direction.</p>
+<div class="actions">
+<a href="/students/grade/11/blue">← 11th Blue</a>
+<a href="/students/grade/11/white">← 11th White</a>
+</div>
+</section>
+
+<section class="card">
+<h2>🎯 Class objective</h2>
+<p>Design the first complete blueprint for a technological solution that addresses a real problem and can later become a functional system integrating <b>ESP32, sensor(s), actuator(s), WiFi, Wokwi and a web dashboard</b>.</p>
+</section>
+
+<section class="card">
+<h2>Your complete route</h2>
+<div class="route">
+<span>1 · PROBLEM + ODS</span>→
+<span>2 · SOLUTION</span>→
+<span>3 · ARCHITECTURE</span>→
+<span>4 · WOKWI MVP</span>→
+<span>5 · WEB DASHBOARD</span>→
+<span>6 · INTEGRATION</span>→
+<span>7 · TESTING</span>→
+<span>8 · DOCUMENTATION</span>
+</div>
+<p><b>Today you do not need to finish the whole project.</b> You need to leave Steps 1–3 strong enough that implementation can begin immediately.</p>
+</section>
+
+<section class="grid">
+<article class="card">
+<h2>1 · Choose a real problem</h2>
+<ul>
+<li>What happens?</li>
+<li>Who is affected?</li>
+<li>Why is it worth solving?</li>
+<li>Which SDG (ODS) is related?</li>
+<li>What could technology measure, detect or automate?</li>
+</ul>
+</article>
+<article class="card">
+<h2>2 · Define your solution</h2>
+<p>Do not start by choosing random sensors. First explain what the system must accomplish.</p>
+<div class="template">Our system will:
+DETECT / MEASURE __________
+PROCESS ___________________
+DECIDE ____________________
+ACT ON ____________________
+SHOW ON THE WEB ___________</div>
+</article>
+</section>
+
+<section class="card">
+<h2>3 · Build the engineering architecture</h2>
+<div class="template">REAL PROBLEM + ODS
+        ↓
+SENSOR / INPUT
+        ↓
+ESP32
+        ↓
+PROCESS / IF CONDITION
+        ↓
+ACTUATOR / OUTPUT
+        ↓
+WiFi / DATA
+        ↓
+WEB DASHBOARD
+        ↓
+USER / DECISION</div>
+</section>
+
+<section class="grid">
+<article class="card">
+<h2>4 · Minimum MVP</h2>
+<ul>
+<li>One ESP32.</li>
+<li>At least one justified sensor.</li>
+<li>At least one justified actuator.</li>
+<li>One automatic IF/THEN rule.</li>
+<li>One Wokwi simulation.</li>
+<li>One web dashboard with useful data/status.</li>
+<li>At least three documented tests.</li>
+</ul>
+</article>
+<article class="card">
+<h2>5 · Dashboard blueprint</h2>
+<div class="template">┌────────────────────────────┐
+│ PROJECT NAME        STATUS │
+├────────────────────────────┤
+│ SENSOR VALUE: ________     │
+│ SYSTEM STATE: ________     │
+│                            │
+│ [ chart / history ]        │
+│                            │
+│ [ CONTROL ]  [ RESET ]     │
+├────────────────────────────┤
+│ ALERTS / EVENTS            │
+└────────────────────────────┘</div>
+<p>This is only a wireframe. <b>Do not copy this visual design as your final interface.</b></p>
+</article>
+</section>
+
+<section class="card phone">
+<h2>📱 Only a phone available?</h2>
+<p>You can complete the entire planning milestone from a phone + notebook. Research only the components your solution actually needs. Do not spend the hour copying definitions or trying to build the entire Wokwi project on a small screen.</p>
+</section>
+
+<section class="card done">
+<h2>✅ Required evidence before leaving class</h2>
+<div class="template">PROJECT LAUNCH CARD v1
+
+TEAM:
+PROJECT NAME:
+
+REAL PROBLEM:
+TARGET USER:
+ODS:
+
+OUR SOLUTION:
+
+INPUT / SENSOR:
+ESP32 PROCESS:
+IF ______________________
+THEN ____________________
+
+OUTPUT / ACTUATOR:
+DATA SENT BY WiFi:
+WEB DASHBOARD MUST SHOW:
+
+DRAW THE ARCHITECTURE:
+Sensor → ESP32 → Decision → Actuator → WiFi → Web
+
+TEST 1:
+TEST 2:
+TEST 3:
+
+NEXT TASK 1:
+NEXT TASK 2:
+NEXT TASK 3:</div>
+</section>
+
+<section class="card">
+<h2>⚡ Accelerator: what comes immediately after this?</h2>
+<ol>
+<li>Create the first Wokwi circuit with only the minimum components.</li>
+<li>Make the sensor produce a value.</li>
+<li>Program the IF/THEN automation rule.</li>
+<li>Make the actuator respond correctly.</li>
+<li>Create the web interface from your own design.</li>
+<li>Simulate or implement the data flow.</li>
+<li>Test normal, limit and failure conditions.</li>
+<li>Document screenshots, results, limitations and improvements.</li>
+</ol>
+</section>
+</main>
+</body>
+</html>
