@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Empresa de Reciclaje</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#dff7df;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+.caja{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    width:400px;
+    text-align:center;
+    box-shadow:0 0 10px gray;
+}
+select,button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    font-size:16px;
+}
+button{
+    background:green;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+#resultado{
+    margin-top:20px;
+    font-size:18px;
+    font-weight:bold;
+}
+</style>
+
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+<div class="caja">
+
+<h2>♻ Empresa de Reciclaje</h2>
+<h3>Equipo de trabajo</h3>
+<p><b>👩‍💻 Ana Victoria</b></p>
+
+<p>Seleccione el tipo de residuo:</p>
+
+<select id="residuo">
+<option value="">Seleccione...</option>
+<option value="papel">Papel</option>
+<option value="plastico">Plástico</option>
+<option value="vidrio">Vidrio</option>
+<option value="organico">Orgánico</option>
+<option value="metal">Metal</option>
+</select>
+
+<button onclick="clasificar()">Clasificar</button>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+function clasificar(){
+
+let tipo=document.getElementById("residuo").value;
+let mensaje="";
+
+if(tipo=="papel"){
+mensaje="📘 Depositar en el contenedor AZUL.";
+}
+else if(tipo=="plastico"){
+mensaje="🟨 Depositar en el contenedor AMARILLO.";
+}
+else if(tipo=="vidrio"){
+mensaje="🟩 Depositar en el contenedor VERDE.";
+}
+else if(tipo=="organico"){
+mensaje="🟫 Depositar en el contenedor MARRÓN.";
+}
+else if(tipo=="metal"){
+mensaje="⚪ Depositar en el contenedor GRIS.";
+}
+else{
+mensaje="⚠ Seleccione un tipo de residuo.";
+}
+
+document.getElementById("resultado").innerHTML=mensaje;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz de Programación</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+
+body{
+
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+linear-gradient(135deg,#00c6ff,#0072ff,#8e2de2);
+
+overflow-x:hidden;
+
+}
+
+
+/* ICONOS TECNOLÓGICOS */
+
+.icono{
+
+position:fixed;
+font-size:50px;
+opacity:.25;
+animation:flotar 5s infinite alternate;
+
+}
+
+.i1{top:20px;left:20px;}
+.i2{top:40px;right:40px;}
+.i3{bottom:30px;left:40px;}
+.i4{bottom:40px;right:40px;}
+.i5{top:45%;left:5%;}
+.i6{top:45%;right:5%;}
+
+
+@keyframes flotar{
+
+from{
+transform:translateY(0);
+}
+
+to{
+transform:translateY(25px);
+}
+
+}
+
+
+
+.contenedor{
+
+width:90%;
+max-width:850px;
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 0 25px rgba(0,0,0,.5);
+
+}
+
+
+
+h1{
+
+text-align:center;
+
+color:#0066ff;
+
+margin-bottom:15px;
+
+}
+
+
+
+.descripcion{
+
+text-align:center;
+
+color:#555;
+
+}
+
+
+
+.integrantes{
+
+background:#eef8ff;
+
+border:3px solid #00bcd4;
+
+padding:15px;
+
+margin:20px 0;
+
+border-radius:12px;
+
+text-align:center;
+
+}
+
+
+.integrantes h3{
+
+color:#e91e63;
+
+}
+
+
+
+.idioma{
+
+text-align:right;
+
+margin-bottom:20px;
+
+}
+
+
+
+select{
+
+padding:8px;
+
+border-radius:8px;
+
+border:2px solid #0072ff;
+
+}
+
+
+
+.intentos{
+
+background:#fff3cd;
+
+border-left:6px solid #ffc107;
+
+padding:12px;
+
+margin-bottom:20px;
+
+font-weight:bold;
+
+text-align:center;
+
+}
+
+
+
+.pregunta{
+
+background:#eef8ff;
+
+border-left:8px solid #00bcd4;
+
+padding:15px;
+
+margin-bottom:20px;
+
+border-radius:12px;
+
+}
+
+
+
+.pregunta h3{
+
+color:#e91e63;
+
+margin-bottom:10px;
+
+}
+
+
+
+label{
+
+display:block;
+
+padding:7px;
+
+cursor:pointer;
+
+}
+
+
+
+label:hover{
+
+background:#d9f2ff;
+
+border-radius:5px;
+
+}
+
+
+
+pre{
+
+background:#222;
+
+color:#00ff88;
+
+padding:12px;
+
+border-radius:8px;
+
+}
+
+
+
+button{
+
+width:100%;
+
+padding:15px;
+
+font-size:20px;
+
+border:none;
+
+border-radius:12px;
+
+background:
+
+linear-gradient(90deg,#ff512f,#dd2476);
+
+color:white;
+
+cursor:pointer;
+
+}
+
+
+
+button:hover{
+
+transform:scale(1.03);
+
+}
+
+
+
+.correcta{
+
+color:green;
+
+font-weight:bold;
+
+}
+
+
+
+.incorrecta{
+
+color:red;
+
+font-weight:bold;
+
+}
+
+
+
+.correccion{
+
+margin-top:10px;
+
+padding:8px;
+
+background:#e8f4ff;
+
+border-left:5px solid #2196f3;
+
+border-radius:8px;
+
+}
+
+
+
+#resultado{
+
+text-align:center;
+
+font-size:28px;
+
+font-weight:bold;
+
+margin-top:20px;
+
+}
+
+
+
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+
+
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+
+<div class="icono i1">💻</div>
+<div class="icono i2">📱</div>
+<div class="icono i3">🤖</div>
+<div class="icono i4">💾</div>
+<div class="icono i5">⌨️</div>
+<div class="icono i6">🖥️</div>
+
+
+
+<div class="contenedor">
+
+
+<div class="idioma">
+
+🌐
+
+<select id="idioma" onchange="cambiarIdioma()">
+
+<option value="es">🇪🇸 Español</option>
+
+<option value="fr">🇫🇷 Français</option>
+
+<option value="en">🇬🇧 English</option>
+
+</select>
+
+</div>
+
+
+
+<h1 id="titulo">
+💻 Cuestionario de Programación
+</h1>
+
+
+<div class="integrantes">
+
+<h3>👥 Integrantes del equipo</h3>
+
+<p>
+Alejandro<br>
+Esteban
+</p>
+
+</div>
+
+
+
+<p class="descripcion" id="descripcion">
+Condicionales y bucles
+</p>
+
+
+
+<div class="intentos">
+
+🔢 <span id="textoIntentos">
+Intentos realizados:
+</span>
+
+<span id="contador">
+0
+</span>
+
+</div>
+
+
+
+<form id="quiz">
+
+
+
+<div class="pregunta">
+
+<h3 id="p1">
+1. ¿Qué estructura se utiliza para tomar decisiones en un programa?
+</h3>
+
+
+<label>
+<input type="radio" name="q1" value="if">
+if
+</label>
+
+
+<label>
+<input type="radio" name="q1" value="for">
+for
+</label>
+
+
+<label>
+<input type="radio" name="q1" value="while">
+while
+</label>
+
+</div>
+
+
+
+
+
+<div class="pregunta">
+
+<h3 id="p2">
+2. ¿Qué estructura permite repetir instrucciones varias veces?
+</h3>
+
+
+<label>
+<input type="radio" name="q2" value="if">
+if
+</label>
+
+
+<label>
+<input type="radio" name="q2" value="for">
+for
+</label>
+
+
+<label>
+<input type="radio" name="q2" value="switch">
+switch
+</label>
+
+</div>
+
+
+
+
+
+<div class="pregunta">
+
+<h3 id="p3">
+3. ¿Qué mostrará el siguiente código?
+</h3>
+
+
+<pre>
+if(5 > 2){
+ console.log("Hola");
+}
+</pre>
+
+
+<label>
+<input type="radio" name="q3" value="Hola">
+Hola
+</label>
+
+
+<label>
+<input type="radio" name="q3" value="Error">
+Error
+</label>
+
+
+<label>
+<input type="radio" name="q3" value="Nada">
+Nada
+</label>
+
+</div><div class="pregunta">
+
+<h3 id="p4">
+4. ¿Qué ciclo se ejecuta mientras una condición sea verdadera?
+</h3>
+
+
+<label>
+<input type="radio" name="q4" value="while">
+while
+</label>
+
+
+<label>
+<input type="radio" name="q4" value="alert">
+alert
+</label>
+
+
+<label>
+<input type="radio" name="q4" value="print">
+print
+</label>
+
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3 id="p5">
+5. ¿Qué instrucción permite detener un ciclo antes de terminar?
+</h3>
+
+
+<label>
+<input type="radio" name="q5" value="break">
+break
+</label>
+
+
+<label>
+<input type="radio" name="q5" value="start">
+start
+</label>
+
+
+<label>
+<input type="radio" name="q5" value="open">
+open
+</label>
+
+
+</div>
+
+
+
+<button type="button" id="boton" onclick="corregir()">
+
+📊 Calificar cuestionario
+
+</button>
+
+
+</form>
+
+
+<div id="resultado"></div>
+
+
+</div>
+
+
+
+<script>
+
+
+let idiomaActual="es";
+
+let intentos=0;
+
+
+
+const respuestas={
+
+q1:"if",
+q2:"for",
+q3:"Hola",
+q4:"while",
+q5:"break"
+
+};
+
+
+
+const idiomas={
+
+
+es:{
+
+
+titulo:"💻 Cuestionario de Programación",
+
+descripcion:"Condicionales y bucles",
+
+intentos:"Intentos realizados:",
+
+boton:"📊 Calificar cuestionario",
+
+correcta:"✅ Respuesta correcta: ",
+
+resultado:"🏆 Resultado: ",
+
+completo:"🎉 ¡Excelente! Has completado el cuestionario correctamente.",
+
+
+preguntas:[
+
+"1. ¿Qué estructura se utiliza para tomar decisiones en un programa?",
+
+"2. ¿Qué estructura permite repetir instrucciones varias veces?",
+
+"3. ¿Qué mostrará el siguiente código?",
+
+"4. ¿Qué ciclo se ejecuta mientras una condición sea verdadera?",
+
+"5. ¿Qué instrucción permite detener un ciclo antes de terminar?"
+
+]
+
+},
+
+
+
+fr:{
+
+
+titulo:"💻 Questionnaire de Programmation",
+
+descripcion:"Conditions et boucles",
+
+intentos:"Tentatives réalisées:",
+
+boton:"📊 Corriger le questionnaire",
+
+correcta:"✅ Bonne réponse : ",
+
+resultado:"🏆 Résultat : ",
+
+completo:"🎉 Excellent ! Vous avez terminé le questionnaire correctement.",
+
+
+preguntas:[
+
+"1. Quelle structure est utilisée pour prendre des décisions dans un programme ?",
+
+"2. Quelle structure permet de répéter des instructions plusieurs fois ?",
+
+"3. Que montrera le code suivant ?",
+
+"4. Quelle boucle fonctionne tant qu'une condition est vraie ?",
+
+"5. Quelle instruction permet d'arrêter une boucle avant la fin ?"
+
+]
+
+},
+
+
+
+en:{
+
+
+titulo:"💻 Programming Quiz",
+
+descripcion:"Conditionals and loops",
+
+intentos:"Attempts made:",
+
+boton:"📊 Grade Quiz",
+
+correcta:"✅ Correct answer: ",
+
+resultado:"🏆 Score: ",
+
+completo:"🎉 Excellent! You completed the quiz correctly.",
+
+
+preguntas:[
+
+"1. Which structure is used to make decisions in a program?",
+
+"2. Which structure repeats instructions several times?",
+
+"3. What will the following code display?",
+
+"4. Which loop runs while a condition is true?",
+
+"5. Which instruction stops a loop before it ends?"
+
+]
+
+}
+
+
+};
+
+
+
+
+
+function cambiarIdioma(){
+
+
+idiomaActual=document.getElementById("idioma").value;
+
+
+let t=idiomas[idiomaActual];
+
+
+document.getElementById("titulo").innerHTML=t.titulo;
+
+
+document.getElementById("descripcion").innerHTML=t.descripcion;
+
+
+document.getElementById("textoIntentos").innerHTML=t.intentos;
+
+
+document.getElementById("boton").innerHTML=t.boton;
+
+
+
+for(let i=1;i<=5;i++){
+
+document.getElementById("p"+i).innerHTML=
+t.preguntas[i-1];
+
+}
+
+
+}
+
+
+
+
+
+function corregir(){
+
+
+intentos++;
+
+document.getElementById("contador").innerHTML=intentos;
+
+
+
+let puntos=0;
+
+
+
+document.querySelectorAll(".correccion")
+.forEach(e=>e.remove());
+
+
+
+for(let pregunta in respuestas){
+
+
+let opciones=document.getElementsByName(pregunta);
+
+
+opciones.forEach(op=>{
+
+
+op.parentElement.classList.remove(
+"correcta",
+"incorrecta"
+);
+
+
+
+if(op.checked){
+
+
+if(op.value==respuestas[pregunta]){
+
+
+puntos++;
+
+op.parentElement.classList.add("correcta");
+
+
+}else{
+
+
+op.parentElement.classList.add("incorrecta");
+
+
+}
+
+
+}
+
+
+
+});
+
+
+
+let div=document.createElement("div");
+
+
+div.className="correccion";
+
+
+let respuestaMostrar=respuestas[pregunta];
+
+
+if(idiomaActual=="fr" && respuestaMostrar=="Hola"){
+
+respuestaMostrar="Bonjour";
+
+}
+
+
+if(idiomaActual=="en" && respuestaMostrar=="Hola"){
+
+respuestaMostrar="Hello";
+
+}
+
+
+
+div.innerHTML=
+
+idiomas[idiomaActual].correcta+
+respuestaMostrar;
+
+
+
+opciones[0]
+.parentElement
+.parentElement
+.appendChild(div);
+
+
+
+}
+
+
+
+let mensaje=
+
+idiomas[idiomaActual].resultado+
+puntos+
+"/5";
+
+
+
+if(puntos==5){
+
+mensaje+="<br>"+idiomas[idiomaActual].completo;
+
+}
+
+
+
+document.getElementById("resultado").innerHTML=mensaje;
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

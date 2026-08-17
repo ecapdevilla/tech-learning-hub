@@ -1,0 +1,2993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Leyenda de Basóurius</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body {
+            background: #0a0a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Press Start 2P', cursive;
+            padding: 10px;
+        }
+        #gameContainer {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+            border: 4px solid #e94560;
+            max-width: 900px;
+        }
+        #canvasWrap { position: relative; }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: #0f3460;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            border: 4px solid #533483;
+            width: 100%;
+            height: auto;
+            max-width: 800px;
+        }
+        #ui {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+            color: #fff;
+            font-size: 10px;
+            background: #000;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border-top: 3px solid #fff;
+            border-bottom: 3px solid #555;
+            border-left: 3px solid #fff;
+            border-right: 3px solid #555;
+        }
+        #ui .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 22px;
+            align-items: center;
+        }
+        .stat {
+            background: transparent;
+            padding: 0;
+            border: none;
+            font-size: 10px;
+            line-height: 1.4;
+            color: #ffd700;
+            letter-spacing: 0.5px;
+        }
+        .stat span { color: #fff; }
+        .stat.hp { color: #ff6b6b; }
+        .stat.exp { color: #ffd700; }
+        .stat.agua { color: #6cd4ff; }
+        .stat.vidas { color: #8bc34a; }
+        #waterMeter {
+            width: 80px;
+            height: 14px;
+            background: #0a0a1a;
+            border: 2px solid #00d2ff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #waterFill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            transition: width 0.3s;
+        }
+        #statusMsg {
+            color: #ffd700;
+            font-size: 10px;
+            min-width: 100px;
+            text-align: center;
+            line-height: 1.6;
+            background: #1a1a2e;
+            border-radius: 4px;
+            border: 2px solid #533483;
+            padding: 6px 8px;
+        }
+        button {
+            font-family: 'Press Start 2P', cursive;
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 9px;
+            transition: 0.2s;
+            border: 2px solid #fff;
+        }
+        button:hover { background: #ff6b81; transform: scale(1.05); }
+        #controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        #controls span { color: #ffe37a; font-size: 9px; }
+        #nameOverlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(5,5,15,0.92);
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 4px;
+        }
+        #nameBox {
+            background: #16213e;
+            border: 4px solid #ffd700;
+            border-radius: 10px;
+            padding: 28px 34px;
+            text-align: center;
+            max-width: 90%;
+        }
+        #nameBox p {
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            font-size: 13px;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+        #nameInput {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 2px solid #00d2ff;
+            outline: none;
+            width: 220px;
+            max-width: 100%;
+            text-align: center;
+            background: #fff;
+            color: #16213e;
+        }
+        #nameBox button {
+            display: block;
+            margin: 16px auto 0;
+        }
+        #npcOverlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(5,5,15,0.92);
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 4px;
+        }
+        #npcBox {
+            background: #2a3a1e;
+            border: 4px solid #8bc34a;
+            border-radius: 10px;
+            padding: 22px 28px;
+            text-align: center;
+            max-width: 92%;
+            width: 480px;
+        }
+        #npcHeader {
+            font-family: 'Press Start 2P', cursive;
+            color: #ffd700;
+            font-size: 12px;
+            margin-bottom: 14px;
+        }
+        #npcHeader span { color: #aaa; font-size: 10px; }
+        #npcBox p {
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            font-size: 11px;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+        #npcOpciones { display: flex; flex-direction: column; gap: 8px; }
+        #npcOpciones button {
+            font-family: 'Press Start 2P', cursive;
+            background: #1a1a2e;
+            color: #fff;
+            border: 2px solid #8bc34a;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        #npcOpciones button:hover:not(:disabled) { background: #8bc34a; color: #16213e; }
+        #npcOpciones button:disabled { opacity: 0.5; cursor: default; }
+        #npcFeedback {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            min-height: 14px;
+            margin-top: 12px;
+        }
+        #npcCerrar { display: none; margin: 14px auto 0; }
+        #menuOverlay {
+            display: flex;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, #0a0a3e, #1a1a5e 55%, #2d2d7e);
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            border-radius: 4px;
+        }
+        #menuBox {
+            text-align: center;
+            padding: 20px;
+            max-width: 92%;
+        }
+        #menuBox h1 {
+            font-family: 'Press Start 2P', cursive;
+            color: #ffd700;
+            font-size: 20px;
+            text-shadow: 3px 3px 0 #000;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        #menuSubtitle {
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            font-size: 9px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        #menuButtons { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        #menuButtons button { width: 220px; font-size: 11px; padding: 12px; }
+        #controlsPanel { display: none; text-align: center; padding: 20px; max-width: 92%; }
+        #controlsPanel h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: #ffd700;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        #controlsListEl { list-style: none; margin-bottom: 22px; }
+        #controlsListEl li {
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            font-size: 9px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+    </style>
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+    <div id="gameContainer">
+        <div id="canvasWrap">
+            <canvas id="gameCanvas" width="800" height="450"></canvas>
+            <div id="nameOverlay">
+                <div id="nameBox">
+                    <p id="namePrompt">✏️ ¿Cómo te llamas, héroe?</p>
+                    <input id="nameInput" maxlength="12" placeholder="Tu nombre" autocomplete="off">
+                    <button id="nameConfirm">✅ Confirmar</button>
+                </div>
+            </div>
+            <div id="npcOverlay">
+                <div id="npcBox">
+                    <div id="npcHeader">🧑‍🌾 <span id="npcHeaderLabel">Aldeano</span> <span id="npcRonda"></span></div>
+                    <p id="npcPregunta">...</p>
+                    <div id="npcOpciones"></div>
+                    <p id="npcFeedback"></p>
+                    <button id="npcCerrar">🚪 Continuar</button>
+                </div>
+            </div>
+            <div id="menuOverlay">
+                <div id="menuBox">
+                    <h1>La Leyenda de<br>Basóurius</h1>
+                    <div id="menuSubtitle">Un pixel-cuento sobre reciclar y salvar el reino</div>
+                    <div id="menuButtons">
+                        <button id="menuComenzar">▶ Comenzar</button>
+                        <button id="menuControles">🎮 Controles</button>
+                        <button id="menuIdioma">🌐 English</button>
+                    </div>
+                </div>
+                <div id="controlsPanel">
+                    <h2>Controles</h2>
+                    <ul id="controlsListEl"></ul>
+                    <button id="controlesVolver">◀ Volver</button>
+                </div>
+            </div>
+        </div>
+        <div id="ui">
+            <div class="stats">
+                <span class="stat">🧑 <span id="nombreDisplay">-</span></span>
+                <span class="stat hp">❤️ <span id="hpDisplay">100</span></span>
+                <span class="stat vidas">💚 <span id="vidasDisplay">3</span></span>
+                <span class="stat exp">⭐ <span id="expDisplay">0</span></span>
+                <span class="stat">🗑️ <span id="basuraDisplay">0</span></span>
+                <span class="stat agua">💧 <span id="aguaDisplay">0</span>%</span>
+                <span class="stat">🚿 <span id="regaderaDisplay">❌</span></span>
+                <span class="stat">🏰 <span id="nivelLabel">Nivel</span> <span id="nivelDisplay">1</span></span>
+                <div style="display:flex;align-items:center;gap:4px;">
+                    <span id="aguaLabel" style="font-size:8px;color:#ffe37a;">AGUA</span>
+                    <div id="waterMeter"><div id="waterFill" style="width:0%"></div></div>
+                </div>
+            </div>
+            <div id="controls">
+                <span id="controlsHintText">⬅️➡️ Mover | ⬆️ Saltar | Z Golpe | X Agua | C Bomba 💣</span>
+                <button id="resetBtn">🔄 Reiniciar</button>
+                <button id="muteBtn">🔊 Sonido</button>
+            </div>
+        </div>
+        <div id="statusMsg">📖 Presiona ENTER para comenzar la historia</div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  LA LEYENDA DE BASÓURIUS - MUNDO CON SCROLL ESTILO MARIO
+        // ============================================================
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
+        // UI Elements
+        const hpSpan = document.getElementById('hpDisplay');
+        const expSpan = document.getElementById('expDisplay');
+        const basuraSpan = document.getElementById('basuraDisplay');
+        const aguaSpan = document.getElementById('aguaDisplay');
+        const regaderaSpan = document.getElementById('regaderaDisplay');
+        const nivelSpan = document.getElementById('nivelDisplay');
+        const nombreSpan = document.getElementById('nombreDisplay');
+        const vidasSpan = document.getElementById('vidasDisplay');
+        const nameOverlay = document.getElementById('nameOverlay');
+        const nameInput = document.getElementById('nameInput');
+        const nameConfirmBtn = document.getElementById('nameConfirm');
+        const npcOverlay = document.getElementById('npcOverlay');
+        const npcHeaderRonda = document.getElementById('npcRonda');
+        const npcPreguntaEl = document.getElementById('npcPregunta');
+        const npcOpcionesEl = document.getElementById('npcOpciones');
+        const npcFeedbackEl = document.getElementById('npcFeedback');
+        const npcCerrarBtn = document.getElementById('npcCerrar');
+        const npcHeaderLabel = document.getElementById('npcHeaderLabel');
+        const waterFill = document.getElementById('waterFill');
+        const statusMsg = document.getElementById('statusMsg');
+        const muteBtn = document.getElementById('muteBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const nivelLabel = document.getElementById('nivelLabel');
+        const aguaLabel = document.getElementById('aguaLabel');
+        const controlsHintText = document.getElementById('controlsHintText');
+        const namePrompt = document.getElementById('namePrompt');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuBox = document.getElementById('menuBox');
+        const menuSubtitle = document.getElementById('menuSubtitle');
+        const menuComenzarBtn = document.getElementById('menuComenzar');
+        const menuControlesBtn = document.getElementById('menuControles');
+        const menuIdiomaBtn = document.getElementById('menuIdioma');
+        const controlsPanel = document.getElementById('controlsPanel');
+        const controlsListEl = document.getElementById('controlsListEl');
+        const controlesVolverBtn = document.getElementById('controlesVolver');
+
+        // ============================================================
+        //  CONSTANTES DEL MUNDO
+        // ============================================================
+        const CANVAS_W = 800, CANVAS_H = 450;
+        const GROUND_Y = 370;
+        const WORLD_WIDTH = 3400;
+        const NIVEL2_WIDTH = 1000;
+        function worldWidth() { return game.nivel === 2 ? NIVEL2_WIDTH : WORLD_WIDTH; }
+
+        // ============================================================
+        //  IDIOMA (ES / EN)
+        // ============================================================
+        const I18N = {
+            es: {
+                menuSubtitle: 'Un pixel-cuento sobre reciclar y salvar el reino',
+                menuComenzar: '▶ Comenzar',
+                menuControles: '🎮 Controles',
+                menuIdioma: '🌐 English',
+                controlsTitulo: 'Controles',
+                controlsList: [
+                    '⬅️➡️⬆️⬇️ — Moverte en el pueblo',
+                    '⬅️➡️ Caminar &nbsp; | &nbsp; ⬆️ Saltar',
+                    'Z — Golpe / Combo de Frenesí',
+                    'X — Ataque de agua',
+                    'C — Bomba de agua (con Regadera)',
+                    '1 / 2 — Elegir género',
+                    'ENTER — Avanzar diálogo'
+                ],
+                controlsVolver: '◀ Volver',
+                controlsHint: '⬅️➡️ Mover | ⬆️ Saltar | Z Golpe | X Agua | C Bomba 💣',
+                nivelLabel: 'Nivel',
+                aguaLabel: 'AGUA',
+                resetBtn: '🔄 Reiniciar',
+                muteOn: '🔊 Sonido',
+                muteOff: '🔇 Mudo',
+                puebloTitulo: '🏘️ Pueblo de Origen',
+                puebloAldeano: 'Anciano',
+                puebloHint: '🎮 Camina con ⬅️➡️⬆️⬇️ hacia el aldeano',
+                narracionHint: '📖 Presiona ENTER para continuar la historia',
+                narracionLineas: [
+                    '👴 "¡Bienvenido, viajero! Este valle vivía en paz junto a la Reina Esmeralda..."',
+                    '👴 "...hasta que la gente dejó de cuidar la tierra y la basura despertó monstruos."',
+                    '👴 "¡Esas criaturas capturaron a nuestra Reina y la escondieron muy lejos!"',
+                    '👴 "Toma tu equipo y parte de nuestro pueblo. ¡Solo tú puedes rescatarla, héroe!"'
+                ],
+                generoStatus: '🎮 Presiona 1 (Masculino) o 2 (Femenino)',
+                generoTitulo: '⚔️ ELIGE TU GÉNERO ⚔️',
+                generoM: '[ 1 ]  GUERRERO',
+                generoF: '[ 2 ]  GUERRERA',
+                generoHint: 'Presiona 1 o 2 en tu teclado',
+                nombrePrompt: '✏️ ¿Cómo te llamas, héroe?',
+                nombrePlaceholder: 'Tu nombre',
+                nombreConfirmar: '✅ Confirmar',
+                nombreEscribe: '✏️ Escribe tu nombre y confirma',
+                nombreDefaultM: 'Héroe',
+                nombreDefaultF: 'Heroína',
+                tutorialInicio: (n) => `🎮 ¡Hola ${n}! TUTORIAL: Muevete con ⬅️➡️`,
+                tutorialPaso1: '🎮 Bien! Ahora salta con ⬆️',
+                tutorialPaso2: '🎮 Excelente! Ahora ataca con Z',
+                tutorialPaso3: '🎮 Ahora derrota al monstruo!',
+                tutorialCompletado: '⚔️ ¡Tutorial completado! Un gran BOSS te espera más adelante!',
+                tutorialBanner: '💡 Sigue las instrucciones abajo',
+                statusFallaste: '💨 Fallaste...',
+                statusAguaNoDisponible: '❌ Aún no tienes agua',
+                statusAguaVacia: '💧 No tienes agua! Busca un lago.',
+                statusAguaAtaque: '💧 ¡Ataque de agua!',
+                statusFrenesi: '🔥 ¡FRENESÍ! (5 combos)',
+                statusCombo: (n) => `✨ Combo! (${n} restantes)`,
+                statusFrenesiFin: '💤 Frenesí terminado.',
+                statusRegaderaNoTienes: '❌ No tienes la Regadera Mágica todavía',
+                statusAguaInsuficiente: '💧 Necesitas al menos 15% de agua!',
+                statusDanioMenor: '💔 -3 HP',
+                statusBossGolpe: '💥 ¡BOSS! -8 HP',
+                statusReinaGolpe: '💥 ¡LA REINA TE GOLPEÓ!',
+                statusCaneca: '🗑️ +20 HP, +5 EXP',
+                statusPowerup: '🚿 ¡Ahora puedes lanzar bombas de agua con C!',
+                statusPuertaCerrada: '🧑‍🌾 Primero habla con el aldeano cerca de la puerta',
+                statusNivel2: '👑 ¡Enfréntate a la Reina de los Monstruos!',
+                statusVidaPerdida: (n) => `💔 Vidas restantes: ${n}`,
+                statusGameOver: '💀 ¡Game Over! Te quedaste sin vidas...',
+                statusPuertaAbierta: '🚪 ¡Puedes entrar a la guarida!',
+                statusMina: '🗻 ¡Sigue avanzando! Busca la Regadera Mágica.',
+                statusVictoria: (n) => `🏆 ¡${n}, rescataste a la Reina Esmeralda!`,
+                mensajeBoss: '🏆 ¡BOSS VENCIDO!',
+                mensajeReina: '👑 ¡REINA DE LOS MONSTRUOS DERROTADA!',
+                mensajeFrenesi: '🔥 ¡FRENESÍ!',
+                mensajeCaneca: '🗑️ +20 HP +5 EXP',
+                mensajePowerup: '🚿 ¡REGADERA MÁGICA! Presiona C para lanzar bombas de agua',
+                mensajeNivel2: '👑 GUARIDA DE LA REINA DE LOS MONSTRUOS',
+                npcHeaderLabel: 'Aldeano',
+                triviaPregunta: (n, t) => `· Pregunta ${n}/${t}`,
+                triviaCorrecto: '✅ ¡Correcto!',
+                triviaIncorrecto: '❌ ¡Inténtalo de nuevo la próxima!',
+                triviaFinal: (a, t, b) => `🎉 ¡Terminaste! Acertaste ${a}/${t} (+${b} EXP)`,
+                triviaPuertaDesbloqueada: '🚪 La puerta a la guarida se ha desbloqueado.',
+                triviaContinuar: '🚪 Continuar',
+                trivia: [
+                    { texto: '¿Qué debemos hacer con el papel, cartón o plástico que ya no usamos?', opciones: ['Reciclarlos', 'Quemarlos', 'Tirarlos al río'], correcta: 0 },
+                    { texto: '¿Qué pasa si tiramos basura en la naturaleza?', opciones: ['No pasa nada', 'Contaminamos el agua y la tierra', 'Las plantas crecen más rápido'], correcta: 1 },
+                    { texto: '¿Cuál de estas acciones ayuda más al planeta?', opciones: ['Separar la basura para reciclar', 'Dejar la basura en la calle', 'Quemar la basura en casa'], correcta: 0 }
+                ],
+                hudLago: '💧 LAGO',
+                hudGuarida: '🚪 GUARIDA',
+                hudPractica: '💡 PRÁCTICA',
+                hudBoss: '💀 BOSS',
+                hudReina: '👑 REINA',
+                hudFrenesiActivo: '🔥 FRENESÍ ACTIVO!',
+                hudCombosRestantes: (n) => `💥 ${n} combos`,
+                hudAguaBaja: '⚠️ AGUA BAJA! Busca un lago.',
+                hudPrincesaEncerrada: '👑 Reina Esmeralda',
+                hudPrincesaLibre: '👑 ¡Libre!',
+                victoriaTitulo: '🏆 ¡VICTORIA! 🏆',
+                victoriaSub: '👑 Rescataste a la Reina Esmeralda',
+                victoriaFooter1: 'Más aventuras próximamente...',
+                victoriaFooter2: 'Presiona 🔄 Reiniciar para jugar de nuevo',
+                gameOverTitulo: '💀 GAME OVER 💀',
+                gameOverSub: 'Te quedaste sin vidas...',
+                gameOverFooter: 'Presiona 🔄 Reiniciar para intentarlo de nuevo'
+            },
+            en: {
+                menuSubtitle: 'A pixel tale about recycling and saving the kingdom',
+                menuComenzar: '▶ Start',
+                menuControles: '🎮 Controls',
+                menuIdioma: '🌐 Español',
+                controlsTitulo: 'Controls',
+                controlsList: [
+                    '⬅️➡️⬆️⬇️ — Move around the village',
+                    '⬅️➡️ Walk &nbsp; | &nbsp; ⬆️ Jump',
+                    'Z — Hit / Frenzy combo',
+                    'X — Water attack',
+                    'C — Water bomb (with the watering can)',
+                    '1 / 2 — Choose gender',
+                    'ENTER — Advance dialogue'
+                ],
+                controlsVolver: '◀ Back',
+                controlsHint: '⬅️➡️ Move | ⬆️ Jump | Z Hit | X Water | C Bomb 💣',
+                nivelLabel: 'Level',
+                aguaLabel: 'WATER',
+                resetBtn: '🔄 Restart',
+                muteOn: '🔊 Sound',
+                muteOff: '🔇 Muted',
+                puebloTitulo: '🏘️ Home Village',
+                puebloAldeano: 'Elder',
+                puebloHint: '🎮 Walk with ⬅️➡️⬆️⬇️ toward the elder',
+                narracionHint: '📖 Press ENTER to continue the story',
+                narracionLineas: [
+                    '👴 "Welcome, traveler! This valley lived in peace alongside Queen Emerald..."',
+                    '👴 "...until people stopped caring for the land, and the trash awakened monsters."',
+                    '👴 "Those creatures captured our Queen and hid her far away!"',
+                    '👴 "Take your gear and leave our village. Only you can rescue her, hero!"'
+                ],
+                generoStatus: '🎮 Press 1 (Male) or 2 (Female)',
+                generoTitulo: '⚔️ CHOOSE YOUR HERO ⚔️',
+                generoM: '[ 1 ]  WARRIOR',
+                generoF: '[ 2 ]  WARRIOR GIRL',
+                generoHint: 'Press 1 or 2 on your keyboard',
+                nombrePrompt: '✏️ What is your name, hero?',
+                nombrePlaceholder: 'Your name',
+                nombreConfirmar: '✅ Confirm',
+                nombreEscribe: '✏️ Type your name and confirm',
+                nombreDefaultM: 'Hero',
+                nombreDefaultF: 'Heroine',
+                tutorialInicio: (n) => `🎮 Hi ${n}! TUTORIAL: Move with ⬅️➡️`,
+                tutorialPaso1: '🎮 Great! Now jump with ⬆️',
+                tutorialPaso2: '🎮 Excellent! Now attack with Z',
+                tutorialPaso3: '🎮 Now defeat the monster!',
+                tutorialCompletado: '⚔️ Tutorial complete! A big BOSS awaits further ahead!',
+                tutorialBanner: '💡 Follow the instructions below',
+                statusFallaste: '💨 You missed...',
+                statusAguaNoDisponible: "❌ You don't have water yet",
+                statusAguaVacia: '💧 No water left! Find a lake.',
+                statusAguaAtaque: '💧 Water attack!',
+                statusFrenesi: '🔥 FRENZY! (5 combos)',
+                statusCombo: (n) => `✨ Combo! (${n} left)`,
+                statusFrenesiFin: '💤 Frenzy over.',
+                statusRegaderaNoTienes: "❌ You don't have the Magic Watering Can yet",
+                statusAguaInsuficiente: '💧 You need at least 15% water!',
+                statusDanioMenor: '💔 -3 HP',
+                statusBossGolpe: '💥 BOSS! -8 HP',
+                statusReinaGolpe: '💥 THE QUEEN HIT YOU!',
+                statusCaneca: '🗑️ +20 HP, +5 EXP',
+                statusPowerup: '🚿 You can now throw water bombs with C!',
+                statusPuertaCerrada: '🧑‍🌾 Talk to the elder near the door first',
+                statusNivel2: '👑 Face the Queen of Monsters!',
+                statusVidaPerdida: (n) => `💔 Lives left: ${n}`,
+                statusGameOver: '💀 Game Over! You ran out of lives...',
+                statusPuertaAbierta: '🚪 You can enter the lair!',
+                statusMina: '🗻 Keep going! Find the Magic Watering Can.',
+                statusVictoria: (n) => `🏆 ${n}, you rescued Queen Emerald!`,
+                mensajeBoss: '🏆 BOSS DEFEATED!',
+                mensajeReina: '👑 QUEEN OF MONSTERS DEFEATED!',
+                mensajeFrenesi: '🔥 FRENZY!',
+                mensajeCaneca: '🗑️ +20 HP +5 EXP',
+                mensajePowerup: '🚿 MAGIC WATERING CAN! Press C to throw water bombs',
+                mensajeNivel2: "👑 LAIR OF THE QUEEN OF MONSTERS",
+                npcHeaderLabel: 'Elder',
+                triviaPregunta: (n, t) => `· Question ${n}/${t}`,
+                triviaCorrecto: '✅ Correct!',
+                triviaIncorrecto: '❌ Try again next time!',
+                triviaFinal: (a, t, b) => `🎉 Done! You got ${a}/${t} right (+${b} EXP)`,
+                triviaPuertaDesbloqueada: '🚪 The door to the lair has been unlocked.',
+                triviaContinuar: '🚪 Continue',
+                trivia: [
+                    { texto: 'What should we do with paper, cardboard, or plastic we no longer use?', opciones: ['Recycle them', 'Burn them', 'Throw them in the river'], correcta: 0 },
+                    { texto: 'What happens if we litter in nature?', opciones: ['Nothing happens', 'We pollute water and soil', 'Plants grow faster'], correcta: 1 },
+                    { texto: 'Which of these actions helps the planet the most?', opciones: ['Sorting trash to recycle', 'Leaving trash on the street', 'Burning trash at home'], correcta: 0 }
+                ],
+                hudLago: '💧 LAKE',
+                hudGuarida: '🚪 LAIR',
+                hudPractica: '💡 PRACTICE',
+                hudBoss: '💀 BOSS',
+                hudReina: '👑 QUEEN',
+                hudFrenesiActivo: '🔥 FRENZY ACTIVE!',
+                hudCombosRestantes: (n) => `💥 ${n} combos`,
+                hudAguaBaja: '⚠️ LOW WATER! Find a lake.',
+                hudPrincesaEncerrada: '👑 Queen Emerald',
+                hudPrincesaLibre: '👑 Free!',
+                victoriaTitulo: '🏆 VICTORY! 🏆',
+                victoriaSub: '👑 You rescued Queen Emerald',
+                victoriaFooter1: 'More adventures coming soon...',
+                victoriaFooter2: '🔄 Press Restart to play again',
+                gameOverTitulo: '💀 GAME OVER 💀',
+                gameOverSub: 'You ran out of lives...',
+                gameOverFooter: '🔄 Press Restart to try again'
+            }
+        };
+
+        function t(key, ...args) {
+            const v = I18N[game.idioma][key];
+            return typeof v === 'function' ? v(...args) : v;
+        }
+        function triviaPreguntas() { return I18N[game.idioma].trivia; }
+        function narracionLineas() { return I18N[game.idioma].narracionLineas; }
+
+        // ============================================================
+        //  AUDIO - SFX Y MÚSICA CHIPTUNE (100% generado, sin archivos)
+        // ============================================================
+        const AudioEngine = (() => {
+            let ctxA = null;
+            let muted = false;
+            let musicOn = false;
+            let musicTimer = null;
+            let musicStep = 0;
+
+            function getCtx() {
+                if (!ctxA) ctxA = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctxA.state === 'suspended') ctxA.resume();
+                return ctxA;
+            }
+
+            function tone(freq, duration, type = 'square', vol = 0.15, delay = 0) {
+                if (muted) return;
+                const ac = getCtx();
+                const t0 = ac.currentTime + delay;
+                const osc = ac.createOscillator();
+                const gain = ac.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, t0);
+                gain.gain.setValueAtTime(vol, t0);
+                gain.gain.exponentialRampToValueAtTime(0.001, t0 + duration);
+                osc.connect(gain);
+                gain.connect(ac.destination);
+                osc.start(t0);
+                osc.stop(t0 + duration);
+            }
+
+            function sweep(freqStart, freqEnd, duration, type = 'square', vol = 0.15, delay = 0) {
+                if (muted) return;
+                const ac = getCtx();
+                const t0 = ac.currentTime + delay;
+                const osc = ac.createOscillator();
+                const gain = ac.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freqStart, t0);
+                osc.frequency.exponentialRampToValueAtTime(Math.max(20, freqEnd), t0 + duration);
+                gain.gain.setValueAtTime(vol, t0);
+                gain.gain.exponentialRampToValueAtTime(0.001, t0 + duration);
+                osc.connect(gain);
+                gain.connect(ac.destination);
+                osc.start(t0);
+                osc.stop(t0 + duration);
+            }
+
+            function noise(duration, vol = 0.15, delay = 0) {
+                if (muted) return;
+                const ac = getCtx();
+                const t0 = ac.currentTime + delay;
+                const bufferSize = ac.sampleRate * duration;
+                const buffer = ac.createBuffer(1, bufferSize, ac.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+                }
+                const src = ac.createBufferSource();
+                src.buffer = buffer;
+                const gain = ac.createGain();
+                gain.gain.setValueAtTime(vol, t0);
+                gain.gain.exponentialRampToValueAtTime(0.001, t0 + duration);
+                src.connect(gain);
+                gain.connect(ac.destination);
+                src.start(t0);
+            }
+
+            const sfx = {
+                golpe: () => sweep(300, 120, 0.1, 'square', 0.12),
+                golpeFallo: () => tone(180, 0.08, 'triangle', 0.08),
+                agua: () => sweep(700, 300, 0.25, 'sine', 0.1),
+                salto: () => sweep(200, 500, 0.15, 'square', 0.1),
+                enemigoMuere: () => { noise(0.2, 0.1); sweep(400, 900, 0.15, 'square', 0.1, 0.05); },
+                bossGolpe: () => { noise(0.15, 0.12); tone(90, 0.15, 'sawtooth', 0.12); },
+                bossMuere: () => {
+                    [0, 0.15, 0.3, 0.45].forEach((d, i) => tone(220 * (i + 1), 0.2, 'square', 0.12, d));
+                    noise(0.4, 0.15, 0.1);
+                },
+                caneca: () => { tone(523, 0.08, 'square', 0.1); tone(784, 0.1, 'square', 0.1, 0.08); },
+                dano: () => sweep(250, 80, 0.15, 'sawtooth', 0.12),
+                muerte: () => [0, 0.15, 0.3, 0.45].forEach((d, i) => tone(300 - i * 60, 0.18, 'triangle', 0.12, d)),
+                frenesi: () => [0, 0.08, 0.16].forEach((d, i) => tone(400 + i * 200, 0.12, 'square', 0.12, d)),
+                combo: () => sweep(500, 1000, 0.12, 'square', 0.12),
+                mina: () => tone(440, 0.3, 'sine', 0.1),
+                narracion: () => tone(660, 0.06, 'square', 0.06),
+                seleccion: () => tone(880, 0.1, 'square', 0.1),
+                powerup: () => { tone(660, 0.1, 'square', 0.1); tone(880, 0.12, 'square', 0.12, 0.1); tone(1100, 0.15, 'square', 0.12, 0.2); },
+                bombaLanzar: () => sweep(500, 250, 0.2, 'sine', 0.1),
+                bombaExplota: () => { noise(0.3, 0.15); sweep(300, 100, 0.2, 'sawtooth', 0.12); },
+                invocar: () => sweep(200, 600, 0.3, 'sine', 0.08),
+                victoria: () => [523, 659, 784, 1047, 784, 1047].forEach((n, i) => tone(n, 0.25, 'square', 0.13, i * 0.15)),
+                dialogo: () => { for (let i = 0; i < 4; i++) tone(320 + Math.random() * 220, 0.045, 'square', 0.08, i * 0.06); },
+                correcto: () => { tone(660, 0.1, 'square', 0.12); tone(880, 0.14, 'square', 0.12, 0.1); },
+                incorrecto: () => sweep(300, 140, 0.22, 'sawtooth', 0.1)
+            };
+
+            const melodiaNormal = [261, 329, 392, 523, 392, 329, 261, 196];
+            const melodiaSiniestra = [220, 233, 220, 207, 233, 220, 196, 233];
+            let modoMusica = 'normal';
+            function tickMusic() {
+                if (!musicOn || muted) return;
+                if (modoMusica === 'siniestra') {
+                    const nota = melodiaSiniestra[musicStep % melodiaSiniestra.length];
+                    tone(nota, 0.18, 'sawtooth', 0.05);
+                    if (musicStep % 2 === 0) tone(nota * 0.5, 0.3, 'square', 0.045);
+                    if (musicStep % 8 === 0) tone(nota * 1.5, 0.12, 'square', 0.06, 0.05);
+                } else {
+                    const nota = melodiaNormal[musicStep % melodiaNormal.length];
+                    tone(nota, 0.35, 'triangle', 0.045);
+                    if (musicStep % 4 === 0) tone(nota / 2, 0.35, 'sine', 0.03);
+                }
+                musicStep++;
+            }
+            function startMusic(siniestra = false) {
+                modoMusica = siniestra ? 'siniestra' : 'normal';
+                if (musicTimer) clearInterval(musicTimer);
+                musicOn = true;
+                musicStep = 0;
+                musicTimer = setInterval(tickMusic, siniestra ? 190 : 380);
+            }
+            function stopMusic() {
+                musicOn = false;
+                if (musicTimer) { clearInterval(musicTimer); musicTimer = null; }
+            }
+            function toggleMute() {
+                muted = !muted;
+                muteBtn.textContent = muted ? t('muteOff') : t('muteOn');
+                return muted;
+            }
+
+            return { sfx, startMusic, stopMusic, toggleMute, getCtx, isMuted: () => muted };
+        })();
+
+        muteBtn.addEventListener('click', () => AudioEngine.toggleMute());
+
+        // ============================================================
+        //  ESTADO DEL JUEGO
+        // ============================================================
+        const game = {
+            idioma: 'es',
+            enMenu: true,
+            player: {
+                x: 150, y: 330, w: 28, h: 38,
+                vx: 0, vy: 0,
+                speed: 3.5,
+                jumpPower: -9,
+                hp: 100, maxHp: 100,
+                vidas: 3,
+                exp: 0,
+                basuraAcumulada: 0,
+                agua: 0, maxAgua: 100,
+                genero: 'masculino',
+                nombre: '',
+                atacando: false,
+                ataqueTimer: 0,
+                golpeCooldown: 0,
+                frenesiActivo: false,
+                combosRestantes: 0,
+                direccion: 1,
+                enSuelo: false,
+                tieneAgua: false,
+                enLago: false,
+                tieneRegadera: false,
+                bombaCooldown: 0,
+                invTimer: 0,
+                frame: 0,
+                frameTick: 0,
+                walkFrame: 0,
+                estado: 'idle'
+            },
+            camera: { x: 0 },
+            nivel: 1,
+            enemies: [],
+            bosses: [],
+            canecas: [],
+            lagos: [],
+            bombas: [],
+            powerup: { activo: false, x: 0, y: 0, w: 22, h: 30 },
+            mina: { activa: false, x: WORLD_WIDTH - 180, y: GROUND_Y - 60, w: 80, h: 60 },
+            npc: { x: WORLD_WIDTH - 320, y: GROUND_Y - 36, w: 26, h: 36 },
+            princesa: { x: 890, y: GROUND_Y - 66, w: 24, h: 40 },
+            enTrivia: false,
+            trivia: { activo: false, ronda: 0, aciertos: 0, completada: false },
+            gameOver: false,
+            plataformas: [],
+            particulas: [],
+            estrellas: [],
+            nubes: [],
+            flores: [],
+            montanas: [],
+            colinas: [],
+            narracion: {
+                activo: false,
+                paso: 0
+            },
+            enPueblo: false,
+            narracionPuebloHecha: false,
+            pueblo: {
+                x: 380, y: 340, w: 24, h: 30,
+                direccion: 'arriba', frame: 0, frameTick: 0, moviendo: false,
+                npc: { x: 380, y: 190, w: 26, h: 34 }
+            },
+            seleccionGenero: false,
+            pidiendoNombre: false,
+            juegoIniciado: false,
+            frameCount: 0,
+            mensaje: '',
+            mensajeTimer: 0,
+            bossDerrotado: false,
+            tutorialPaso: 0,
+            tutorialActivo: false,
+            spawnTimer: 300,
+            victoria: false
+        };
+
+        // ============================================================
+        //  INICIALIZAR MUNDO
+        // ============================================================
+        function initEstrellas() {
+            game.estrellas = [];
+            for (let i = 0; i < 60; i++) {
+                game.estrellas.push({
+                    x: Math.random() * CANVAS_W,
+                    y: Math.random() * 200,
+                    size: 1 + Math.random() * 2,
+                    speed: 0.02 + Math.random() * 0.04,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+        initEstrellas();
+
+        function initNubes() {
+            game.nubes = [];
+            for (let i = 0; i < 16; i++) {
+                game.nubes.push({
+                    x: Math.random() * WORLD_WIDTH,
+                    y: 20 + Math.random() * 60,
+                    w: 50 + Math.random() * 70,
+                    speed: 0.1 + Math.random() * 0.15,
+                    opacity: 0.08 + Math.random() * 0.12
+                });
+            }
+        }
+        initNubes();
+
+        function initFlores() {
+            game.flores = [];
+            for (let i = 0; i < 130; i++) {
+                game.flores.push({
+                    x: Math.random() * WORLD_WIDTH,
+                    y: 367 + Math.random() * 3,
+                    size: 3 + Math.random() * 3,
+                    color: ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6bff'][Math.floor(Math.random() * 5)],
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+        initFlores();
+
+        function initLagos() {
+            game.lagos = [
+                { x: 35, y: 385, w: 70, h: 25, activo: true },
+                { x: 950, y: 385, w: 70, h: 25, activo: true },
+                { x: 1800, y: 385, w: 70, h: 25, activo: true },
+                { x: 2550, y: 385, w: 70, h: 25, activo: true }
+            ];
+        }
+        initLagos();
+
+        function initMontanas() {
+            game.montanas = [];
+            const colores = ['#1a3a1a', '#2a4a2a'];
+            for (let x = 0; x < WORLD_WIDTH; x += 130) {
+                game.montanas.push({
+                    x, h: 45 + Math.random() * 55,
+                    color: colores[(x / 130) % 2 | 0]
+                });
+            }
+        }
+        initMontanas();
+
+        function initColinas() {
+            game.colinas = [];
+            for (let x = 60; x < WORLD_WIDTH; x += 220 + Math.random() * 120) {
+                game.colinas.push({ x, r: 40 + Math.random() * 35 });
+            }
+        }
+        initColinas();
+
+        function initPlataformas() {
+            game.plataformas = [];
+            const spots = [700, 1300, 2000, 2600];
+            for (let sx of spots) {
+                for (let i = 0; i < 3; i++) {
+                    game.plataformas.push({ x: sx + i * 32, y: GROUND_Y - 55, w: 30, h: 16 });
+                }
+            }
+        }
+        initPlataformas();
+
+        // ============================================================
+        //  NARRACIÓN
+        // ============================================================
+        function iniciarNarracion() {
+            game.narracion.activo = false;
+            game.narracion.paso = 0;
+            game.enPueblo = true;
+            game.narracionPuebloHecha = false;
+            game.seleccionGenero = false;
+            game.pidiendoNombre = false;
+            game.juegoIniciado = false;
+            statusMsg.textContent = t('puebloHint');
+        }
+
+        function avanzarNarracion() {
+            if (!game.narracion.activo) return;
+            AudioEngine.sfx.narracion();
+            game.narracion.paso++;
+            if (game.narracion.paso >= narracionLineas().length) {
+                game.narracion.activo = false;
+                game.enPueblo = false;
+                game.seleccionGenero = true;
+                statusMsg.textContent = t('generoStatus');
+            }
+        }
+
+        // ============================================================
+        //  PUEBLO INICIAL (estilo Pokémon, vista superior)
+        // ============================================================
+        function updatePueblo() {
+            if (!game.enPueblo || game.narracion.activo) return;
+            const pu = game.pueblo;
+            let vx = 0, vy = 0;
+            if (keysPressed['ArrowLeft'] || keysPressed['a'] || keysPressed['A']) { vx = -2; pu.direccion = 'izquierda'; }
+            else if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) { vx = 2; pu.direccion = 'derecha'; }
+            if (keysPressed['ArrowUp'] || keysPressed['w'] || keysPressed['W']) { vy = -2; pu.direccion = 'arriba'; }
+            else if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['S']) { vy = 2; pu.direccion = 'abajo'; }
+
+            pu.x = Math.max(40, Math.min(760 - pu.w, pu.x + vx));
+            pu.y = Math.max(140, Math.min(400 - pu.h, pu.y + vy));
+            pu.moviendo = (vx !== 0 || vy !== 0);
+
+            pu.frameTick++;
+            if (pu.frameTick > 10) {
+                pu.frameTick = 0;
+                if (pu.moviendo) pu.frame = (pu.frame + 1) % 2;
+            }
+
+            if (!game.narracionPuebloHecha && colisionRect(pu, pu.npc)) {
+                game.narracionPuebloHecha = true;
+                game.narracion.activo = true;
+                game.narracion.paso = 0;
+                AudioEngine.sfx.narracion();
+                statusMsg.textContent = t('narracionHint');
+            }
+        }
+
+        // ============================================================
+        //  SELECCIÓN DE GÉNERO Y NOMBRE
+        // ============================================================
+        function seleccionarGenero(opcion) {
+            if (!game.seleccionGenero) return;
+            AudioEngine.sfx.seleccion();
+            game.player.genero = opcion === 1 ? 'masculino' : 'femenino';
+            game.seleccionGenero = false;
+            game.pidiendoNombre = true;
+            nameInput.value = '';
+            nameOverlay.style.display = 'flex';
+            statusMsg.textContent = t('nombreEscribe');
+            setTimeout(() => nameInput.focus(), 50);
+        }
+
+        function confirmarNombre() {
+            if (!game.pidiendoNombre) return;
+            let nombre = nameInput.value.trim().slice(0, 12);
+            if (!nombre) nombre = game.player.genero === 'masculino' ? t('nombreDefaultM') : t('nombreDefaultF');
+            game.player.nombre = nombre;
+            game.pidiendoNombre = false;
+            nameOverlay.style.display = 'none';
+            iniciarJuego();
+        }
+
+        function iniciarJuego() {
+            game.juegoIniciado = true;
+            game.tutorialActivo = true;
+            game.tutorialPaso = 0;
+            statusMsg.textContent = t('tutorialInicio', game.player.nombre);
+            initNivel1Enemigos();
+            AudioEngine.startMusic();
+            actualizarUI();
+        }
+
+        nameConfirmBtn.addEventListener('click', confirmarNombre);
+        nameInput.addEventListener('keydown', (e) => {
+            e.stopPropagation();
+            if (e.key === 'Enter') confirmarNombre();
+        });
+
+        function initNivel1Enemigos() {
+            spawnEnemigoBasura(550, GROUND_Y - 34, true);
+            const posiciones = [850, 1150, 1450, 1750, 2050, 2350];
+            for (let px of posiciones) spawnEnemigoBasura(px, GROUND_Y - 34, false);
+            game.spawnTimer = 320;
+        }
+
+        // ============================================================
+        //  SPAWN
+        // ============================================================
+        function spawnEnemigoBasura(x, y, esTutorial = false) {
+            game.enemies.push({
+                x, y,
+                w: 28, h: 34,
+                hp: esTutorial ? 15 : 30,
+                maxHp: esTutorial ? 15 : 30,
+                speed: esTutorial ? 0.5 : 1.0,
+                direccion: -1,
+                expDrop: esTutorial ? 5 : 12,
+                frame: 0,
+                frameTick: 0,
+                esTutorial: esTutorial
+            });
+        }
+
+        function spawnBoss(x, y) {
+            game.bosses.push({
+                x, y,
+                w: 56, h: 68,
+                hp: 80,
+                maxHp: 80,
+                speed: 0.6,
+                direccion: -1,
+                expDrop: 50,
+                danio: 8,
+                intervalo: 50,
+                esReina: false,
+                frame: 0,
+                frameTick: 0
+            });
+        }
+
+        function spawnReina(x, y) {
+            game.bosses.push({
+                x, y,
+                w: 70, h: 90,
+                hp: 150,
+                maxHp: 150,
+                speed: 0.8,
+                direccion: -1,
+                expDrop: 200,
+                danio: 12,
+                intervalo: 35,
+                esReina: true,
+                frame: 0,
+                frameTick: 0
+            });
+        }
+
+        function spawnCaneca(x, y) {
+            game.canecas.push({ x, y, w: 20, h: 26, activa: true });
+        }
+
+        function spawnPowerup(x) {
+            game.powerup = { activo: true, x, y: GROUND_Y - 30, w: 22, h: 30 };
+        }
+
+        // ============================================================
+        //  DERROTAS (centralizado para evitar duplicar lógica)
+        // ============================================================
+        function derrotarEnemigo(e, idx) {
+            AudioEngine.sfx.enemigoMuere();
+            game.player.exp += e.expDrop;
+            spawnCaneca(e.x + 4, e.y + 10);
+            crearExplosion(e.x + e.w / 2, e.y + e.h / 2);
+            if (e.esTutorial && game.tutorialActivo) {
+                game.tutorialActivo = false;
+                game.player.tieneAgua = true;
+                game.player.agua = 50;
+                spawnBoss(2900, GROUND_Y - 68);
+                statusMsg.textContent = t('tutorialCompletado');
+            }
+            game.enemies.splice(idx, 1);
+            actualizarUI();
+        }
+
+        function derrotarBoss(b, idx) {
+            game.player.exp += b.expDrop;
+            spawnCaneca(b.x + b.w / 2 - 10, b.y + 20);
+            crearExplosion(b.x + b.w / 2, b.y + b.h / 2);
+            game.bosses.splice(idx, 1);
+            if (b.esReina) {
+                AudioEngine.sfx.bossMuere();
+                setTimeout(() => AudioEngine.sfx.victoria(), 500);
+                AudioEngine.stopMusic();
+                game.victoria = true;
+                game.mensaje = t('mensajeReina');
+                game.mensajeTimer = 99999;
+                statusMsg.textContent = t('statusVictoria', game.player.nombre);
+            } else {
+                AudioEngine.sfx.bossMuere();
+                game.bossDerrotado = true;
+                game.player.tieneAgua = true;
+                game.player.agua = 100;
+                game.mina.activa = true;
+                game.mensaje = t('mensajeBoss');
+                game.mensajeTimer = 90;
+                statusMsg.textContent = t('statusMina');
+                spawnPowerup(b.x + 150);
+            }
+            actualizarUI();
+        }
+
+        // ============================================================
+        //  NIVEL 2 - GUARIDA DE LA REINA
+        // ============================================================
+        function entrarNivel2() {
+            game.nivel = 2;
+            game.camera.x = 0;
+            game.player.x = 60;
+            game.player.y = GROUND_Y - game.player.h;
+            game.player.vx = 0;
+            game.player.vy = 0;
+            game.enemies = [];
+            game.bosses = [];
+            game.canecas = [];
+            game.bombas = [];
+            game.particulas = [];
+            game.mensaje = t('mensajeNivel2');
+            game.mensajeTimer = 100;
+            statusMsg.textContent = t('statusNivel2');
+            spawnReina(750, GROUND_Y - 90);
+            spawnEnemigoBasura(280, GROUND_Y - 34, false);
+            spawnEnemigoBasura(480, GROUND_Y - 34, false);
+            AudioEngine.sfx.invocar();
+            AudioEngine.stopMusic();
+            AudioEngine.startMusic(true);
+        }
+
+        // ============================================================
+        //  NPC ALDEANO - TRIVIA (entrada / puntaje / vidas / IF / repetir / lista)
+        // ============================================================
+        function iniciarTrivia() {
+            game.enTrivia = true;
+            game.trivia.ronda = 0;
+            game.trivia.aciertos = 0;
+            npcCerrarBtn.style.display = 'none';
+            npcOverlay.style.display = 'flex';
+            mostrarPreguntaTrivia();
+        }
+
+        function mostrarPreguntaTrivia() {
+            const preguntas = triviaPreguntas();
+            const q = preguntas[game.trivia.ronda];
+            npcHeaderRonda.textContent = t('triviaPregunta', game.trivia.ronda + 1, preguntas.length);
+            npcPreguntaEl.textContent = q.texto;
+            npcFeedbackEl.textContent = '';
+            npcOpcionesEl.innerHTML = '';
+            q.opciones.forEach((op, i) => {
+                const btn = document.createElement('button');
+                btn.textContent = op;
+                btn.addEventListener('click', () => responderTrivia(i));
+                npcOpcionesEl.appendChild(btn);
+            });
+            AudioEngine.sfx.dialogo();
+        }
+
+        function responderTrivia(i) {
+            const q = triviaPreguntas()[game.trivia.ronda];
+            Array.from(npcOpcionesEl.children).forEach(b => b.disabled = true);
+            if (i === q.correcta) {
+                game.trivia.aciertos++;
+                npcFeedbackEl.textContent = t('triviaCorrecto');
+                npcFeedbackEl.style.color = '#8bc34a';
+                AudioEngine.sfx.correcto();
+            } else {
+                npcFeedbackEl.textContent = t('triviaIncorrecto');
+                npcFeedbackEl.style.color = '#ff6b6b';
+                AudioEngine.sfx.incorrecto();
+            }
+            setTimeout(() => {
+                game.trivia.ronda++;
+                if (game.trivia.ronda < triviaPreguntas().length) {
+                    mostrarPreguntaTrivia();
+                } else {
+                    finalizarTrivia();
+                }
+            }, 1300);
+        }
+
+        function finalizarTrivia() {
+            game.trivia.completada = true;
+            const bonus = game.trivia.aciertos * 10;
+            game.player.exp += bonus;
+            actualizarUI();
+            npcHeaderRonda.textContent = '';
+            npcPreguntaEl.textContent = t('triviaFinal', game.trivia.aciertos, triviaPreguntas().length, bonus);
+            npcOpcionesEl.innerHTML = '';
+            npcFeedbackEl.style.color = '#ffd700';
+            npcFeedbackEl.textContent = t('triviaPuertaDesbloqueada');
+            npcCerrarBtn.style.display = 'inline-block';
+        }
+
+        function cerrarTrivia() {
+            npcOverlay.style.display = 'none';
+            game.enTrivia = false;
+            statusMsg.textContent = t('statusPuertaAbierta');
+        }
+        npcCerrarBtn.addEventListener('click', cerrarTrivia);
+
+        // ============================================================
+        //  VIDAS (game over solo cuando se acaban)
+        // ============================================================
+        function perderVida() {
+            const p = game.player;
+            p.vidas--;
+            actualizarUI();
+            if (p.vidas > 0) {
+                AudioEngine.sfx.muerte();
+                p.hp = p.maxHp;
+                p.invTimer = 90;
+                p.x = game.nivel === 2 ? 60 : 150;
+                p.y = GROUND_Y - p.h;
+                p.vy = 0;
+                game.mensaje = t('statusVidaPerdida', p.vidas);
+                game.mensajeTimer = 90;
+                statusMsg.textContent = t('statusVidaPerdida', p.vidas);
+            } else {
+                statusMsg.textContent = t('statusGameOver');
+                game.juegoIniciado = false;
+                game.gameOver = true;
+                AudioEngine.sfx.muerte();
+                AudioEngine.stopMusic();
+            }
+        }
+
+        // ============================================================
+        //  COMBATE
+        // ============================================================
+        function atacarGolpe() {
+            const p = game.player;
+            if (p.golpeCooldown > 0) return;
+            if (!game.juegoIniciado || game.victoria) return;
+
+            p.atacando = true;
+            p.ataqueTimer = 10;
+            p.golpeCooldown = 15;
+            AudioEngine.sfx.golpe();
+
+            const rectA = {
+                x: p.x + (p.direccion === 1 ? p.w : -20),
+                y: p.y - 5,
+                w: 30,
+                h: p.h + 10
+            };
+
+            let hit = false;
+
+            for (let i = game.enemies.length - 1; i >= 0; i--) {
+                const e = game.enemies[i];
+                if (colisionRect(rectA, e)) {
+                    e.hp -= 10;
+                    hit = true;
+                    e.x += p.direccion * 10;
+                    if (!e.esTutorial) {
+                        p.basuraAcumulada = Math.min(20, p.basuraAcumulada + 1);
+                    }
+                    if (e.hp <= 0) {
+                        derrotarEnemigo(e, i);
+                    }
+                    actualizarUI();
+                }
+            }
+
+            for (let i = game.bosses.length - 1; i >= 0; i--) {
+                const b = game.bosses[i];
+                if (colisionRect(rectA, b)) {
+                    b.hp -= 6;
+                    hit = true;
+                    b.x += p.direccion * 8;
+                    p.basuraAcumulada = Math.min(20, p.basuraAcumulada + 2);
+                    if (b.hp <= 0) {
+                        derrotarBoss(b, i);
+                    }
+                    actualizarUI();
+                }
+            }
+
+            if (p.basuraAcumulada >= 10 && !p.frenesiActivo && p.tieneAgua) {
+                activarFrenesi();
+            }
+
+            if (!hit) {
+                AudioEngine.sfx.golpeFallo();
+                statusMsg.textContent = t('statusFallaste');
+            }
+            actualizarUI();
+        }
+
+        function usarAgua() {
+            const p = game.player;
+            if (!game.juegoIniciado || game.victoria) return;
+            if (!p.tieneAgua) {
+                statusMsg.textContent = t('statusAguaNoDisponible');
+                return;
+            }
+            if (p.agua <= 0) {
+                statusMsg.textContent = t('statusAguaVacia');
+                return;
+            }
+
+            p.agua = Math.max(0, p.agua - 10);
+            AudioEngine.sfx.agua();
+
+            for (let i = 0; i < 20; i++) {
+                game.particulas.push({
+                    x: p.x + (p.direccion === 1 ? p.w : 0) + (Math.random() - 0.5) * 10,
+                    y: p.y + p.h / 2,
+                    vx: (Math.random() - 0.5) * 4 + p.direccion * 2,
+                    vy: -2 - Math.random() * 3,
+                    vida: 20 + Math.random() * 15,
+                    color: 'rgba(0, 200, 255, 0.8)',
+                    size: 3 + Math.random() * 4
+                });
+            }
+
+            for (let i = game.enemies.length - 1; i >= 0; i--) {
+                const e = game.enemies[i];
+                if (Math.abs(e.x - p.x) < 80) {
+                    e.hp -= 8;
+                    if (e.hp <= 0) derrotarEnemigo(e, i);
+                }
+            }
+
+            for (let i = game.bosses.length - 1; i >= 0; i--) {
+                const b = game.bosses[i];
+                if (Math.abs(b.x - p.x) < 80) {
+                    b.hp -= 5;
+                    if (b.hp <= 0) derrotarBoss(b, i);
+                }
+            }
+
+            statusMsg.textContent = t('statusAguaAtaque');
+            actualizarUI();
+
+            if (p.basuraAcumulada >= 10 && !p.frenesiActivo && p.tieneAgua) {
+                activarFrenesi();
+            }
+        }
+
+        function activarFrenesi() {
+            const p = game.player;
+            AudioEngine.sfx.frenesi();
+            p.frenesiActivo = true;
+            p.combosRestantes = 5;
+            p.basuraAcumulada = 0;
+            statusMsg.textContent = t('statusFrenesi');
+            game.mensaje = t('mensajeFrenesi');
+            game.mensajeTimer = 60;
+            actualizarUI();
+        }
+
+        function comboFrenesi() {
+            const p = game.player;
+            if (!p.frenesiActivo || p.combosRestantes <= 0) {
+                p.frenesiActivo = false;
+                return;
+            }
+
+            p.combosRestantes--;
+            AudioEngine.sfx.combo();
+            const danio = 25 + Math.floor(Math.random() * 15);
+
+            for (let i = 0; i < 30; i++) {
+                game.particulas.push({
+                    x: p.x + p.w / 2 + (Math.random() - 0.5) * 30,
+                    y: p.y + p.h / 2 + (Math.random() - 0.5) * 30,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8 - 3,
+                    vida: 20 + Math.random() * 20,
+                    color: ['#ffd700', '#ff6b6b', '#ffa502'][Math.floor(Math.random() * 3)],
+                    size: 3 + Math.random() * 5
+                });
+            }
+
+            for (let i = game.enemies.length - 1; i >= 0; i--) {
+                const e = game.enemies[i];
+                e.hp -= danio;
+                if (e.hp <= 0) derrotarEnemigo(e, i);
+            }
+
+            for (let i = game.bosses.length - 1; i >= 0; i--) {
+                const b = game.bosses[i];
+                b.hp -= danio * 0.5;
+                if (b.hp <= 0) derrotarBoss(b, i);
+            }
+
+            statusMsg.textContent = t('statusCombo', p.combosRestantes);
+
+            if (p.combosRestantes <= 0) {
+                p.frenesiActivo = false;
+                statusMsg.textContent = t('statusFrenesiFin');
+            }
+            actualizarUI();
+        }
+
+        // ============================================================
+        //  REGADERA MÁGICA - BOMBAS DE AGUA
+        // ============================================================
+        function lanzarBomba() {
+            const p = game.player;
+            if (!game.juegoIniciado || game.victoria) return;
+            if (!p.tieneRegadera) {
+                statusMsg.textContent = t('statusRegaderaNoTienes');
+                return;
+            }
+            if (p.bombaCooldown > 0) return;
+            if (!p.tieneAgua || p.agua < 15) {
+                statusMsg.textContent = t('statusAguaInsuficiente');
+                return;
+            }
+            p.agua -= 15;
+            p.bombaCooldown = 35;
+            AudioEngine.sfx.bombaLanzar();
+            game.bombas.push({
+                x: p.x + (p.direccion === 1 ? p.w : -10),
+                y: p.y + 8,
+                w: 10, h: 10,
+                vx: p.direccion * 6,
+                vy: -8
+            });
+            actualizarUI();
+        }
+
+        function actualizarBombas() {
+            for (let i = game.bombas.length - 1; i >= 0; i--) {
+                const b = game.bombas[i];
+                b.vy += 0.4;
+                b.x += b.vx;
+                b.y += b.vy;
+                let impacto = false;
+                if (b.y + b.h >= GROUND_Y) { b.y = GROUND_Y - b.h; impacto = true; }
+                if (b.x < 0 || b.x > worldWidth()) impacto = true;
+                for (let e of game.enemies) if (colisionRect(b, e)) impacto = true;
+                for (let bs of game.bosses) if (colisionRect(b, bs)) impacto = true;
+                if (impacto) {
+                    explotarBomba(b);
+                    game.bombas.splice(i, 1);
+                }
+            }
+        }
+
+        function explotarBomba(b) {
+            AudioEngine.sfx.bombaExplota();
+            const cx = b.x + b.w / 2, cy = b.y + b.h / 2, radio = 70;
+            for (let i = 0; i < 25; i++) {
+                game.particulas.push({
+                    x: cx, y: cy,
+                    vx: (Math.random() - 0.5) * 7,
+                    vy: (Math.random() - 0.5) * 7 - 2,
+                    vida: 20 + Math.random() * 15,
+                    color: 'rgba(0, 180, 255, 0.85)',
+                    size: 3 + Math.random() * 5
+                });
+            }
+            for (let i = game.enemies.length - 1; i >= 0; i--) {
+                const e = game.enemies[i];
+                const dx = (e.x + e.w / 2) - cx, dy = (e.y + e.h / 2) - cy;
+                if (Math.hypot(dx, dy) < radio) {
+                    e.hp -= 22;
+                    if (e.hp <= 0) derrotarEnemigo(e, i);
+                }
+            }
+            for (let i = game.bosses.length - 1; i >= 0; i--) {
+                const bs = game.bosses[i];
+                const dx = (bs.x + bs.w / 2) - cx, dy = (bs.y + bs.h / 2) - cy;
+                if (Math.hypot(dx, dy) < radio + 20) {
+                    bs.hp -= 18;
+                    if (bs.hp <= 0) derrotarBoss(bs, i);
+                }
+            }
+            actualizarUI();
+        }
+
+        function crearExplosion(x, y) {
+            for (let i = 0; i < 30; i++) {
+                game.particulas.push({
+                    x, y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8 - 2,
+                    vida: 15 + Math.random() * 25,
+                    color: ['#ffd700', '#ff6b6b', '#ffa502'][Math.floor(Math.random() * 3)],
+                    size: 2 + Math.random() * 6
+                });
+            }
+        }
+
+        function actualizarParticulas() {
+            for (let i = game.particulas.length - 1; i >= 0; i--) {
+                const p = game.particulas[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.1;
+                p.vida--;
+                if (p.vida <= 0) game.particulas.splice(i, 1);
+            }
+        }
+
+        // ============================================================
+        //  COLISIONES
+        // ============================================================
+        function colisionRect(a, b) {
+            return a.x < b.x + b.w &&
+                a.x + a.w > b.x &&
+                a.y < b.y + b.h &&
+                a.y + a.h > b.y;
+        }
+
+        // ============================================================
+        //  RECARGAR AGUA (el jugador se hunde de pie en el lago)
+        // ============================================================
+        function lagoBajoJugador() {
+            const p = game.player;
+            for (let lago of game.lagos) {
+                if (!lago.activo) continue;
+                if (p.x + p.w > lago.x && p.x < lago.x + lago.w) return lago;
+            }
+            return null;
+        }
+
+        function recargarAguaEnLago() {
+            const p = game.player;
+            if (p.enLago && p.tieneAgua) {
+                p.agua = Math.min(p.maxAgua, p.agua + 2);
+                if (game.frameCount % 10 === 0) {
+                    game.particulas.push({
+                        x: p.x + p.w / 2 + (Math.random() - 0.5) * 14,
+                        y: p.y + 6,
+                        vx: (Math.random() - 0.5) * 0.6,
+                        vy: -1 - Math.random(),
+                        vida: 20,
+                        color: 'rgba(150, 220, 255, 0.7)',
+                        size: 2 + Math.random() * 2
+                    });
+                }
+            }
+            actualizarUI();
+        }
+
+        // ============================================================
+        //  UI
+        // ============================================================
+        function actualizarUI() {
+            const p = game.player;
+            hpSpan.textContent = Math.floor(p.hp);
+            vidasSpan.textContent = p.vidas;
+            expSpan.textContent = Math.floor(p.exp);
+            basuraSpan.textContent = Math.floor(p.basuraAcumulada);
+            aguaSpan.textContent = Math.floor(p.agua);
+            regaderaSpan.textContent = p.tieneRegadera ? '✅' : '❌';
+            nivelSpan.textContent = game.nivel;
+            nombreSpan.textContent = p.nombre || '-';
+            waterFill.style.width = Math.max(0, (p.agua / p.maxAgua) * 100) + '%';
+        }
+
+        // ============================================================
+        //  UPDATE
+        // ============================================================
+        function update() {
+            if (!game.juegoIniciado || game.victoria || game.enTrivia) return;
+            const p = game.player;
+            game.frameCount++;
+
+            // MOVIMIENTO
+            let moving = false;
+            if (keysPressed['ArrowLeft'] || keysPressed['a'] || keysPressed['A']) {
+                p.vx = -p.speed;
+                p.direccion = -1;
+                moving = true;
+            } else if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) {
+                p.vx = p.speed;
+                p.direccion = 1;
+                moving = true;
+            } else {
+                p.vx = 0;
+            }
+
+            if (moving && p.estado !== 'atacando') {
+                p.estado = 'caminando';
+            } else if (!moving && p.estado !== 'atacando') {
+                p.estado = 'idle';
+            }
+
+            // SALTO
+            if ((keysPressed['ArrowUp'] || keysPressed['w'] || keysPressed['W']) && p.enSuelo) {
+                p.vy = p.jumpPower;
+                p.enSuelo = false;
+                AudioEngine.sfx.salto();
+            }
+
+            // GRAVEDAD
+            if (!p.enSuelo) {
+                p.vy += 0.6;
+                if (p.vy > 12) p.vy = 12;
+            }
+            p.y += p.vy;
+            p.x += p.vx;
+
+            // SUELO, PLATAFORMAS Y LAGOS (el jugador se hunde de pie en el agua)
+            let aterrizo = false;
+            if (game.nivel === 1 && p.vy >= 0) {
+                for (let plat of game.plataformas) {
+                    const dentroX = p.x + p.w > plat.x && p.x < plat.x + plat.w;
+                    const cerca = (p.y + p.h) >= plat.y && (p.y + p.h) <= plat.y + 14;
+                    if (dentroX && cerca) {
+                        p.y = plat.y - p.h;
+                        p.vy = 0;
+                        aterrizo = true;
+                        break;
+                    }
+                }
+            }
+            const lagoActual = game.nivel === 1 ? lagoBajoJugador() : null;
+            const sueloY = lagoActual ? (lagoActual.y + lagoActual.h - 6) : GROUND_Y;
+            if (!aterrizo && p.y + p.h >= sueloY) {
+                p.y = sueloY - p.h;
+                p.vy = 0;
+                aterrizo = true;
+            }
+            p.enSuelo = aterrizo;
+            p.enLago = !!lagoActual && aterrizo;
+
+            // LÍMITES DEL MUNDO
+            p.x = Math.max(10, Math.min(worldWidth() - p.w - 10, p.x));
+
+            // CÁMARA
+            game.camera.x = Math.max(0, Math.min(worldWidth() - CANVAS_W, p.x - CANVAS_W / 2));
+
+            // ANIMACIÓN
+            p.frameTick++;
+            if (p.frameTick > 8) {
+                p.frameTick = 0;
+                p.frame = (p.frame + 1) % 4;
+                if (p.estado === 'caminando') {
+                    p.walkFrame = (p.walkFrame + 1) % 8;
+                }
+            }
+
+            // ATAQUE Y COOLDOWNS
+            if (p.ataqueTimer > 0) p.ataqueTimer--;
+            else p.atacando = false;
+            if (p.golpeCooldown > 0) p.golpeCooldown--;
+            if (p.invTimer > 0) p.invTimer--;
+            if (p.bombaCooldown > 0) p.bombaCooldown--;
+
+            recargarAguaEnLago();
+
+            // ENEMIGOS
+            for (let e of game.enemies) {
+                const dx = p.x - e.x;
+                if (Math.abs(dx) > 20) {
+                    e.x += Math.sign(dx) * e.speed;
+                    e.direccion = Math.sign(dx);
+                }
+                e.x = Math.max(10, Math.min(worldWidth() - e.w - 10, e.x));
+
+                e.frameTick++;
+                if (e.frameTick > 10) {
+                    e.frameTick = 0;
+                    e.frame = (e.frame + 1) % 4;
+                }
+
+                if (colisionRect(p, e) && p.invTimer === 0) {
+                    AudioEngine.sfx.dano();
+                    p.hp -= 3;
+                    p.invTimer = 30;
+                    statusMsg.textContent = t('statusDanioMenor');
+                    if (p.hp <= 0) {
+                        p.hp = 0;
+                        perderVida();
+                    }
+                    actualizarUI();
+                }
+            }
+
+            // BOSSES
+            for (let b of game.bosses) {
+                const dx = p.x - b.x;
+                if (Math.abs(dx) > 40) {
+                    b.x += Math.sign(dx) * b.speed;
+                    b.direccion = Math.sign(dx);
+                }
+                b.x = Math.max(10, Math.min(worldWidth() - b.w - 10, b.x));
+
+                b.frameTick++;
+                if (b.frameTick > 12) {
+                    b.frameTick = 0;
+                    b.frame = (b.frame + 1) % 4;
+                }
+
+                if (Math.abs(dx) < 80 && game.frameCount % (b.intervalo || 50) === 0 && p.invTimer === 0) {
+                    if (colisionRect(p, b)) {
+                        AudioEngine.sfx.bossGolpe();
+                        p.hp -= (b.danio || 8);
+                        p.invTimer = 30;
+                        statusMsg.textContent = b.esReina ? t('statusReinaGolpe') : t('statusBossGolpe');
+                        if (p.hp <= 0) {
+                            p.hp = 0;
+                            perderVida();
+                        }
+                        actualizarUI();
+                    }
+                }
+            }
+
+            // NIVEL 2: LA REINA INVOCA REFUERZOS
+            if (game.nivel === 2 && game.bosses.length > 0 && game.enemies.length < 3 &&
+                game.frameCount % 260 === 0) {
+                spawnEnemigoBasura(60 + Math.random() * (worldWidth() - 120), GROUND_Y - 34, false);
+                AudioEngine.sfx.invocar();
+            }
+
+            // CANECAS
+            for (let i = game.canecas.length - 1; i >= 0; i--) {
+                const c = game.canecas[i];
+                if (!c.activa) continue;
+                if (colisionRect(p, c)) {
+                    AudioEngine.sfx.caneca();
+                    c.activa = false;
+                    p.hp = Math.min(p.maxHp, p.hp + 20);
+                    p.exp += 5;
+                    statusMsg.textContent = t('statusCaneca');
+                    game.mensaje = t('mensajeCaneca');
+                    game.mensajeTimer = 40;
+                    actualizarUI();
+                    game.canecas.splice(i, 1);
+                }
+            }
+
+            // POWERUP - REGADERA MÁGICA
+            if (game.powerup.activo && colisionRect(p, game.powerup)) {
+                game.powerup.activo = false;
+                p.tieneRegadera = true;
+                AudioEngine.sfx.powerup();
+                game.mensaje = t('mensajePowerup');
+                game.mensajeTimer = 130;
+                statusMsg.textContent = t('statusPowerup');
+                actualizarUI();
+            }
+
+            // NPC ALDEANO - TRIVIA (obligatoria antes de la puerta)
+            if (game.nivel === 1 && game.bossDerrotado && !game.trivia.completada && !game.enTrivia) {
+                if (colisionRect(p, game.npc)) {
+                    iniciarTrivia();
+                }
+            }
+
+            // PUERTA A LA GUARIDA (NIVEL 2)
+            if (game.nivel === 1 && game.mina.activa && game.bossDerrotado) {
+                if (colisionRect(p, game.mina)) {
+                    if (game.trivia.completada) {
+                        entrarNivel2();
+                    } else {
+                        statusMsg.textContent = t('statusPuertaCerrada');
+                    }
+                }
+            }
+
+            // FRENESÍ
+            if (p.frenesiActivo && p.combosRestantes <= 0) {
+                p.frenesiActivo = false;
+            }
+
+            if (game.mensajeTimer > 0) game.mensajeTimer--;
+
+            actualizarBombas();
+            actualizarParticulas();
+            actualizarUI();
+
+            // SPAWNER DE MÁS MONSTRUOS (nivel 1, antes del boss)
+            if (game.nivel === 1 && !game.tutorialActivo && !game.bossDerrotado) {
+                game.spawnTimer--;
+                if (game.spawnTimer <= 0 && game.enemies.length < 6) {
+                    const limite = 2750;
+                    const nx = Math.min(limite, p.x + 550 + Math.random() * 150);
+                    if (nx > p.x + 200) {
+                        spawnEnemigoBasura(nx, GROUND_Y - 34, false);
+                    }
+                    game.spawnTimer = 260 + Math.floor(Math.random() * 120);
+                }
+            }
+
+            // TUTORIAL
+            if (game.tutorialActivo) {
+                if (p.vx !== 0 && game.tutorialPaso === 0) {
+                    game.tutorialPaso = 1;
+                    statusMsg.textContent = t('tutorialPaso1');
+                }
+                if (game.tutorialPaso === 1 && !p.enSuelo && p.vy < 0) {
+                    game.tutorialPaso = 2;
+                    statusMsg.textContent = t('tutorialPaso2');
+                }
+                if (game.tutorialPaso === 2 && p.atacando) {
+                    game.tutorialPaso = 3;
+                    statusMsg.textContent = t('tutorialPaso3');
+                }
+            }
+        }
+
+        // ============================================================
+        //  DIBUJO DE BLOQUES ESTILO MARIO
+        // ============================================================
+        function wrapText(texto, x, y, maxWidth, lineHeight) {
+            const palabras = texto.split(' ');
+            let linea = '';
+            let yy = y;
+            for (let w of palabras) {
+                const prueba = linea + w + ' ';
+                if (ctx.measureText(prueba).width > maxWidth && linea) {
+                    ctx.fillText(linea, x, yy);
+                    linea = w + ' ';
+                    yy += lineHeight;
+                } else {
+                    linea = prueba;
+                }
+            }
+            ctx.fillText(linea, x, yy);
+            return yy;
+        }
+
+        function dibujarBloqueLadrillo(x, y, w, h) {
+            const grad = ctx.createLinearGradient(x, y, x, y + h);
+            grad.addColorStop(0, '#d9822b');
+            grad.addColorStop(1, '#a85a1a');
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, w, h);
+            ctx.strokeStyle = '#6b3a10';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+            ctx.beginPath();
+            ctx.moveTo(x, y + h / 2); ctx.lineTo(x + w, y + h / 2);
+            ctx.moveTo(x + w / 2, y); ctx.lineTo(x + w / 2, y + h / 2);
+            ctx.moveTo(x + w / 4, y + h / 2); ctx.lineTo(x + w / 4, y + h);
+            ctx.moveTo(x + 3 * w / 4, y + h / 2); ctx.lineTo(x + 3 * w / 4, y + h);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(255,255,255,0.25)';
+            ctx.fillRect(x + 2, y + 2, w - 4, 2);
+        }
+
+        // ============================================================
+        //  HÉROE - sprite unificado (cabeza grande, gorro, tirantes)
+        // ============================================================
+        function dibujarHeroe(p) {
+            const esFem = p.genero === 'femenino';
+            const colores = esFem
+                ? { ropa: '#e94560', ropaSombra: '#b8253c', gorro: '#ff6b81', visera: '#c23350' }
+                : { ropa: '#3a7bd5', ropaSombra: '#2c5fa8', gorro: '#e74c3c', visera: '#b8352a' };
+            const dir = p.direccion;
+            const bob = (p.enSuelo && p.estado !== 'caminando' && !p.atacando) ? Math.sin(game.frameCount * 0.1) * 1.2 : 0;
+            const y = p.y + bob;
+
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(p.x + 2, p.y + p.h - 2, p.w, 4);
+
+            if (p.invTimer > 0 && Math.floor(p.invTimer / 4) % 2 === 0) ctx.globalAlpha = 0.5;
+
+            // Piernas / botas
+            if (p.estado === 'caminando') {
+                const step = Math.floor(p.walkFrame / 2) % 2;
+                ctx.fillStyle = '#2d3436';
+                ctx.fillRect(p.x + 4 + (step ? 0 : 4), y + 27, 7, 8);
+                ctx.fillRect(p.x + 16 + (step ? 4 : 0), y + 27, 7, 8);
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(p.x + 3 + (step ? 0 : 4), y + 33, 8, 5);
+                ctx.fillRect(p.x + 15 + (step ? 4 : 0), y + 33, 8, 5);
+            } else {
+                ctx.fillStyle = '#2d3436';
+                ctx.fillRect(p.x + 4, y + 27, 7, 8);
+                ctx.fillRect(p.x + 16, y + 27, 7, 8);
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(p.x + 3, y + 33, 8, 5);
+                ctx.fillRect(p.x + 15, y + 33, 8, 5);
+            }
+
+            // Manos / ataque / regadera (detrás del cuerpo si no ataca)
+            if (p.atacando) {
+                ctx.fillStyle = '#f5cba7';
+                ctx.fillRect(p.x + (dir === 1 ? 24 : -9), y + 14, 11, 7);
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(p.x + (dir === 1 ? 33 : -13), y + 9, 5, 16);
+            } else {
+                ctx.fillStyle = '#f5cba7';
+                ctx.fillRect(p.x - 3, y + 17, 5, 9);
+                ctx.fillRect(p.x + 26, y + 17, 5, 9);
+            }
+            if (p.tieneRegadera) {
+                ctx.fillStyle = '#0099cc';
+                ctx.fillRect(p.x + (dir === 1 ? -9 : 26), y + 14, 5, 4);
+                ctx.fillStyle = '#00d2ff';
+                ctx.fillRect(p.x + (dir === 1 ? -9 : 26), y + 18, 9, 9);
+                ctx.fillRect(p.x + (dir === 1 ? -3 : 30), y + 14, 4, 4);
+            }
+
+            // Cuerpo / overol con tirantes
+            ctx.fillStyle = colores.ropa;
+            ctx.fillRect(p.x + 3, y + 15, 22, 14);
+            ctx.fillStyle = colores.ropaSombra;
+            ctx.fillRect(p.x + 3, y + 15, 22, 3);
+            ctx.fillRect(p.x + 3, y + 26, 22, 3);
+            ctx.fillRect(p.x + 7, y + 12, 3, 6);
+            ctx.fillRect(p.x + 18, y + 12, 3, 6);
+            ctx.fillStyle = '#ffd700';
+            ctx.fillRect(p.x + 7, y + 17, 3, 3);
+            ctx.fillRect(p.x + 18, y + 17, 3, 3);
+
+            // Cabeza grande estilo clásico
+            ctx.fillStyle = '#f5cba7';
+            ctx.fillRect(p.x + 3, y, 22, 16);
+            ctx.fillStyle = esFem ? '#5a2d0c' : '#3d2712';
+            ctx.fillRect(p.x + 2, y + 9, 3, 7);
+            ctx.fillRect(p.x + 23, y + 9, 3, 7);
+            if (esFem) {
+                ctx.fillRect(p.x + 1, y + 13, 4, 10);
+                ctx.fillRect(p.x + 23, y + 13, 4, 10);
+            }
+
+            // Gorro con visera direccional
+            ctx.fillStyle = colores.gorro;
+            ctx.fillRect(p.x + 1, y - 3, 26, 8);
+            ctx.fillStyle = colores.visera;
+            ctx.fillRect(p.x + (dir === 1 ? 20 : -6), y + 1, 8, 5);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(p.x + 10, y - 3, 8, 4);
+
+            // Ojos grandes mirando hacia la dirección
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(p.x + (dir === 1 ? 14 : 5), y + 6, 7, 6);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(p.x + (dir === 1 ? 18 : 7), y + 8, 3, 3);
+
+            // Boca
+            ctx.fillStyle = '#a5622f';
+            ctx.fillRect(p.x + 9, y + 13, 9, 2);
+
+            ctx.globalAlpha = 1;
+        }
+
+        // ============================================================
+        //  CAJA DE DIÁLOGO (narración / aldeano)
+        // ============================================================
+        function dibujarCajaNarracion() {
+            ctx.fillStyle = 'rgba(8,8,20,0.94)';
+            ctx.fillRect(50, 150, 700, 160);
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(50, 150, 700, 160);
+            ctx.strokeStyle = 'rgba(255,215,0,0.4)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(58, 158, 684, 144);
+
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px "Press Start 2P"';
+            ctx.textAlign = 'left';
+            wrapText(narracionLineas()[game.narracion.paso], 78, 205, 640, 26);
+
+            ctx.fillStyle = '#ffd700';
+            ctx.font = '8px "Press Start 2P"';
+            ctx.textAlign = 'right';
+            if (Math.floor(Date.now() / 500) % 2 === 0) {
+                ctx.fillText('▼ ENTER', 730, 296);
+            }
+            ctx.fillStyle = '#aaa';
+            ctx.font = '8px "Press Start 2P"';
+            ctx.fillText(`${game.narracion.paso + 1}/${narracionLineas().length}`, 730, 315);
+            ctx.textAlign = 'left';
+        }
+
+        // ============================================================
+        //  PUEBLO INICIAL - dibujo (vista superior estilo Pokémon)
+        // ============================================================
+        function dibujarCasaPueblo(x, y, colorTecho) {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.fillRect(x - 4, y + 66, 96, 8);
+            ctx.fillStyle = '#f2e2c4';
+            ctx.fillRect(x, y + 30, 88, 44);
+            ctx.fillStyle = '#d8c7a0';
+            ctx.fillRect(x, y + 30, 88, 6);
+            ctx.fillStyle = colorTecho;
+            ctx.beginPath();
+            ctx.moveTo(x - 10, y + 30);
+            ctx.lineTo(x + 44, y - 6);
+            ctx.lineTo(x + 98, y + 30);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.fillRect(x - 10, y + 26, 108, 6);
+            ctx.fillStyle = '#6b4423';
+            ctx.fillRect(x + 36, y + 50, 16, 24);
+            ctx.fillStyle = '#ffd700';
+            ctx.fillRect(x + 48, y + 60, 3, 3);
+            ctx.fillStyle = '#8ecae6';
+            ctx.fillRect(x + 12, y + 42, 14, 14);
+            ctx.fillRect(x + 62, y + 42, 14, 14);
+            ctx.strokeStyle = '#5a4a3a';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x + 12, y + 42, 14, 14);
+            ctx.strokeRect(x + 62, y + 42, 14, 14);
+        }
+
+        function dibujarArbolPueblo(x, y) {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.fillRect(x - 2, y + 22, 20, 5);
+            ctx.fillStyle = '#7a4a2b';
+            ctx.fillRect(x + 6, y + 10, 6, 16);
+            ctx.fillStyle = '#2e7d32';
+            ctx.beginPath();
+            ctx.arc(x + 9, y + 6, 14, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#43a047';
+            ctx.beginPath();
+            ctx.arc(x + 4, y, 9, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function dibujarAldeanoPueblo() {
+            const npc = game.pueblo.npc;
+            const bob = Math.sin(Date.now() * 0.003) * 2;
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(npc.x + 2, npc.y + npc.h - 2, npc.w - 4, 5);
+            ctx.fillStyle = '#6b8e23';
+            ctx.fillRect(npc.x + 3, npc.y + 12 + bob, npc.w - 6, npc.h - 12);
+            ctx.fillStyle = '#556b2f';
+            ctx.fillRect(npc.x + 3, npc.y + 12 + bob, npc.w - 6, 4);
+            ctx.fillStyle = '#f5cba7';
+            ctx.beginPath();
+            ctx.arc(npc.x + npc.w / 2, npc.y + 8 + bob, 9, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#c9a15a';
+            ctx.beginPath();
+            ctx.arc(npc.x + npc.w / 2, npc.y + 4 + bob, 11, Math.PI, 0);
+            ctx.fill();
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(npc.x + npc.w / 2 - 5, npc.y + 8 + bob, 2, 2);
+            ctx.fillRect(npc.x + npc.w / 2 + 3, npc.y + 8 + bob, 2, 2);
+
+            ctx.textAlign = 'center';
+            if (!game.narracionPuebloHecha) {
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '12px "Press Start 2P"';
+                if (Math.floor(Date.now() / 400) % 2 === 0) {
+                    ctx.fillText('❗', npc.x + npc.w / 2, npc.y - 8 + bob);
+                }
+            }
+            ctx.fillStyle = '#fff';
+            ctx.font = '7px "Press Start 2P"';
+            ctx.fillText(t('puebloAldeano'), npc.x + npc.w / 2, npc.y - 18 + bob);
+            ctx.textAlign = 'left';
+        }
+
+        function dibujarPersonajePueblo(pu) {
+            ctx.fillStyle = 'rgba(0,0,0,0.25)';
+            ctx.fillRect(pu.x + 2, pu.y + pu.h - 3, pu.w - 4, 4);
+            const step = pu.moviendo ? pu.frame : 0;
+            ctx.fillStyle = '#3a7bd5';
+            ctx.fillRect(pu.x + 3, pu.y + 12, pu.w - 6, pu.h - 14);
+            ctx.fillStyle = '#f5cba7';
+            ctx.beginPath();
+            ctx.arc(pu.x + pu.w / 2, pu.y + 9, 9, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#3d2712';
+            ctx.beginPath();
+            ctx.arc(pu.x + pu.w / 2, pu.y + 5, 10, Math.PI, 0);
+            ctx.fill();
+            ctx.fillStyle = '#1a1a1a';
+            if (pu.direccion === 'abajo') {
+                ctx.fillRect(pu.x + pu.w / 2 - 4, pu.y + 9, 2, 2);
+                ctx.fillRect(pu.x + pu.w / 2 + 2, pu.y + 9, 2, 2);
+            } else if (pu.direccion === 'izquierda') {
+                ctx.fillRect(pu.x + pu.w / 2 - 5, pu.y + 9, 2, 2);
+            } else if (pu.direccion === 'derecha') {
+                ctx.fillRect(pu.x + pu.w / 2 + 3, pu.y + 9, 2, 2);
+            }
+            ctx.fillStyle = '#2d3436';
+            ctx.fillRect(pu.x + 4 + (step ? 3 : 0), pu.y + pu.h - 6, 6, 6);
+            ctx.fillRect(pu.x + pu.w - 10 - (step ? 3 : 0), pu.y + pu.h - 6, 6, 6);
+        }
+
+        function dibujarPueblo() {
+            const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
+            grad.addColorStop(0, '#7ec8f0');
+            grad.addColorStop(1, '#bfe8c9');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+            ctx.fillStyle = '#5fb95f';
+            ctx.fillRect(0, 90, CANVAS_W, CANVAS_H - 90);
+            ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+            ctx.lineWidth = 1;
+            for (let gx = 0; gx <= CANVAS_W; gx += 32) {
+                ctx.beginPath(); ctx.moveTo(gx, 90); ctx.lineTo(gx, CANVAS_H); ctx.stroke();
+            }
+            for (let gy = 90; gy <= CANVAS_H; gy += 32) {
+                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(CANVAS_W, gy); ctx.stroke();
+            }
+
+            ctx.fillStyle = '#c9a15a';
+            ctx.fillRect(356, 130, 88, CANVAS_H - 130);
+            ctx.fillStyle = 'rgba(0,0,0,0.08)';
+            for (let py = 140; py < CANVAS_H; py += 20) {
+                ctx.fillRect(366, py, 68, 3);
+            }
+
+            ctx.fillStyle = '#8b5a2b';
+            for (let fx = 0; fx < CANVAS_W; fx += 26) {
+                ctx.fillRect(fx, 96, 4, 20);
+            }
+            ctx.fillRect(0, 100, CANVAS_W, 6);
+
+            dibujarCasaPueblo(90, 150, '#e07a5f');
+            dibujarCasaPueblo(590, 150, '#4a90d9');
+            dibujarCasaPueblo(90, 300, '#8bc34a');
+            dibujarCasaPueblo(590, 300, '#e94560');
+
+            dibujarArbolPueblo(250, 130);
+            dibujarArbolPueblo(300, 400);
+            dibujarArbolPueblo(500, 400);
+            dibujarArbolPueblo(550, 130);
+
+            dibujarAldeanoPueblo();
+            dibujarPersonajePueblo(game.pueblo);
+
+            ctx.fillStyle = 'rgba(0,0,0,0.55)';
+            ctx.fillRect(0, 0, CANVAS_W, 30);
+            ctx.fillStyle = '#ffd700';
+            ctx.font = '10px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillText(t('puebloTitulo'), CANVAS_W / 2, 20);
+            ctx.textAlign = 'left';
+        }
+
+        // ============================================================
+        //  DRAW
+        // ============================================================
+        function draw() {
+            ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+            const cam = game.camera.x;
+
+            // --- MENÚ PRINCIPAL (fondo decorativo tras el overlay HTML) ---
+            if (game.enMenu) {
+                const gm = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
+                gm.addColorStop(0, '#0a0a3e');
+                gm.addColorStop(1, '#2d2d7e');
+                ctx.fillStyle = gm;
+                ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+                return;
+            }
+
+            // --- ESCENA DEL PUEBLO INICIAL (vista superior estilo Pokémon) ---
+            if (game.enPueblo) {
+                dibujarPueblo();
+                if (game.narracion.activo) dibujarCajaNarracion();
+                return;
+            }
+
+            // --- CIELO (espacio de pantalla, no se mueve) ---
+            const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
+            if (game.nivel === 2) {
+                grad.addColorStop(0, '#1a0a1e');
+                grad.addColorStop(0.4, '#2a0a3e');
+                grad.addColorStop(0.8, '#3a1a4e');
+                grad.addColorStop(1, '#1a0a2e');
+            } else {
+                grad.addColorStop(0, '#4a90e2');
+                grad.addColorStop(0.55, '#6bb3f0');
+                grad.addColorStop(1, '#a8dcf5');
+            }
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+            // --- ESTRELLAS (solo en la guarida, cielo nocturno) ---
+            if (game.nivel === 2) {
+                for (let s of game.estrellas) {
+                    s.phase += s.speed;
+                    const alpha = 0.3 + Math.sin(s.phase) * 0.7;
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(s.x, s.y, s.size, s.size);
+                }
+                ctx.globalAlpha = 1;
+            }
+
+            // --- CAJA DE DIÁLOGO DE LA NARRACIÓN ---
+            if (game.narracion.activo) {
+                dibujarCajaNarracion();
+                return;
+            }
+
+            // --- NUBES ESTILO CLÁSICO (3 lóbulos, parallax) ---
+            if (game.nivel === 1) {
+                const camNubes = cam * 0.35;
+                for (let nube of game.nubes) {
+                    nube.x += nube.speed;
+                    if (nube.x > WORLD_WIDTH + 100) nube.x = -100;
+                    const sx = nube.x - camNubes;
+                    if (sx < -100 || sx > CANVAS_W + 100) continue;
+                    const s = nube.w / 90;
+                    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+                    ctx.fillRect(sx + 10 * s, nube.y + 8 * s, 70 * s, 14 * s);
+                    ctx.fillRect(sx, nube.y + 14 * s, 90 * s, 10 * s);
+                    ctx.fillRect(sx + 6 * s, nube.y, 22 * s, 12 * s);
+                    ctx.fillRect(sx + 34 * s, nube.y - 6 * s, 26 * s, 16 * s);
+                    ctx.fillRect(sx + 62 * s, nube.y + 2 * s, 20 * s, 12 * s);
+                    ctx.strokeStyle = 'rgba(120,170,220,0.5)';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(sx, nube.y + 14 * s, 90 * s, 10 * s);
+                }
+
+                // --- MONTAÑAS NEVADAS LEJANAS (parallax) ---
+                const camMont = cam * 0.35;
+                for (let m of game.montanas) {
+                    const sx = m.x - camMont;
+                    if (sx < -100 || sx > CANVAS_W + 100) continue;
+                    ctx.fillStyle = m.color;
+                    ctx.beginPath();
+                    ctx.moveTo(sx, GROUND_Y);
+                    const points = 40;
+                    let picoY = GROUND_Y - m.h;
+                    for (let i = 0; i <= points; i++) {
+                        const px = sx + (i / points) * 80;
+                        const altura = GROUND_Y - m.h + Math.sin(i * 0.08) * 12 + Math.sin(i * 0.12 + 0.5) * 6;
+                        if (i === 20) picoY = altura;
+                        ctx.lineTo(px, altura);
+                    }
+                    ctx.lineTo(sx + 80, GROUND_Y);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    const picoX = sx + 40;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+                    ctx.fillRect(picoX - 16, picoY, 32, 4);
+                    ctx.fillRect(picoX - 12, picoY - 4, 24, 4);
+                    ctx.fillRect(picoX - 8, picoY - 8, 16, 4);
+                    ctx.fillRect(picoX - 4, picoY - 12, 8, 4);
+                    ctx.fillRect(picoX - 22, picoY + 4, 8, 4);
+                    ctx.fillRect(picoX + 14, picoY + 4, 8, 4);
+                }
+
+                // --- COLINAS VERDES ESTILO CLÁSICO (más cerca, parallax) ---
+                const camColinas = cam * 0.6;
+                for (let c of game.colinas) {
+                    const sx = c.x - camColinas;
+                    if (sx < -140 || sx > CANVAS_W + 140) continue;
+                    ctx.fillStyle = '#3a9d3a';
+                    ctx.beginPath();
+                    ctx.arc(sx, GROUND_Y, c.r, Math.PI, 0);
+                    ctx.fill();
+                    ctx.fillStyle = '#4fc94f';
+                    ctx.beginPath();
+                    ctx.arc(sx - c.r * 0.3, GROUND_Y, c.r * 0.7, Math.PI, 0);
+                    ctx.fill();
+                }
+            } else {
+                // --- PARED DE LA GUARIDA ---
+                for (let i = 0; i < 14; i++) {
+                    const sx = i * 60;
+                    ctx.fillStyle = i % 2 === 0 ? '#3a1a2e' : '#2a1020';
+                    ctx.beginPath();
+                    ctx.moveTo(sx, GROUND_Y);
+                    ctx.lineTo(sx + 30, GROUND_Y - 60 - (i % 3) * 15);
+                    ctx.lineTo(sx + 60, GROUND_Y);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            }
+
+            // ============================================================
+            //  CAPA DEL MUNDO (se mueve con la cámara)
+            // ============================================================
+            ctx.save();
+            ctx.translate(-cam, 0);
+
+            // --- SUELO ---
+            ctx.fillStyle = game.nivel === 2 ? '#4a2a3a' : '#8B6B4A';
+            ctx.fillRect(cam - 20, GROUND_Y, CANVAS_W + 40, 80);
+
+            if (game.nivel === 1) {
+                // Franja de ladrillos clásica bajo el pasto
+                const startBrick = Math.floor((cam - 20) / 28) * 28;
+                for (let bx = startBrick; bx < cam + CANVAS_W + 20; bx += 28) {
+                    dibujarBloqueLadrillo(bx, GROUND_Y + 14, 28, 18);
+                }
+            }
+
+            if (game.nivel === 1) {
+                const pastoGrad = ctx.createLinearGradient(0, GROUND_Y - 5, 0, GROUND_Y + 10);
+                pastoGrad.addColorStop(0, '#6BCB77');
+                pastoGrad.addColorStop(0.3, '#4CAF50');
+                pastoGrad.addColorStop(0.7, '#388E3C');
+                pastoGrad.addColorStop(1, '#2E7D32');
+                ctx.fillStyle = pastoGrad;
+                ctx.fillRect(cam - 20, GROUND_Y - 5, CANVAS_W + 40, 15);
+
+                const startTuft = Math.floor((cam - 20) / 6) * 6;
+                for (let i = startTuft; i < cam + CANVAS_W + 20; i += 6) {
+                    const h = 3 + Math.sin(i * 0.5 + game.frameCount * 0.02) * 2;
+                    ctx.fillStyle = i % 12 === 0 ? '#6BCB77' : '#4CAF50';
+                    ctx.fillRect(i, GROUND_Y - 5 - h, 3, h + 4);
+                }
+
+                // Flores
+                for (let f of game.flores) {
+                    if (f.x < cam - 20 || f.x > cam + CANVAS_W + 20) continue;
+                    f.phase += 0.02;
+                    const sway = Math.sin(f.phase) * 1;
+                    ctx.fillStyle = f.color;
+                    ctx.fillRect(f.x + sway - 1, f.y - 2, 2, 2);
+                    ctx.fillRect(f.x + sway - 2, f.y - 1, 1, 2);
+                    ctx.fillRect(f.x + sway + 1, f.y - 1, 1, 2);
+                    ctx.fillRect(f.x + sway - 1, f.y + 1, 2, 2);
+                    ctx.fillStyle = '#ffd700';
+                    ctx.fillRect(f.x + sway - 1, f.y, 2, 2);
+                }
+
+                // Lagos
+                for (let lago of game.lagos) {
+                    if (!lago.activo) continue;
+                    if (lago.x + lago.w < cam - 20 || lago.x > cam + CANVAS_W + 20) continue;
+                    ctx.fillStyle = 'rgba(0, 80, 200, 0.5)';
+                    ctx.fillRect(lago.x, lago.y, lago.w, lago.h);
+                    for (let i = 0; i < lago.w; i += 4) {
+                        const wave = Math.sin(i * 0.15 + game.frameCount * 0.04) * 2;
+                        ctx.fillStyle = `rgba(100, 200, 255, ${0.15 + Math.sin(i * 0.2 + game.frameCount * 0.03) * 0.1})`;
+                        ctx.fillRect(lago.x + i + wave, lago.y + 6 + Math.sin(i * 0.3) * 2, 3, 3);
+                    }
+                    ctx.strokeStyle = '#00d2ff';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(lago.x, lago.y, lago.w, lago.h);
+                    ctx.fillStyle = '#00d2ff';
+                    ctx.font = '8px "Press Start 2P"';
+                    ctx.fillText(t('hudLago'), lago.x + 8, lago.y + 16);
+                }
+
+                // Plataformas estilo Mario
+                for (let plat of game.plataformas) {
+                    if (plat.x + plat.w < cam - 20 || plat.x > cam + CANVAS_W + 20) continue;
+                    dibujarBloqueLadrillo(plat.x, plat.y, plat.w, plat.h);
+                }
+
+                // NPC Aldeano (trivia antes de la puerta)
+                if (game.bossDerrotado) {
+                    const n = game.npc;
+                    const nbob = Math.sin(game.frameCount * 0.08) * 1.5;
+                    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                    ctx.fillRect(n.x + 2, n.y + n.h - 2, n.w, 4);
+                    ctx.fillStyle = '#6b8e23';
+                    ctx.fillRect(n.x + 2, n.y + 14 + nbob, n.w - 4, n.h - 16);
+                    ctx.fillStyle = '#556b2f';
+                    ctx.fillRect(n.x + 2, n.y + 14 + nbob, n.w - 4, 4);
+                    ctx.fillStyle = '#f5cba7';
+                    ctx.fillRect(n.x + 5, n.y + nbob, n.w - 10, 14);
+                    ctx.fillStyle = '#c9a15a';
+                    ctx.fillRect(n.x + 2, n.y - 4 + nbob, n.w - 4, 7);
+                    ctx.fillStyle = '#a5813f';
+                    ctx.fillRect(n.x, n.y - 6 + nbob, n.w, 4);
+                    ctx.fillStyle = '#1a1a1a';
+                    ctx.fillRect(n.x + 8, n.y + 6 + nbob, 2, 2);
+                    ctx.fillRect(n.x + n.w - 10, n.y + 6 + nbob, 2, 2);
+                    ctx.fillStyle = '#8b4513';
+                    ctx.fillRect(n.x - 3, n.y + 18 + nbob, 5, 8);
+                    ctx.fillRect(n.x + n.w - 2, n.y + 18 + nbob, 5, 8);
+
+                    ctx.textAlign = 'center';
+                    if (!game.trivia.completada) {
+                        ctx.fillStyle = '#ffd700';
+                        ctx.font = '12px "Press Start 2P"';
+                        if (Math.floor(game.frameCount / 15) % 2 === 0) {
+                            ctx.fillText('❗', n.x + n.w / 2, n.y - 14 + nbob);
+                        }
+                    } else {
+                        ctx.fillStyle = '#8bc34a';
+                        ctx.font = '10px "Press Start 2P"';
+                        ctx.fillText('✅', n.x + n.w / 2, n.y - 10 + nbob);
+                    }
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '7px "Press Start 2P"';
+                    ctx.fillText(t('puebloAldeano'), n.x + n.w / 2, n.y - 22 + nbob);
+                    ctx.textAlign = 'left';
+                }
+
+                // Puerta a la guarida
+                if (game.mina.activa) {
+                    const mi = game.mina;
+                    ctx.fillStyle = '#2d1f0f';
+                    ctx.fillRect(mi.x, mi.y, mi.w, mi.h);
+                    ctx.fillStyle = '#4a3a2a';
+                    ctx.fillRect(mi.x + 5, mi.y + 5, mi.w - 10, mi.h - 10);
+                    ctx.fillStyle = '#0a0505';
+                    ctx.fillRect(mi.x + 25, mi.y + 10, 30, 40);
+                    ctx.fillStyle = '#ffd700';
+                    ctx.fillRect(mi.x + 10, mi.y + 15, 4, 4);
+                    ctx.fillRect(mi.x + mi.w - 14, mi.y + 15, 4, 4);
+                    ctx.font = '8px "Press Start 2P"';
+                    ctx.fillText(t('hudGuarida'), mi.x - 4, mi.y - 6);
+                    if (game.bossDerrotado && Math.floor(game.frameCount / 20) % 2 === 0) {
+                        ctx.fillStyle = '#ff6b6b';
+                        ctx.font = '12px "Press Start 2P"';
+                        ctx.fillText('▶', mi.x + mi.w + 10, mi.y + 34);
+                    }
+                }
+
+                // Power-up regadera
+                if (game.powerup.activo) {
+                    const pw = game.powerup;
+                    const bob = Math.sin(game.frameCount * 0.1) * 3;
+                    ctx.fillStyle = 'rgba(255,215,0,0.25)';
+                    ctx.beginPath();
+                    ctx.arc(pw.x + pw.w / 2, pw.y + pw.h / 2 + bob, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#00d2ff';
+                    ctx.fillRect(pw.x + 4, pw.y + 10 + bob, 14, 14);
+                    ctx.fillStyle = '#0099cc';
+                    ctx.fillRect(pw.x, pw.y + 6 + bob, 8, 6);
+                    ctx.fillRect(pw.x - 6, pw.y + 2 + bob, 8, 4);
+                    ctx.fillStyle = '#00d2ff';
+                    ctx.fillRect(pw.x + 16, pw.y + 4 + bob, 4, 10);
+                    ctx.fillStyle = '#ffd700';
+                    ctx.font = '8px "Press Start 2P"';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('🚿', pw.x + pw.w / 2, pw.y - 6 + bob);
+                    ctx.textAlign = 'left';
+                }
+            }
+
+            // --- REINA ESMERALDA EN LA JAULA DE BASURA (nivel 2) ---
+            if (game.nivel === 2) {
+                const j = game.princesa;
+                const flotar = Math.sin(game.frameCount * 0.05) * 2;
+
+                // Sombra
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.fillRect(j.x - 6, GROUND_Y - 2, j.w + 12, 5);
+
+                // Base de chatarra
+                ctx.fillStyle = '#3a3a3a';
+                ctx.fillRect(j.x - 8, GROUND_Y - 8, j.w + 16, 10);
+                ctx.fillStyle = '#555';
+                ctx.fillRect(j.x - 8, GROUND_Y - 10, 8, 6);
+                ctx.fillRect(j.x + j.w, GROUND_Y - 10, 8, 6);
+
+                // Princesa Esmeralda encerrada
+                ctx.fillStyle = '#1a4a2e';
+                ctx.fillRect(j.x + 4, j.y + 14 + flotar, j.w - 8, j.h - 16);
+                ctx.fillStyle = '#2e8b57';
+                ctx.fillRect(j.x + 2, j.y + 16 + flotar, j.w - 4, 10);
+                ctx.fillStyle = '#f5cba7';
+                ctx.fillRect(j.x + 6, j.y + 2 + flotar, j.w - 12, 12);
+                ctx.fillStyle = '#2d1a0a';
+                ctx.fillRect(j.x + 4, j.y + flotar, j.w - 8, 6);
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(j.x + 7, j.y - 3 + flotar, j.w - 14, 5);
+                ctx.fillRect(j.x + j.w / 2 - 2, j.y - 7 + flotar, 4, 5);
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(j.x + 8, j.y + 6 + flotar, 2, 2);
+                ctx.fillRect(j.x + j.w - 10, j.y + 6 + flotar, 2, 2);
+                if (!game.victoria) {
+                    ctx.fillStyle = '#8b4a3a';
+                    ctx.fillRect(j.x + 10, j.y + 10 + flotar, j.w - 20, 1.5);
+                } else {
+                    ctx.fillStyle = '#8b4a3a';
+                    ctx.fillRect(j.x + 9, j.y + 10 + flotar, 5, 2);
+                    ctx.fillRect(j.x + j.w - 14, j.y + 10 + flotar, 5, 2);
+                }
+
+                // Barrotes oxidados de la jaula (frente a la princesa)
+                if (!game.victoria) {
+                    ctx.fillStyle = '#5a4a3a';
+                    for (let bx = -6; bx <= j.w + 6; bx += 7) {
+                        ctx.fillRect(j.x + bx, j.y - 10, 3, j.h + 16);
+                    }
+                    ctx.fillStyle = '#7a6a5a';
+                    ctx.fillRect(j.x - 8, j.y - 10, j.w + 16, 4);
+                    ctx.fillRect(j.x - 8, j.y + j.h + 2, j.w + 16, 4);
+                } else {
+                    // Jaula rota tras la victoria
+                    ctx.fillStyle = '#5a4a3a';
+                    ctx.fillRect(j.x - 8, j.y + j.h - 4, 10, 10);
+                    ctx.fillRect(j.x + j.w - 2, j.y + j.h - 2, 10, 12);
+                    ctx.fillRect(j.x - 6, j.y - 10, 3, 12);
+                    ctx.fillRect(j.x + j.w + 4, j.y - 8, 3, 10);
+                }
+
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '8px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(game.victoria ? t('hudPrincesaLibre') : t('hudPrincesaEncerrada'), j.x + j.w / 2, j.y - 16 + flotar);
+                ctx.textAlign = 'left';
+            }
+
+            // --- JUGADOR ---
+            const p = game.player;
+            if (!game.seleccionGenero) {
+                dibujarHeroe(p);
+            }
+
+            // --- ENEMIGOS (caneca de basura viviente) ---
+            for (let e of game.enemies) {
+                if (e.x + e.w < cam - 20 || e.x > cam + CANVAS_W + 20) continue;
+                const wob = Math.sin(game.frameCount * 0.15 + e.x) * 1;
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.fillRect(e.x + 2, e.y + e.h - 2, e.w, 4);
+
+                const colores = ['#5d4e37', '#4a3f2b', '#6b5b3e'];
+                const cuerpo = colores[e.frame % colores.length];
+
+                // Cuerpo tipo caneca con textura corrugada
+                ctx.fillStyle = cuerpo;
+                ctx.fillRect(e.x + 3, e.y + 10, e.w - 6, e.h - 12);
+                ctx.fillStyle = 'rgba(0,0,0,0.25)';
+                ctx.fillRect(e.x + 3, e.y + 16, e.w - 6, 2);
+                ctx.fillRect(e.x + 3, e.y + 22, e.w - 6, 2);
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                ctx.fillRect(e.x + 4, e.y + 11, 2, e.h - 14);
+
+                // Tapa/lid inclinada
+                ctx.fillStyle = '#3a3a3a';
+                ctx.fillRect(e.x + 1 + wob, e.y + 7, e.w - 2, 5);
+                ctx.fillStyle = '#232323';
+                ctx.fillRect(e.x + e.w / 2 - 3 + wob, e.y + 3, 6, 5);
+
+                // Cara enojada
+                ctx.fillStyle = '#2d2d2d';
+                ctx.fillRect(e.x + 3, e.y + 12, e.w - 6, 11);
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(e.x + 6, e.y + 15, 5, 5);
+                ctx.fillRect(e.x + e.w - 11, e.y + 15, 5, 5);
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(e.x + (e.direccion === 1 ? 9 : 6), e.y + 16, 2, 2);
+                ctx.fillRect(e.x + (e.direccion === 1 ? e.w - 8 : e.w - 11), e.y + 16, 2, 2);
+                // Cejas enojadas
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(e.x + 5, e.y + 13, 6, 2);
+                ctx.fillRect(e.x + e.w - 11, e.y + 13, 6, 2);
+                // Boca dentada
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fillRect(e.x + 6, e.y + 20, e.w - 12, 3);
+                ctx.fillStyle = '#fff';
+                for (let t = 0; t < 3; t++) ctx.fillRect(e.x + 8 + t * 5, e.y + 20, 2, 2);
+
+                // Goteo de baba tóxica
+                ctx.fillStyle = 'rgba(140, 200, 60, 0.8)';
+                ctx.fillRect(e.x + 9, e.y + e.h - 10, 2, 5 + wob);
+                ctx.fillRect(e.x + e.w - 12, e.y + e.h - 8, 2, 4 - wob);
+
+                ctx.fillStyle = 'rgba(0,0,0,0.6)';
+                ctx.fillRect(e.x, e.y - 8, e.w, 4);
+                ctx.fillStyle = '#e94560';
+                ctx.fillRect(e.x, e.y - 8, (e.hp / e.maxHp) * e.w, 4);
+
+                if (e.esTutorial) {
+                    ctx.fillStyle = '#ffd700';
+                    ctx.font = '8px "Press Start 2P"';
+                    ctx.fillText(t('hudPractica'), e.x - 2, e.y - 14);
+                }
+            }
+
+            // --- BOSS / REINA ---
+            for (let b of game.bosses) {
+                const morado = b.esReina;
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.fillRect(b.x + 4, b.y + b.h - 4, b.w, 6);
+
+                const gradBoss = ctx.createLinearGradient(b.x, b.y, b.x, b.y + b.h);
+                if (morado) {
+                    gradBoss.addColorStop(0, '#5a1f6b');
+                    gradBoss.addColorStop(0.5, '#7b2f8b');
+                    gradBoss.addColorStop(1, '#3d0f4a');
+                } else {
+                    gradBoss.addColorStop(0, '#4a2f1b');
+                    gradBoss.addColorStop(0.5, '#6b4f2b');
+                    gradBoss.addColorStop(1, '#3d1f0f');
+                }
+                ctx.fillStyle = gradBoss;
+                ctx.fillRect(b.x + 4, b.y + 12, b.w - 8, b.h - 20);
+
+                ctx.fillStyle = morado ? '#a76fc0' : '#7f6b4f';
+                ctx.fillRect(b.x + 10, b.y + 18, b.w - 20, 6);
+                ctx.fillRect(b.x + 8, b.y + 28, b.w - 16, 6);
+                ctx.fillRect(b.x + 14, b.y + 38, b.w - 28, 6);
+
+                ctx.fillStyle = morado ? '#2d0f38' : '#2d1f0f';
+                ctx.fillRect(b.x + 4, b.y, b.w - 8, 16);
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(b.x + 10, b.y + 3, 10, 8);
+                ctx.fillRect(b.x + b.w - 20, b.y + 3, 10, 8);
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(b.x + 13, b.y + 5, 5, 5);
+                ctx.fillRect(b.x + b.w - 17, b.y + 5, 5, 5);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(b.x + (b.direccion === 1 ? 18 : 13), b.y + 7, 2, 2);
+                ctx.fillRect(b.x + (b.direccion === 1 ? b.w - 12 : b.w - 17), b.y + 7, 2, 2);
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fillRect(b.x + 12, b.y + 10, b.w - 24, 5);
+
+                if (morado) {
+                    // Corona de la reina
+                    ctx.fillStyle = '#ffd700';
+                    ctx.fillRect(b.x + 6, b.y - 10, b.w - 12, 6);
+                    ctx.fillRect(b.x + 8, b.y - 16, 6, 8);
+                    ctx.fillRect(b.x + b.w / 2 - 3, b.y - 18, 6, 10);
+                    ctx.fillRect(b.x + b.w - 14, b.y - 16, 6, 8);
+                } else {
+                    ctx.fillStyle = '#3d1f0f';
+                    ctx.fillRect(b.x + 4, b.y - 4, 6, 6);
+                    ctx.fillRect(b.x + b.w - 10, b.y - 4, 6, 6);
+                }
+
+                ctx.fillStyle = morado ? '#5a1f6b' : '#4a2f1b';
+                ctx.fillRect(b.x - 8, b.y + 18, 12, 14);
+                ctx.fillRect(b.x + b.w - 4, b.y + 18, 12, 14);
+                ctx.fillStyle = morado ? '#7b2f8b' : '#6b4f2b';
+                ctx.fillRect(b.x - 10, b.y + 30, 14, 8);
+                ctx.fillRect(b.x + b.w - 4, b.y + 30, 14, 8);
+
+                ctx.fillStyle = morado ? '#3d0f4a' : '#3d1f0f';
+                ctx.fillRect(b.x + 10, b.y + b.h - 14, 12, 14);
+                ctx.fillRect(b.x + b.w - 22, b.y + b.h - 14, 12, 14);
+
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '8px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(morado ? t('hudReina') : t('hudBoss'), b.x + b.w / 2, b.y - 22);
+                ctx.textAlign = 'left';
+
+                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                ctx.fillRect(b.x, b.y - 6, b.w, 5);
+                ctx.fillStyle = morado ? '#ff00ff' : '#ff0000';
+                ctx.fillRect(b.x, b.y - 6, (b.hp / b.maxHp) * b.w, 5);
+            }
+
+            // --- CANECAS ---
+            for (let c of game.canecas) {
+                if (!c.activa) continue;
+                ctx.fillStyle = '#7f8c8d';
+                ctx.fillRect(c.x + 2, c.y + 6, 16, 16);
+                ctx.fillStyle = '#95a5a6';
+                ctx.fillRect(c.x, c.y + 2, 20, 6);
+                ctx.fillStyle = '#ecf0f1';
+                ctx.fillRect(c.x + 4, c.y, 12, 4);
+                ctx.fillStyle = '#27ae60';
+                ctx.fillRect(c.x + 5, c.y + 8, 10, 4);
+                ctx.fillRect(c.x + 3, c.y + 14, 14, 4);
+            }
+
+            // --- BOMBAS DE AGUA ---
+            for (let b of game.bombas) {
+                ctx.fillStyle = '#00d2ff';
+                ctx.beginPath();
+                ctx.arc(b.x + b.w / 2, b.y + b.h / 2, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.fillRect(b.x + 2, b.y + 1, 2, 2);
+            }
+
+            // --- PARTÍCULAS ---
+            for (let pt of game.particulas) {
+                const alpha = Math.min(1, pt.vida / 10);
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = pt.color;
+                const size = pt.size * (0.5 + (pt.vida / 30) * 0.5);
+                ctx.fillRect(pt.x - size / 2, pt.y - size / 2, size, size);
+            }
+            ctx.globalAlpha = 1;
+
+            ctx.restore();
+            // ============================================================
+            //  FIN CAPA DEL MUNDO
+            // ============================================================
+
+            // --- SELECCIÓN DE GÉNERO (pantalla fija) ---
+            if (game.seleccionGenero) {
+                ctx.fillStyle = 'rgba(0,0,0,0.85)';
+                ctx.fillRect(80, 80, 640, 220);
+                ctx.strokeStyle = '#ffd700';
+                ctx.lineWidth = 4;
+                ctx.strokeRect(80, 80, 640, 220);
+
+                ctx.fillStyle = '#fff';
+                ctx.font = '16px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(t('generoTitulo'), 400, 140);
+
+                ctx.font = '14px "Press Start 2P"';
+                ctx.fillStyle = '#4a90d9';
+                ctx.fillText(t('generoM'), 300, 200);
+                ctx.fillStyle = '#e94560';
+                ctx.fillText(t('generoF'), 500, 200);
+
+                ctx.fillStyle = '#aaa';
+                ctx.font = '10px "Press Start 2P"';
+                ctx.fillText(t('generoHint'), 400, 260);
+
+                ctx.fillStyle = '#4a90d9';
+                ctx.fillRect(270, 260, 22, 28);
+                ctx.fillRect(274, 248, 14, 12);
+                ctx.fillStyle = '#f5cba7';
+                ctx.fillRect(274, 248, 14, 12);
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(270, 244, 22, 6);
+
+                ctx.fillStyle = '#e94560';
+                ctx.fillRect(470, 260, 22, 28);
+                ctx.fillRect(474, 248, 14, 12);
+                ctx.fillStyle = '#f5cba7';
+                ctx.fillRect(474, 248, 14, 12);
+                ctx.fillStyle = '#8b4513';
+                ctx.fillRect(468, 244, 26, 6);
+                ctx.fillRect(466, 250, 6, 10);
+                ctx.fillRect(490, 250, 6, 10);
+
+                ctx.textAlign = 'left';
+                return;
+            }
+
+            // --- INFO ---
+            if (game.enemies.length > 0) {
+                ctx.fillStyle = '#ff6b6b';
+                ctx.font = '8px "Press Start 2P"';
+                ctx.fillText(`👾 ${game.enemies.length}`, 630, 22);
+            }
+            if (game.bosses.length > 0) {
+                ctx.fillStyle = '#ff0000';
+                ctx.font = '8px "Press Start 2P"';
+                ctx.fillText(game.bosses[0].esReina ? t('hudReina') : t('hudBoss'), 630, 36);
+            }
+
+            // --- FRENESÍ ---
+            if (game.player.frenesiActivo) {
+                ctx.fillStyle = 'rgba(255, 215, 0, 0.06)';
+                ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+                for (let i = 0; i < 20; i++) {
+                    const x = (i * 37 + game.frameCount * 2) % CANVAS_W;
+                    const y = (i * 29 + game.frameCount * 3) % CANVAS_H;
+                    ctx.fillStyle = `rgba(255, 215, 0, ${0.05 + Math.sin(i + game.frameCount * 0.05) * 0.05})`;
+                    ctx.fillRect(x, y, 2, 2);
+                }
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '10px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(t('hudFrenesiActivo'), 400, 28);
+                ctx.fillStyle = '#fff';
+                ctx.font = '8px "Press Start 2P"';
+                ctx.fillText(t('hudCombosRestantes', game.player.combosRestantes), 400, 46);
+                ctx.textAlign = 'left';
+            }
+
+            // --- AGUA BAJA ---
+            if (game.player.tieneAgua && game.player.agua < 20 && !game.player.enLago) {
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.fillRect(0, 435, CANVAS_W, 15);
+                ctx.fillStyle = '#ff6b6b';
+                ctx.font = '8px "Press Start 2P"';
+                ctx.fillText(t('hudAguaBaja'), 10, 446);
+            }
+
+            // --- MENSAJE ---
+            if (game.mensajeTimer > 0) {
+                const alpha = Math.min(1, game.mensajeTimer / 30);
+                ctx.fillStyle = `rgba(0,0,0,${0.7 * alpha})`;
+                ctx.fillRect(150, 70, 500, 40);
+                ctx.fillStyle = `rgba(255,215,0,${alpha})`;
+                ctx.font = '9px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(game.mensaje, 400, 98);
+                ctx.textAlign = 'left';
+            }
+
+            // --- TUTORIAL ---
+            if (game.tutorialActivo) {
+                ctx.fillStyle = 'rgba(0,0,0,0.6)';
+                ctx.fillRect(10, 420, 380, 25);
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '8px "Press Start 2P"';
+                ctx.fillText(t('tutorialBanner'), 15, 437);
+            }
+
+            // --- VICTORIA ---
+            if (game.victoria) {
+                ctx.fillStyle = 'rgba(10, 5, 20, 0.75)';
+                ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '18px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(t('victoriaTitulo'), 400, 170);
+                ctx.fillStyle = '#fff';
+                ctx.font = '9px "Press Start 2P"';
+                ctx.fillText(t('victoriaSub'), 400, 210);
+                ctx.font = '8px "Press Start 2P"';
+                ctx.fillStyle = '#aaa';
+                ctx.fillText(t('victoriaFooter1'), 400, 250);
+                ctx.fillText(t('victoriaFooter2'), 400, 275);
+                ctx.textAlign = 'left';
+            }
+
+            // --- GAME OVER ---
+            if (game.gameOver) {
+                ctx.fillStyle = 'rgba(20, 0, 0, 0.8)';
+                ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+                ctx.fillStyle = '#ff4444';
+                ctx.font = '18px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(t('gameOverTitulo'), 400, 190);
+                ctx.fillStyle = '#fff';
+                ctx.font = '9px "Press Start 2P"';
+                ctx.fillText(t('gameOverSub'), 400, 225);
+                ctx.font = '8px "Press Start 2P"';
+                ctx.fillStyle = '#aaa';
+                ctx.fillText(t('gameOverFooter'), 400, 260);
+                ctx.textAlign = 'left';
+            }
+        }
+
+        // ============================================================
+        //  GAME LOOP
+        // ============================================================
+        function gameLoop() {
+            if (game.enPueblo) updatePueblo();
+            else update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // ============================================================
+        //  TECLADO
+        // ============================================================
+        const keysPressed = {};
+
+        document.addEventListener('keydown', (e) => {
+            if (game.pidiendoNombre || game.enTrivia) return;
+            keysPressed[e.key] = true;
+
+            if (game.narracion.activo && e.key === 'Enter') {
+                avanzarNarracion();
+                return;
+            }
+            if (game.narracion.activo) return;
+
+            if (game.seleccionGenero) {
+                if (e.key === '1') seleccionarGenero(1);
+                if (e.key === '2') seleccionarGenero(2);
+                return;
+            }
+
+            if (e.key === 'z' || e.key === 'Z') {
+                if (game.player.frenesiActivo) {
+                    comboFrenesi();
+                } else {
+                    atacarGolpe();
+                }
+                e.preventDefault();
+            }
+            if (e.key === 'x' || e.key === 'X') {
+                usarAgua();
+                e.preventDefault();
+            }
+            if (e.key === 'c' || e.key === 'C') {
+                lanzarBomba();
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keysPressed[e.key] = false;
+        });
+
+        // ============================================================
+        //  REINICIAR
+        // ============================================================
+        function resetGame() {
+            AudioEngine.stopMusic();
+            const p = game.player;
+            p.hp = 100;
+            p.vidas = 3;
+            p.exp = 0;
+            p.basuraAcumulada = 0;
+            p.agua = 0;
+            p.tieneAgua = false;
+            p.tieneRegadera = false;
+            p.nombre = '';
+            p.bombaCooldown = 0;
+            p.frenesiActivo = false;
+            p.combosRestantes = 0;
+            p.x = 150;
+            p.y = 330;
+            p.enLago = false;
+            p.invTimer = 0;
+            p.atacando = false;
+            game.camera.x = 0;
+            game.nivel = 1;
+            game.enemies = [];
+            game.bosses = [];
+            game.canecas = [];
+            game.bombas = [];
+            game.particulas = [];
+            game.powerup = { activo: false, x: 0, y: 0, w: 22, h: 30 };
+            game.juegoIniciado = false;
+            game.seleccionGenero = false;
+            game.pidiendoNombre = false;
+            nameOverlay.style.display = 'none';
+            game.enTrivia = false;
+            npcOverlay.style.display = 'none';
+            game.trivia = { activo: false, ronda: 0, aciertos: 0, completada: false };
+            game.gameOver = false;
+            game.bossDerrotado = false;
+            game.mina.activa = false;
+            game.tutorialActivo = false;
+            game.tutorialPaso = 0;
+            game.spawnTimer = 320;
+            game.victoria = false;
+            game.narracion.activo = false;
+            game.narracion.paso = 0;
+            game.enPueblo = true;
+            game.narracionPuebloHecha = false;
+            game.pueblo.x = 380;
+            game.pueblo.y = 340;
+            game.pueblo.direccion = 'arriba';
+            game.mensaje = '';
+            game.mensajeTimer = 0;
+            statusMsg.textContent = t('puebloHint');
+            initLagos();
+            initEstrellas();
+            initNubes();
+            initFlores();
+            actualizarUI();
+        }
+
+        resetBtn.addEventListener('click', resetGame);
+
+        // ============================================================
+        //  MENÚ PRINCIPAL (pantalla de inicio genérica)
+        // ============================================================
+        function aplicarIdioma() {
+            menuSubtitle.textContent = t('menuSubtitle');
+            menuComenzarBtn.textContent = t('menuComenzar');
+            menuControlesBtn.textContent = t('menuControles');
+            menuIdiomaBtn.textContent = t('menuIdioma');
+            controlsPanel.querySelector('h2').textContent = t('controlsTitulo');
+            controlsListEl.innerHTML = t('controlsList').map(li => `<li>${li}</li>`).join('');
+            controlesVolverBtn.textContent = t('controlsVolver');
+            controlsHintText.textContent = t('controlsHint');
+            nivelLabel.textContent = t('nivelLabel');
+            aguaLabel.textContent = t('aguaLabel');
+            resetBtn.textContent = t('resetBtn');
+            muteBtn.textContent = AudioEngine.isMuted() ? t('muteOff') : t('muteOn');
+            namePrompt.textContent = t('nombrePrompt');
+            nameInput.placeholder = t('nombrePlaceholder');
+            nameConfirmBtn.textContent = t('nombreConfirmar');
+            npcHeaderLabel.textContent = t('npcHeaderLabel');
+            npcCerrarBtn.textContent = t('triviaContinuar');
+        }
+
+        menuComenzarBtn.addEventListener('click', () => {
+            menuOverlay.style.display = 'none';
+            game.enMenu = false;
+            iniciarNarracion();
+        });
+        menuControlesBtn.addEventListener('click', () => {
+            menuBox.style.display = 'none';
+            controlsPanel.style.display = 'block';
+        });
+        controlesVolverBtn.addEventListener('click', () => {
+            controlsPanel.style.display = 'none';
+            menuBox.style.display = 'block';
+        });
+        menuIdiomaBtn.addEventListener('click', () => {
+            game.idioma = game.idioma === 'es' ? 'en' : 'es';
+            aplicarIdioma();
+        });
+
+        // ============================================================
+        //  INICIO
+        // ============================================================
+        aplicarIdioma();
+        actualizarUI();
+        gameLoop();
+
+        console.log('🎮 La Leyenda de Basóurius - MUNDO CON SCROLL');
+        console.log('✅ Nivel 1 con scroll, más enemigos y plataformas');
+        console.log('🚿 Power-up: Regadera Mágica (tecla C = bombas de agua)');
+        console.log('👑 Nivel 2: Guarida de la Reina de los Monstruos');
+        console.log('🏘️ Pueblo inicial + pantalla de menú + ES/EN');
+    </script>
+</body>
+</html>

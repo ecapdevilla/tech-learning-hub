@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍳 Aprende a Cocinar Fácil</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#fff7e6,#ffe2b5);
+    color:#333;
+}
+
+header{
+    background:#ff6b35;
+    color:white;
+    text-align:center;
+    padding:25px;
+    box-shadow:0 5px 10px rgba(0,0,0,.2);
+}
+
+header h1{
+    font-size:40px;
+}
+
+header p{
+    margin-top:10px;
+    opacity:.9;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding:30px 0;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 20px rgba(0,0,0,.12);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.card h2{
+    padding:15px;
+    color:#ff6b35;
+}
+
+.card p{
+    padding:0 15px 15px;
+    color:#555;
+}
+
+button{
+    margin:15px;
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    background:#ff6b35;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+button:hover{
+    background:#ff4b12;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal-content{
+    background:white;
+    width:700px;
+    max-width:100%;
+    border-radius:20px;
+    padding:25px;
+    animation:zoom .3s;
+}
+
+@keyframes zoom{
+from{transform:scale(.7);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+.close{
+    float:right;
+    cursor:pointer;
+    font-size:28px;
+    color:red;
+}
+
+.step{
+    display:none;
+    margin-top:20px;
+}
+
+.step.active{
+    display:block;
+}
+
+.step h3{
+    color:#ff6b35;
+}
+
+.nav{
+    margin-top:25px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.progress{
+    width:100%;
+    height:10px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.bar{
+    width:0%;
+    height:100%;
+    background:#28a745;
+    transition:.4s;
+}
+
+footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+}
+</style>
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+<header>
+<h1>🍳 Aprende a Cocinar Fácil</h1>
+<p>Recetas paso a paso para principiantes.</p>
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800" alt="">
+<h2>🥚 Tortilla</h2>
+<p>Aprende a preparar una tortilla perfecta.</p>
+<button onclick="abrir('tortilla')">Comenzar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800" alt="">
+<h2>🍕 Pizza Casera</h2>
+<p>Haz una deliciosa pizza desde cero.</p>
+<button onclick="abrir('pizza')">Comenzar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800" alt="">
+<h2>🍝 Pasta</h2>
+<p>Una pasta deliciosa paso a paso.</p>
+<button onclick="abrir('pasta')">Comenzar</button>
+</div>
+
+</div>
+
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<span class="close" onclick="cerrar()">✖</span>
+
+<h2 id="titulo"></h2>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div id="steps"></div>
+
+<div class="nav">
+<button onclick="anterior()">⬅ Anterior</button>
+<button onclick="siguiente()">Siguiente ➜</button>
+</div>
+
+</div>
+</div>
+
+<footer>
+Hecho con ❤️ para aprender a cocinar.
+</footer>
+
+<script>
+
+const recetas={
+
+tortilla:{
+titulo:"🥚 Tortilla Fácil",
+pasos:[
+"Paso 1️⃣: Reúne 3 huevos, sal, pimienta y mantequilla.",
+"Paso 2️⃣: Bate los huevos durante 2 minutos.",
+"Paso 3️⃣: Calienta una sartén con mantequilla.",
+"Paso 4️⃣: Agrega la mezcla y cocina lentamente.",
+"Paso 5️⃣: Dobla la tortilla y sirve."
+]
+},
+
+pizza:{
+titulo:"🍕 Pizza Casera",
+pasos:[
+"Paso 1️⃣: Prepara la masa.",
+"Paso 2️⃣: Agrega salsa de tomate.",
+"Paso 3️⃣: Coloca queso mozzarella.",
+"Paso 4️⃣: Añade ingredientes favoritos.",
+"Paso 5️⃣: Hornea durante 15 minutos a 220°C."
+]
+},
+
+pasta:{
+titulo:"🍝 Pasta",
+pasos:[
+"Paso 1️⃣: Hierve agua con sal.",
+"Paso 2️⃣: Cocina la pasta 10 minutos.",
+"Paso 3️⃣: Prepara la salsa.",
+"Paso 4️⃣: Mezcla pasta y salsa.",
+"Paso 5️⃣: Sirve con queso rallado."
+]
+}
+
+};
+
+let indice=0;
+let recetaActual=null;
+
+function abrir(nombre){
+
+recetaActual=recetas[nombre];
+indice=0;
+
+document.getElementById("titulo").innerHTML=recetaActual.titulo;
+
+const cont=document.getElementById("steps");
+cont.innerHTML="";
+
+recetaActual.pasos.forEach((p,i)=>{
+
+cont.innerHTML+=`
+<div class="step ${i==0?'active':''}">
+<h3>${p}</h3>
+</div>
+`;
+
+});
+
+actualizar();
+
+document.getElementById("modal").style.display="flex";
+
+}
+
+function cerrar(){
+document.getElementById("modal").style.display="none";
+}
+
+function actualizar(){
+
+const pasos=document.querySelectorAll(".step");
+
+pasos.forEach(p=>p.classList.remove("active"));
+
+pasos[indice].classList.add("active");
+
+let porcentaje=((indice+1)/pasos.length)*100;
+
+document.getElementById("bar").style.width=porcentaje+"%";
+
+}
+
+function siguiente(){
+
+if(indice<recetaActual.pasos.length-1){
+
+indice++;
+
+}else{
+
+alert("🎉 ¡Has terminado la receta!");
+
+}
+
+actualizar();
+
+}
+
+function anterior(){
+
+if(indice>0){
+
+indice--;
+
+}
+
+actualizar();
+
+}
+
+window.onclick=function(e){
+
+if(e.target==document.getElementById("modal")){
+
+cerrar();
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

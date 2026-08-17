@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío ODS - Trivia Sostenible</title>
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --secondary-color: #2c3e50;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .question-box {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #d5dbdb;
+            border-color: #95a5a6;
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option-btn.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        #next-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        #next-btn:hover {
+            background-color: #219653;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #result-screen h2 {
+            color: var(--primary-color);
+        }
+
+        .restart-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+    </style>
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+    <div class="game-container">
+        <h1>Desafío ODS 🌍</h1>
+        <p class="subtitle">Pon a prueba tus conocimientos sobre los Objetivos de Desarrollo Sostenible</p>
+
+        <!-- Pantalla de Juego -->
+        <div id="quiz-screen">
+            <div class="stats">
+                <span id="question-counter">Pregunta: 1/5</span>
+                <span id="score-counter">Puntaje: 0</span>
+            </div>
+            
+            <div class="question-box" id="question-text">
+                Cargando pregunta...
+            </div>
+
+            <div class="options-container" id="options-container">
+                <!-- Opciones generadas por JS -->
+            </div>
+
+            <button id="next-btn" onclick="nextQuestion()">Siguiente Pregunta</button>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="result-screen" class="hidden">
+            <h2>¡Juego Terminado! 🎉</h2>
+            <p id="final-score" style="font-size: 1.2rem; margin: 20px 0;"></p>
+            <p id="feedback-message"></p>
+            <button class="restart-btn" onclick="restartGame()">Jugar de Nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Cuál es el objetivo principal del ODS 13?",
+                options: [
+                    "Garantizar agua limpia y saneamiento",
+                    "Adoptar medidas urgentes para combatir el cambio climático",
+                    "Lograr la igualdad de género",
+                    "Promover el crecimiento económico sostenido"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿A qué sector principal está enfocado el ODS 4?",
+                options: [
+                    "Salud y bienestar",
+                    "Energía asequible y no contaminante",
+                    "Educación de calidad",
+                    "Industria, innovación e infraestructura"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Cuántos Objetivos de Desarrollo Sostenible (ODS) conforman la Agenda 2030?",
+                options: [
+                    "10 objetivos",
+                    "15 objetivos",
+                    "17 objetivos",
+                    "21 objetivos"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Qué busca resolver específicamente el ODS 2?",
+                options: [
+                    "Erradicar el hambre, lograr la seguridad alimentaria y promover la agricultura sostenible",
+                    "Reducir las emisiones de CO2 en las grandes metrópolis",
+                    "Asegurar el acceso a internet en zonas rurales",
+                    "Eliminar la pobreza extrema en todos los continentes"
+                ],
+                correct: 0
+            },
+            {
+                question: "¿Cuál de las siguientes opciones corresponde al ODS 6?",
+                options: [
+                    "Ciudades y comunidades sostenibles",
+                    "Agua limpia y saneamiento",
+                    "Vida submarina",
+                    "Trabajo decente y crecimiento económico"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const nextBtn = document.getElementById("next-btn");
+        const questionCounter = document.getElementById("question-counter");
+        const scoreCounter = document.getElementById("score-counter");
+        const quizScreen = document.getElementById("quiz-screen");
+        const resultScreen = document.getElementById("result-screen");
+        const finalScore = document.getElementById("final-score");
+        const feedbackMessage = document.getElementById("feedback-message");
+
+        function loadQuestion() {
+            answered = false;
+            nextBtn.style.display = "none";
+            optionsContainer.innerHTML = "";
+
+            const currentQ = questions[currentQuestionIndex];
+            questionText.textContent = currentQ.question;
+            questionCounter.textContent = `Pregunta: ${currentQuestionIndex + 1}/${questions.length}`;
+
+            currentQ.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.classList.add("option-btn");
+                button.onclick = () => selectOption(index, button);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectOption(selectedIndex, selectedButton) {
+            if (answered) return;
+            answered = true;
+
+            const currentQ = questions[currentQuestionIndex];
+            const allButtons = optionsContainer.querySelectorAll(".option-btn");
+
+            if (selectedIndex === currentQ.correct) {
+                selectedButton.classList.add("correct");
+                score += 20;
+                scoreCounter.textContent = `Puntaje: ${score}`;
+            } else {
+                selectedButton.classList.add("incorrect");
+                allButtons[currentQ.correct].classList.add("correct");
+            }
+
+            allButtons.forEach(btn => btn.disabled = true);
+            nextBtn.style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add("hidden");
+            resultScreen.classList.remove("hidden");
+            finalScore.textContent = `Tu puntaje final es: ${score} / 100`;
+
+            if (score === 100) {
+                feedbackMessage.textContent = "¡Excelente! Eres un verdadero embajador de los Objetivos de Desarrollo Sostenible.";
+            } else if (score >= 60) {
+                feedbackMessage.textContent = "¡Buen trabajo! Tienes buenas bases sobre la Agenda 2030, pero puedes seguir aprendiendo.";
+            } else {
+                feedbackMessage.textContent = "Sigue investigando sobre los ODS. Cada acción cuenta para construir un mundo mejor.";
+            }
+        }
+
+        function restartGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            scoreCounter.textContent = `Puntaje: 0`;
+            resultScreen.classList.add("hidden");
+            quizScreen.classList.remove("hidden");
+            loadQuestion();
+        }
+
+        // Inicializar el juego
+        loadQuestion();
+    </script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Programación / Programming Quiz / Quiz de Programmation</title>
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .quiz-card {
+      background-color: #1e293b;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    /* Selector de Idioma */
+    .lang-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .lang-container label {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .lang-select {
+      background-color: #334155;
+      color: #38bdf8;
+      border: 1px solid #38bdf8;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      outline: none;
+    }
+
+    h1 {
+      text-align: center;
+      color: #38bdf8;
+      margin-top: 0;
+      font-size: 1.5rem;
+    }
+
+    /* Opciones de respuesta */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .btn-option {
+      background-color: #334155;
+      color: #fff;
+      border: 2px solid transparent;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .btn-option:hover {
+      background-color: #475569;
+      border-color: #38bdf8;
+    }
+
+    /* Botón de Siguiente */
+    .btn-next {
+      width: 100%;
+      padding: 12px;
+      background-color: #38bdf8;
+      color: #0f172a;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-next:hover {
+      background-color: #0284c7;
+      color: #fff;
+    }
+
+    /* Utilidades */
+    .hidden {
+      display: none;
+    }
+
+    .score-text {
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    /* Sección de Créditos del Grupo */
+    .credits-section {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #334155;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    .credits-section strong {
+      color: #38bdf8;
+    }
+  </style>
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+  <div class="quiz-card">
+    <!-- Selector de Idioma -->
+    <div class="lang-container">
+      <label for="lang-select">🌐 Idioma / Language:</label>
+      <select id="lang-select" class="lang-select" onchange="changeLanguage(this.value)">
+        <option value="es" selected>Español</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+
+    <div id="quiz-container">
+      <h1 id="question-title">Cargando pregunta...</h1>
+      <div id="options" class="options-container"></div>
+      <button id="next-btn" class="btn-next hidden" onclick="nextQuestion()">Siguiente Pregunta</button>
+    </div>
+
+    <div id="result-container" class="hidden">
+      <h1 id="final-title">¡Quiz Finalizado!</h1>
+      <p id="final-score" class="score-text"></p>
+      <button id="restart-btn" class="btn-next" onclick="restartQuiz()">Jugar de nuevo</button>
+    </div>
+
+    <!-- Integrantes del Grupo -->
+    <div class="credits-section">
+      <p><strong id="credit-label">Integrante del grupo:</strong><br>Jorge</p>
+    </div>
+  </div>
+
+  <script>
+    // 1. DICCIONARIO MULTILENGUAJE CON LAS PREGUNTAS Y TEXTOS
+    const translations = {
+      es: {
+        nextBtn: "Siguiente Pregunta",
+        finalTitle: "¡Quiz Finalizado!",
+        restartBtn: "Jugar de nuevo",
+        creditLabel: "Integrante del grupo:",
+        scoreText: "Obtuviste <strong>{score}</strong> de <strong>{total}</strong> aciertos.",
+        feedbacks: {
+          perfect: "¡Perfecto! Dominas las bases de la programación. 🚀",
+          good: "¡Buen trabajo! Tienes un buen entendimiento básico. 👍",
+          bad: "Sigue practicando, pronto lo dominarás. 📚"
+        },
+        questions: [
+          {
+            question: "1. ¿Qué palabra clave en JS se usa para declarar una variable cuyo valor PUEDE cambiar?",
+            options: ["const", "let", "static", "fixed"],
+            correct: 1
+          },
+          {
+            question: "2. ¿Qué evalúa una estructura condicional 'if'?",
+            options: [
+              "Un texto cualquiera",
+              "Una expresión que devuelve true o false",
+              "El número de variables",
+              "Un bucle infinito"
+            ],
+            correct: 1
+          },
+          {
+            question: "3. ¿Para qué se utiliza un bucle 'for'?",
+            options: [
+              "Para declarar funciones",
+              "Para tomar decisiones lógicas",
+              "Para repetir un bloque de código un número de veces",
+              "Para estilizar la página"
+            ],
+            correct: 2
+          },
+          {
+            question: "4. En la condición 'if (a !== b)', ¿qué significa el operador '!=='?",
+            options: [
+              "Igual en valor y tipo",
+              "Mayor o igual que",
+              "Estrictamente no igual (desigual)",
+              "Asignación de variable"
+            ],
+            correct: 2
+          }
+        ]
+      },
+      en: {
+        nextBtn: "Next Question",
+        finalTitle: "Quiz Finished!",
+        restartBtn: "Play Again",
+        creditLabel: "Group Member:",
+        scoreText: "You scored <strong>{score}</strong> out of <strong>{total}</strong>.",
+        feedbacks: {
+          perfect: "Perfect! You master programming basics. 🚀",
+          good: "Good job! You have a solid basic understanding. 👍",
+          bad: "Keep practicing, you'll master it soon. 📚"
+        },
+        questions: [
+          {
+            question: "1. Which JS keyword is used to declare a variable whose value CAN change?",
+            options: ["const", "let", "static", "fixed"],
+            correct: 1
+          },
+          {
+            question: "2. What does an 'if' conditional structure evaluate?",
+            options: [
+              "Any plain text",
+              "An expression that returns true or false",
+              "The number of variables",
+              "An infinite loop"
+            ],
+            correct: 1
+          },
+          {
+            question: "3. What is a 'for' loop used for?",
+            options: [
+              "To declare functions",
+              "To make logical decisions",
+              "To repeat a block of code a number of times",
+              "To style the web page"
+            ],
+            correct: 2
+          },
+          {
+            question: "4. In the condition 'if (a !== b)', what does the '!==' operator mean?",
+            options: [
+              "Equal in value and type",
+              "Greater than or equal to",
+              "Strictly not equal (inequal)",
+              "Variable assignment"
+            ],
+            correct: 2
+          }
+        ]
+      },
+      fr: {
+        nextBtn: "Question Suivante",
+        finalTitle: "Quiz Terminé !",
+        restartBtn: "Rejouer",
+        creditLabel: "Membre du groupe :",
+        scoreText: "Vous avez obtenu <strong>{score}</strong> sur <strong>{total}</strong> bonnes réponses.",
+        feedbacks: {
+          perfect: "Parfait ! Vous maîtrisez les bases de la programmation. 🚀",
+          good: "Bon travail ! Vous avez une bonne compréhension de base. 👍",
+          bad: "Continuez à pratiquer, vous maîtriserez bientôt. 📚"
+        },
+        questions: [
+          {
+            question: "1. Quel mot-clé JS est utilisé pour déclarer une variable dont la valeur PEUT changer ?",
+            options: ["const", "let", "static", "fixed"],
+            correct: 1
+          },
+          {
+            question: "2. Qu'évalue une structure conditionnelle 'if' ?",
+            options: [
+              "Un texte quelconque",
+              "Une expression qui renvoie true ou false",
+              "Le nombre de variables",
+              "Une boucle infinie"
+            ],
+            correct: 1
+          },
+          {
+            question: "3. À quoi sert une boucle 'for' ?",
+            options: [
+              "À déclarer des fonctions",
+              "À prendre des décisions logiques",
+              "À répéter un bloc de code un certain nombre de fois",
+              "À styliser la page"
+            ],
+            correct: 2
+          },
+          {
+            question: "4. Dans la condition 'if (a !== b)', que signifie l'opérateur '!==' ?",
+            options: [
+              "Égal en valeur et en type",
+              "Supérieur ou égal à",
+              "Strictement non égal (différent)",
+              "Affectation de variable"
+            ],
+            correct: 2
+          }
+        ]
+      }
+    };
+
+    // Variables de estado del juego
+    let currentLang = "es";
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let selectedOption = null;
+
+    // Elementos del DOM
+    const questionTitle = document.getElementById("question-title");
+    const optionsContainer = document.getElementById("options");
+    const nextButton = document.getElementById("next-btn");
+    const quizContainer = document.getElementById("quiz-container");
+    const resultContainer = document.getElementById("result-container");
+    const finalScore = document.getElementById("final-score");
+    const finalTitle = document.getElementById("final-title");
+    const restartBtn = document.getElementById("restart-btn");
+    const creditLabel = document.getElementById("credit-label");
+
+    // Cambiar idioma dinámicamente
+    function changeLanguage(lang) {
+      currentLang = lang;
+      
+      // Si el quiz está finalizado, actualiza la pantalla de resultados
+      if (!resultContainer.classList.contains("hidden")) {
+        showResults();
+      } else {
+        // De lo contrario, recarga la pregunta actual con el nuevo idioma
+        loadQuestion();
+      }
+      
+      // Actualizar interfaz general
+      nextButton.textContent = translations[currentLang].nextBtn;
+      restartBtn.textContent = translations[currentLang].restartBtn;
+      finalTitle.textContent = translations[currentLang].finalTitle;
+      creditLabel.textContent = translations[currentLang].creditLabel;
+    }
+
+    // 2. FUNCIÓN PARA MOSTRAR LA PREGUNTA
+    function loadQuestion() {
+      // Reiniciar estado de selección
+      selectedOption = null;
+      nextButton.classList.add("hidden");
+      optionsContainer.innerHTML = "";
+
+      // Bucle dinámico según el idioma seleccionado
+      const currentQuestionsList = translations[currentLang].questions;
+      const currentQuestion = currentQuestionsList[currentQuestionIndex];
+      questionTitle.textContent = currentQuestion.question;
+
+      // BUCLE: Generamos los botones dinámicamente con un for loop
+      for (let i = 0; i < currentQuestion.options.length; i++) {
+        const button = document.createElement("button");
+        button.textContent = currentQuestion.options[i];
+        button.classList.add("btn-option");
+        
+        // Evento al hacer clic en una opción
+        button.onclick = () => selectOption(i, button);
+        optionsContainer.appendChild(button);
+      }
+    }
+
+    // 3. FUNCIÓN PARA SELECCIONAR RESPUESTA
+    function selectOption(index, buttonElement) {
+      selectedOption = index;
+
+      // Resaltar el botón seleccionado mediante bucle
+      const allButtons = optionsContainer.children;
+      for (let btn of allButtons) {
+        btn.style.backgroundColor = "#334155";
+        btn.style.borderColor = "transparent";
+      }
+      buttonElement.style.borderColor = "#38bdf8";
+      buttonElement.style.backgroundColor = "#475569";
+
+      // Mostrar botón siguiente
+      nextButton.classList.remove("hidden");
+    }
+
+    // 4. FUNCIÓN PARA AVANZAR Y EVALUAR (Uso de Condicionales)
+    function nextQuestion() {
+      const currentQuestionsList = translations[currentLang].questions;
+
+      // CONDICIONAL: Verificar si la respuesta es correcta
+      if (selectedOption === currentQuestionsList[currentQuestionIndex].correct) {
+        score++;
+      }
+
+      currentQuestionIndex++;
+
+      // CONDICIONAL: Verificar si quedan preguntas
+      if (currentQuestionIndex < currentQuestionsList.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    // 5. MOSTRAR RESULTADOS
+    function showResults() {
+      quizContainer.classList.add("hidden");
+      resultContainer.classList.remove("hidden");
+      
+      const langData = translations[currentLang];
+      const totalQuestions = langData.questions.length;
+
+      // CONDICIONAL: Mensaje personalizado según el puntaje
+      let feedback = "";
+      if (score === totalQuestions) {
+        feedback = langData.feedbacks.perfect;
+      } else if (score >= 2) {
+        feedback = langData.feedbacks.good;
+      } else {
+        feedback = langData.feedbacks.bad;
+      }
+
+      // Reemplazo de variables dentro del texto traducido
+      let scoreMessage = langData.scoreText
+        .replace("{score}", score)
+        .replace("{total}", totalQuestions);
+
+      finalScore.innerHTML = `${scoreMessage}<br><br>${feedback}`;
+    }
+
+    // 6. REINICIAR EL JUEGO
+    function restartQuiz() {
+      score = 0;
+      currentQuestionIndex = 0;
+      resultContainer.classList.add("hidden");
+      quizContainer.classList.remove("hidden");
+      loadQuestion();
+    }
+
+    // Inicializar interfaz y cargar primera pregunta
+    changeLanguage("es");
+  </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Inteligente ODS - Gestión de Reciclaje</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg, #0a2540, #1d4ed8);
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
+        }
+
+        .contenedor{
+            width:900px;
+            background:#fff;
+            border-radius:20px;
+            box-shadow:0 15px 40px rgba(0,0,0,.25);
+            padding:35px;
+        }
+
+        h1{
+            text-align:center;
+            color:#15803d;
+            margin-bottom:10px;
+        }
+
+        .subtitulo{
+            text-align:center;
+            color:#555;
+            margin-bottom:25px;
+        }
+
+        .descripcion{
+            background:#f0fdf4;
+            border-left:5px solid #16a34a;
+            padding:20px;
+            border-radius:10px;
+            line-height:1.7;
+            margin-bottom:25px;
+        }
+
+        .grupo{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:15px;
+        }
+
+        input{
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:10px;
+            font-size:16px;
+        }
+
+        button{
+            grid-column:span 2;
+            padding:15px;
+            border:none;
+            border-radius:10px;
+            background:#15803d;
+            color:white;
+            font-size:17px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#166534;
+        }
+
+        #resultado{
+            margin-top:25px;
+            background:#f8fafc;
+            border-radius:10px;
+            padding:20px;
+            display:none;
+        }
+
+        .verde{
+            color:#15803d;
+            font-weight:bold;
+        }
+
+        .rojo{
+            color:#dc2626;
+            font-weight:bold;
+        }
+
+        .pie{
+            margin-top:30px;
+            text-align:center;
+            background:#0f172a;
+            color:white;
+            padding:15px;
+            border-radius:10px;
+        }
+
+        ul{
+            margin-top:10px;
+            padding-left:20px;
+        }
+    </style>
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+<div class="contenedor">
+
+    <h1>ODS 12 - Producción y Consumo Responsables</h1>
+
+    <p class="subtitulo">
+        Sistema Automatizado para la Gestión Inteligente del Reciclaje
+    </p>
+
+    <div class="descripcion">
+        Este sistema contribuye al cumplimiento del Objetivo de Desarrollo
+        Sostenible N.° 12, permitiendo registrar y analizar la cantidad de
+        residuos reciclables generados durante varios días. Utiliza
+        <strong>condicionales</strong> para evaluar el desempeño ambiental y un
+        <strong>bucle</strong> para procesar múltiples registros de manera eficiente.
+    </div>
+
+    <div class="grupo">
+        <input type="number" id="dias" placeholder="Número de días a evaluar">
+        <input type="number" id="meta" placeholder="Meta mínima de reciclaje (kg)">
+
+        <button onclick="evaluarReciclaje()">
+            Ejecutar Análisis Ambiental
+        </button>
+    </div>
+
+    <div id="resultado"></div>
+
+    <div class="pie">
+        <h3>Integrante del Proyecto</h3>
+        <p><strong>María José Puerta Fory</strong></p>
+    </div>
+
+</div>
+
+<script>
+
+function evaluarReciclaje(){
+
+    let dias = parseInt(document.getElementById("dias").value);
+    let meta = parseFloat(document.getElementById("meta").value);
+
+    if(isNaN(dias) || dias <= 0 || isNaN(meta) || meta <= 0){
+        alert("Por favor, ingrese valores válidos.");
+        return;
+    }
+
+    let total = 0;
+    let reporte = "<h2>Reporte de Sostenibilidad</h2><ul>";
+
+    // BUCLE: Procesa cada día registrado.
+    for(let i = 1; i <= dias; i++){
+
+        let kilos = parseFloat(
+            prompt(`Ingrese la cantidad de material reciclado (kg) para el día ${i}:`)
+        );
+
+        if(isNaN(kilos)){
+            kilos = 0;
+        }
+
+        total += kilos;
+
+        // CONDICIONALES
+        if(kilos >= meta){
+            reporte += `
+                <li class="verde">
+                    Día ${i}: ${kilos} kg reciclados.
+                    Meta alcanzada exitosamente.
+                </li>
+            `;
+        }
+        else if(kilos >= meta * 0.5){
+            reporte += `
+                <li>
+                    Día ${i}: ${kilos} kg reciclados.
+                    Resultado aceptable, pero puede mejorar.
+                </li>
+            `;
+        }
+        else{
+            reporte += `
+                <li class="rojo">
+                    Día ${i}: ${kilos} kg reciclados.
+                    Nivel bajo de reciclaje. Se recomienda fortalecer las prácticas ambientales.
+                </li>
+            `;
+        }
+    }
+
+    reporte += "</ul>";
+
+    let promedio = (total / dias).toFixed(2);
+
+    reporte += `
+        <hr><br>
+        <p><strong>Total reciclado:</strong> ${total.toFixed(2)} kg</p>
+        <p><strong>Promedio diario:</strong> ${promedio} kg</p>
+    `;
+
+    // CONDICIONAL FINAL
+    if(promedio >= meta){
+        reporte += `
+            <p class="verde">
+                Diagnóstico Final: La comunidad contribuye positivamente al ODS 12
+                mediante hábitos responsables de reciclaje.
+            </p>
+        `;
+    }else{
+        reporte += `
+            <p class="rojo">
+                Diagnóstico Final: Es necesario implementar campañas de sensibilización
+                para incrementar el impacto ambiental positivo.
+            </p>
+        `;
+    }
+
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").innerHTML = reporte;
+}
+
+</script>
+
+</body>
+</html>

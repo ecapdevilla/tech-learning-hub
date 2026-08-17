@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tipo ICFES - Programación</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.contenedor{
+    width:900px;
+    max-width:100%;
+    background:white;
+    border-radius:15px;
+    box-shadow:0px 10px 25px rgba(0,0,0,.3);
+    overflow:hidden;
+}
+
+header{
+    background:#1565C0;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+header h1{
+    margin-bottom:10px;
+}
+
+.integrantes{
+    background:#0D47A1;
+    padding:12px;
+    font-size:15px;
+}
+
+#quiz{
+    padding:30px;
+}
+
+.tema{
+    display:inline-block;
+    background:#E3F2FD;
+    color:#1565C0;
+    padding:8px 15px;
+    border-radius:20px;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+#pregunta{
+    font-size:22px;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.opcion{
+    background:#f5f5f5;
+    border:2px solid transparent;
+    border-radius:10px;
+    padding:15px;
+    margin:12px 0;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.opcion:hover{
+    background:#BBDEFB;
+    border-color:#1565C0;
+}
+
+.correcta{
+    background:#C8E6C9 !important;
+    border-color:green !important;
+}
+
+.incorrecta{
+    background:#FFCDD2 !important;
+    border-color:red !important;
+}
+
+button{
+    margin-top:20px;
+    background:#1565C0;
+    color:white;
+    border:none;
+    padding:15px 30px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0D47A1;
+}
+
+#resultado{
+    text-align:center;
+    padding:40px;
+    display:none;
+}
+
+#resultado h2{
+    color:#1565C0;
+    margin-bottom:15px;
+}
+
+#puntaje{
+    font-size:30px;
+    color:#2E7D32;
+    margin:20px;
+}
+
+footer{
+    text-align:center;
+    padding:15px;
+    background:#ECEFF1;
+    font-size:14px;
+}
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<div class="contenedor">
+
+<header>
+<h1>QUIZ TIPO ICFES</h1>
+<h3>Fundamentos de Programación</h3>
+
+<div class="integrantes">
+<b>Integrantes del grupo:</b><br>
+Dylan • Camila • Derek • Romero
+</div>
+
+</header>
+
+<div id="quiz">
+
+<div class="tema" id="tema"></div>
+
+<h2 id="pregunta"></h2>
+
+<div id="opciones"></div>
+
+<button id="siguiente">Siguiente</button>
+
+</div>
+
+<div id="resultado">
+
+<h2>¡Quiz Finalizado!</h2>
+
+<p id="puntaje"></p>
+
+<h3 id="mensaje"></h3>
+
+<button onclick="reiniciar()">Volver a Intentarlo</button>
+
+</div>
+
+<footer>
+Proyecto educativo - Quiz tipo ICFES de Programación
+</footer>
+
+</div>
+
+<script>
+
+const preguntas=[
+
+{
+tema:"Variables",
+pregunta:"¿Cuál es la función principal de una variable en programación?",
+opciones:[
+"Guardar información para utilizarla posteriormente.",
+"Eliminar datos automáticamente.",
+"Crear ciclos infinitos.",
+"Imprimir texto en pantalla."
+],
+correcta:0
+},
+
+{
+tema:"Variables",
+pregunta:"¿Cuál de las siguientes instrucciones declara correctamente una variable en JavaScript?",
+opciones:[
+"variable nombre;",
+"let nombre;",
+"crear nombre;",
+"int nombre;"
+],
+correcta:1
+},
+
+{
+tema:"Condicionales",
+pregunta:"¿Qué estructura permite tomar decisiones dependiendo de una condición?",
+opciones:[
+"for",
+"while",
+"if",
+"function"
+],
+correcta:2
+},
+
+{
+tema:"Condicionales",
+pregunta:"Si edad = 20, ¿qué mostrará el siguiente código?\nif(edad >=18){console.log('Mayor de edad');}",
+opciones:[
+"Menor de edad",
+"Mayor de edad",
+"Error",
+"No muestra nada"
+],
+correcta:1
+},
+
+{
+tema:"Ciclos",
+pregunta:"¿Cuál estructura se utiliza para repetir un bloque de código varias veces?",
+opciones:[
+"if",
+"switch",
+"for",
+"let"
+],
+correcta:2
+},
+
+{
+tema:"Ciclos",
+pregunta:"¿Qué ciclo continúa ejecutándose mientras una condición sea verdadera?",
+opciones:[
+"while",
+"else",
+"if",
+"const"
+],
+correcta:0
+},
+
+{
+tema:"Funciones",
+pregunta:"¿Cuál es el propósito principal de una función?",
+opciones:[
+"Guardar imágenes.",
+"Reutilizar un bloque de código.",
+"Crear variables automáticamente.",
+"Eliminar errores."
+],
+correcta:1
+},
+
+{
+tema:"Funciones",
+pregunta:"¿Cómo se declara una función en JavaScript?",
+opciones:[
+"func suma(){}",
+"function suma(){}",
+"crear suma(){}",
+"metodo suma(){}"
+],
+correcta:1
+}
+
+];
+
+let indice=0;
+let puntaje=0;
+let respondida=false;
+
+const tema=document.getElementById("tema");
+const pregunta=document.getElementById("pregunta");
+const opciones=document.getElementById("opciones");
+const boton=document.getElementById("siguiente");
+
+function cargarPregunta(){
+
+respondida=false;
+
+let actual=preguntas[indice];
+
+tema.innerHTML="Tema: "+actual.tema;
+
+pregunta.innerText=(indice+1)+". "+actual.pregunta;
+
+opciones.innerHTML="";
+
+actual.opciones.forEach((opcion,i)=>{
+
+let div=document.createElement("div");
+
+div.className="opcion";
+
+div.innerHTML=opcion;
+
+div.onclick=()=>seleccionar(div,i);
+
+opciones.appendChild(div);
+
+});
+
+}
+
+function seleccionar(elemento,indiceSeleccionado){
+
+if(respondida) return;
+
+respondida=true;
+
+const correcta=preguntas[indice].correcta;
+
+const lista=document.querySelectorAll(".opcion");
+
+lista.forEach((op,i)=>{
+
+if(i===correcta){
+
+op.classList.add("correcta");
+
+}
+
+});
+
+if(indiceSeleccionado===correcta){
+
+puntaje++;
+
+}else{
+
+elemento.classList.add("incorrecta");
+
+}
+
+}
+
+boton.onclick=function(){
+
+if(!respondida){
+
+alert("Debes seleccionar una respuesta.");
+
+return;
+
+}
+
+indice++;
+
+if(indice<preguntas.length){
+
+cargarPregunta();
+
+}else{
+
+mostrarResultado();
+
+}
+
+}
+
+function mostrarResultado(){
+
+document.getElementById("quiz").style.display="none";
+
+document.getElementById("resultado").style.display="block";
+
+document.getElementById("puntaje").innerHTML=
+"Puntaje: "+puntaje+" de "+preguntas.length;
+
+let porcentaje=(puntaje/preguntas.length)*100;
+
+let mensaje="";
+
+if(porcentaje>=90){
+
+mensaje="🏆 Excelente desempeño.";
+
+}else if(porcentaje>=70){
+
+mensaje="✅ Buen trabajo.";
+
+}else if(porcentaje>=50){
+
+mensaje="🙂 Puedes mejorar con más práctica.";
+
+}else{
+
+mensaje="📘 Continúa estudiando los temas.";
+
+}
+
+document.getElementById("mensaje").innerHTML=mensaje;
+
+}
+
+function reiniciar(){
+
+indice=0;
+puntaje=0;
+
+document.getElementById("resultado").style.display="none";
+
+document.getElementById("quiz").style.display="block";
+
+cargarPregunta();
+
+}
+
+cargarPregunta();
+
+</script>
+
+</body>
+</html>

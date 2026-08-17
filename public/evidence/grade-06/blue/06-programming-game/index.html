@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego de Programación</title>
+
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(to right,#4facfe,#00f2fe);
+        margin:0;
+        padding:0;
+    }
+
+    .contenedor{
+        width:80%;
+        max-width:700px;
+        margin:40px auto;
+        background:white;
+        padding:20px;
+        border-radius:15px;
+        box-shadow:0px 0px 15px rgba(0,0,0,0.3);
+    }
+
+    h1{
+        text-align:center;
+        color:#1d3557;
+    }
+
+    .pregunta{
+        margin-bottom:25px;
+        padding:15px;
+        border-radius:10px;
+        background:#f4f4f4;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
+        background:#1d3557;
+        color:white;
+        border:none;
+        border-radius:8px;
+        font-size:18px;
+        cursor:pointer;
+    }
+
+    button:hover{
+        background:#457b9d;
+    }
+
+    #resultado{
+        margin-top:20px;
+        text-align:center;
+        font-size:22px;
+        font-weight:bold;
+    }
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<div class="contenedor">
+
+<h1>🎮 Juego de Programación</h1>
+
+<form id="quiz">
+
+<div class="pregunta">
+<p><b>1. ¿Qué palabra se utiliza para declarar una variable en JavaScript?</b></p>
+
+<label><input type="radio" name="p1" value="a"> print</label><br>
+<label><input type="radio" name="p1" value="b"> let</label><br>
+<label><input type="radio" name="p1" value="c"> echo</label>
+
+</div>
+
+<div class="pregunta">
+<p><b>2. ¿Qué estructura se usa para tomar decisiones?</b></p>
+
+<label><input type="radio" name="p2" value="a"> if</label><br>
+<label><input type="radio" name="p2" value="b"> while</label><br>
+<label><input type="radio" name="p2" value="c"> for</label>
+
+</div>
+
+<div class="pregunta">
+<p><b>3. ¿Cuál es un bucle en JavaScript?</b></p>
+
+<label><input type="radio" name="p3" value="a"> switch</label><br>
+<label><input type="radio" name="p3" value="b"> for</label><br>
+<label><input type="radio" name="p3" value="c"> if</label>
+
+</div>
+
+<div class="pregunta">
+<p><b>4. ¿Qué operador compara igualdad estricta?</b></p>
+
+<label><input type="radio" name="p4" value="a"> ==</label><br>
+<label><input type="radio" name="p4" value="b"> =</label><br>
+<label><input type="radio" name="p4" value="c"> ===</label>
+
+</div>
+
+<button type="button" onclick="calificar()">Ver Resultado</button>
+
+</form>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+// Variables
+let respuestasCorrectas = ["b","a","b","c"];
+
+function calificar(){
+
+    let puntaje = 0;
+
+    // Bucle FOR
+    for(let i=0; i<respuestasCorrectas.length; i++){
+
+        let respuesta = document.querySelector(
+            'input[name="p'+(i+1)+'"]:checked'
+        );
+
+        // Condicional IF
+        if(respuesta != null){
+
+            if(respuesta.value === respuestasCorrectas[i]){
+                puntaje++;
+            }
+
+        }
+
+    }
+
+    let mensaje = "";
+
+    // Condicionales
+    if(puntaje == 4){
+        mensaje = "🏆 ¡Excelente! Obtuviste 4/4.";
+    }
+    else if(puntaje >= 2){
+        mensaje = "👍 Buen trabajo. Puntaje: " + puntaje + "/4";
+    }
+    else{
+        mensaje = "📘 Sigue practicando. Puntaje: " + puntaje + "/4";
+    }
+
+    document.getElementById("resultado").innerHTML = mensaje;
+
+}
+
+</script>
+
+</body>
+</html><div class="integrantes">
+    <h3>Integrantes del Grupo</h3>
+    <p>👤 Daniel</p>
+    <p>👤 Thomas</p>
+</div><h1 id="titulo">🎮 Juego de Programación</h1>
+
+<h3 id="integrantesTitulo">Integrantes del Grupo</h3>
+
+<p id="nombre1">👤 Daniel</p>
+<p id="nombre2">👤 Thomas</p>
+
+<p id="preg1"><b>1. ¿Qué palabra se utiliza para declarar una variable en JavaScript?</b></p>

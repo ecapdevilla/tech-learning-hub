@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Automatizado ODS - Clasificación de Consumo de Agua</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    min-height:100vh;
+}
+
+header{
+    background:#0b1720;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,.4);
+}
+
+header h1{
+    font-size:2rem;
+    color:#4dd0e1;
+}
+
+header p{
+    margin-top:10px;
+    color:#d9f4f8;
+}
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:40px auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+}
+
+.card{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(10px);
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.card h2{
+    margin-bottom:20px;
+    color:#4dd0e1;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    margin-top:25px;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#00b894;
+    color:white;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#00a383;
+}
+
+#resultado{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:#102027;
+    line-height:1.8;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+table th{
+    background:#00b894;
+    padding:10px;
+}
+
+table td{
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.2);
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    margin-top:30px;
+    background:#081117;
+    color:#d2d2d2;
+}
+
+.badge{
+    display:inline-block;
+    background:#00b894;
+    padding:6px 12px;
+    border-radius:30px;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+@media(max-width:900px){
+.container{
+grid-template-columns:1fr;
+}
+}
+</style>
+
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+<header>
+
+<h1>🌍 Sistema Automatizado para el Uso Responsable del Agua</h1>
+
+<p>
+Proyecto orientado al cumplimiento del
+<strong>ODS 6 - Agua Limpia y Saneamiento</strong>.
+</p>
+
+<div class="badge">
+Sistema Inteligente de Evaluación de Consumo
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Registro de Consumo</h2>
+
+<label>Nombre del hogar o usuario</label>
+<input type="text" id="nombre" placeholder="Ejemplo: Familia Pérez">
+
+<label>Consumo diario de agua (Litros)</label>
+<input type="number" id="consumo" placeholder="Ingrese litros">
+
+<button onclick="evaluarConsumo()">
+Analizar Consumo
+</button>
+
+<div id="resultado"></div>
+
+</div>
+
+<div class="card">
+
+<h2>Historial de Evaluaciones</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Usuario</th>
+<th>Litros</th>
+<th>Clasificación</th>
+</tr>
+</thead>
+
+<tbody id="tablaDatos">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<footer>
+
+<h3>Equipo de Desarrollo</h3>
+
+<p>
+Ingenieros Desarrolladores del Proyecto
+</p>
+
+<p><strong>Adrian</strong></p>
+<p><strong>Jeronimo</strong></p>
+
+<br>
+
+<p>
+Este sistema automatizado utiliza estructuras
+<b>condicionales</b> y un <b>bucle</b> para analizar
+múltiples registros de consumo y promover el uso responsable del agua.
+</p>
+
+</footer>
+
+<script>
+
+let registros=[];
+
+function evaluarConsumo(){
+
+const nombre=document.getElementById("nombre").value.trim();
+const consumo=parseFloat(document.getElementById("consumo").value);
+
+if(nombre==="" || isNaN(consumo) || consumo<0){
+
+alert("Complete correctamente los datos.");
+
+return;
+
+}
+
+let clasificacion="";
+let recomendacion="";
+let color="";
+
+
+// ---------- CONDICIONALES ----------
+
+if(consumo<=100){
+
+clasificacion="Excelente";
+recomendacion="El consumo es eficiente. Continúe aplicando buenas prácticas.";
+color="#2ecc71";
+
+}
+else if(consumo<=200){
+
+clasificacion="Moderado";
+recomendacion="El consumo es aceptable, aunque puede optimizarse.";
+color="#f1c40f";
+
+}
+else{
+
+clasificacion="Alto";
+recomendacion="Se recomienda reducir el consumo mediante acciones de ahorro.";
+color="#e74c3c";
+
+}
+
+registros.push({
+nombre,
+consumo,
+clasificacion
+});
+
+// ---------- BUCLE ----------
+
+let tabla="";
+
+for(let i=0;i<registros.length;i++){
+
+tabla+=`
+<tr>
+<td>${registros[i].nombre}</td>
+<td>${registros[i].consumo} L</td>
+<td>${registros[i].clasificacion}</td>
+</tr>
+`;
+
+}
+
+document.getElementById("tablaDatos").innerHTML=tabla;
+
+let total=0;
+
+// ---------- SEGUNDO BUCLE ----------
+
+for(let i=0;i<registros.length;i++){
+
+total+=registros[i].consumo;
+
+}
+
+const promedio=(total/registros.length).toFixed(2);
+
+document.getElementById("resultado").innerHTML=`
+
+<h3 style="color:${color};">
+Resultado de la Evaluación
+</h3>
+
+<p><strong>Usuario:</strong> ${nombre}</p>
+
+<p><strong>Consumo:</strong> ${consumo} Litros</p>
+
+<p><strong>Clasificación:</strong> ${clasificacion}</p>
+
+<p><strong>Recomendación:</strong><br>${recomendacion}</p>
+
+<hr style="margin:15px 0;">
+
+<p><strong>Total de registros:</strong> ${registros.length}</p>
+
+<p><strong>Promedio general:</strong> ${promedio} Litros</p>
+
+`;
+
+document.getElementById("nombre").value="";
+document.getElementById("consumo").value="";
+
+}
+
+</script>
+
+</body>
+</html>
+0.

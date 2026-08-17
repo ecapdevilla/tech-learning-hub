@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sistema Inteligente de Clasificación de Residuos</title>
+
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:linear-gradient(135deg,#11998e,#38ef7d);
+    margin:0;
+    padding:20px;
+}
+
+
+.contenedor{
+
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.3);
+
+}
+
+
+h1{
+
+    text-align:center;
+    color:#145a32;
+
+}
+
+
+.equipo{
+
+    text-align:center;
+    font-size:18px;
+    color:#555;
+
+}
+
+
+.descripcion{
+
+    background:#eafaf1;
+    padding:15px;
+    border-radius:10px;
+
+}
+
+
+.pregunta{
+
+    background:#f4f6f7;
+    padding:15px;
+    margin:20px 0;
+    border-radius:12px;
+
+}
+
+
+.pregunta h3{
+
+    color:#196f3d;
+
+}
+
+
+label{
+
+    display:block;
+    padding:8px;
+    cursor:pointer;
+
+}
+
+
+label:hover{
+
+    background:#d5f5e3;
+    border-radius:5px;
+
+}
+
+
+button{
+
+    display:block;
+    margin:20px auto;
+    padding:12px 30px;
+    background:#148f77;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+
+}
+
+
+button:hover{
+
+    background:#0b5345;
+
+}
+
+
+#resultado{
+
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+
+}
+
+
+.correcto{
+
+    color:green;
+
+}
+
+
+.error{
+
+    color:red;
+
+}
+
+
+footer{
+
+    text-align:center;
+    margin-top:20px;
+    color:#555;
+
+}
+
+</style>
+
+
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+
+
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+
+<div class="contenedor">
+
+
+<h1>
+🤖 Sistema Inteligente de Clasificación de Residuos
+</h1>
+
+
+<div class="equipo">
+
+Proyecto realizado por:
+<br>
+<strong>Valentina y Salma</strong>
+
+</div>
+
+
+<br>
+
+
+<div class="descripcion">
+
+<p>
+Este sistema representa una solución tecnológica para una empresa dedicada
+a la clasificación automática de residuos. 
+El programa utiliza estructuras de programación como
+<strong>condicionales</strong> y <strong>bucles</strong>
+para tomar decisiones y repetir procesos automáticamente.
+</p>
+
+</div>
+
+
+
+<h2>Quiz tipo ICFES: Programación aplicada a residuos</h2>
+
+
+
+<form id="quiz">
+
+
+
+<div class="pregunta">
+
+<h3>
+1. Una empresa utiliza un sistema que identifica si un residuo es plástico,
+vidrio u orgánico mediante una condición. ¿Qué estructura de programación utiliza?
+</h3>
+
+
+<label>
+<input type="radio" name="p1" value="A">
+A. Bucle infinito
+</label>
+
+<label>
+<input type="radio" name="p1" value="B">
+B. Condicional if
+</label>
+
+<label>
+<input type="radio" name="p1" value="C">
+C. Variable constante
+</label>
+
+<label>
+<input type="radio" name="p1" value="D">
+D. Comentario
+</label>
+
+
+</div>
+
+
+
+
+<div class="pregunta">
+
+<h3>
+2. Un robot clasificador revisa 500 residuos uno por uno.
+¿Qué estructura permite repetir esta acción automáticamente?
+</h3>
+
+
+<label>
+<input type="radio" name="p2" value="A">
+A. Bucle
+</label>
+
+
+<label>
+<input type="radio" name="p2" value="B">
+B. Condición simple
+</label>
+
+
+<label>
+<input type="radio" name="p2" value="C">
+C. Texto
+</label>
+
+
+<label>
+<input type="radio" name="p2" value="D">
+D. Variable vacía
+</label>
+
+
+</div>
+
+
+
+
+<div class="pregunta">
+
+<h3>
+3. Un programa analiza un residuo y dice:
+"Si es reciclable, enviarlo al área verde".
+¿Qué concepto representa?
+</h3>
+
+
+<label>
+<input type="radio" name="p3" value="A">
+A. Condicional
+</label>
+
+
+<label>
+<input type="radio" name="p3" value="B">
+B. Bucle
+</label>
+
+
+<label>
+<input type="radio" name="p3" value="C">
+C. Archivo
+</label>
+
+
+<label>
+<input type="radio" name="p3" value="D">
+D. Base de datos
+</label>
+
+
+</div>
+
+
+
+
+<div class="pregunta">
+
+<h3>
+4. En un sistema automático de reciclaje se necesita repetir una tarea
+10 veces exactamente. ¿Cuál estructura es más adecuada?
+</h3>
+
+
+<label>
+<input type="radio" name="p4" value="A">
+A. if
+</label>
+
+
+<label>
+<input type="radio" name="p4" value="B">
+B. for
+</label>
+
+
+<label>
+<input type="radio" name="p4" value="C">
+B. else
+</label>
+
+
+<label>
+<input type="radio" name="p4" value="D">
+D. print
+</label>
+
+
+</div>
+
+
+
+
+<div class="pregunta">
+
+<h3>
+5. Un sensor detecta que un residuo tiene metal.
+El sistema ejecuta una acción específica solamente cuando ocurre esa condición.
+Esto corresponde a:
+</h3>
+
+
+<label>
+<input type="radio" name="p5" value="A">
+A. Condicional simple
+</label>
+
+
+<label>
+<input type="radio" name="p5" value="B">
+B. Bucle while
+</label>
+
+
+<label>
+<input type="radio" name="p5" value="C">
+C. Arreglo
+</label>
+
+
+<label>
+<input type="radio" name="p5" value="D">
+D. Función matemática
+</label>
+
+
+</div>
+
+
+
+
+<div class="pregunta">
+
+<h3>
+6. Si un programa usa un ciclo while y nunca cambia la condición,
+¿qué puede suceder?
+</h3>
+
+
+<label>
+<input type="radio" name="p6" value="A">
+A. Puede producir un ciclo infinito
+</label>
+
+
+<label>
+<input type="radio" name="p6" value="B">
+B. El programa se apaga
+</label>
+
+
+<label>
+<input type="radio" name="p6" value="C">
+C. Se borran los datos
+</label>
+
+
+<label>
+<input type="radio" name="p6" value="D">
+D. Cambia automáticamente de lenguaje
+</label>
+
+
+</div>
+
+
+
+
+<div class="pregunta">
+
+<h3>
+7. Una empresa crea un programa que revisa residuos hasta encontrar uno peligroso.
+¿Qué estructura sería útil para repetir la búsqueda?
+</h3>
+
+
+<label>
+<input type="radio" name="p7" value="A">
+A. while
+</label>
+
+
+<label>
+<input type="radio" name="p7" value="B">
+B. comentario
+</label>
+
+
+<label>
+<input type="radio" name="p7" value="C">
+C. variable fija
+</label>
+
+
+<label>
+<input type="radio" name="p7" value="D">
+D. etiqueta HTML
+</label>
+
+
+</div>
+
+
+
+<button type="button" onclick="calificar()">
+Evaluar sistema
+</button>
+
+
+</form>
+
+
+
+<div id="resultado"></div>
+
+
+
+<button onclick="reiniciar()">
+Nuevo intento
+</button>
+
+
+
+<footer>
+
+Sistema inteligente educativo de clasificación de residuos
+
+</footer>
+
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+function calificar(){
+
+
+let respuestas={
+
+p1:"B",
+p2:"A",
+p3:"A",
+p4:"B",
+p5:"A",
+p6:"A",
+p7:"A"
+
+};
+
+
+
+let puntos=0;
+
+
+for(let pregunta in respuestas){
+
+
+let respuesta=document.querySelector(
+'input[name="'+pregunta+'"]:checked'
+);
+
+
+
+if(respuesta && respuesta.value==respuestas[pregunta]){
+
+puntos++;
+
+}
+
+}
+
+
+
+let porcentaje=(puntos/7)*100;
+
+
+let resultado=document.getElementById("resultado");
+
+
+
+if(porcentaje>=80){
+
+
+resultado.innerHTML=
+"✅ Excelente. Sistema aprobado. Puntaje: "
++puntos+
+"/7 ("+porcentaje+"%)";
+
+
+resultado.className="correcto";
+
+
+}
+
+else if(porcentaje>=50){
+
+
+resultado.innerHTML=
+"⚠ Buen trabajo, pero puede mejorar. Puntaje: "
++puntos+
+"/7 ("+porcentaje+"%)";
+
+
+resultado.className="correcto";
+
+
+}
+
+else{
+
+
+resultado.innerHTML=
+"❌ Se requiere más práctica. Puntaje: "
++puntos+
+"/7 ("+porcentaje+"%)";
+
+
+resultado.className="error";
+
+
+}
+
+
+}
+
+
+
+
+function reiniciar(){
+
+
+document.getElementById("quiz").reset();
+
+document.getElementById("resultado").innerHTML="";
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>

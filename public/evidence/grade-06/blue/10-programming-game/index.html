@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego de Programación</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg,#4facfe,#00f2fe);
+        margin:0;
+        padding:0;
+    }
+
+    .contenedor{
+        width:80%;
+        max-width:700px;
+        margin:40px auto;
+        background:white;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0px 0px 15px rgba(0,0,0,.3);
+    }
+
+    h1{
+        text-align:center;
+        color:#0b4f6c;
+    }
+
+    .integrantes{
+        text-align:center;
+        background:#e8f4ff;
+        border:2px solid #0077cc;
+        border-radius:10px;
+        padding:10px;
+        margin-bottom:20px;
+        font-size:18px;
+        color:#003b5c;
+    }
+
+    .pregunta{
+        margin-bottom:20px;
+    }
+
+    h3{
+        color:#333;
+    }
+
+    button{
+        width:100%;
+        padding:15px;
+        background:#0077cc;
+        color:white;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+        font-size:18px;
+    }
+
+    button:hover{
+        background:#005fa3;
+    }
+
+    #resultado{
+        margin-top:20px;
+        font-size:22px;
+        text-align:center;
+        font-weight:bold;
+    }
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<div class="contenedor">
+
+<h1>🎮 Juego de Programación</h1>
+
+<div class="integrantes">
+    <strong>Integrantes del grupo:</strong><br>
+    Luis<br>
+    Santiago<br>
+    Effer
+</div>
+
+<form id="quiz">
+
+<div class="pregunta">
+<h3>1. ¿Qué se utiliza para guardar información en un programa?</h3>
+
+<label><input type="radio" name="p1" value="a"> Variable</label><br>
+<label><input type="radio" name="p1" value="b"> Pantalla</label><br>
+<label><input type="radio" name="p1" value="c"> Teclado</label>
+</div>
+
+<div class="pregunta">
+<h3>2. ¿Qué estructura permite tomar decisiones?</h3>
+
+<label><input type="radio" name="p2" value="a"> if</label><br>
+<label><input type="radio" name="p2" value="b"> print</label><br>
+<label><input type="radio" name="p2" value="c"> alert</label>
+</div>
+
+<div class="pregunta">
+<h3>3. ¿Cuál es un ejemplo de un bucle?</h3>
+
+<label><input type="radio" name="p3" value="a"> for</label><br>
+<label><input type="radio" name="p3" value="b"> else</label><br>
+<label><input type="radio" name="p3" value="c"> switch</label>
+</div>
+
+<div class="pregunta">
+<h3>4. ¿Qué hace un bucle?</h3>
+
+<label><input type="radio" name="p4" value="a"> Repite instrucciones</label><br>
+<label><input type="radio" name="p4" value="b"> Apaga la computadora</label><br>
+<label><input type="radio" name="p4" value="c"> Borra archivos</label>
+</div>
+
+<button type="button" onclick="calificar()">Enviar respuestas</button>
+
+</form>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+// Variable con las respuestas correctas
+const respuestasCorrectas = ["a","a","a","a"];
+
+function calificar(){
+
+    let respuestasUsuario = [];
+    let puntaje = 0;
+
+    // Bucle para obtener las respuestas
+    for(let i = 1; i <= 4; i++){
+
+        let opcion = document.querySelector('input[name="p' + i + '"]:checked');
+
+        if(opcion){
+            respuestasUsuario.push(opcion.value);
+        }else{
+            respuestasUsuario.push("");
+        }
+    }
+
+    // Bucle y condicional para comparar respuestas
+    for(let i = 0; i < respuestasCorrectas.length; i++){
+
+        if(respuestasUsuario[i] === respuestasCorrectas[i]){
+            puntaje++;
+        }
+
+    }
+
+    let mensaje = "";
+
+    // Condicionales para mostrar el resultado
+    if(puntaje === 4){
+        mensaje = "🏆 ¡Excelente! Obtuviste 4 de 4 respuestas correctas.";
+    }else if(puntaje >= 2){
+        mensaje = "👍 Buen trabajo. Obtuviste " + puntaje + " de 4 respuestas correctas.";
+    }else{
+        mensaje = "📚 Sigue practicando. Obtuviste " + puntaje + " de 4 respuestas correctas.";
+    }
+
+    document.getElementById("resultado").innerHTML = mensaje;
+
+ 

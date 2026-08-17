@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sistema Automatizado de Manejo de Residuos</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#dff6e4;
+    text-align:center;
+}
+.contenedor{
+    width:420px;
+    margin:40px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px gray;
+}
+select,button{
+    width:90%;
+    padding:10px;
+    margin:10px;
+}
+#estado{
+    font-size:18px;
+    margin-top:20px;
+    font-weight:bold;
+}
+</style>
+
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+<div class="contenedor">
+
+<h2>♻ Sistema Automatizado de Manejo de Residuos</h2>
+
+<p>Christopher</p>
+
+<select id="residuo">
+<option value="">Seleccionar...</option>
+<option>Botella Plástica</option>
+<option>Cartón</option>
+<option>Vidrio</option>
+<option>Lata</option>
+<option>Restos de Comida</option>
+<option>Pilas</option>
+<option>Medicamentos</option>
+</select>
+
+<button onclick="detectar()">Iniciar Sistema</button>
+
+<div id="estado"></div>
+
+</div>
+
+<script>
+
+function detectar(){
+
+let r=document.getElementById("residuo").value;
+let estado=document.getElementById("estado");
+
+if(r==""){
+estado.innerHTML="Seleccione un residuo.";
+return;
+}
+
+estado.innerHTML="🔍 Detectando residuo...";
+
+setTimeout(function(){
+
+if(r=="Botella Plástica"||r=="Cartón"||r=="Vidrio"||r=="Lata"){
+
+estado.innerHTML=
+"✅ Residuo identificado: <b>"+r+
+"</b><br>♻ Clasificación: Reciclable"+
+"<br>🤖 Brazo automático activado"+
+"<br>🟦 Depositar en el contenedor AZUL";
+
+}
+else if(r=="Restos de Comida"){
+
+estado.innerHTML=
+"✅ Residuo identificado: <b>"+r+
+"</b><br>🌱 Clasificación: Orgánico"+
+"<br>🤖 Brazo automático activado"+
+"<br>🟩 Depositar en el contenedor VERDE";
+
+}
+else{
+
+estado.innerHTML=
+"✅ Residuo identificado: <b>"+r+
+"</b><br>⚠ Clasificación: Peligroso"+
+"<br>🤖 Sistema de seguridad activado"+
+"<br>🟥 Enviar al contenedor especial";
+
+}
+
+},2000);
+
+}
+
+</script>
+
+</body>
+</html>

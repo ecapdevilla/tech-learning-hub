@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Automatizado ODS - Clasificación Inteligente de Residuos</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+    min-height:100vh;
+}
+
+header{
+    background:#0b1724;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 3px 15px rgba(0,0,0,.4);
+}
+
+header h1{
+    font-size:2rem;
+    margin-bottom:10px;
+}
+
+header p{
+    color:#cfd8dc;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:35px auto;
+}
+
+.card{
+    background:#ffffff;
+    color:#333;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.card h2{
+    color:#1565c0;
+    margin-bottom:15px;
+}
+
+.info{
+    background:#e3f2fd;
+    border-left:6px solid #1565c0;
+    padding:15px;
+    margin-bottom:25px;
+    border-radius:8px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #bbb;
+    font-size:16px;
+}
+
+button{
+    margin-top:25px;
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#1976d2;
+    color:white;
+    transition:.3s;
+}
+
+button:hover{
+    background:#0d47a1;
+}
+
+.resultado{
+    margin-top:30px;
+    background:#f4f9ff;
+    border-left:6px solid #2e7d32;
+    padding:20px;
+    border-radius:10px;
+    display:none;
+}
+
+.resultado h3{
+    color:#2e7d32;
+    margin-bottom:15px;
+}
+
+.lista{
+    margin-top:10px;
+    padding-left:20px;
+}
+
+.lista li{
+    margin:8px 0;
+}
+
+footer{
+    margin-top:40px;
+    background:#0b1724;
+    padding:25px;
+    text-align:center;
+}
+
+footer h3{
+    color:#90caf9;
+    margin-bottom:10px;
+}
+
+footer p{
+    margin:6px 0;
+    color:#ddd;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    color:white;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.verde{background:#2e7d32;}
+.amarillo{background:#f9a825;}
+.rojo{background:#c62828;}
+</style>
+
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+<header>
+    <h1>🌍 Sistema Automatizado para la Gestión Responsable de Residuos</h1>
+    <p>Contribución al Objetivo de Desarrollo Sostenible (ODS 12): Producción y Consumo Responsables.</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Evaluación Inteligente de Residuos</h2>
+
+<div class="info">
+Este sistema automatiza la clasificación de residuos utilizando
+<b>condicionales</b> y un <b>bucle</b> para generar recomendaciones ambientales
+que favorecen el reciclaje y la correcta disposición de los materiales.
+</div>
+
+<div class="grid">
+
+<div>
+<label>Cantidad de residuos registrados</label>
+<input type="number" id="cantidad" min="1" max="20" value="5">
+</div>
+
+<div>
+<label>Tipo principal de residuo</label>
+<select id="tipo">
+<option value="plastico">Plástico</option>
+<option value="papel">Papel</option>
+<option value="vidrio">Vidrio</option>
+<option value="organico">Orgánico</option>
+<option value="electronico">Electrónico</option>
+</select>
+</div>
+
+</div>
+
+<button onclick="analizarResiduos()">
+Analizar Sistema
+</button>
+
+<div class="resultado" id="resultado">
+
+<h3>Resultado del análisis</h3>
+
+<p id="mensaje"></p>
+
+<ul class="lista" id="lista"></ul>
+
+<div id="estado"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<h3>Equipo de Ingeniería y Desarrollo</h3>
+
+<p><strong>Brisa Corrales</strong> — Ingeniera Desarrolladora del Proyecto</p>
+
+<p><strong>Juliana Mulford</strong> — Ingeniera Desarrolladora del Proyecto</p>
+
+<p><strong>Valerie Vidal</strong> — Ingeniera Desarrolladora del Proyecto</p>
+
+<br>
+
+<p><strong>Proyecto Académico</strong></p>
+<p>Sistema Automatizado basado en HTML, CSS y JavaScript.</p>
+<p>Aplicación de estructuras de control (Condicionales y Bucles) para resolver una problemática relacionada con los Objetivos de Desarrollo Sostenible (ODS).</p>
+
+</footer>
+
+<script>
+
+function analizarResiduos(){
+
+    const cantidad = parseInt(document.getElementById("cantidad").value);
+    const tipo = document.getElementById("tipo").value;
+
+    let lista = document.getElementById("lista");
+    lista.innerHTML="";
+
+    let mensaje="";
+    let nivel="";
+    let clase="";
+
+    // ------------------------
+    // CONDICIONALES
+    // ------------------------
+
+    if(cantidad<=3){
+        nivel="Impacto Bajo";
+        clase="badge verde";
+    }
+    else if(cantidad<=7){
+        nivel="Impacto Medio";
+        clase="badge amarillo";
+    }
+    else{
+        nivel="Impacto Alto";
+        clase="badge rojo";
+    }
+
+    if(tipo==="plastico"){
+        mensaje="Se recomienda separar el plástico y enviarlo a centros de reciclaje para reducir la contaminación ambiental.";
+    }
+    else if(tipo==="papel"){
+        mensaje="El papel puede reciclarse y reutilizarse, disminuyendo la tala de árboles.";
+    }
+    else if(tipo==="vidrio"){
+        mensaje="El vidrio puede reciclarse infinitamente sin perder calidad.";
+    }
+    else if(tipo==="organico"){
+        mensaje="Los residuos orgánicos pueden convertirse en compost para fertilizar suelos.";
+    }
+    else{
+        mensaje="Los residuos electrónicos deben entregarse en puntos autorizados para evitar contaminación por metales pesados.";
+    }
+
+    // ------------------------
+    // BUCLE
+    // ------------------------
+
+    for(let i=1;i<=cantidad;i++){
+
+        let item=document.createElement("li");
+
+        if(tipo==="plastico"){
+            item.textContent="Residuo "+i+": Depositar en contenedor amarillo.";
+        }
+
+        else if(tipo==="papel"){
+            item.textContent="Residuo "+i+": Depositar en contenedor azul.";
+        }
+
+        else if(tipo==="vidrio"){
+            item.textContent="Residuo "+i+": Depositar en contenedor verde.";
+        }
+
+        else if(tipo==="organico"){
+            item.textContent="Residuo "+i+": Llevar al área de compostaje.";
+        }
+
+        else{
+            item.textContent="Residuo "+i+": Llevar a un punto de recolección electrónica.";
+        }
+
+        lista.appendChild(item);
+
+    }
+
+    document.getElementById("mensaje").innerHTML="<strong>Recomendación:</strong> "+mensaje;
+
+    document.getElementById("estado").innerHTML=
+    "<br><strong>Nivel del sistema:</strong> <span class='"+clase+"'>"+nivel+"</span>";
+
+    document.getElementById("resultado").style.display="block";
+
+}
+
+</script>
+
+</body>
+</html>

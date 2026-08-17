@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventura Verde: Taller de Programación en Scratch</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #81c784;
+            --accent: #ffb74d;
+            --dark: #1b5e20;
+            --light: #f1f8e9;
+            --text-color: #333333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid var(--secondary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .section-card {
+            background: #fafafa;
+            border-left: 6px solid var(--primary);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: #e8f5e9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        /* Interactive Mission Section */
+        .mission-box {
+            background: #fff3e0;
+            border: 2px dashed var(--accent);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .mission-box h2 {
+            color: #e65100;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.1s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background-color: #fb8c00;
+            transform: translateY(-2px);
+        }
+
+        #team-output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #ffe0b2;
+            text-align: left;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9em;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+    </style>
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<div class="container">
+    <header>
+        <h1>🌱 Misión Tecnológica: Programación y Ambiente</h1>
+        <p>Aprende Scratch resolviendo los retos de nuestro entorno natural</p>
+    </header>
+
+    <div class="section-card">
+        <h2>1. ¿Qué es la programación y cómo funciona Scratch?</h2>
+        <p>La programación consiste en darle instrucciones claras y ordenadas a una computadora para que ejecute tareas específicas. <strong>Scratch</strong> es un entorno de programación visual basado en bloques que te permite arrastrar y encajar piezas de código (como piezas de Lego) para dar vida a personajes, historias y videojuegos de forma intuitiva.</p>
+    </div>
+
+    <div class="section-card">
+        <h2>2. Estructuras Básicas</h2>
+        <ul>
+            <li><strong>Variables:</strong> Contenedores para almacenar datos que cambian (ej. <span class="highlight">puntuación</span>, <span class="highlight">vidas</span>, <span class="highlight">nivel</span>).</li>
+            <li><strong>Condicionales:</strong> Decisiones lógicas que evalúan situaciones (ej. <span class="highlight">si el objeto toca la basura, entonces suma 1 punto</span>).</li>
+            <li><strong>Ciclos:</strong> Bucles para repetir acciones múltiples veces o por siempre (ej. <span class="highlight">por siempre mover 10 pasos</span>).</li>
+            <li><strong>Listas:</strong> Estructuras para guardar colecciones ordenadas de varios elementos de datos.</li>
+        </ul>
+    </div>
+
+    <div class="section-card">
+        <h2>3. Cómo hacer un juego o herramienta interactiva</h2>
+        <p>Para construir tu proyecto interactivo necesitas combinar tres elementos clave: <strong>Eventos</strong> (ej. al presionar la bandera verde), <strong>Sensores</strong> (ej. detectar si un objeto toca otro) y <strong>Apariencia/Sonido</strong> para generar retroalimentación visual y auditiva inmediata al usuario.</p>
+    </div>
+
+    <div class="section-card">
+        <h2>4. Problemas del entorno y Ciencias Naturales</h2>
+        <p>Puedes usar la tecnología para proponer soluciones a problemáticas reales vinculadas con conceptos científicos:</p>
+        <ul>
+            <li>♻️ <strong>Reciclaje:</strong> Separar adecuadamente los residuos sólidos para disminuir la contaminación.</li>
+            <li>💧 <strong>Cuidado del agua:</strong> Concientizar sobre el uso racional y evitar el desperdicio del recurso hídrico.</li>
+            <li>⚡ <strong>Energía:</strong> Fomentar el ahorro eléctrico y el uso de fuentes de energía renovables.</li>
+            <li>🐾 <strong>Biodiversidad:</strong> Proteger y rescatar la flora y la fauna nativa de tu comunidad.</li>
+        </ul>
+    </div>
+
+    <div class="section-card" style="border-left-color: var(--accent);">
+        <h2>5. Reto de Creación por Equipos</h2>
+        <p>Cada equipo organizará su proyecto integrando obligatoriamente los siguientes apartados:</p>
+        <ul>
+            <li>✨ <strong>Nombre para el proyecto:</strong> Un título llamativo e innovador.</li>
+            <li>🎨 <strong>Boceto:</strong> Un esquema visual rápido de cómo se verá la interfaz del juego o herramienta en la pantalla.</li>
+            <li>🧩 <strong>Lista de bloques:</strong> Los comandos indispensables que necesitarás programar en Scratch.</li>
+            <li>📖 <strong>Historia o propósito:</strong> El trasfondo narrativo y el impacto ambiental positivo que busca generar el proyecto.</li>
+        </ul>
+    </div>
+
+    <div class="mission-box">
+        <h2>Generador de Ideas para Equipos</h2>
+        <p>Haz clic en el botón para simular la asignación de un reto ambiental aleatorio para tu equipo de trabajo:</p>
+        <button class="btn" onclick="generarReto()">¡Sortear Reto del Equipo!</button>
+        <div id="team-output"></div>
+    </div>
+</div>
+
+<footer>
+    Taller educativo de programación visual y conciencia ambiental.
+</footer>
+
+<script>
+    function generarReto() {
+        const retos = [
+            {
+                tema: "💧 Cuidado del Agua",
+                nombre: "Guardián de la Tubería",
+                boceto: "Un personaje que debe reparar fugas de agua antes de que el tanque se vacíe.",
+                bloques: "[al presionar bandera verde], [por siempre], [si <tocando [fuga]> entonces], [cambiar [agua] por -1]",
+                historia: "Ayuda a la ciudad a detener el desperdicio masivo de agua potable cerrando las llaves a tiempo."
+            },
+            {
+                tema: "♻️ Reciclaje",
+                nombre: "Eco-Catch: Cazadores de Plástico",
+                boceto: "Objetos cayendo del cielo que el usuario debe arrastrar al contenedor correcto de reciclaje.",
+                bloques: "[al presionar tecla [espacio]], [repetir hasta que], [si <posición y < -150> entonces], [decir [¡Recicla!] por 2 s]",
+                historia: "Un simpático robot recolector necesita limpiar el parque de su comunidad antes de que se contamine por completo."
+            },
+            {
+                tema: "⚡ Energía",
+                nombre: "Aventura Solar",
+                boceto: "Un panel solar móvil que debe capturar rayos de energía evitando nubes grises.",
+                bloques: "[al presionar [flecha derecha]], [apuntar en dirección 90], [si <tocando [nube]> entonces], [cambiar [energía] por -5]",
+                historia: "Demuestra la importancia de aprovechar los paneles solares para iluminar una ciudad ecológica."
+            },
+            {
+                tema: "🐾 Biodiversidad",
+                nombre: "El Refugio del Oso de Anteojos",
+                boceto: "Un mapa interactivo donde haces clic en diferentes zonas para cuidar animales en peligro y plantar árboles.",
+                bloques: "[al hacer clic en este objeto], [cambiar disfraz a [feliz]], [adicionar [Árbol plantado] a (lista_bosque)]",
+                historia: "Los animales del bosque andino necesitan tu ayuda para recuperar su hábitat natural restaurando los árboles nativos."
+            }
+        ];
+
+        const seleccion = retos[Math.floor(Math.random() * retos.length)];
+        const outputDiv = document.getElementById('team-output');
+        
+        outputDiv.style.display = "block";
+        outputDiv.innerHTML = `
+            <h3>🎯 Reto Asignado: ${seleccion.tema}</h3>
+            <p><strong>Nombre del Proyecto:</strong> ${seleccion.nombre}</p>
+            <p><strong>Boceto:</strong> ${seleccion.boceto}</p>
+            <p><strong>Lista de Bloques Clave:</strong> <code>${seleccion.bloques}</code></p>
+            <p><strong>Historia / Propósito:</strong> ${seleccion.historia}</p>
+        `;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego de Programación</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#4facfe,#00f2fe);
+    margin:0;
+    padding:0;
+}
+
+.contenedor{
+    width:80%;
+    max-width:800px;
+    margin:40px auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,.3);
+}
+
+h1{
+    text-align:center;
+    color:#0d47a1;
+}
+
+.integrantes{
+    background:#e3f2fd;
+    border-left:5px solid #1565c0;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.idiomas{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.idiomas button{
+    width:auto;
+    margin:5px;
+    padding:10px 20px;
+}
+
+.pregunta{
+    margin:20px 0;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#1565c0;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0d47a1;
+}
+
+#resultado{
+    margin-top:20px;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<div class="contenedor">
+
+<h1 id="titulo">🎮 Juego de Programación</h1>
+
+<div class="idiomas">
+    <button onclick="cambiarIdioma('es')">🇪🇸 Español</button>
+    <button onclick="cambiarIdioma('en')">🇬🇧 English</button>
+    <button onclick="cambiarIdioma('fr')">🇫🇷 Français</button>
+</div>
+
+<div class="integrantes">
+<h2 id="grupo">Integrantes del Grupo</h2>
+<ul>
+<li>Jose</li>
+<li>Juan Diego</li>
+<li>Johan</li>
+<li>Daniela</li>
+</ul>
+</div>
+
+<p id="descripcion">
+Responde las siguientes preguntas sobre variables, condicionales y bucles.
+</p>
+
+<form>
+
+<div class="pregunta">
+<p id="q1"><strong>1. ¿Cuál es la palabra clave para declarar una variable en JavaScript?</strong></p>
+<input type="radio" name="p1" value="a"> if<br>
+<input type="radio" name="p1" value="b"> let<br>
+<input type="radio" name="p1" value="c"> while
+</div>
+
+<div class="pregunta">
+<p id="q2"><strong>2. ¿Qué estructura se utiliza para tomar decisiones?</strong></p>
+<input type="radio" name="p2" value="a"> for<br>
+<input type="radio" name="p2" value="b"> if<br>
+<input type="radio" name="p2" value="c"> console.log
+</div>
+
+<div class="pregunta">
+<p id="q3"><strong>3. ¿Qué bucle repite instrucciones un número determinado de veces?</strong></p>
+<input type="radio" name="p3" value="a"> for<br>
+<input type="radio" name="p3" value="b"> if<br>
+<input type="radio" name="p3" value="c"> let
+</div>
+
+<div class="pregunta">
+<p id="q4"><strong>4. ¿Cuál operador compara si dos valores son iguales?</strong></p>
+<input type="radio" name="p4" value="a"> =<br>
+<input type="radio" name="p4" value="b"> ==<br>
+<input type="radio" name="p4" value="c"> +
+</div>
+
+<button type="button" id="btn" onclick="calificar()">Calificar</button>
+
+</form>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+let idioma="es";
+
+const textos={
+
+es:{
+titulo:"🎮 Juego de Programación",
+grupo:"Integrantes del Grupo",
+descripcion:"Responde las siguientes preguntas sobre variables, condicionales y bucles.",
+q1:"1. ¿Cuál es la palabra clave para declarar una variable en JavaScript?",
+q2:"2. ¿Qué estructura se utiliza para tomar decisiones?",
+q3:"3. ¿Qué bucle repite instrucciones un número determinado de veces?",
+q4:"4. ¿Cuál operador compara si dos valores son iguales?",
+boton:"Calificar"
+},
+
+en:{
+titulo:"🎮 Programming Quiz",
+grupo:"Group Members",
+descripcion:"Answer the following questions about variables, conditionals and loops.",
+q1:"1. Which keyword is used to declare a variable in JavaScript?",
+q2:"2. Which structure is used to make decisions?",
+q3:"3. Which loop repeats instructions a fixed number of times?",
+q4:"4. Which operator compares whether two values are equal?",
+boton:"Check Answers"
+},
+
+fr:{
+titulo:"🎮 Quiz de Programmation",
+grupo:"Membres du Groupe",
+descripcion:"Répondez aux questions suivantes sur les variables, les conditions et les boucles.",
+q1:"1. Quel mot-clé permet de déclarer une variable en JavaScript ?",
+q2:"2. Quelle structure est utilisée pour prendre des décisions ?",
+q3:"3. Quelle boucle répète des instructions un nombre déterminé de fois ?",
+q4:"4. Quel opérateur compare si deux valeurs sont égales ?",
+boton:"Corriger"
+}
+
+};
+
+function cambiarIdioma(id){
+
+idioma=id;
+
+document.getElementById("titulo").innerHTML=textos[id].titulo;
+document.getElementById("grupo").innerHTML=textos[id].grupo;
+document.getElementById("descripcion").innerHTML=textos[id].descripcion;
+document.getElementById("q1").innerHTML="<strong>"+textos[id].q1+"</strong>";
+document.getElementById("q2").innerHTML="<strong>"+textos[id].q2+"</strong>";
+document.getElementById("q3").innerHTML="<strong>"+textos[id].q3+"</strong>";
+document.getElementById("q4").innerHTML="<strong>"+textos[id].q4+"</strong>";
+document.getElementById("btn").innerHTML=textos[id].boton;
+
+}
+
+function calificar(){
+
+let respuestasCorrectas=["b","b","a","b"];
+let respuestasUsuario=[];
+let puntaje=0;
+
+respuestasUsuario.push(document.querySelector('input[name="p1"]:checked')?.value);
+respuestasUsuario.push(document.querySelector('input[name="p2"]:checked')?.value);
+respuestasUsuario.push(document.querySelector('input[name="p3"]:checked')?.value);
+respuestasUsuario.push(document.querySelector('input[name="p4"]:checked')?.value);
+
+for(let i=0;i<respuestasCorrectas.length;i++){
+
+if(respuestasUsuario[i]==respuestasCorrectas[i]){
+puntaje++;
+}
+
+}
+
+let mensaje="";
+
+if(idioma=="es"){
+
+if(puntaje==4)
+mensaje="🏆 ¡Excelente! Obtuviste 4 de 4.";
+
+else if(puntaje>=2)
+mensaje="👍 Buen trabajo. Obtuviste "+puntaje+" de 4.";
+
+else
+mensaje="📚 Sigue practicando. Obtuviste "+puntaje+" de 4.";
+
+}
+
+if(idioma=="en"){
+
+if(puntaje==4)
+mensaje="🏆 Excellent! You scored 4 out of 4.";
+
+else if(puntaje>=2)
+mensaje="👍 Good job! You scored "+puntaje+" out of 4.";
+
+else
+mensaje="📚 Keep practicing! You scored "+puntaje+" out of 4.";
+
+}
+
+if(idioma=="fr"){
+
+if(puntaje==4)
+mensaje="🏆 Excellent ! Vous avez obtenu 4 sur 4.";
+
+else if(puntaje>=2)
+mensaje="👍 Bon travail ! Vous avez obtenu "+puntaje+" sur 4.";
+
+else
+mensaje="📚 Continuez à pratiquer ! Vous avez obtenu "+puntaje+" sur 4.";
+
+}
+
+document.getElementById("resultado").innerHTML=mensaje;
+
+}
+
+</script>
+
+</body>
+</html>

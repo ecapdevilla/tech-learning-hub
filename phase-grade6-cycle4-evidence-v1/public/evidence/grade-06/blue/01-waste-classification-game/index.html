@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juego de Reciclaje</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#d7f5d7;
+    text-align:center;
+}
+
+h1{
+    color:green;
+}
+
+#integrantes{
+    font-size:24px;
+    font-weight:bold;
+    color:#003366;
+    margin:20px;
+}
+
+#puntos{
+    font-size:30px;
+    margin:20px;
+    color:#000;
+}
+
+#objeto{
+    width:300px;
+    margin:auto;
+    padding:20px;
+    background:white;
+    border:3px solid black;
+    border-radius:15px;
+    font-size:35px;
+    font-weight:bold;
+}
+
+button{
+    width:220px;
+    height:80px;
+    font-size:22px;
+    margin:15px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+}
+
+#azul{
+    background:#1e88e5;
+}
+
+#verde{
+    background:#43a047;
+}
+
+#negra{
+    background:#212121;
+}
+
+#mensaje{
+    font-size:24px;
+    margin:20px;
+    height:40px;
+    font-weight:bold;
+}
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<h1>♻️ JUEGO DE CLASIFICACIÓN DE RESIDUOS ♻️</h1>
+
+<div id="integrantes">
+Integrantes:<br>
+Isabella<br>
+Sarah<br>
+Thaliana<br>
+Lucia
+</div>
+
+<div id="puntos">
+Puntos: 0
+</div>
+
+<div id="objeto"></div>
+
+<br>
+
+<button id="azul" onclick="elegir('azul')">
+🟦 Caneca Azul
+</button>
+
+<button id="verde" onclick="elegir('verde')">
+🟩 Caneca Verde
+</button>
+
+<button id="negra" onclick="elegir('negra')">
+⬛ Caneca Negra
+</button>
+
+<div id="mensaje"></div>
+
+<script>
+
+let puntos=0;
+
+let reciclables=[
+"Botella plástica",
+"Papel",
+"Cartón",
+"Lata",
+"Botella de vidrio",
+"Periódico",
+"Revista",
+"Caja",
+"Envase plástico",
+"Lata de gaseosa"
+];
+
+let organicos=[
+"Cáscara de plátano",
+"Manzana",
+"Hojas",
+"Cáscara de naranja",
+"Restos de comida",
+"Lechuga",
+"Cáscara de huevo",
+"Papa",
+"Flores",
+"Verduras"
+];
+
+let negros=[
+"Pañal",
+"Papel higiénico",
+"Servilleta usada",
+"Tapabocas",
+"Colilla",
+"Chicle",
+"Icopor sucio",
+"Empaque sucio",
+"Algodón",
+"Toalla higiénica"
+];
+
+let tipo="";
+let objeto="";
+
+function nuevoObjeto(){
+
+let numero=Math.floor(Math.random()*3);
+
+if(numero==0){
+
+tipo="azul";
+objeto=reciclables[Math.floor(Math.random()*reciclables.length)];
+
+}
+
+else if(numero==1){
+
+tipo="verde";
+objeto=organicos[Math.floor(Math.random()*organicos.length)];
+
+}
+
+else{
+
+tipo="negra";
+objeto=negros[Math.floor(Math.random()*negros.length)];
+
+}
+
+document.getElementById("objeto").innerHTML=objeto;
+
+}
+
+nuevoObjeto();
+
+function elegir(caneca){
+
+let mensaje="";
+
+if(caneca==tipo){
+
+puntos+=10;
+mensaje="✅ ¡Correcto! +10 puntos";
+
+}
+
+else{
+
+puntos-=5;
+
+if(tipo=="azul"){
+mensaje="❌ Error. Va en la CANECA AZUL.";
+}
+
+if(tipo=="verde"){
+mensaje="❌ Error. Va en la CANECA VERDE.";
+}
+
+if(tipo=="negra"){
+mensaje="❌ Error. Va en la CANECA NEGRA.";
+}
+
+}
+
+document.getElementById("puntos").innerHTML="Puntos: "+puntos;
+
+document.getElementById("mensaje").innerHTML=mensaje;
+
+setTimeout(function(){
+
+document.getElementById("mensaje").innerHTML="";
+nuevoObjeto();
+
+},1500);
+
+}
+
+</script>
+
+</body>
+</html>

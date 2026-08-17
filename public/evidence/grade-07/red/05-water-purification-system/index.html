@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Automatizado de Purificación de Agua | ODS 6</title>
+    <style>
+        :root {
+            --primary-color: #0077b6;
+            --secondary-color: #03045e;
+            --accent-color: #00b4d8;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        .team-card {
+            background-color: var(--card-bg);
+            border-left: 5px solid var(--accent-color);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .team-card h3 {
+            color: var(--secondary-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-card p {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-start {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-start:hover {
+            background-color: #218376;
+        }
+
+        .btn-stop {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-stop:hover {
+            background-color: #d65a3c;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .bg-normal { background-color: var(--success-color); }
+        .bg-warning { background-color: var(--warning-color); color: #333; }
+        .bg-danger { background-color: var(--danger-color); }
+
+        .log-container {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .log-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+        }
+
+        .log-item {
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+    </style>
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+    <header>
+        <h1>Planta Automatizada de Tratamiento de Agua</h1>
+        <p>ODS 6: Agua Limpia y Saneamiento | Monitoreo y Dosificación en Tiempo Real</p>
+    </header>
+
+    <div class="container">
+        <!-- Panel de Desarrolladores -->
+        <div class="team-card">
+            <h3>Ingenieros Desarrolladores del Proyecto:</h3>
+            <p>Sebastian &bull; Diego</p>
+        </div>
+
+        <!-- Controles del Bucle -->
+        <div class="controls">
+            <button id="btnStart" class="btn-start" onclick="iniciarAutomata()">Iniciar Monitoreo Automatizado</button>
+            <button id="btnStop" class="btn-stop" onclick="detenerAutomata()" disabled>Detener Sistema</button>
+        </div>
+
+        <!-- Panel de Lecturas y Decisiones -->
+        <div class="dashboard">
+            <div class="card">
+                <h2>Sensores de Entrada</h2>
+                <div class="metric">
+                    <span>Turbidez (NTU):</span>
+                    <span id="valTurbidez" class="metric-value">0.0</span>
+                </div>
+                <div class="metric">
+                    <span>Nivel de pH:</span>
+                    <span id="valPH" class="metric-value">0.0</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Actuadores Automatizados</h2>
+                <div class="metric">
+                    <span>Válvula de Agua:</span>
+                    <span id="statusValvula" class="status-badge bg-normal">Cerrada</span>
+                </div>
+                <div class="metric">
+                    <span>Dosificador Cloro:</span>
+                    <span id="statusCloro" class="status-badge bg-normal">Inactivo</span>
+                </div>
+                <div class="metric">
+                    <span>Filtro UV:</span>
+                    <span id="statusUV" class="status-badge bg-normal">Apagado</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registro de Eventos -->
+        <div class="log-container">
+            <h2>Historial de Decisiones (Consola del Sistema)</h2>
+            <ul id="logList" class="log-list">
+                <li class="log-item">[Sistema en espera. Presione 'Iniciar Monitoreo']</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Sistema de Gestión Hídrica - Soluciones de Ingeniería para el Desarrollo Sostenible
+    </footer>
+
+    <script>
+        // Variables de control global
+        let intervaloMonitoreo = null;
+        const maxRegistros = 10;
+
+        // Función principal del Autómata (Evaluación de condicionales)
+        function procesarCicloTratamiento() {
+            // 1. Simulación de lectura de datos de sensores
+            const turbidez = parseFloat((Math.random() * 15).toFixed(1)); // 0.0 - 15.0 NTU
+            const ph = parseFloat((Math.random() * (9 - 5) + 5).toFixed(1));   // 5.0 - 9.0 pH
+
+            // Actualizar interfaz con datos de sensores
+            document.getElementById('valTurbidez').innerText = turbidez;
+            document.getElementById('valPH').innerText = ph;
+
+            // Elementos DOM para actuadores
+            const statusValvula = document.getElementById('statusValvula');
+            const statusCloro = document.getElementById('statusCloro');
+            const statusUV = document.getElementById('statusUV');
+
+            let accionTomada = "";
+
+            // 2. Estructura Condicional para toma de decisiones (Algoritmo de Purificación)
+            if (turbidez > 10.0) {
+                // Agua muy turbia: Se detiene el paso para evitar saturación de filtros
+                statusValvula.innerText = "Bloqueada";
+                statusValvula.className = "status-badge bg-danger";
+
+                statusCloro.innerText = "Inactivo";
+                statusCloro.className = "status-badge bg-normal";
+
+                statusUV.innerText = "Apagado";
+                statusUV.className = "status-badge bg-normal";
+
+                accionTomada = "ALERTA: Turbidez crítica (" + turbidez + " NTU). Entrada bloqueada.";
+            } 
+            else if (ph < 6.5 || ph > 8.5) {
+                // pH fuera de rango seguro: Requiere corrección y filtrado UV preventivo
+                statusValvula.innerText = "Flujo Restringido";
+                statusValvula.className = "status-badge bg-warning";
+
+                statusCloro.innerText = "Inyección Neutra";
+                statusCloro.className = "status-badge bg-warning";
+
+                statusUV.innerText = "Encendido";
+                statusUV.className = "status-badge bg-normal";
+
+                accionTomada = "ADVERTENCIA: pH descompensado (" + ph + "). Regulando y desinfectando.";
+            } 
+            else {
+                // Parámetros óptimos para potabilización
+                statusValvula.innerText = "Abierta (100%)";
+                statusValvula.className = "status-badge bg-normal";
+
+                statusCloro.innerText = "Dosificación Estándar";
+                statusCloro.className = "status-badge bg-normal";
+
+                statusUV.innerText = "Encendido";
+                statusUV.className = "status-badge bg-normal";
+
+                accionTomada = "OK: Agua segura (NTU: " + turbidez + ", pH: " + ph + "). Distribución activa.";
+            }
+
+            // Registrar acción en el historial
+            agregarLog(accionTomada);
+        }
+
+        // Bucle continuo de monitoreo usando setInterval
+        function iniciarAutomata() {
+            document.getElementById('btnStart').disabled = true;
+            document.getElementById('btnStop').disabled = false;
+            
+            agregarLog("INICIO: Sistema en bucle de monitoreo (Intervalo: 3s)...");
+
+            // Ejecuta el primer ciclo inmediatamente
+            procesarCicloTratamiento();
+
+            // Configuración del bucle de repetición
+            intervaloMonitoreo = setInterval(function() {
+                procesarCicloTratamiento();
+            }, 3000);
+        }
+
+        function detenerAutomata() {
+            // Detener el bucle
+            clearInterval(intervaloMonitoreo);
+            intervaloMonitoreo = null;
+
+            document.getElementById('btnStart').disabled = false;
+            document.getElementById('btnStop').disabled = true;
+
+            // Restablecer estados visuales
+            document.getElementById('statusValvula').innerText = "Cerrada";
+            document.getElementById('statusValvula').className = "status-badge bg-normal";
+            document.getElementById('statusCloro').innerText = "Inactivo";
+            document.getElementById('statusCloro').className = "status-badge bg-normal";
+            document.getElementById('statusUV').innerText = "Apagado";
+            document.getElementById('statusUV').className = "status-badge bg-normal";
+
+            agregarLog("PARADA: Bucle de monitoreo detenido por el usuario.");
+        }
+
+        // Función auxiliar para mantener la bitácora limpia
+        function agregarLog(mensaje) {
+            const logList = document.getElementById('logList');
+            const nuevoItem = document.createElement('li');
+            const timestamp = new Date().toLocaleTimeString();
+
+            nuevoItem.className = 'log-item';
+            nuevoItem.innerText = "[" + timestamp + "] " + mensaje;
+
+            logList.insertBefore(nuevoItem, logList.firstChild);
+
+            // Bucle simple de limpieza para mantener solo los últimos N registros en memoria visual
+            while (logList.children.length > maxRegistros) {
+                logList.removeChild(logList.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>

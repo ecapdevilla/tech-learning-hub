@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz de Programación</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:0;
+    background: linear-gradient(135deg, green, orange, red);
+    color:white;
+}
+
+.contenedor{
+    width:85%;
+    margin:20px auto;
+    background:rgba(0,0,0,0.65);
+    padding:20px;
+    border-radius:15px;
+}
+
+h1{
+    color:lime;
+    text-align:center;
+}
+
+h2{
+    color:orange;
+    text-align:center;
+}
+
+button{
+    background:orange;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    margin:5px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:red;
+}
+
+.pregunta{
+    background:white;
+    color:black;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.verde{
+    color:lime;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.naranja{
+    color:orange;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.rojo{
+    color:red;
+    font-size:22px;
+    font-weight:bold;
+}
+
+#resultado{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    color:yellow;
+}
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<div class="contenedor">
+
+<h1 id="titulo">Quiz de Variables, IF y Bucles</h1>
+
+<div style="text-align:center;">
+<button onclick="cambiarIdioma('es')">Español</button>
+<button onclick="cambiarIdioma('en')">English</button>
+<button onclick="cambiarIdioma('fr')">Français</button>
+</div>
+
+<form id="quiz"></form>
+
+<div style="text-align:center;">
+<button onclick="calificar(event)">Enviar examen</button>
+</div>
+
+<p id="resultado"></p>
+
+<hr>
+
+<h2 id="grupo">Integrantes del grupo</h2>
+
+<p class="verde">🟢 Halim</p>
+<p class="naranja">🟠 Juan Jose</p>
+<p class="rojo">🔴 Alejandro</p>
+
+</div>
+
+<script>
+
+const datos={
+
+es:[
+{
+p:"¿Qué es una variable?",
+o:["Un ciclo","Un espacio para guardar datos","Un botón"],
+r:1
+},
+{
+p:"¿Para qué sirve la sentencia IF?",
+o:["Tomar decisiones","Crear imágenes","Apagar el computador"],
+r:0
+},
+{
+p:"¿Cuál es un bucle?",
+o:["print","for","input"],
+r:1
+},
+{
+p:"¿Qué hace un ciclo while?",
+o:["Repite instrucciones mientras la condición sea verdadera","Cierra el programa","Borra archivos"],
+r:0
+}
+],
+
+en:[
+{
+p:"What is a variable?",
+o:["A loop","A place to store data","A button"],
+r:1
+},
+{
+p:"What is IF used for?",
+o:["Making decisions","Creating images","Turning off the computer"],
+r:0
+},
+{
+p:"Which one is a loop?",
+o:["print","for","input"],
+r:1
+},
+{
+p:"What does a while loop do?",
+o:["Repeats while a condition is true","Closes the program","Deletes files"],
+r:0
+}
+],
+
+fr:[
+{
+p:"Qu'est-ce qu'une variable ?",
+o:["Une boucle","Un espace pour stocker des données","Un bouton"],
+r:1
+},
+{
+p:"À quoi sert IF ?",
+o:["Prendre des décisions","Créer des images","Éteindre l'ordinateur"],
+r:0
+},
+{
+p:"Quelle est une boucle ?",
+o:["print","for","input"],
+r:1
+},
+{
+p:"Que fait une boucle while ?",
+o:["Répète tant que la condition est vraie","Ferme le programme","Supprime des fichiers"],
+r:0
+}
+]
+
+};
+
+let idioma="es";
+let intentos=0;
+
+function cargar(){
+
+let html="";
+
+datos[idioma].forEach((q,i)=>{
+
+html+=`
+<div class="pregunta">
+
+<h3>${i+1}. ${q.p}</h3>
+
+<label><input type="radio" name="p${i}" value="0"> ${q.o[0]}</label><br><br>
+
+<label><input type="radio" name="p${i}" value="1"> ${q.o[1]}</label><br><br>
+
+<label><input type="radio" name="p${i}" value="2"> ${q.o[2]}</label>
+
+</div>
+`;
+
+});
+
+document.getElementById("quiz").innerHTML=html;
+
+}
+
+function cambiarIdioma(id){
+
+idioma=id;
+
+const titulos={
+es:"Quiz de Variables, IF y Bucles",
+en:"Variables, IF and Loops Quiz",
+fr:"Quiz sur les Variables, IF et les Boucles"
+};
+
+const grupos={
+es:"Integrantes del grupo",
+en:"Group Members",
+fr:"Membres du Groupe"
+};
+
+document.getElementById("titulo").innerHTML=titulos[id];
+document.getElementById("grupo").innerHTML=grupos[id];
+document.getElementById("resultado").innerHTML="";
+
+cargar();
+
+}
+
+function calificar(event){
+
+event.preventDefault();
+
+intentos++;
+
+let puntos=0;
+
+datos[idioma].forEach((q,i)=>{
+
+let respuesta=document.querySelector('input[name="p'+i+'"]:checked');
+
+if(respuesta && Number(respuesta.value)==q.r){
+puntos++;
+}
+
+});
+
+if(puntos==4){
+
+document.getElementById("resultado").style.color="lime";
+
+document.getElementById("resultado").innerHTML=
+"🎉 ¡Felicidades!<br><br>Obtuviste <b>4/4</b>.<br>Lo lograste en <b>"+intentos+"</b> intento(s).";
+
+}else{
+
+document.getElementById("resultado").style.color="yellow";
+
+document.getElementById("resultado").innerHTML=
+"❌ Puntaje: <b>"+puntos+"/4</b><br><br>Intento: <b>"+intentos+
+"</b><br><br>Sigue intentando hasta obtener <b>4/4</b>.";
+
+}
+
+}
+
+cargar();
+
+</script>
+
+</body>
+</html>

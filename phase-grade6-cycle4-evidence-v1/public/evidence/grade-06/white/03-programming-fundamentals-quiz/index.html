@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz ICFES - Fundamentos de Programación</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+.contenedor{
+    background:white;
+    width:90%;
+    max-width:900px;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0px 10px 25px rgba(0,0,0,.3);
+}
+
+h1{
+    text-align:center;
+    color:#0b5394;
+}
+
+.subtitulo{
+    text-align:center;
+    margin:10px 0;
+    color:#555;
+}
+
+.integrantes{
+    background:#eef7ff;
+    border-left:6px solid #0b5394;
+    padding:15px;
+    margin:20px 0;
+    border-radius:10px;
+}
+
+.integrantes h3{
+    color:#0b5394;
+    margin-bottom:10px;
+}
+
+.tema{
+    color:#0b5394;
+    font-size:18px;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+.pregunta{
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+.opcion{
+    background:#f2f2f2;
+    padding:15px;
+    margin:12px 0;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+    border:2px solid transparent;
+}
+
+.opcion:hover{
+    background:#d8efff;
+    border-color:#0b5394;
+}
+
+.correcta{
+    background:#b8f5b8 !important;
+}
+
+.incorrecta{
+    background:#ffbcbc !important;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 25px;
+    font-size:16px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#0b5394;
+    color:white;
+}
+
+button:hover{
+    background:#083b6f;
+}
+
+#btnSiguiente{
+    display:none;
+}
+
+.resultado{
+    text-align:center;
+    font-size:24px;
+}
+
+.footer{
+    margin-top:20px;
+    text-align:center;
+    color:#777;
+}
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+<div class="contenedor">
+
+<h1>QUIZ TIPO ICFES</h1>
+<p class="subtitulo">Fundamentos de Programación</p>
+
+<div class="integrantes">
+<h3>Integrantes del Grupo</h3>
+<ul>
+<li>Matteo</li>
+<li>David</li>
+<li>Emmanuel</li>
+</ul>
+</div>
+
+<div id="quiz">
+
+<div class="tema" id="tema"></div>
+
+<div class="pregunta" id="pregunta"></div>
+
+<div id="opciones"></div>
+
+<center>
+<button id="btnSiguiente" onclick="siguientePregunta()">Siguiente</button>
+</center>
+
+</div>
+
+<div class="resultado" id="resultado"></div>
+
+<div class="footer">
+Proyecto Académico - Quiz Interactivo de Programación
+</div>
+
+</div>
+
+<script>
+
+const preguntas = [
+
+{
+tema:"Variables",
+pregunta:"¿Cuál es la función principal de una variable en programación?",
+opciones:[
+"Guardar datos para utilizarlos posteriormente.",
+"Mostrar imágenes.",
+"Conectar una base de datos.",
+"Crear páginas web."
+],
+correcta:0
+},
+
+{
+tema:"Variables",
+pregunta:"¿Cuál es la forma correcta de declarar una variable en JavaScript?",
+opciones:[
+"int edad = 20;",
+"let edad = 20;",
+"edad := 20;",
+"variable edad = 20;"
+],
+correcta:1
+},
+
+{
+tema:"Condicionales",
+pregunta:"¿Qué estructura permite tomar decisiones dependiendo de una condición?",
+opciones:[
+"for",
+"while",
+"if",
+"function"
+],
+correcta:2
+},
+
+{
+tema:"Condicionales",
+pregunta:"Si x = 15, ¿qué imprime el siguiente código?<br><br>if(x>10){console.log('Mayor');}",
+opciones:[
+"Mayor",
+"Menor",
+"15",
+"No imprime nada"
+],
+correcta:0
+},
+
+{
+tema:"Ciclos",
+pregunta:"¿Cuál ciclo se utiliza cuando conocemos el número de repeticiones?",
+opciones:[
+"if",
+"switch",
+"for",
+"case"
+],
+correcta:2
+},
+
+{
+tema:"Ciclos",
+pregunta:"¿Qué ciclo se ejecuta mientras una condición sea verdadera?",
+opciones:[
+"while",
+"function",
+"const",
+"else"
+],
+correcta:0
+},
+
+{
+tema:"Funciones",
+pregunta:"¿Para qué sirven las funciones?",
+opciones:[
+"Eliminar variables.",
+"Reutilizar bloques de código.",
+"Crear ciclos.",
+"Guardar imágenes."
+],
+correcta:1
+},
+
+{
+tema:"Funciones",
+pregunta:"¿Cómo se declara una función en JavaScript?",
+opciones:[
+"func saludo(){}",
+"function saludo(){}",
+"method saludo(){}",
+"create saludo(){}"
+],
+correcta:1
+},
+
+{
+tema:"Funciones",
+pregunta:"¿Qué palabra se utiliza para devolver un valor desde una función?",
+opciones:[
+"print",
+"break",
+"return",
+"stop"
+],
+correcta:2
+},
+
+{
+tema:"Ciclos",
+pregunta:"¿Cuál sería la salida del siguiente código?<br><br>for(let i=1;i<=3;i++){console.log(i);}",
+opciones:[
+"1 2 3",
+"0 1 2",
+"3 2 1",
+"1 2"
+],
+correcta:0
+}
+
+];
+
+let indice=0;
+let puntaje=0;
+
+const tema=document.getElementById("tema");
+const pregunta=document.getElementById("pregunta");
+const opciones=document.getElementById("opciones");
+const btn=document.getElementById("btnSiguiente");
+const resultado=document.getElementById("resultado");
+
+function cargarPregunta(){
+
+btn.style.display="none";
+
+tema.innerHTML="Tema: "+preguntas[indice].tema;
+
+pregunta.innerHTML=(indice+1)+". "+preguntas[indice].pregunta;
+
+opciones.innerHTML="";
+
+preguntas[indice].opciones.forEach((texto,i)=>{
+
+let div=document.createElement("div");
+div.className="opcion";
+div.innerHTML=texto;
+
+div.onclick=function(){
+seleccionarRespuesta(i,div);
+};
+
+opciones.appendChild(div);
+
+});
+
+}
+
+function seleccionarRespuesta(respuesta,elemento){
+
+let lista=document.querySelectorAll(".opcion");
+
+lista.forEach(x=>x.onclick=null);
+
+if(respuesta==preguntas[indice].correcta){
+
+elemento.classList.add("correcta");
+puntaje++;
+
+}else{
+
+elemento.classList.add("incorrecta");
+lista[preguntas[indice].correcta].classList.add("correcta");
+
+}
+
+btn.style.display="inline-block";
+
+}
+
+function siguientePregunta(){
+
+indice++;
+
+if(indice<preguntas.length){
+
+cargarPregunta();
+
+}else{
+
+mostrarResultado();
+
+}
+
+}
+
+function mostrarResultado(){
+
+document.getElementById("quiz").style.display="none";
+
+let porcentaje=(puntaje/preguntas.length)*100;
+
+let mensaje="";
+
+if(porcentaje>=90){
+
+mensaje="🏆 Excelente. Dominas muy bien los conceptos.";
+
+}else if(porcentaje>=70){
+
+mensaje="😊 Buen trabajo. Continúa practicando.";
+
+}else{
+
+mensaje="📚 Debes reforzar los temas vistos.";
+
+}
+
+resultado.innerHTML=`
+<h2>¡Quiz Finalizado!</h2>
+<br>
+<h1>${puntaje} / ${preguntas.length}</h1>
+<br>
+<p><strong>Porcentaje:</strong> ${porcentaje.toFixed(0)}%</p>
+<br>
+<h3>${mensaje}</h3>
+<br><br>
+<button onclick="location.reload()">Volver a Intentar</button>
+`;
+
+}
+
+cargarPregunta();
+
+</script>
+
+</body>
+</html>

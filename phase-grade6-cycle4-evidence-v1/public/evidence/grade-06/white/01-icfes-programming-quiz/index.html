@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz ICFES Programación</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    margin:0;
+    padding:20px;
+}
+
+.contenedor{
+    max-width:900px;
+    background:white;
+    margin:auto;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+h1{
+    text-align:center;
+    color:#1e3c72;
+}
+
+.integrantes{
+    text-align:center;
+    background:#eaf2ff;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.pregunta{
+    margin-bottom:25px;
+    padding:15px;
+    border-left:5px solid #2a5298;
+    background:#f7f7f7;
+    border-radius:8px;
+}
+
+.pregunta h3{
+    color:#333;
+}
+
+label{
+    display:block;
+    margin:8px;
+    cursor:pointer;
+}
+
+button{
+    display:block;
+    margin:20px auto;
+    padding:15px 30px;
+    background:#1e3c72;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2a5298;
+}
+
+#resultado{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    margin-top:20px;
+}
+
+.correcto{
+    color:green;
+}
+
+.incorrecto{
+    color:red;
+}
+
+footer{
+    text-align:center;
+    margin-top:20px;
+    color:white;
+}
+
+</style>
+
+<style>.tlh6bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh6bar a,.tlh6bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh6bar a{background:#10283f;color:#fff}.tlh6bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+
+<body><div class="tlh6bar"><a href="../index.html">← Learning Evidence</a><span>6th Grade · Student Work</span></div>
+
+
+<div class="contenedor">
+
+<h1>Quiz Tipo ICFES - Programación</h1>
+
+<div class="integrantes">
+Integrantes del grupo:<br>
+Samir<br>
+Santiago<br>
+Moises
+</div>
+
+
+<form id="quiz">
+
+
+<div class="pregunta">
+
+<h3>1. ¿Qué estructura permite tomar decisiones en un programa?</h3>
+
+<label>
+<input type="radio" name="p1" value="a">
+a) Variable
+</label>
+
+<label>
+<input type="radio" name="p1" value="b">
+b) Condicional
+</label>
+
+<label>
+<input type="radio" name="p1" value="c">
+c) Ciclo
+</label>
+
+<label>
+<input type="radio" name="p1" value="d">
+d) Función
+</label>
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3>2. ¿Cuál es un ejemplo de una estructura condicional?</h3>
+
+<label>
+<input type="radio" name="p2" value="a">
+a) if / else
+</label>
+
+<label>
+<input type="radio" name="p2" value="b">
+b) for
+</label>
+
+<label>
+<input type="radio" name="p2" value="c">
+c) while
+</label>
+
+<label>
+<input type="radio" name="p2" value="d">
+d) variable
+</label>
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3>3. ¿Para qué sirven los ciclos en programación?</h3>
+
+<label>
+<input type="radio" name="p3" value="a">
+a) Para repetir instrucciones
+</label>
+
+<label>
+<input type="radio" name="p3" value="b">
+b) Para guardar datos
+</label>
+
+<label>
+<input type="radio" name="p3" value="c">
+c) Para crear colores
+</label>
+
+<label>
+<input type="radio" name="p3" value="d">
+d) Para eliminar funciones
+</label>
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3>4. ¿Cuál de los siguientes es un ciclo?</h3>
+
+<label>
+<input type="radio" name="p4" value="a">
+a) if
+</label>
+
+<label>
+<input type="radio" name="p4" value="b">
+b) function
+</label>
+
+<label>
+<input type="radio" name="p4" value="c">
+c) while
+</label>
+
+<label>
+<input type="radio" name="p4" value="d">
+d) let
+</label>
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3>5. ¿Qué es una variable?</h3>
+
+<label>
+<input type="radio" name="p5" value="a">
+a) Un espacio donde se almacenan datos
+</label>
+
+<label>
+<input type="radio" name="p5" value="b">
+b) Un error del programa
+</label>
+
+<label>
+<input type="radio" name="p5" value="c">
+c) Un navegador web
+</label>
+
+<label>
+<input type="radio" name="p5" value="d">
+d) Un tipo de teclado
+</label>
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3>6. ¿Cuál palabra se utiliza para declarar una variable en JavaScript?</h3>
+
+<label>
+<input type="radio" name="p6" value="a">
+a) variable
+</label>
+
+<label>
+<input type="radio" name="p6" value="b">
+b) let
+</label>
+
+<label>
+<input type="radio" name="p6" value="c">
+c) guardar
+</label>
+
+<label>
+<input type="radio" name="p6" value="d">
+d) dato
+</label>
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3>7. ¿Qué es una función?</h3>
+
+<label>
+<input type="radio" name="p7" value="a">
+a) Un bloque de código que realiza una tarea
+</label>
+
+<label>
+<input type="radio" name="p7" value="b">
+b) Una imagen
+</label>
+
+<label>
+<input type="radio" name="p7" value="c">
+c) Un ciclo infinito
+</label>
+
+<label>
+<input type="radio" name="p7" value="d">
+d) Una variable vacía
+</label>
+
+</div>
+
+
+
+<div class="pregunta">
+
+<h3>8. ¿Cómo se llama una función en JavaScript?</h3>
+
+<label>
+<input type="radio" name="p8" value="a">
+a) repetir()
+</label>
+
+<label>
+<input type="radio" name="p8" value="b">
+b) llamar()
+</label>
+
+<label>
+<input type="radio" name="p8" value="c">
+c) nombreFuncion()
+</label>
+
+<label>
+<input type="radio" name="p8" value="d">
+d) ejecutarCodigo
+</label>
+
+</div>
+
+
+
+<button type="button" onclick="calcularResultado()">
+Finalizar Quiz
+</button>
+
+
+</form>
+
+
+<div id="resultado"></div>
+
+
+</div>
+
+
+
+<footer>
+Proyecto educativo - Quiz ICFES Programación
+</footer>
+
+
+
+<script>
+
+function calcularResultado(){
+
+let respuestasCorrectas = [
+"b",
+"a",
+"a",
+"c",
+"a",
+"b",
+"a",
+"c"
+];
+
+
+let puntaje = 0;
+
+
+for(let i=1;i<=8;i++){
+
+let respuesta = document.querySelector(
+'input[name="p'+i+'"]:checked'
+);
+
+
+if(respuesta){
+
+if(respuesta.value === respuestasCorrectas[i-1]){
+puntaje++;
+}
+
+}
+
+}
+
+
+let mensaje="";
+
+
+if(puntaje>=7){
+
+mensaje="Excelente desempeño. Dominas los conceptos principales.";
+
+}
+else if(puntaje>=5){
+
+mensaje="Buen trabajo. Sigue practicando para mejorar.";
+
+}
+else{
+
+mensaje="Necesitas reforzar los temas de programación.";
+
+}
+
+
+document.getElementById("resultado").innerHTML =
+"Obtuviste "+puntaje+" de 8 respuestas correctas.<br>"+mensaje;
+
+
+}
+
+
+</script>
+
+
+</body>
+</html>

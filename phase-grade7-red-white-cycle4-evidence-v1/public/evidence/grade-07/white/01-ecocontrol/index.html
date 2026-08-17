@@ -1,0 +1,316 @@
+<!DOCTYPE html><div class="integrantes">
+    <h3
+<html lang="es">
+<head><div class="equipo">
+    <h2>👥 Equipo de Trabajo</h2>
+    <ul>
+        <li>Sofia</li>
+        <li>Alejandro</li>
+        <li>Andrea</li>
+        <li>Juan Diego</li>
+    </ul>
+</div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoControl - Gestión Ambiental Empresarial</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#2e7d32,#81c784);
+    min-height:100vh;
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:white;
+    border-radius:15px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+h1{
+    text-align:center;
+    color:#1b5e20;
+}
+
+h2{
+    color:#2e7d32;
+    margin-bottom:10px;
+}
+
+.subtitulo{
+    text-align:center;
+    margin:15px 0 30px;
+    color:#555;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#f5fff5;
+    border-left:6px solid #43a047;
+    padding:20px;
+    border-radius:10px;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #bbb;
+}
+
+button{
+    margin-top:20px;
+    width:100%;
+    padding:12px;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:17px;
+}
+
+button:hover{
+    background:#1b5e20;
+}
+
+.resultado{
+    margin-top:20px;
+    background:#e8f5e9;
+    padding:15px;
+    border-radius:8px;
+    line-height:1.8;
+}
+
+.alerta{
+    background:#ffebee;
+    color:#c62828;
+    padding:12px;
+    border-radius:8px;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.ok{
+    background:#e8f5e9;
+    color:#2e7d32;
+    padding:12px;
+    border-radius:8px;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+footer{
+    margin-top:30px;
+    text-align:center;
+    color:#666;
+}
+
+#fecha{
+    font-weight:bold;
+    color:#2e7d32;
+}
+</style>
+<style>.tlh7bar{max-width:1100px;margin:10px auto;padding:0 12px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-family:Segoe UI,Arial}.tlh7bar a,.tlh7bar span{padding:9px 13px;border-radius:999px;font-weight:900;text-decoration:none}.tlh7bar a{background:#10283f;color:#fff}.tlh7bar span{background:#edf7ff;color:#10283f;border:1px solid #cde3ef}</style></head>
+
+<body><div class="tlh7bar"><a href="../index.html">← Learning Evidence</a><span>7th Grade · Technical Evidence</span></div>
+
+<div class="container">
+
+<h1>🌱 EcoControl Empresarial</h1>
+
+<p class="subtitulo">
+Aplicación automatizada para monitorear el consumo de recursos y promover prácticas sostenibles.
+</p>
+
+<div class="grid">
+
+<div class="card">
+
+<h2>Registro Diario</h2>
+
+<label>Consumo de Energía (kWh)</label>
+<input type="number" id="energia">
+
+<label>Consumo de Agua (Litros)</label>
+<input type="number" id="agua">
+
+<label>Papel Utilizado (Hojas)</label>
+<input type="number" id="papel">
+
+<label>Residuos Reciclados (Kg)</label>
+<input type="number" id="reciclaje">
+
+<button onclick="analizar()">
+Analizar Impacto Ambiental
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Resultados Automáticos</h2>
+
+<div id="salida" class="resultado">
+
+Ingrese la información para generar el reporte ambiental.
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>Fecha del reporte: <span id="fecha"></span></p>
+
+</footer>
+
+</div>
+
+<script>
+
+document.getElementById("fecha").innerHTML=new Date().toLocaleDateString();
+
+function analizar(){
+
+let energia=parseFloat(document.getElementById("energia").value)||0;
+let agua=parseFloat(document.getElementById("agua").value)||0;
+let papel=parseFloat(document.getElementById("papel").value)||0;
+let reciclaje=parseFloat(document.getElementById("reciclaje").value)||0;
+
+let ahorro=0;
+let recomendaciones=[];
+
+if(energia<500){
+ahorro+=25;
+}else{
+recomendaciones.push("Reducir el consumo eléctrico apagando equipos que no estén en uso.");
+}
+
+if(agua<1000){
+ahorro+=25;
+}else{
+recomendaciones.push("Optimizar el uso del agua e instalar dispositivos ahorradores.");
+}
+
+if(papel<300){
+ahorro+=25;
+}else{
+recomendaciones.push("Disminuir impresiones y utilizar documentos digitales.");
+}
+
+if(reciclaje>=50){
+ahorro+=25;
+}else{
+recomendaciones.push("Incrementar el reciclaje de papel, plástico y vidrio.");
+}
+
+let nivel="";
+let color="";
+
+if(ahorro>=75){
+nivel="Excelente";
+color="ok";
+}
+else if(ahorro>=50){
+nivel="Bueno";
+color="ok";
+}
+else{
+nivel="Debe Mejorar";
+color="alerta";
+}
+
+let salida=`
+<h3>Reporte Ambiental</h3>
+
+<p><b>Energía:</b> ${energia} kWh</p>
+
+<p><b>Agua:</b> ${agua} Litros</p>
+
+<p><b>Papel:</b> ${papel} hojas</p>
+
+<p><b>Reciclaje:</b> ${reciclaje} Kg</p>
+
+<hr>
+
+<p><b>Puntaje Ambiental:</b> ${ahorro}%</p>
+
+<div class="${color}">
+Nivel de sostenibilidad: ${nivel}
+</div>
+
+`;
+
+if(recomendaciones.length>0){
+
+salida+="<h3>Recomendaciones</h3><ul>";
+
+recomendaciones.forEach(r=>{
+salida+=`<li>${r}</li>`;
+});
+
+salida+="</ul>";
+
+}else{
+
+salida+=`
+<div class="ok">
+🎉 Excelente trabajo. La empresa está aplicando buenas prácticas ambientales.
+</div>
+`;
+
+}
+
+document.getElementById("salida").innerHTML=salida;
+
+}
+
+// Automatización cada 15 segundos
+
+setInterval(function(){
+
+const energia=document.getElementById("energia").value;
+
+const agua=document.getElementById("agua").value;
+
+const papel=document.getElementById("papel").value;
+
+const reciclaje=document.getElementById("reciclaje").value;
+
+if(energia && agua && papel && reciclaje){
+
+analizar();
+
+}
+
+},15000);
+
+</script>
+
+</body>
+</html>
