@@ -91,6 +91,7 @@ export default function PlayerRoom({
   const [player, setPlayer] = useState<LivePlayer | null>(null);
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(PLAYER_AVATARS[0]);
+  const [joinStep, setJoinStep] = useState<"avatar" | "name">("avatar");
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("Looking for room…");
@@ -580,40 +581,73 @@ export default function PlayerRoom({
       <main className="live-shell">
         <section className="live-join-card">
           <span className="live-kicker">ROOM {pin}</span>
-          <h1>Choose your player name</h1>
-          <p>Use your first name only.</p>
 
-          <form onSubmit={join} className="live-player-join-form">
-            <div className="live-avatar-picker">
-              {PLAYER_AVATARS.map((avatar) => (
-                <button
-                  key={avatar}
-                  type="button"
-                  className={
-                    selectedAvatar === avatar
-                      ? "live-avatar-option live-avatar-option-active"
-                      : "live-avatar-option"
-                  }
-                  onClick={() => setSelectedAvatar(avatar)}
-                  aria-label={`Select avatar ${avatar}`}
-                >
-                  {avatar}
-                </button>
-              ))}
-            </div>
+          {joinStep === "avatar" ? (
+            <>
+              <h1>Choose your avatar</h1>
+              <p>Select the character you want to use in the battle.</p>
 
-            <input
-              className="live-name-input"
-              maxLength={24}
-              autoComplete="off"
-              placeholder="First name"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-            <button className="live-btn live-btn-primary">
-              Enter Lobby
-            </button>
-          </form>
+              <div className="live-avatar-picker live-avatar-picker-large">
+                {PLAYER_AVATARS.map((avatar) => (
+                  <button
+                    key={avatar}
+                    type="button"
+                    className={
+                      selectedAvatar === avatar
+                        ? "live-avatar-option live-avatar-option-active"
+                        : "live-avatar-option"
+                    }
+                    onClick={() => setSelectedAvatar(avatar)}
+                    aria-label={`Select avatar ${avatar}`}
+                  >
+                    {avatar}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="live-btn live-btn-primary"
+                onClick={() => setJoinStep("name")}
+              >
+                Continue
+              </button>
+            </>
+          ) : (
+            <>
+              <h1>Choose your player name</h1>
+              <p>Use your first name only.</p>
+
+              <form onSubmit={join} className="live-player-join-form">
+                <div className="live-selected-avatar-wrap">
+                  <span className="live-selected-avatar-label">Selected avatar</span>
+                  <div className="live-selected-avatar">{selectedAvatar}</div>
+                </div>
+
+                <input
+                  className="live-name-input"
+                  maxLength={24}
+                  autoComplete="off"
+                  placeholder="First name"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                />
+
+                <div className="live-form-actions">
+                  <button
+                    type="button"
+                    className="live-btn"
+                    onClick={() => setJoinStep("avatar")}
+                  >
+                    Back
+                  </button>
+                  <button className="live-btn live-btn-primary">
+                    Enter Lobby
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
 
           {message && <p className="live-status-message">{message}</p>}
         </section>

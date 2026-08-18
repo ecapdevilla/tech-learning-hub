@@ -878,8 +878,7 @@ a {
 .live-connection-connected{background:rgba(15,112,77,.9);color:#dffff3}
 .live-connection-connecting,.live-connection-reconnecting{background:rgba(146,99,17,.92);color:#fff4ce}
 .live-connection-offline,.live-connection-error{background:rgba(126,43,50,.94);color:#ffe5e8}
-.live-connection button{border:0;border-radius:999px;padding:5px 9px;background:#fff;color:#17324a;font-weight:900;cursor:pointer}
-.live-status-message{margin-top:14px;padding:10px 12px;border-radius:11px;background:rgba(255,255,255,.1);color:#dceef8;font-size:.9rem;text-align:center}
+.live-connection button{border:0;border-radius:999px;padding:5px 9px;background:#fff;color:#17324a;font-weight:900;cursor:pointer}.live-connection-actions{display:flex;align-items:center;gap:8px}.live-status-message{margin-top:14px;padding:10px 12px;border-radius:11px;background:rgba(255,255,255,.1);color:#dceef8;font-size:.9rem;text-align:center}
 
 
 /* CODE BATTLE LIVE · MULTIGRADE V7 */
@@ -925,10 +924,22 @@ a {
   border:1px solid #ffffff16;font-size:.78rem;font-weight:850;color:#cce9f4
 }
 .live-public-grades .live-grade-card{cursor:default}
+.live-player-join-form{display:grid;gap:14px}
+.live-avatar-picker{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.live-avatar-picker-large{margin:22px 0 28px}
+.live-avatar-option{width:58px;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);font-size:2rem;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease, background .18s ease}
+.live-avatar-option:hover{transform:translateY(-2px)}
+.live-avatar-option-active{background:linear-gradient(135deg,rgba(33,200,217,.28),rgba(68,224,144,.2));border-color:rgba(109,255,194,.8);box-shadow:0 8px 22px rgba(33,200,217,.22)}
+.live-selected-avatar-wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}
+.live-selected-avatar-label{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8cecff;font-weight:900}
+.live-selected-avatar{font-size:2.2rem}
+.live-form-actions{display:flex;gap:12px}
+.live-player-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#edfbff}
 @media(max-width:850px){
   .live-grade-selector{grid-template-columns:1fr 1fr}
   .live-launch-panel{grid-template-columns:1fr}
 }
 @media(max-width:520px){
   .live-grade-selector{grid-template-columns:1fr}
+  .live-form-actions{grid-template-columns:1fr;display:grid}
 }
