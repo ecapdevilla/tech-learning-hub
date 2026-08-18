@@ -880,3 +880,55 @@ a {
 .live-connection-offline,.live-connection-error{background:rgba(126,43,50,.94);color:#ffe5e8}
 .live-connection button{border:0;border-radius:999px;padding:5px 9px;background:#fff;color:#17324a;font-weight:900;cursor:pointer}
 .live-status-message{margin-top:14px;padding:10px 12px;border-radius:11px;background:rgba(255,255,255,.1);color:#dceef8;font-size:.9rem;text-align:center}
+
+
+/* CODE BATTLE LIVE · MULTIGRADE V7 */
+.live-grade-selector{
+  max-width:1180px!important;
+  margin:18px auto!important;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px
+}
+.live-grade-card{
+  min-height:145px;
+  padding:18px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.07);
+  color:#eef8ff;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  text-align:left;
+  cursor:pointer;
+  transition:.18s ease
+}
+.live-grade-card:hover{transform:translateY(-2px);background:rgba(255,255,255,.11)}
+.live-grade-card>span{font-size:1.9rem;font-weight:1000;color:#8cecff}
+.live-grade-card>strong{font-size:1.1rem}
+.live-grade-card>small{color:#b8cfdd;line-height:1.4}
+.live-grade-card-active{
+  outline:3px solid #44e090;
+  background:linear-gradient(145deg,rgba(33,200,217,.18),rgba(68,224,144,.14))
+}
+.live-launch-panel{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:20px
+}
+.live-topic-cloud{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.live-topic-cloud span{
+  padding:6px 9px;border-radius:999px;background:#ffffff10;
+  border:1px solid #ffffff16;font-size:.78rem;font-weight:850;color:#cce9f4
+}
+.live-public-grades .live-grade-card{cursor:default}
+@media(max-width:850px){
+  .live-grade-selector{grid-template-columns:1fr 1fr}
+  .live-launch-panel{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .live-grade-selector{grid-template-columns:1fr}
+}

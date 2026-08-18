@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { RoomQr } from "@/modules/live-game/components/RoomQr";
-import { grade6Questions } from "@/modules/live-game/data/grade6Questions";
+import {
+  getQuestionBank,
+  liveGradeMeta,
+  supportedLiveGrades,
+  type SupportedLiveGrade,
+} from "@/modules/live-game/data/questionBanks";
 import {
   isLiveGameConfigured,
   liveSupabase,
@@ -19,6 +24,7 @@ function makePin() {
 }
 
 export default function LiveHostPage() {
+  const [selectedGrade, setSelectedGrade] = useState<SupportedLiveGrade>(6);
   const [game, setGame] = useState<LiveGame | null>(null);
   const [players, setPlayers] = useState<LivePlayer[]>([]);
   const [answers, setAnswers] = useState<LiveAnswer[]>([]);
@@ -109,19 +115,19 @@ export default function LiveHostPage() {
 
   const createGame = async () => {
     if (!liveSupabase) {
-      setMessage(
-        "Supabase is not configured yet. Add the two public environment variables.",
-      );
+      setMessage("Supabase is not configured.");
       return;
     }
 
     const pin = makePin();
+    const meta = liveGradeMeta[selectedGrade];
+
     const { data, error } = await liveSupabase
       .from("live_games")
       .insert({
         pin,
-        grade: 6,
-        title: "6th Grade · Code Battle Live",
+        grade: selectedGrade,
+        title: `${selectedGrade}th Grade · ${meta.title}`,
         status: "lobby",
         current_question_index: 0,
       })
@@ -157,6 +163,9 @@ export default function LiveHostPage() {
     return updated;
   };
 
+  const bank = getQuestionBank(game?.grade ?? selectedGrade);
+  const meta = liveGradeMeta[(game?.grade ?? selectedGrade) as SupportedLiveGrade];
+
   const startQuestion = async (index: number) => {
     setAnswers([]);
     if (sound) playGameSound("start");
@@ -179,7 +188,7 @@ export default function LiveHostPage() {
     if (!game) return;
 
     const nextIndex = game.current_question_index + 1;
-    if (nextIndex >= grade6Questions.length) {
+    if (nextIndex >= bank.length) {
       if (sound) playGameSound("winner");
       await updateGame({ status: "finished" });
       return;
@@ -188,7 +197,7 @@ export default function LiveHostPage() {
     await startQuestion(nextIndex);
   };
 
-  const current = game ? grade6Questions[game.current_question_index] : null;
+  const current = game ? bank[game.current_question_index] : null;
   const joinUrl =
     game && origin ? `${origin}/gamification/live/play/${game.pin}` : "";
 
@@ -206,10 +215,6 @@ export default function LiveHostPage() {
         <section className="live-panel live-setup">
           <span className="live-kicker">SETUP REQUIRED</span>
           <h1>Connect Supabase first</h1>
-          <p>
-            The live engine is installed, but real-time rooms need Supabase.
-            Follow the project README for setup.
-          </p>
         </section>
       </main>
     );
@@ -218,20 +223,63 @@ export default function LiveHostPage() {
   return (
     <main className="live-shell">
       {!game ? (
-        <section className="live-hero">
-          <span className="live-kicker">TEACHER CONTROL</span>
-          <h1>Launch Code Battle Live</h1>
-          <p>Creates a six-digit room PIN, QR and live lobby.</p>
-          <button className="live-btn live-btn-primary" onClick={createGame}>
-            ⚡ Create Live Room
-          </button>
-          {message && <p className="live-error">{message}</p>}
-        </section>
+        <>
+          <section className="live-hero">
+            <span className="live-kicker">TEACHER CONTROL · 6TH–11TH</span>
+            <h1>Launch Code Battle Live</h1>
+            <p>
+              Select the grade. The battle engine stays the same while the
+              curriculum bank changes automatically.
+            </p>
+          </section>
+
+          <section className="live-grade-selector">
+            {supportedLiveGrades.map((grade) => {
+              const gradeMeta = liveGradeMeta[grade];
+              return (
+                <button
+                  key={grade}
+                  className={
+                    selectedGrade === grade
+                      ? "live-grade-card live-grade-card-active"
+                      : "live-grade-card"
+                  }
+                  onClick={() => setSelectedGrade(grade)}
+                >
+                  <span>{grade}TH</span>
+                  <strong>{gradeMeta.title}</strong>
+                  <small>{gradeMeta.subtitle}</small>
+                </button>
+              );
+            })}
+          </section>
+
+          <section className="live-panel live-launch-panel">
+            <div>
+              <span className="live-kicker">SELECTED BATTLE</span>
+              <h2>
+                {selectedGrade}th Grade · {liveGradeMeta[selectedGrade].title}
+              </h2>
+              <p>{liveGradeMeta[selectedGrade].subtitle}</p>
+              <div className="live-topic-cloud">
+                {liveGradeMeta[selectedGrade].topics.map((topic) => (
+                  <span key={topic}>{topic}</span>
+                ))}
+              </div>
+            </div>
+            <button className="live-btn live-btn-primary" onClick={createGame}>
+              ⚡ Create Live Room
+            </button>
+            {message && <p className="live-error">{message}</p>}
+          </section>
+        </>
       ) : (
         <>
           <section className="live-host-top">
             <div>
-              <span className="live-kicker">ROOM PIN</span>
+              <span className="live-kicker">
+                {game.grade}TH · {meta?.title ?? "CODE BATTLE"}
+              </span>
               <div className="live-pin">{game.pin}</div>
               <p>{players.length} players connected</p>
             </div>
@@ -243,7 +291,7 @@ export default function LiveHostPage() {
 
           {game.status === "lobby" && (
             <section className="live-panel">
-              <h2>Lobby</h2>
+              <h2>Lobby · {game.grade}th Grade</h2>
               <div className="live-player-cloud">
                 {players.map((p) => (
                   <span key={p.id}>👾 {p.name}</span>
@@ -265,8 +313,7 @@ export default function LiveHostPage() {
                 <section className="live-question-card">
                   <div className="live-question-head">
                     <span>
-                      QUESTION {game.current_question_index + 1} /{" "}
-                      {grade6Questions.length}
+                      QUESTION {game.current_question_index + 1} / {bank.length}
                     </span>
                     <b>{current.topic}</b>
                   </div>
@@ -296,10 +343,7 @@ export default function LiveHostPage() {
                   </div>
 
                   {game.status === "question" ? (
-                    <button
-                      className="live-btn live-btn-primary"
-                      onClick={reveal}
-                    >
+                    <button className="live-btn live-btn-primary" onClick={reveal}>
                       👀 Reveal Answer
                     </button>
                   ) : (
@@ -309,12 +353,8 @@ export default function LiveHostPage() {
                         <br />
                         <span>{current.explanationEs}</span>
                       </p>
-                      <button
-                        className="live-btn live-btn-primary"
-                        onClick={next}
-                      >
-                        {game.current_question_index + 1 >=
-                        grade6Questions.length
+                      <button className="live-btn live-btn-primary" onClick={next}>
+                        {game.current_question_index + 1 >= bank.length
                           ? "🏆 Final Leaderboard"
                           : "Next Question →"}
                       </button>
@@ -339,7 +379,9 @@ export default function LiveHostPage() {
 
           {game.status === "finished" && (
             <section className="live-podium">
-              <span className="live-kicker">BATTLE COMPLETE</span>
+              <span className="live-kicker">
+                {game.grade}TH GRADE · BATTLE COMPLETE
+              </span>
               <h1>🏆 Final Podium</h1>
               <div className="live-podium-grid">
                 {players.slice(0, 3).map((p, i) => (

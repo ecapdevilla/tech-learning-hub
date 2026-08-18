@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { grade6Questions } from "@/modules/live-game/data/grade6Questions";
+import { getQuestionBank } from "@/modules/live-game/data/questionBanks";
 import { calculatePoints } from "@/modules/live-game/lib/scoring";
 import {
   isLiveGameConfigured,
@@ -351,11 +351,12 @@ export default function PlayerRoom({
   const gameStatus = game?.status ?? "";
   const questionStartedAt = game?.question_started_at ?? null;
   const questionIndex = game?.current_question_index ?? 0;
+  const questionBank = getQuestionBank(game?.grade ?? 6);
 
   useEffect(() => {
     if (gameStatus !== "question" || !questionStartedAt) return;
 
-    const question = grade6Questions[questionIndex];
+    const question = questionBank[questionIndex];
 
     const updateRemaining = () => {
       const startedAtMs = Date.parse(questionStartedAt);
@@ -371,7 +372,7 @@ export default function PlayerRoom({
     const timerId = window.setInterval(updateRemaining, 500);
 
     return () => window.clearInterval(timerId);
-  }, [gameStatus, questionIndex, questionStartedAt]);
+  }, [gameStatus, questionIndex, questionStartedAt, questionBank]);
 
   const join = async (event: FormEvent) => {
     event.preventDefault();
@@ -439,7 +440,7 @@ export default function PlayerRoom({
       return;
     }
 
-    const question = grade6Questions[game.current_question_index];
+    const question = questionBank[game.current_question_index];
     const elapsedSeconds = Math.max(0, question.seconds - remaining);
     const responseMs = elapsedSeconds * 1000;
     const isCorrect = choice === question.correctIndex;
@@ -514,7 +515,7 @@ export default function PlayerRoom({
   };
 
   const currentQuestion = game
-    ? grade6Questions[game.current_question_index]
+    ? questionBank[game.current_question_index]
     : null;
 
   const resultCorrect =
