@@ -396,15 +396,44 @@ export default function PlayerRoom({
     setMessage("Joining room…");
 
     try {
-      const { data, error } = await liveSupabase
+      const playerPayload: {
+        game_id: string;
+        name: string;
+        avatar?: string;
+      } = {
+        game_id: game.id,
+        name: cleanName,
+      };
+
+      if (selectedAvatar) {
+        playerPayload.avatar = selectedAvatar;
+      }
+
+      let data: any = null;
+      let error: any = null;
+
+      const firstAttempt = await liveSupabase
         .from("live_players")
-        .insert({
-          game_id: game.id,
-          name: cleanName,
-          avatar: selectedAvatar,
-        })
+        .insert(playerPayload)
         .select()
         .single();
+
+      data = firstAttempt.data;
+      error = firstAttempt.error;
+
+      if (error && /avatar.*column|column.*avatar/i.test(error.message ?? "")) {
+        const fallback = await liveSupabase
+          .from("live_players")
+          .insert({
+            game_id: game.id,
+            name: cleanName,
+          })
+          .select()
+          .single();
+
+        data = fallback.data;
+        error = fallback.error;
+      }
 
       if (error || !data) {
         setMessage(error?.message ?? "Unable to join the room.");

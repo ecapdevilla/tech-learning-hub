@@ -19,11 +19,17 @@ create table if not exists public.live_players (
   id uuid primary key default gen_random_uuid(),
   game_id uuid not null references public.live_games(id) on delete cascade,
   name text not null check (char_length(name) between 2 and 24),
-  avatar text not null default '👾' check (char_length(avatar) between 1 and 4),
+  avatar text default '👾' check (char_length(avatar) between 1 and 4),
   score integer not null default 0,
   streak integer not null default 0,
   joined_at timestamptz not null default now()
 );
+
+alter table public.live_players
+  add column if not exists avatar text default '👾';
+
+alter table public.live_players
+  alter column avatar set default '👾';
 
 create table if not exists public.live_answers (
   id uuid primary key default gen_random_uuid(),
