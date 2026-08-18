@@ -19,11 +19,33 @@ const banks: Record<SupportedLiveGrade, LiveQuestion[]> = {
   11: grade11Questions,
 };
 
-export function getQuestionBank(grade: number): LiveQuestion[] {
-  if (supportedLiveGrades.includes(grade as SupportedLiveGrade)) {
-    return banks[grade as SupportedLiveGrade];
+function applyDeterministicChoiceOrder(question: LiveQuestion): LiveQuestion {
+  const order = [0, 1, 2, 3];
+  const seed = Array.from(question.id).reduce((total, char) => total + char.charCodeAt(0), 0);
+
+  for (let index = order.length - 1; index > 0; index -= 1) {
+    const pivot = (seed + index * 17 + question.grade * 13) % (index + 1);
+    [order[index], order[pivot]] = [order[pivot], order[index]];
   }
-  return grade6Questions;
+
+  const reorderedChoices = order.map((position) => question.choices[position]);
+  const reorderedChoicesEs = order.map((position) => question.choicesEs[position]);
+  const newCorrectIndex = order.indexOf(question.correctIndex);
+
+  return {
+    ...question,
+    choices: reorderedChoices,
+    choicesEs: reorderedChoicesEs,
+    correctIndex: newCorrectIndex,
+  };
+}
+
+export function getQuestionBank(grade: number): LiveQuestion[] {
+  const bank = supportedLiveGrades.includes(grade as SupportedLiveGrade)
+    ? banks[grade as SupportedLiveGrade]
+    : grade6Questions;
+
+  return bank.map((question) => applyDeterministicChoiceOrder(question));
 }
 
 export const liveGradeMeta: Record<

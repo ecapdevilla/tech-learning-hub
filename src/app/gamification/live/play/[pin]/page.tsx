@@ -30,10 +30,12 @@ type StoredPlayerSession = {
   gameId: string;
   playerId: string;
   name: string;
+  avatar: string;
 };
 
 const PLAYER_SESSION_PREFIX = "tlh-live-player:";
 const FALLBACK_POLL_MS = 2500;
+const PLAYER_AVATARS = ["👾", "🤖", "🦊", "🐼", "🧑‍🚀", "👩‍💻"];
 
 function storageKey(pin: string) {
   return `${PLAYER_SESSION_PREFIX}${pin}`;
@@ -49,7 +51,8 @@ function readStoredSession(pin: string): StoredPlayerSession | null {
       parsed.pin !== pin ||
       !parsed.gameId ||
       !parsed.playerId ||
-      !parsed.name
+      !parsed.name ||
+      !parsed.avatar
     ) {
       return null;
     }
@@ -87,10 +90,12 @@ export default function PlayerRoom({
   const [game, setGame] = useState<LiveGame | null>(null);
   const [player, setPlayer] = useState<LivePlayer | null>(null);
   const [name, setName] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState(PLAYER_AVATARS[0]);
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("Looking for room…");
   const [remaining, setRemaining] = useState(0);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const [connection, setConnection] =
     useState<ConnectionState>("connecting");
 
@@ -182,6 +187,7 @@ export default function PlayerRoom({
       }
 
       setName(recovered.name);
+      setSelectedAvatar(recovered.avatar || PLAYER_AVATARS[0]);
       return true;
     },
     [pin, syncPlayer],
@@ -394,6 +400,7 @@ export default function PlayerRoom({
         .insert({
           game_id: game.id,
           name: cleanName,
+          avatar: selectedAvatar,
         })
         .select()
         .single();
@@ -410,9 +417,10 @@ export default function PlayerRoom({
         gameId: game.id,
         playerId: joinedPlayer.id,
         name: joinedPlayer.name,
+        avatar: selectedAvatar,
       });
 
-      setPlayer(joinedPlayer);
+      setPlayer({ ...joinedPlayer, avatar: selectedAvatar });
       setName(joinedPlayer.name);
       setMessage("");
       setConnection((current) =>
@@ -493,7 +501,11 @@ export default function PlayerRoom({
         .single();
 
       if (!playerError && updatedPlayer) {
-        setPlayer(updatedPlayer as LivePlayer);
+        setPlayer({ ...(updatedPlayer as LivePlayer), avatar: player.avatar ?? selectedAvatar });
+      }
+
+      if (soundEnabled) {
+        safePlayGameSound(isCorrect ? "correct" : "wrong");
       }
 
       setMessage("");
@@ -537,6 +549,8 @@ export default function PlayerRoom({
     error: "CONNECTION ISSUE",
   }[connection];
 
+  const playerAvatar = player?.avatar ?? selectedAvatar;
+
   if (!isLiveGameConfigured) {
     return (
       <main className="live-shell">
@@ -569,7 +583,25 @@ export default function PlayerRoom({
           <h1>Choose your player name</h1>
           <p>Use your first name only.</p>
 
-          <form onSubmit={join}>
+          <form onSubmit={join} className="live-player-join-form">
+            <div className="live-avatar-picker">
+              {PLAYER_AVATARS.map((avatar) => (
+                <button
+                  key={avatar}
+                  type="button"
+                  className={
+                    selectedAvatar === avatar
+                      ? "live-avatar-option live-avatar-option-active"
+                      : "live-avatar-option"
+                  }
+                  onClick={() => setSelectedAvatar(avatar)}
+                  aria-label={`Select avatar ${avatar}`}
+                >
+                  {avatar}
+                </button>
+              ))}
+            </div>
+
             <input
               className="live-name-input"
               maxLength={24}
@@ -594,11 +626,16 @@ export default function PlayerRoom({
       <span>
         {connection === "connected" ? "●" : "◌"} {connectionLabel}
       </span>
-      {connection !== "connected" && (
-        <button type="button" onClick={manualReconnect}>
-          Resync
+      <div className="live-connection-actions">
+        <button type="button" onClick={() => setSoundEnabled((value) => !value)}>
+          {soundEnabled ? "🔊" : "🔇"}
         </button>
-      )}
+        {connection !== "connected" && (
+          <button type="button" onClick={manualReconnect}>
+            Resync
+          </button>
+        )}
+      </div>
     </div>
   );
 
@@ -608,7 +645,9 @@ export default function PlayerRoom({
         {connectionBar}
         <section className="live-player-wait">
           <span className="live-kicker">YOU&apos;RE IN</span>
-          <h1>👾 {player.name}</h1>
+          <h1>
+            {playerAvatar} {player.name}
+          </h1>
           <p>Look at the classroom screen. The battle will start soon.</p>
           <div className="live-wait-orb">⚡</div>
           <div className="live-player-score">{scoreLabel}</div>
@@ -624,7 +663,9 @@ export default function PlayerRoom({
         {connectionBar}
         <section className="live-player-wait">
           <span className="live-kicker">BATTLE COMPLETE</span>
-          <h1>🏆 {player.name}</h1>
+          <h1>
+            🏆 {playerAvatar} {player.name}
+          </h1>
           <div className="live-player-score">{scoreLabel}</div>
           <p>Great work. Check the classroom screen for the final podium.</p>
         </section>

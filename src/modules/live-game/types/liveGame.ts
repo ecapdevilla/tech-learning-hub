@@ -33,6 +33,7 @@ export type LivePlayer = {
   id: string;
   game_id: string;
   name: string;
+  avatar?: string;
   score: number;
   streak: number;
   joined_at: string;

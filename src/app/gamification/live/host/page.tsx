@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RoomQr } from "@/modules/live-game/components/RoomQr";
 import {
   getQuestionBank,
@@ -165,6 +165,20 @@ export default function LiveHostPage() {
 
   const bank = getQuestionBank(game?.grade ?? selectedGrade);
   const meta = liveGradeMeta[(game?.grade ?? selectedGrade) as SupportedLiveGrade];
+  const previousRanks = useRef<Record<string, number>>({});
+
+  useEffect(() => {
+    if (players.length === 0) {
+      previousRanks.current = {};
+      return;
+    }
+
+    const orderedPlayers = [...players].sort((a, b) => b.score - a.score);
+    const nextRanks = Object.fromEntries(
+      orderedPlayers.map((player, index) => [player.id, index]),
+    );
+    previousRanks.current = nextRanks;
+  }, [players, game?.status]);
 
   const startQuestion = async (index: number) => {
     setAnswers([]);
@@ -365,13 +379,26 @@ export default function LiveHostPage() {
                 <section className="live-panel">
                   <h2>Live Leaderboard</h2>
                   <div className="live-leaderboard">
-                    {players.slice(0, 10).map((p, i) => (
-                      <div key={p.id}>
-                        <span>{i + 1}</span>
-                        <b>{p.name}</b>
-                        <strong>{p.score.toLocaleString()}</strong>
-                      </div>
-                    ))}
+                    {[...players]
+                      .sort((a, b) => b.score - a.score)
+                      .slice(0, 10)
+                      .map((p, i) => {
+                        const previousIndex = previousRanks.current[p.id] ?? i;
+                        const move = previousIndex - i;
+                        const trend = move > 0 ? "▲" : move < 0 ? "▼" : "•";
+
+                        return (
+                          <div key={p.id}>
+                            <span>{i + 1}</span>
+                            <b>
+                              {p.avatar ?? "🤖"} {p.name}
+                            </b>
+                            <strong>
+                              {p.score.toLocaleString()} {trend}
+                            </strong>
+                          </div>
+                        );
+                      })}
                   </div>
                 </section>
               </>
