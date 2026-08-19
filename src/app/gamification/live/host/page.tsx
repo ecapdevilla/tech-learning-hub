@@ -177,7 +177,12 @@ export default function LiveHostPage() {
     const nextRanks = Object.fromEntries(
       orderedPlayers.map((player, index) => [player.id, index]),
     );
-    previousRanks.current = nextRanks;
+    
+    // Only update previousRanks when transitioning out of "reveal" state,
+    // so comparisons during current round show movement from previous round.
+    if (game?.status !== "reveal") {
+      previousRanks.current = nextRanks;
+    }
   }, [players, game?.status]);
 
   const startQuestion = async (index: number) => {
@@ -308,7 +313,7 @@ export default function LiveHostPage() {
               <h2>Lobby · {game.grade}th Grade</h2>
               <div className="live-player-cloud">
                 {players.map((p) => (
-                  <span key={p.id}>👾 {p.name}</span>
+                  <span key={p.id}>{p.avatar ?? "🤖"} {p.name}</span>
                 ))}
               </div>
               <button
@@ -411,10 +416,13 @@ export default function LiveHostPage() {
               </span>
               <h1>🏆 Final Podium</h1>
               <div className="live-podium-grid">
-                {players.slice(0, 3).map((p, i) => (
+                {[...players]
+                  .sort((a, b) => b.score - a.score)
+                  .slice(0, 3)
+                  .map((p, i) => (
                   <article key={p.id}>
                     <span>{["🥇", "🥈", "🥉"][i]}</span>
-                    <h2>{p.name}</h2>
+                    <h2>{p.avatar ?? "🤖"} {p.name}</h2>
                     <b>{p.score.toLocaleString()} pts</b>
                   </article>
                 ))}
