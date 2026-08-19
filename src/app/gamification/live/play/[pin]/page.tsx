@@ -97,6 +97,7 @@ export default function PlayerRoom({
   const [message, setMessage] = useState("Looking for room…");
   const [remaining, setRemaining] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [players, setPlayers] = useState<LivePlayer[]>([]);
   const [connection, setConnection] =
     useState<ConnectionState>("connecting");
 
@@ -150,6 +151,23 @@ export default function PlayerRoom({
       }
     },
     [pin],
+  );
+
+  const loadPlayers = useCallback(
+    async (gameId: string) => {
+      if (!liveSupabase) return;
+      try {
+        const { data } = await liveSupabase
+          .from("live_players")
+          .select("*")
+          .eq("game_id", gameId)
+          .order("score", { ascending: false });
+        setPlayers((data ?? []) as LivePlayer[]);
+      } catch {
+        // Silently fail, polling will retry
+      }
+    },
+    [],
   );
 
   const syncPlayer = useCallback(
@@ -234,6 +252,7 @@ export default function PlayerRoom({
           setGame(nextGame);
           setSelected(null);
           setSubmitted(false);
+          void loadPlayers(nextGame.id);
 
           if (previousStatus !== nextGame.status) {
             if (nextGame.status === "question") {
@@ -249,18 +268,16 @@ export default function PlayerRoom({
       .on(
         "postgres_changes",
         {
-          event: "UPDATE",
+          event: "*",
           schema: "public",
           table: "live_players",
           filter: `game_id=eq.${gameId}`,
         },
-        (payload) => {
-          if (cancelled) return;
+        () => {
+          void loadPlayers(gameId);
           const currentPlayer = playerRef.current;
-          const updatedPlayer = payload.new as LivePlayer;
-
-          if (currentPlayer && updatedPlayer.id === currentPlayer.id) {
-            setPlayer(updatedPlayer);
+          if (currentPlayer) {
+            void syncPlayer(gameId, currentPlayer.id);
           }
         },
       )
@@ -292,7 +309,7 @@ export default function PlayerRoom({
       cancelled = true;
       void supabase.removeChannel(channel);
     };
-  }, [gameId, syncGame, syncPlayer]);
+  }, [gameId, syncGame, syncPlayer, loadPlayers]);
 
   useEffect(() => {
     if (!gameId) return;
@@ -307,6 +324,7 @@ export default function PlayerRoom({
 
       void syncGame({ quiet: true });
 
+      void loadPlayers(gameId);
       const currentPlayer = playerRef.current;
       if (currentPlayer) {
         void syncPlayer(gameId, currentPlayer.id);
@@ -314,7 +332,7 @@ export default function PlayerRoom({
     }, FALLBACK_POLL_MS);
 
     return () => window.clearInterval(pollTimer);
-  }, [gameId, syncGame, syncPlayer]);
+  }, [gameId, syncGame, syncPlayer, loadPlayers]);
 
   useEffect(() => {
     const handleOnline = () => {
@@ -755,22 +773,47 @@ export default function PlayerRoom({
         <p>{currentQuestion.promptEs}</p>
       </section>
 
-      {game.status === "question" && (
-        <section className="live-mobile-choices">
-          {currentQuestion.choices.map((choice, index) => (
-            <button
-              key={choice}
-              disabled={submitted}
-              className={`live-mobile-choice live-mobile-choice-${index} ${
-                selected === index ? "selected" : ""
-              }`}
-              onClick={() => answer(index)}
-            >
-              <b>{String.fromCharCode(65 + index)}</b>
-              <span>{choice}</span>
-            </button>
-          ))}
+      {submitted && game.status === "question" ? (
+        <section className="live-answer-wait">
+          <div className="live-answer-wait-content">
+            <h2>✓ Answer Received</h2>
+            <p>Waiting for other players...</p>
+            <div className="live-leaderboard">
+              {[...players]
+                .sort((a, b) => b.score - a.score)
+                .map((p, i) => {
+                  const isCurrentPlayer = p.id === player?.id;
+                  return (
+                    <div key={p.id} className={isCurrentPlayer ? "live-leaderboard-current" : ""}>
+                      <span>{i + 1}</span>
+                      <b>{p.avatar ?? "🤖"} {p.name}</b>
+                      <strong>{p.score.toLocaleString()} pts · 🔥 {p.streak}</strong>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
         </section>
+      ) : (
+        <>
+          {game.status === "question" && (
+            <section className="live-mobile-choices">
+              {currentQuestion.choices.map((choice, index) => (
+                <button
+                  key={choice}
+                  disabled={submitted}
+                  className={`live-mobile-choice live-mobile-choice-${index} ${
+                    selected === index ? "selected" : ""
+                  }`}
+                  onClick={() => answer(index)}
+                >
+                  <b>{String.fromCharCode(65 + index)}</b>
+                  <span>{choice}</span>
+                </button>
+              ))}
+            </section>
+          )}
+        </>
       )}
 
       {game.status === "reveal" && (
@@ -788,10 +831,6 @@ export default function PlayerRoom({
           <p>{currentQuestion.explanationEs}</p>
           <strong>{scoreLabel}</strong>
         </section>
-      )}
-
-      {submitted && game.status === "question" && (
-        <div className="live-answer-received">✓ ANSWER RECEIVED</div>
       )}
 
       {message && <div className="live-status-message">{message}</div>}
