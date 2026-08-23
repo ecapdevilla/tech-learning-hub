@@ -2,6 +2,102 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-09-updated-class-sequences",
+    grade: 9,
+    cycle: 5,
+    title: {
+      en: "Updated Class Sequences",
+      es: "Secuencias de Clase Actualizadas",
+    },
+    objective: {
+      en: "Review recent classroom projects and development evidence before continuing Cycle 5.",
+      es: "Revisar proyectos recientes y evidencias de desarrollo antes de continuar el Ciclo 5.",
+    },
+    durationMinutes: 15,
+    guidePath: "/guides/grade-09/updated-class-sequences.html",
+    tags: ["Updated Class Sequences", "Projects", "Evidence", "Grade 9"],
+  },
+  {
+    id: "grade-09-cycle-5-mvc-connection",
+    grade: 9,
+    cycle: 5,
+    title: {
+      en: "Cycle 5 · MVC Connection Lab",
+      es: "Ciclo 5 · Laboratorio de Conexión MVC",
+    },
+    objective: {
+      en: "Complete MVC implementation: Connect Controller with Model and View. Add functionality.",
+      es: "Completar la implementación MVC: conectar el Controller con el Model y la View. Agregar funcionalidad.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-09/cycle-5-mvc-connection.html",
+    tags: ["Cycle 5", "MVC", "Model", "View", "Controller", "Events", "Debugging"],
+  },
+  {
+    id: "grade-10-updated-class-sequences",
+    grade: 10,
+    cycle: 5,
+    title: {
+      en: "Updated Class Sequences",
+      es: "Secuencias de Clase Actualizadas",
+    },
+    objective: {
+      en: "Review recent classroom projects and development evidence before continuing Cycle 5.",
+      es: "Revisar proyectos recientes y evidencias de desarrollo antes de continuar el Ciclo 5.",
+    },
+    durationMinutes: 15,
+    guidePath: "/guides/grade-10/updated-class-sequences.html",
+    tags: ["Updated Class Sequences", "Projects", "Evidence", "Grade 10"],
+  },
+  {
+    id: "grade-10-cycle-5-interactive-application-engineering",
+    grade: 10,
+    cycle: 5,
+    title: {
+      en: "Cycle 5 · Interactive Application Engineering",
+      es: "Ciclo 5 · Ingeniería de Aplicaciones Interactivas",
+    },
+    objective: {
+      en: "Create a complete interactive application (game or simulator) integrating all structures.",
+      es: "Crear una aplicación interactiva completa (juego o simulador) integrando todas las estructuras.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-10/cycle-5-interactive-application-engineering.html",
+    tags: ["Cycle 5", "JavaScript", "Variables", "Conditionals", "Loops", "Functions", "Arrays", "Events", "DOM"],
+  },
+  {
+    id: "grade-11-updated-class-sequences",
+    grade: 11,
+    cycle: 5,
+    title: {
+      en: "Updated Class Sequences",
+      es: "Secuencias de Clase Actualizadas",
+    },
+    objective: {
+      en: "Review current engineering projects and previous classroom evidence before Cycle 5 integration.",
+      es: "Revisar proyectos actuales de ingeniería y evidencias previas antes de la integración del Ciclo 5.",
+    },
+    durationMinutes: 15,
+    guidePath: "/guides/grade-11/updated-class-sequences.html",
+    tags: ["Updated Class Sequences", "Engineering", "Projects", "Evidence", "Grade 11"],
+  },
+  {
+    id: "grade-11-cycle-5-full-system-integration",
+    grade: 11,
+    cycle: 5,
+    title: {
+      en: "Cycle 5 · Full System Integration",
+      es: "Ciclo 5 · Integración Completa del Sistema",
+    },
+    objective: {
+      en: "Integrate the complete system: Robot + Web + Database with full functionality.",
+      es: "Integrar el sistema completo: Robot + Web + Base de Datos con funcionalidad completa.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-11/cycle-5-full-system-integration.html",
+    tags: ["Cycle 5", "ESP32", "Wokwi", "Sensors", "Actuators", "Web", "localStorage", "IoT"],
+  },
+  {
     id: "grade-08-cycle-5-ai-patterns-trends",
     grade: 8,
     cycle: 5,
