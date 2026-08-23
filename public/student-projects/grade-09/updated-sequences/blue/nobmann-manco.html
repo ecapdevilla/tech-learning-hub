@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>Smart To-Do · MVC + localStorage</title>
+    <!-- Un solo archivo HTML con CSS y JavaScript integrados -->
+    <style>
+        /* ---------- reset & variables (diseño responsive) ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        :root {
+            --fondo: #f4f8fb;
+            --card: #ffffff;
+            --borde: #d8e5ee;
+            --texto: #1e2f3f;
+            --azul: #176d9d;
+            --verde: #168063;
+            --dorado: #d5a126;
+            --sombra: 0 8px 24px rgba(16, 40, 63, 0.08);
+            --radio: 20px;
+            --gap: 1rem;
+        }
+        body {
+            background: var(--fondo);
+            color: var(--texto);
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .app-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        /* ---------- header hero ---------- */
+        .hero {
+            background: linear-gradient(135deg, #10283f 0%, #176d9d 70%, #168063 100%);
+            color: white;
+            padding: 2rem 1.8rem;
+            border-radius: var(--radio);
+            box-shadow: 0 12px 30px rgba(16, 40, 63, 0.25);
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 6vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .hero .pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.5rem;
+        }
+        .hero .sub {
+            opacity: 0.9;
+            margin-top: 0.3rem;
+            font-weight: 400;
+        }
+        /* ---------- cards y grid ---------- */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio);
+            padding: 1.5rem 1.2rem;
+            box-shadow: var(--sombra);
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.15s;
+        }
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #10283f;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--gap);
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--gap);
+        }
+        /* ---------- formularios y controles ---------- */
+        label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: block;
+            margin-top: 0.6rem;
+            margin-bottom: 0.2rem;
+            color: #1e3b4f;
+        }
+        input, select, textarea, button {
+            font-size: 1rem;
+            padding: 0.6rem 0.9rem;
+            border-radius: 14px;
+            border: 1px solid var(--borde);
+            background: white;
+            width: 100%;
+            transition: 0.15s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid var(--azul);
+            outline-offset: 2px;
+            border-color: transparent;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .btn {
+            background: var(--azul);
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.15s;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .btn:hover { background: #135a82; transform: scale(0.98); }
+        .btn-success { background: var(--verde); }
+        .btn-success:hover { background: #0f6b52; }
+        .btn-outline { background: transparent; color: var(--texto); border: 1px solid var(--borde); }
+        .btn-outline:hover { background: #eaf1f7; }
+        .btn-danger { background: #b13e3e; }
+        .btn-danger:hover { background: #922f2f; }
+        .btn-gold { background: var(--dorado); color: #1e2f3f; }
+        .btn-gold:hover { background: #b8891e; }
+        .btn-sm { padding: 0.3rem 0.9rem; font-size: 0.8rem; }
+        .flex { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+        .flex-between { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.8rem; }
+        .gap { gap: 0.8rem; }
+        .mt-1 { margin-top: 0.8rem; }
+        .mb-1 { margin-bottom: 0.8rem; }
+        .w-full { width: 100%; }
+        /* ---------- tareas (lista) ---------- */
+        .task-item {
+            background: #f9fcfe;
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            border-left: 6px solid var(--azul);
+            margin-bottom: 0.7rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.1s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .task-item.done { border-left-color: var(--verde); opacity: 0.8; }
+        .task-item .task-info { flex: 2 1 200px; }
+        .task-item .task-info strong { font-size: 1.05rem; display: block; }
+        .task-item .task-meta { font-size: 0.8rem; color: #3a5a72; display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; }
+        .task-item .task-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .badge {
+            background: #d8e5ee;
+            padding: 0.15rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-cat { background: #c7dbe8; }
+        .empty-state {
+            text-align: center;
+            padding: 2rem 0;
+            color: #6a7f8f;
+        }
+        .stats {
+            background: #eaf3f9;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        /* ---------- responsive ---------- */
+        @media (max-width: 800px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .hero { padding: 1.5rem; }
+        }
+        @media (max-width: 500px) {
+            .task-item { flex-direction: column; align-items: stretch; }
+            .task-actions { margin-top: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-wrapper" id="app">
+    <!-- HEADER -->
+    <header class="hero">
+        <span class="pill">9TH GRADE · CYCLE 4 · MVC + localStorage</span>
+        <h1>📋 Smart To-Do</h1>
+        <div class="sub"><strong>Modelo · Vista · Controlador</strong> — resuelve tu organización con usuarios, categorías y tareas persistentes.</div>
+    </header>
+
+    <!-- PANEL DE CONTROL + ESTADÍSTICAS -->
+    <section class="card">
+        <div class="flex-between">
+            <div class="flex">
+                <span class="stats" id="statsTotal">📌 0 tareas</span>
+                <span class="stats" id="statsPendientes">⏳ 0 pendientes</span>
+                <span class="stats" id="statsCompletadas">✅ 0 completadas</span>
+            </div>
+            <div>
+                <button class="btn btn-outline btn-sm" id="btnReset">🔄 Reiniciar demo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO: NUEVA TAREA (con usuario y categoría) -->
+    <section class="card">
+        <h3 class="card-title">➕ Nueva tarea</h3>
+        <div class="grid-3">
+            <div>
+                <label for="taskTitle">Título *</label>
+                <input type="text" id="taskTitle" placeholder="Ej: Preparar exposición" />
+            </div>
+            <div>
+                <label for="taskDesc">Descripción</label>
+                <input type="text" id="taskDesc" placeholder="Breve descripción" />
+            </div>
+            <div>
+                <label for="taskUser">Usuario *</label>
+                <select id="taskUser"></select>
+            </div>
+            <div>
+                <label for="taskCategory">Categoría *</label>
+                <select id="taskCategory"></select>
+            </div>
+            <div style="display: flex; align-items: flex-end;">
+                <button class="btn w-full" id="btnAddTask">➕ Crear tarea</button>
+            </div>
+        </div>
+        <div class="flex mt-1">
+            <button class="btn btn-outline btn-sm" id="btnToggleUserForm">👤 Gestionar usuarios</button>
+            <button class="btn btn-outline btn-sm" id="btnToggleCategoryForm">🏷️ Gestionar categorías</button>
+        </div>
+        <!-- formularios dinámicos para usuarios y categorías (ocultos) -->
+        <div id="userFormContainer" style="display: none; margin-top: 1rem; border-top: 1px solid var(--borde); padding-top: 1rem;">
+            <div class="flex">
+                <input type="text" id="newUserName" placeholder="Nombre de usuario" style="flex:2;" />
+                <button class="btn btn-success" id="btnAddUser">➕ Agregar usuario</button>
+            </div>
+            <div id="userList" class="flex" style="margin-top: 0.5rem; flex-wrap: wrap;"></div>
+        </div>
+        <div id="categoryFormContainer" style="display: none; margin-top: 1rem; border-top: 1px solid var(--borde); padding-top: 1rem;">
+            <div class="flex">
+                <input type="text" id="newCategoryName" placeholder="Nombre categoría" style="flex:2;" />
+                <input type="color" id="newCategoryColor" value="#176d9d" style="width: 60px; padding: 0.2rem;" />
+                <button class="btn btn-success" id="btnAddCategory">➕ Agregar categoría</button>
+            </div>
+            <div id="categoryList" class="flex" style="margin-top: 0.5rem; flex-wrap: wrap;"></div>
+        </div>
+    </section>
+
+    <!-- FILTROS Y BÚSQUEDA -->
+    <section class="card">
+        <div class="flex-between">
+            <div class="flex">
+                <button class="btn btn-outline btn-sm filter-btn" data-filter="all">📋 Todas</button>
+                <button class="btn btn-outline btn-sm filter-btn" data-filter="pending">⏳ Pendientes</button>
+                <button class="btn btn-outline btn-sm filter-btn" data-filter="done">✅ Completadas</button>
+            </div>
+            <div style="min-width: 160px;">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar tarea..." />
+            </div>
+        </div>
+    </section>
+
+    <!-- LISTA DE TAREAS (VISTA) -->
+    <section class="card" id="taskListContainer">
+        <h3 class="card-title">📋 Tareas</h3>
+        <div id="taskList"><div class="empty-state">✨ No hay tareas. Crea una nueva arriba.</div></div>
+    </section>
+</div>
+
+<script>
+    // ------------------------------------------------------------------
+    //  MODELO (M) – datos y lógica de negocio con localStorage
+    // ------------------------------------------------------------------
+    const Model = {
+        // claves
+        STORAGE_KEY: 'smartTodoData',
+        // estructura por defecto (con datos de ejemplo)
+        defaultData: {
+            users: [
+                { id: 'u1', name: 'Ana' },
+                { id: 'u2', name: 'Carlos' },
+                { id: 'u3', name: 'Marta' }
+            ],
+            categories: [
+                { id: 'c1', name: 'Académico', color: '#176d9d' },
+                { id: 'c2', name: 'Personal', color: '#168063' },
+                { id: 'c3', name: 'Trabajo', color: '#d5a126' }
+            ],
+            tasks: [
+                { id: 't1', title: 'Revisar apuntes', description: 'Matemáticas', status: 'pending', userId: 'u1', categoryId: 'c1', createdAt: Date.now() - 3600000 },
+                { id: 't2', title: 'Hacer ejercicio', description: '30 min cardio', status: 'pending', userId: 'u2', categoryId: 'c2', createdAt: Date.now() - 7200000 },
+                { id: 't3', title: 'Entregar reporte', description: 'Proyecto STEM', status: 'done', userId: 'u1', categoryId: 'c3', createdAt: Date.now() - 86400000 }
+            ]
+        },
+        data: null,
+
+        load() {
+            const stored = localStorage.getItem(this.STORAGE_KEY);
+            if (stored) {
+                try {
+                    this.data = JSON.parse(stored);
+                    // validación simple: si falta alguna propiedad, recargar default
+                    if (!this.data.users || !this.data.categories || !this.data.tasks) throw new Error('data corrupta');
+                } catch (e) {
+                    this.data = JSON.parse(JSON.stringify(this.defaultData));
+                    this.save();
+                }
+            } else {
+                this.data = JSON.parse(JSON.stringify(this.defaultData));
+                this.save();
+            }
+            return this.data;
+        },
+
+        save() {
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
+        },
+
+        // helpers
+        getUsers() { return this.data.users; },
+        getCategories() { return this.data.categories; },
+        getTasks() { return this.data.tasks; },
+
+        findUser(id) { return this.data.users.find(u => u.id === id); },
+        findCategory(id) { return this.data.categories.find(c => c.id === id); },
+        findTask(id) { return this.data.tasks.find(t => t.id === id); },
+
+        // operaciones CRUD
+        addUser(name) {
+            if (!name.trim()) return false;
+            const id = 'u' + Date.now() + Math.random().toString(36).substr(2, 4);
+            this.data.users.push({ id, name: name.trim() });
+            this.save();
+            return true;
+        },
+        removeUser(id) {
+            // no eliminar si tiene tareas asignadas
+            if (this.data.tasks.some(t => t.userId === id)) return false;
+            this.data.users = this.data.users.filter(u => u.id !== id);
+            this.save();
+            return true;
+        },
+        addCategory(name, color) {
+            if (!name.trim()) return false;
+            const id = 'c' + Date.now() + Math.random().toString(36).substr(2, 4);
+            this.data.categories.push({ id, name: name.trim(), color: color || '#176d9d' });
+            this.save();
+            return true;
+        },
+        removeCategory(id) {
+            if (this.data.tasks.some(t => t.categoryId === id)) return false;
+            this.data.categories = this.data.categories.filter(c => c.id !== id);
+            this.save();
+            return true;
+        },
+        addTask(title, description, userId, categoryId) {
+            if (!title.trim() || !userId || !categoryId) return false;
+            const id = 't' + Date.now() + Math.random().toString(36).substr(2, 4);
+            this.data.tasks.push({
+                id,
+                title: title.trim(),
+                description: description.trim() || '',
+                status: 'pending',
+                userId,
+                categoryId,
+                createdAt: Date.now()
+            });
+            this.save();
+            return true;
+        },
+        toggleTaskStatus(id) {
+            const task = this.findTask(id);
+            if (task) {
+                task.status = task.status === 'pending' ? 'done' : 'pending';
+                this.save();
+                return true;
+            }
+            return false;
+        },
+        deleteTask(id) {
+            this.data.tasks = this.data.tasks.filter(t => t.id !== id);
+            this.save();
+            return true;
+        },
+        editTask(id, updates) {
+            const task = this.findTask(id);
+            if (!task) return false;
+            if (updates.title !== undefined) task.title = updates.title.trim() || task.title;
+            if (updates.description !== undefined) task.description = updates.description.trim();
+            if (updates.userId !== undefined) task.userId = updates.userId;
+            if (updates.categoryId !== undefined) task.categoryId = updates.categoryId;
+            this.save();
+            return true;
+        },
+        // reset a datos de ejemplo
+        resetDemo() {
+            this.data = JSON.parse(JSON.stringify(this.defaultData));
+            this.save();
+            return this.data;
+        }
+    };
+
+    // ------------------------------------------------------------------
+    //  VISTA (V) – renderizado, eventos, DOM
+    // ------------------------------------------------------------------
+    const View = {
+        // elementos DOM
+        el: {
+            taskList: document.getElementById('taskList'),
+            taskTitle: document.getElementById('taskTitle'),
+            taskDesc: document.getElementById('taskDesc'),
+            taskUser: document.getElementById('taskUser'),
+            taskCategory: document.getElementById('taskCategory'),
+            btnAddTask: document.getElementById('btnAddTask'),
+            btnReset: document.getElementById('btnReset'),
+            searchInput: document.getElementById('searchInput'),
+            statsTotal: document.getElementById('statsTotal'),
+            statsPendientes: document.getElementById('statsPendientes'),
+            statsCompletadas: document.getElementById('statsCompletadas'),
+            // usuarios
+            userFormContainer: document.getElementById('userFormContainer'),
+            newUserName: document.getElementById('newUserName'),
+            btnAddUser: document.getElementById('btnAddUser'),
+            userList: document.getElementById('userList'),
+            btnToggleUserForm: document.getElementById('btnToggleUserForm'),
+            // categorías
+            categoryFormContainer: document.getElementById('categoryFormContainer'),
+            newCategoryName: document.getElementById('newCategoryName'),
+            newCategoryColor: document.getElementById('newCategoryColor'),
+            btnAddCategory: document.getElementById('btnAddCategory'),
+            categoryList: document.getElementById('categoryList'),
+            btnToggleCategoryForm: document.getElementById('btnToggleCategoryForm'),
+            // filtros
+            filterButtons: document.querySelectorAll('.filter-btn')
+        },
+        currentFilter: 'all',
+        searchTerm: '',
+
+        // inicializa listeners
+        init() {
+            // eventos de formulario
+            this.el.btnAddTask.addEventListener('click', () => this.handleAddTask());
+            this.el.btnReset.addEventListener('click', () => { Model.resetDemo(); this.render(); });
+            this.el.searchInput.addEventListener('input', (e) => { this.searchTerm = e.target.value.toLowerCase(); this.render(); });
+            this.el.filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.currentFilter = btn.dataset.filter;
+                    this.render();
+                });
+            });
+            // usuarios
+            this.el.btnToggleUserForm.addEventListener('click', () => {
+                const cont = this.el.userFormContainer;
+                cont.style.display = cont.style.display === 'none' ? 'block' : 'none';
+                if (cont.style.display === 'block') this.renderUserList();
+            });
+            this.el.btnAddUser.addEventListener('click', () => {
+                const name = this.el.newUserName.value.trim();
+                if (Model.addUser(name)) {
+                    this.el.newUserName.value = '';
+                    this.renderUserList();
+                    this.renderSelects();
+                    this.render();
+                } else alert('Ingresa un nombre válido');
+            });
+            // categorías
+            this.el.btnToggleCategoryForm.addEventListener('click', () => {
+                const cont = this.el.categoryFormContainer;
+                cont.style.display = cont.style.display === 'none' ? 'block' : 'none';
+                if (cont.style.display === 'block') this.renderCategoryList();
+            });
+            this.el.btnAddCategory.addEventListener('click', () => {
+                const name = this.el.newCategoryName.value.trim();
+                const color = this.el.newCategoryColor.value;
+                if (Model.addCategory(name, color)) {
+                    this.el.newCategoryName.value = '';
+                    this.renderCategoryList();
+                    this.renderSelects();
+                    this.render();
+                } else alert('Ingresa un nombre válido');
+            });
+            // carga inicial
+            Model.load();
+            this.renderSelects();
+            this.render();
+            this.renderUserList();
+            this.renderCategoryList();
+        },
+
+        // renderiza tareas según filtro y búsqueda
+        render() {
+            const allTasks = Model.getTasks();
+            const users = Model.getUsers();
+            const categories = Model.getCategories();
+
+            // filtro
+            let filtered = allTasks;
+            if (this.currentFilter === 'pending') filtered = filtered.filter(t => t.status === 'pending');
+            else if (this.currentFilter === 'done') filtered = filtered.filter(t => t.status === 'done');
+            // búsqueda
+            if (this.searchTerm) {
+                filtered = filtered.filter(t => 
+                    t.title.toLowerCase().includes(this.searchTerm) ||
+                    (t.description && t.description.toLowerCase().includes(this.searchTerm))
+                );
+            }
+            // ordenar por fecha descendente
+            filtered.sort((a, b) => b.createdAt - a.createdAt);
+
+            if (filtered.length === 0) {
+                this.el.taskList.innerHTML = `<div class="empty-state">📭 No hay tareas que coincidan</div>`;
+            } else {
+                let html = '';
+                filtered.forEach(task => {
+                    const user = users.find(u => u.id === task.userId);
+                    const cat = categories.find(c => c.id === task.categoryId);
+                    const done = task.status === 'done';
+                    html += `
+                        <div class="task-item ${done ? 'done' : ''}">
+                            <div class="task-info">
+                                <strong>${this.escapeHtml(task.title)}</strong>
+                                <div class="task-meta">
+                                    <span>👤 ${user ? this.escapeHtml(user.name) : 'Sin usuario'}</span>
+                                    <span>🏷️ <span style="background:${cat ? cat.color : '#ccc'}; padding:0 8px; border-radius:20px; color:#fff;">${cat ? this.escapeHtml(cat.name) : 'Sin cat'}</span></span>
+                                    <span>${done ? '✅ Completada' : '⏳ Pendiente'}</span>
+                                    <span>${task.description ? this.escapeHtml(task.description) : ''}</span>
+                                </div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="btn btn-sm btn-outline task-toggle" data-id="${task.id}">${done ? '↩️ Reabrir' : '✅ Completar'}</button>
+                                <button class="btn btn-sm btn-outline task-edit" data-id="${task.id}">✏️ Editar</button>
+                                <button class="btn btn-sm btn-danger task-delete" data-id="${task.id}">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                this.el.taskList.innerHTML = html;
+                // eventos de los botones de cada tarea
+                this.el.taskList.querySelectorAll('.task-toggle').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.currentTarget.dataset.id;
+                        Model.toggleTaskStatus(id);
+                        this.render();
+                        this.updateStats();
+                    });
+                });
+                this.el.taskList.querySelectorAll('.task-delete').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (confirm('¿Eliminar esta tarea?')) {
+                            const id = e.currentTarget.dataset.id;
+                            Model.deleteTask(id);
+                            this.render();
+                            this.updateStats();
+                        }
+                    });
+                });
+                this.el.taskList.querySelectorAll('.task-edit').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.currentTarget.dataset.id;
+                        const task = Model.findTask(id);
+                        if (!task) return;
+                        const newTitle = prompt('Nuevo título:', task.title);
+                        if (newTitle !== null) {
+                            const newDesc = prompt('Nueva descripción:', task.description || '');
+                            // mantener usuario y categoría actuales, se podrían cambiar pero simplificamos
+                            Model.editTask(id, { title: newTitle, description: newDesc });
+                            this.render();
+                            this.updateStats();
+                        }
+                    });
+                });
+            }
+            this.updateStats();
+        },
+
+        updateStats() {
+            const tasks = Model.getTasks();
+            const total = tasks.length;
+            const pend = tasks.filter(t => t.status === 'pending').length;
+            const done = tasks.filter(t => t.status === 'done').length;
+            this.el.statsTotal.textContent = `📌 ${total} tareas`;
+            this.el.statsPendientes.textContent = `⏳ ${pend} pendientes`;
+            this.el.statsCompletadas.textContent = `✅ ${done} completadas`;
+        },
+
+        // renderiza selects de usuario y categoría
+        renderSelects() {
+            const users = Model.getUsers();
+            const categories = Model.getCategories();
+            // usuario
+            const userSelect = this.el.taskUser;
+            userSelect.innerHTML = '';
+            users.forEach(u => {
+                const opt = document.createElement('option');
+                opt.value = u.id;
+                opt.textContent = u.name;
+                userSelect.appendChild(opt);
+            });
+            if (users.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = '-- sin usuarios --';
+                userSelect.appendChild(opt);
+            }
+            // categoría
+            const catSelect = this.el.taskCategory;
+            catSelect.innerHTML = '';
+            categories.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.name;
+                catSelect.appendChild(opt);
+            });
+            if (categories.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = '-- sin categorías --';
+                catSelect.appendChild(opt);
+            }
+        },
+
+        // listas de usuarios (gestión)
+        renderUserList() {
+            const users = Model.getUsers();
+            const container = this.el.userList;
+            if (users.length === 0) {
+                container.innerHTML = '<span style="color:#6a7f8f;">No hay usuarios.</span>';
+                return;
+            }
+            container.innerHTML = users.map(u => `
+                <span style="background:#eaf3f9; padding:0.2rem 0.8rem; border-radius:40px; display:inline-flex; align-items:center; gap:0.3rem;">
+                    ${this.escapeHtml(u.name)}
+                    <button class="btn btn-sm btn-danger" style="padding:0 6px; font-size:0.7rem;" data-userid="${u.id}">✕</button>
+                </span>
+            `).join('');
+            container.querySelectorAll('[data-userid]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.userid;
+                    if (confirm('¿Eliminar usuario? (solo si no tiene tareas)')) {
+                        if (Model.removeUser(id)) {
+                            this.renderUserList();
+                            this.renderSelects();
+                            this.render();
+                        } else {
+                            alert('No se puede eliminar: tiene tareas asignadas.');
+                        }
+                    }
+                });
+            });
+        },
+
+        renderCategoryList() {
+            const categories = Model.getCategories();
+            const container = this.el.categoryList;
+            if (categories.length === 0) {
+                container.innerHTML = '<span style="color:#6a7f8f;">No hay categorías.</span>';
+                return;
+            }
+            container.innerHTML = categories.map(c => `
+                <span style="background:#eaf3f9; padding:0.2rem 0.8rem; border-radius:40px; display:inline-flex; align-items:center; gap:0.3rem;">
+                    <span style="display:inline-block; width:12px; height:12px; border-radius:12px; background:${c.color};"></span>
+                    ${this.escapeHtml(c.name)}
+                    <button class="btn btn-sm btn-danger" style="padding:0 6px; font-size:0.7rem;" data-catid="${c.id}">✕</button>
+                </span>
+            `).join('');
+            container.querySelectorAll('[data-catid]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.catid;
+                    if (confirm('¿Eliminar categoría? (solo si no tiene tareas)')) {
+                        if (Model.removeCategory(id)) {
+                            this.renderCategoryList();
+                            this.renderSelects();
+                            this.render();
+                        } else {
+                            alert('No se puede eliminar: tiene tareas asignadas.');
+                        }
+                    }
+                });
+            });
+        },
+
+        // maneja creación de tarea
+        handleAddTask() {
+            const title = this.el.taskTitle.value.trim();
+            const desc = this.el.taskDesc.value.trim();
+            const userId = this.el.taskUser.value;
+            const categoryId = this.el.taskCategory.value;
+            if (!title) { alert('El título es obligatorio'); return; }
+            if (!userId || !categoryId) { alert('Selecciona usuario y categoría'); return; }
+            if (Model.addTask(title, desc, userId, categoryId)) {
+                this.el.taskTitle.value = '';
+                this.el.taskDesc.value = '';
+                this.render();
+                this.updateStats();
+            } else {
+                alert('Error al crear la tarea');
+            }
+        },
+
+        escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    };
+
+    // ------------------------------------------------------------------
+    //  CONTROLADOR (C) – ya integrado en la vista y modelo
+    //  Inicialización de la aplicación
+    // ------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+        View.init();
+    });
+</script>
+</body>
+</html>

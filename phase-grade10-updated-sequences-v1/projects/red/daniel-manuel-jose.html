@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Issue Tracker · STEM ODS 11</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f2b3d;
+            --primary-light: #1a4b66;
+            --primary-dark: #091d2b;
+            --accent: #2d8fc5;
+            --accent-light: #e8f4fc;
+            --success: #2a9d8f;
+            --danger: #e76f51;
+            --warning: #f4a261;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f4f8;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-50);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            background-image: radial-gradient(ellipse at 10% 20%, rgba(45, 143, 197, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(42, 157, 143, 0.05) 0%, transparent 50%);
+        }
+
+        /* ===== APP CONTAINER ===== */
+        .app-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 2.5rem;
+            transition: var(--transition);
+        }
+
+        @media (max-width: 640px) {
+            .app-wrapper {
+                padding: 1.5rem;
+            }
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .app-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .app-brand .icon-wrap {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(15, 43, 61, 0.25);
+        }
+
+        .app-brand h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .app-brand h1 span {
+            color: var(--accent);
+        }
+
+        .app-brand .subtitle {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            font-weight: 500;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .header-ods {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--accent-light);
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            border: 1px solid rgba(45, 143, 197, 0.2);
+        }
+
+        .header-ods .ods-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--primary-light);
+        }
+
+        .header-ods .ods-badge i {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .header-ods .ods-number {
+            background: var(--primary);
+            color: white;
+            padding: 0.15rem 0.7rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            .app-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-ods {
+                align-self: flex-start;
+            }
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .stat-item .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+
+        .stat-item .stat-value .trend {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        /* ===== GRID ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 820px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        /* ===== PANELS ===== */
+        .panel {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .panel:hover {
+            box-shadow: var(--shadow);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-header .panel-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            flex-shrink: 0;
+        }
+
+        .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            letter-spacing: -0.3px;
+        }
+
+        .panel-header .panel-badge {
+            margin-left: auto;
+            font-size: 0.7rem;
+            background: var(--gray-100);
+            padding: 0.2rem 0.8rem;
+            border-radius: 100px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            transition: var(--transition);
+            color: var(--gray-800);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(45, 143, 197, 0.12);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group .char-count {
+            text-align: right;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            margin-top: 0.25rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 43, 61, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 43, 61, 0.25);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 12px rgba(231, 111, 81, 0.2);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(231, 111, 81, 0.25);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(42, 157, 143, 0.2);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(42, 157, 143, 0.25);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 1rem;
+            font-size: 0.75rem;
+            flex: 0 0 auto;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 50%;
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-icon:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-icon.danger:hover {
+            background: #fee2e2;
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* ===== ISSUE LIST ===== */
+        .issue-list {
+            max-height: 440px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .issue-list::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .issue-list::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+
+        .issue-list::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 10px;
+        }
+
+        .issue-item {
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--accent);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            border-left-width: 4px;
+        }
+
+        .issue-item:hover {
+            background: white;
+            border-color: var(--gray-300);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .issue-item .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .issue-item .issue-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .issue-item .issue-actions {
+            display: flex;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .issue-item .issue-desc {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .issue-item .issue-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            margin-top: 0.6rem;
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            align-items: center;
+        }
+
+        .issue-item .issue-meta .category-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.15rem 0.7rem;
+            border-radius: 100px;
+            font-weight: 500;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .issue-item .issue-meta .category-tag.infrastructure {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .issue-item .issue-meta .category-tag.cleanliness {
+            background: #d1fae5;
+            color: #047857;
+        }
+        .issue-item .issue-meta .category-tag.safety {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .issue-item .issue-meta .category-tag.community {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .issue-item .issue-meta .category-tag.other {
+            background: var(--gray-200);
+            color: var(--gray-600);
+        }
+
+        .issue-item .issue-meta .timestamp {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--gray-400);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .empty-state .sub {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            font-weight: 400;
+        }
+
+        /* ===== TEAM FOOTER ===== */
+        .app-footer {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .app-footer .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .app-footer .footer-left .tech-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            background: var(--gray-100);
+            padding: 0.2rem 0.8rem;
+            border-radius: 100px;
+        }
+
+        .app-footer .footer-left .tech-badge i {
+            color: var(--accent);
+        }
+
+        .app-footer .footer-right {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .team-credits {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            flex-wrap: wrap;
+        }
+
+        .team-credits .member {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--gray-100);
+            padding: 0.2rem 0.8rem;
+            border-radius: 100px;
+            font-weight: 500;
+        }
+
+        .team-credits .member i {
+            color: var(--accent);
+            font-size: 0.65rem;
+        }
+
+        @media (max-width: 640px) {
+            .app-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .app-footer .footer-left {
+                justify-content: center;
+            }
+            .team-credits {
+                justify-content: center;
+            }
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-width: 360px;
+            width: 100%;
+        }
+
+        .toast {
+            background: var(--gray-900);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideUp 0.3s ease;
+            border-left: 4px solid var(--accent);
+        }
+
+        .toast.success {
+            border-left-color: var(--success);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast i {
+            font-size: 1.1rem;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .toast.hide {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+        }
+
+        /* ===== FILTER ===== */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar .filter-btn {
+            padding: 0.3rem 1rem;
+            border-radius: 100px;
+            border: 1px solid var(--gray-200);
+            background: white;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-bar .filter-btn:hover {
+            background: var(--gray-100);
+        }
+
+        .filter-bar .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-bar .filter-btn.active:hover {
+            background: var(--primary-light);
+        }
+
+        /* ===== RESPONSIVE FINE-TUNE ===== */
+        @media (max-width: 480px) {
+            .form-actions {
+                flex-direction: column;
+            }
+            .btn {
+                flex: 1;
+            }
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+            .stat-item .stat-value {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* ===== SEARCH ===== */
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            transition: var(--transition);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(45, 143, 197, 0.12);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--gray-400);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="app-brand">
+                <div class="icon-wrap">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div>
+                    <h1>Community<span>Tracker</span></h1>
+                    <span class="subtitle"><i class="fas fa-flag" style="color: var(--accent);"></i> Reporta y resuelve problemas locales</span>
+                </div>
+            </div>
+            <div class="header-ods">
+                <span class="ods-badge">
+                    <i class="fas fa-globe-americas"></i> ODS
+                    <span class="ods-number">11</span>
+                </span>
+                <span style="font-size:0.7rem;color:var(--gray-500);">Ciudades sostenibles</span>
+            </div>
+        </header>
+
+        <!-- STATS -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalIssues">0</div>
+                <div class="stat-label">Total reportes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="categoryCount">0</div>
+                <div class="stat-label">Categorías</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="lastReport">—</div>
+                <div class="stat-label">Último reporte</div>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="main-grid">
+            <!-- FORM PANEL -->
+            <section class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon"><i class="fas fa-pen"></i></div>
+                    <h2>Nuevo reporte</h2>
+                    <span class="panel-badge"><i class="far fa-clock"></i> ahora</span>
+                </div>
+
+                <form id="issueForm" novalidate>
+                    <div class="form-group">
+                        <label for="titleInput">Título <span class="required">*</span></label>
+                        <input type="text" id="titleInput" placeholder="Ej. Farola averiada" maxlength="80" required />
+                        <div class="char-count"><span id="titleCharCount">0</span>/80</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descInput">Descripción <span class="required">*</span></label>
+                        <textarea id="descInput" placeholder="Describe el problema y su ubicación..." maxlength="300" required></textarea>
+                        <div class="char-count"><span id="descCharCount">0</span>/300</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categorySelect">Categoría</label>
+                        <select id="categorySelect">
+                            <option value="Infrastructure">Infraestructura</option>
+                            <option value="Cleanliness">Limpieza</option>
+                            <option value="Safety">Seguridad</option>
+                            <option value="Community">Comunidad</option>
+                            <option value="Other">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> Reportar
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            <i class="fas fa-undo"></i> Limpiar
+                        </button>
+                    </div>
+                </form>
+
+                <div style="margin-top:1.25rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                    <button id="seedDataBtn" class="btn btn-success btn-sm">
+                        <i class="fas fa-database"></i> Datos demo
+                    </button>
+                    <button id="clearAllBtn" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i> Eliminar todo
+                    </button>
+                </div>
+            </section>
+
+            <!-- LIST PANEL -->
+            <section class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon"><i class="fas fa-list"></i></div>
+                    <h2>Reportes activos</h2>
+                    <span class="panel-badge" id="issueCounter">0</span>
+                </div>
+
+                <!-- Search -->
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 Buscar por título o descripción..." />
+                </div>
+
+                <!-- Filter -->
+                <div class="filter-bar" id="filterBar">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="Infrastructure">Infraestructura</button>
+                    <button class="filter-btn" data-filter="Cleanliness">Limpieza</button>
+                    <button class="filter-btn" data-filter="Safety">Seguridad</button>
+                    <button class="filter-btn" data-filter="Community">Comunidad</button>
+                    <button class="filter-btn" data-filter="Other">Otro</button>
+                </div>
+
+                <div class="issue-list" id="issueListContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No hay reportes</p>
+                        <span class="sub">Agrega tu primer problema comunitario</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <div class="footer-left">
+                <span class="tech-badge"><i class="fas fa-code"></i> Variables · Condicionales · Bucles · Funciones · Arrays · DOM</span>
+                <span class="tech-badge"><i class="fas fa-check-circle" style="color:var(--success);"></i> MVP funcional</span>
+            </div>
+            <div class="footer-right">
+                <div class="team-credits">
+                    <span><i class="fas fa-users" style="color:var(--accent);"></i> Equipo desarrollador:</span>
+                    <span class="member"><i class="fas fa-user-check"></i> Daniel Fonseca</span>
+                    <span class="member"><i class="fas fa-user-check"></i> Jose Mario Soto</span>
+                    <span class="member"><i class="fas fa-user-check"></i> Manuel Pablo Garrido</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            //  DATA
+            // ============================================================
+            let issues = [];
+            let currentFilter = 'all';
+            let currentSearch = '';
+            let idCounter = 0;
+
+            // ============================================================
+            //  DOM REFS
+            // ============================================================
+            const form = document.getElementById('issueForm');
+            const titleInput = document.getElementById('titleInput');
+            const descInput = document.getElementById('descInput');
+            const categorySelect = document.getElementById('categorySelect');
+            const issueListContainer = document.getElementById('issueListContainer');
+            const issueCounter = document.getElementById('issueCounter');
+            const totalIssuesEl = document.getElementById('totalIssues');
+            const categoryCountEl = document.getElementById('categoryCount');
+            const lastReportEl = document.getElementById('lastReport');
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            const seedDataBtn = document.getElementById('seedDataBtn');
+            const filterBar = document.getElementById('filterBar');
+            const searchInput = document.getElementById('searchInput');
+            const titleCharCount = document.getElementById('titleCharCount');
+            const descCharCount = document.getElementById('descCharCount');
+
+            // ============================================================
+            //  HELPERS
+            // ============================================================
+            function generateId() {
+                return ++idCounter;
+            }
+
+            function getCategoryColor(cat) {
+                const map = {
+                    'Infrastructure': '#1d4ed8',
+                    'Cleanliness': '#047857',
+                    'Safety': '#b91c1c',
+                    'Community': '#92400e',
+                    'Other': '#64748b'
+                };
+                return map[cat] || '#64748b';
+            }
+
+            function getCategoryClass(cat) {
+                return cat.toLowerCase();
+            }
+
+            function formatDate(iso) {
+                if (!iso) return '—';
+                const d = new Date(iso);
+                return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) +
+                    ' ' + d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function escapeHTML(str) {
+                if (!str) return '';
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+                return str.replace(/[&<>"']/g, m => map[m]);
+            }
+
+            function getRelativeTime(iso) {
+                if (!iso) return '—';
+                const now = new Date();
+                const then = new Date(iso);
+                const diff = Math.floor((now - then) / 1000);
+
+                if (diff < 60) return 'hace ' + diff + 's';
+                if (diff < 3600) return 'hace ' + Math.floor(diff / 60) + 'm';
+                if (diff < 86400) return 'hace ' + Math.floor(diff / 3600) + 'h';
+                if (diff < 604800) return 'hace ' + Math.floor(diff / 86400) + 'd';
+                return formatDate(iso);
+            }
+
+            // ============================================================
+            //  TOAST
+            // ============================================================
+            function showToast(message, type = 'info') {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                const icon = type === 'success' ? 'fa-check-circle' :
+                    type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+                toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('hide');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // ============================================================
+            //  RENDER
+            // ============================================================
+            function renderIssues() {
+                // Filter by category
+                let filtered = issues;
+                if (currentFilter !== 'all') {
+                    filtered = filtered.filter(issue => issue.category === currentFilter);
+                }
+
+                // Filter by search
+                if (currentSearch.trim() !== '') {
+                    const searchLower = currentSearch.toLowerCase().trim();
+                    filtered = filtered.filter(issue =>
+                        issue.title.toLowerCase().includes(searchLower) ||
+                        issue.description.toLowerCase().includes(searchLower)
+                    );
+                }
+
+                // Sort by newest first
+                filtered = [...filtered].sort((a, b) => b.id - a.id);
+
+                // Update counter
+                issueCounter.textContent = filtered.length;
+                totalIssuesEl.textContent = issues.length;
+
+                // Category count
+                const cats = new Set(issues.map(i => i.category));
+                categoryCountEl.textContent = cats.size;
+
+                // Last report
+                if (issues.length > 0) {
+                    const sorted = [...issues].sort((a, b) => b.id - a.id);
+                    lastReportEl.textContent = getRelativeTime(sorted[0].timestamp);
+                } else {
+                    lastReportEl.textContent = '—';
+                }
+
+                // Render list
+                if (filtered.length === 0) {
+                    issueListContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>${issues.length === 0 ? 'No hay reportes' : 'No hay coincidencias'}</p>
+                            <span class="sub">${issues.length === 0 ? 'Agrega tu primer problema comunitario' : 'Prueba con otro filtro o búsqueda'}</span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                for (const issue of filtered) {
+                    const catClass = getCategoryClass(issue.category);
+                    const color = getCategoryColor(issue.category);
+                    html += `
+                        <div class="issue-item" style="border-left-color:${color};">
+                            <div class="issue-header">
+                                <div class="issue-title">${escapeHTML(issue.title)}</div>
+                                <div class="issue-actions">
+                                    <button class="btn-icon danger" data-id="${issue.id}" title="Eliminar">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="issue-desc">${escapeHTML(issue.description)}</div>
+                            <div class="issue-meta">
+                                <span class="category-tag ${catClass}">
+                                    <i class="fas fa-tag"></i> ${escapeHTML(issue.category)}
+                                </span>
+                                <span class="timestamp">
+                                    <i class="far fa-clock"></i> ${getRelativeTime(issue.timestamp)}
+                                </span>
+                                <span style="font-size:0.6rem;color:var(--gray-400);">#${issue.id}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                issueListContainer.innerHTML = html;
+
+                // Attach delete events
+                document.querySelectorAll('.issue-item .btn-icon[data-id]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = parseInt(this.getAttribute('data-id'), 10);
+                        deleteIssue(id);
+                    });
+                });
+            }
+
+            // ============================================================
+            //  CRUD
+            // ============================================================
+            function addIssue(title, description, category) {
+                const newIssue = {
+                    id: generateId(),
+                    title: title.trim(),
+                    description: description.trim(),
+                    category: category,
+                    timestamp: new Date().toISOString()
+                };
+                issues.push(newIssue);
+                renderIssues();
+                showToast(`"${newIssue.title}" reportado correctamente`, 'success');
+                return newIssue;
+            }
+
+            function deleteIssue(id) {
+                const index = issues.findIndex(i => i.id === id);
+                if (index === -1) return;
+                const removed = issues[index];
+                issues.splice(index, 1);
+                renderIssues();
+                showToast(`"${removed.title}" eliminado`, 'error');
+            }
+
+            function clearAllIssues() {
+                if (issues.length === 0) {
+                    showToast('No hay reportes para eliminar', 'info');
+                    return;
+                }
+                if (confirm('¿Eliminar todos los reportes?')) {
+                    issues = [];
+                    renderIssues();
+                    showToast('Todos los reportes fueron eliminados', 'error');
+                }
+            }
+
+            function seedSampleData() {
+                const samples = [
+                    { title: 'Farola averiada en Av. Principal', description: 'La farola frente al número 45 lleva 4 días sin funcionar. Zona muy oscura por la noche.', category: 'Infrastructure' },
+                    { title: 'Contenedor de basura rebosante', description: 'El contenedor del parque central está desbordado desde hace 3 días. Malos olores.', category: 'Cleanliness' },
+                    { title: 'Actividad sospechosa en la escuela', description: 'Personas ajenas rondando cerca de la entrada trasera después del horario escolar.', category: 'Safety' },
+                    { title: 'Falta de bancos en la plaza', description: 'Los vecinos mayores no tienen dónde sentarse. Solo hay 2 bancos para toda la plaza.', category: 'Community' },
+                    { title: 'Bache en calle 15', description: 'Un bache profundo en la intersección con carrera 8. Peligroso para bicicletas y motos.', category: 'Infrastructure' },
+                    { title: 'Ruido excesivo por construcción', description: 'Construcción en la calle 10 trabaja después de las 10 PM sin permiso.', category: 'Community' },
+                    { title: 'Fuga de agua en la esquina', description: 'Fuga de agua potable en la esquina de la calle 5 con carrera 3. Desperdicio de agua.', category: 'Infrastructure' },
+                ];
+                for (const s of samples) {
+                    addIssue(s.title, s.description, s.category);
+                }
+                showToast('Datos de ejemplo cargados', 'success');
+            }
+
+            // ============================================================
+            //  FILTER & SEARCH
+            // ============================================================
+            function setFilter(filter) {
+                currentFilter = filter;
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.filter === filter);
+                });
+                renderIssues();
+            }
+
+            function setSearch(search) {
+                currentSearch = search;
+                renderIssues();
+            }
+
+            // ============================================================
+            //  CHAR COUNTERS
+            // ============================================================
+            titleInput.addEventListener('input', function() {
+                titleCharCount.textContent = this.value.length;
+            });
+            descInput.addEventListener('input', function() {
+                descCharCount.textContent = this.value.length;
+            });
+
+            // ============================================================
+            //  EVENTS
+            // ============================================================
+
+            // Form submit
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const title = titleInput.value.trim();
+                const description = descInput.value.trim();
+                const category = categorySelect.value;
+
+                if (title === '' || description === '') {
+                    showToast('Completa todos los campos obligatorios', 'error');
+                    return;
+                }
+
+                addIssue(title, description, category);
+                form.reset();
+                titleCharCount.textContent = '0';
+                descCharCount.textContent = '0';
+                titleInput.focus();
+            });
+
+            // Clear all
+            clearAllBtn.addEventListener('click', clearAllIssues);
+
+            // Seed data
+            seedDataBtn.addEventListener('click', seedSampleData);
+
+            // Filter
+            filterBar.addEventListener('click', function(e) {
+                const btn = e.target.closest('.filter-btn');
+                if (!btn) return;
+                setFilter(btn.dataset.filter);
+            });
+
+            // Search with debounce
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    setSearch(this.value);
+                }, 300);
+            });
+
+            // Keyboard shortcut: Escape to clear search
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    this.value = '';
+                    setSearch('');
+                }
+            });
+
+            // ============================================================
+            //  INIT
+            // ============================================================
+
+            // Start with empty state
+            renderIssues();
+
+            // Auto-seed if empty (first load)
+            if (issues.length === 0) {
+                seedSampleData();
+            }
+
+            // Expose for debugging
+            window.__issues = issues;
+            window.__render = renderIssues;
+
+            // Log team info
+            console.log('🏗️ Equipo desarrollador:');
+            console.log('👤 Daniel Fonseca');
+            console.log('👤 Jose Mario Soto');
+            console.log('👤 Manuel Pablo Garrido');
+            console.log('📚 STEM · Ciclo 4 · 10° grado');
+
+        })();
+    </script>
+
+</body>
+</html>

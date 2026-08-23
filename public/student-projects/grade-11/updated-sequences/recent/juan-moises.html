@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoBot PRO | Sistema de Monitoreo Ambiental Inteligente</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ================================================================
+           ROOT & VARIABLES CSS (Soporte para modo oscuro/claro)
+           ================================================================ */
+        :root {
+            --bg: #f0f4f8;
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-card-hover: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #3a4a6a;
+            --text-muted: #7a8aa8;
+            --border: rgba(44, 62, 143, 0.1);
+            --shadow: 0 20px 60px rgba(44, 62, 143, 0.12);
+            --shadow-hover: 0 25px 70px rgba(44, 62, 143, 0.18);
+            --primary: #2c3e8f;
+            --primary-light: #3b5bb0;
+            --primary-dark: #1a2a5e;
+            --secondary: #00c9a7;
+            --accent: #ff6b6b;
+            --warning: #ffd93d;
+            --radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --header-gradient: linear-gradient(135deg, #1a2a5e, #2c3e8f);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f0f1a;
+            --bg-card: rgba(26, 26, 46, 0.92);
+            --bg-card-hover: #1e1e3a;
+            --text-primary: #e8ecf4;
+            --text-secondary: #b0bcd6;
+            --text-muted: #6a7a9a;
+            --border: rgba(255, 255, 255, 0.06);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 25px 70px rgba(0, 0, 0, 0.5);
+            --header-gradient: linear-gradient(135deg, #0a0a1a, #1a1a3e);
+        }
+
+        /* ================================================================
+           RESET & BASE
+           ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        /* ================================================================
+           SCROLLBAR PERSONALIZADA
+           ================================================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* ================================================================
+           APP CONTAINER
+           ================================================================ */
+        .app-container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* ================================================================
+           HEADER PRO
+           ================================================================ */
+        .header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 24px 36px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 201, 167, 0.08), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: 20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.05), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-left {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-left h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header-left h1 .highlight {
+            color: var(--secondary);
+        }
+
+        .header-left .subtitle {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            font-weight: 300;
+            margin-top: 2px;
+        }
+
+        .header-left .dev-credit {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .header-left .dev-credit i {
+            margin: 0 4px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--secondary);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+        }
+
+        .status-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn-theme {
+            background: rgba(255, 255, 255, 0.12);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-theme:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* ================================================================
+           DASHBOARD GRID (Layout profesional)
+           ================================================================ */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 22px;
+        }
+
+        /* ================================================================
+           TARJETAS (Cards)
+           ================================================================ */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+
+        .card-icon {
+            font-size: 1.3rem;
+            opacity: 0.6;
+            color: var(--text-muted);
+        }
+
+        .card-badge {
+            font-size: 0.6rem;
+            background: var(--primary-light);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* ================================================================
+           KPI MINI TARJETAS
+           ================================================================ */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-item {
+            background: var(--bg);
+            padding: 12px 14px;
+            border-radius: 14px;
+            border-left: 3px solid var(--primary-light);
+            transition: var(--transition);
+        }
+
+        .kpi-item:hover {
+            transform: translateX(4px);
+        }
+
+        .kpi-item .kpi-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .kpi-item .kpi-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .kpi-item .kpi-unit {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: 2px;
+        }
+
+        .kpi-item .kpi-trend {
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .kpi-trend.up {
+            color: var(--secondary);
+        }
+        .kpi-trend.down {
+            color: var(--accent);
+        }
+
+        /* ================================================================
+           SENSORES (grid 2x2 mejorado)
+           ================================================================ */
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .sensor-item {
+            background: var(--bg);
+            padding: 14px 16px;
+            border-radius: 14px;
+            border-left: 4px solid var(--primary-light);
+            transition: var(--transition);
+        }
+
+        .sensor-item:hover {
+            background: var(--bg-card-hover);
+            transform: scale(1.01);
+        }
+
+        .sensor-item .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .sensor-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 2px;
+        }
+
+        .sensor-item .unit {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: 2px;
+        }
+
+        .sensor-item .trend {
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* ================================================================
+           CONTROLES (botones mejorados)
+           ================================================================ */
+        .control-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-control {
+            background: var(--bg);
+            border: 2px solid transparent;
+            padding: 14px 10px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-family: var(--font);
+        }
+
+        .btn-control .icon {
+            font-size: 1.5rem;
+        }
+
+        .btn-control:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 91, 176, 0.25);
+        }
+
+        .btn-control.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+            box-shadow: 0 8px 24px rgba(0, 201, 167, 0.3);
+        }
+
+        .btn-control.active:hover {
+            background: #00b894;
+        }
+
+        .btn-control.danger {
+            border-color: transparent;
+        }
+
+        .btn-control.danger:hover {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-control .sub-status {
+            font-size: 0.55rem;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        /* ================================================================
+           ALERTAS
+           ================================================================ */
+        .alert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: var(--bg);
+            font-size: 0.8rem;
+            border-left: 4px solid var(--warning);
+            animation: slideIn 0.35s ease;
+            transition: var(--transition);
+        }
+
+        .alert-item:hover {
+            transform: translateX(4px);
+        }
+
+        .alert-item.warning {
+            border-left-color: var(--warning);
+        }
+        .alert-item.danger {
+            border-left-color: var(--accent);
+            background: rgba(255, 107, 107, 0.08);
+        }
+        .alert-item.success {
+            border-left-color: var(--secondary);
+            background: rgba(0, 201, 167, 0.08);
+        }
+        .alert-item.info {
+            border-left-color: var(--primary-light);
+            background: rgba(59, 91, 176, 0.08);
+        }
+
+        .alert-item .time {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ================================================================
+           GRÁFICO
+           ================================================================ */
+        .chart-container {
+            position: relative;
+            height: 200px;
+            margin-top: 4px;
+        }
+
+        /* ================================================================
+           CONSOLA DE LOG (estilo terminal)
+           ================================================================ */
+        .terminal {
+            background: #0a0a1a;
+            color: #00c9a7;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            max-height: 80px;
+            overflow-y: auto;
+            margin-top: 10px;
+            border: 1px solid rgba(0, 201, 167, 0.1);
+        }
+
+        .terminal .log-entry {
+            opacity: 0.9;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .terminal .log-entry .time {
+            color: #6a7a9a;
+            margin-right: 12px;
+        }
+
+        /* ================================================================
+           ODS TAGS
+           ================================================================ */
+        .ods-grid {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .ods-item {
+            background: var(--bg);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .ods-item:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .ods-item .emoji {
+            margin-right: 4px;
+        }
+
+        /* ================================================================
+           BOTONES DE ACCIÓN (exportar, reset)
+           ================================================================ */
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .btn-action {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-action i {
+            font-size: 0.9rem;
+        }
+
+        /* ================================================================
+           FOOTER
+           ================================================================ */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer a:hover {
+            color: var(--secondary);
+        }
+
+        .footer .heart {
+            color: var(--accent);
+        }
+
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .header-left h1 {
+                font-size: 1.5rem;
+            }
+            .header-right {
+                justify-content: center;
+                width: 100%;
+            }
+            .header-status {
+                width: 100%;
+                justify-content: center;
+            }
+            .kpi-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .sensor-grid,
+            .control-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .card {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-row {
+                grid-template-columns: 1fr;
+            }
+            .sensor-grid,
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-status {
+                flex-wrap: wrap;
+            }
+            .header-left .dev-credit {
+                font-size: 0.65rem;
+            }
+        }
+
+        /* ================================================================
+           ANIMACIONES ADICIONALES
+           ================================================================ */
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(0, 201, 167, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0, 201, 167, 0.25);
+            }
+        }
+
+        /* Badge de estado */
+        .badge-online {
+            background: var(--secondary);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================================================================
+    APP CONTAINER
+    ================================================================ -->
+    <div class="app-container">
+
+        <!-- ================================================================
+        HEADER PRO
+        ================================================================ -->
+        <header class="header">
+            <div class="header-left">
+                <h1>
+                    <i class="fas fa-robot" style="color:var(--secondary);margin-right:8px;"></i>
+                    <span class="highlight">Eco</span>Bot <span style="font-weight:300;">PRO</span>
+                </h1>
+                <div class="subtitle">
+                    <i class="fas fa-microchip"></i> Sistema de monitoreo ambiental inteligente · STEM + ODS
+                </div>
+                <div class="dev-credit">
+                    <i class="fas fa-code"></i> Desarrollado por
+                    <strong>Moises Rojas</strong>
+                    <i class="fas fa-circle" style="font-size:4px;vertical-align:middle;"></i>
+                    <strong>Juan Sanchez</strong>
+                    <span style="opacity:0.5;margin-left:8px;">| v3.0 · 2026</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text" id="systemStatus">Sistema activo</span>
+                    <span class="status-badge" id="uptimeBadge">🟢 Online</span>
+                </div>
+                <button class="btn-theme" id="themeToggle" title="Cambiar tema">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================================================================
+        DASHBOARD GRID
+        ================================================================ -->
+        <div class="dashboard-grid">
+
+            <!-- ===== TARJETA 1: KPIs + SENSORES (span 4) ===== -->
+            <div class="card" style="grid-column: span 4;">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-chart-line"></i> KPIs en tiempo real</span>
+                    <span class="card-badge">Live</span>
+                </div>
+
+                <!-- KPIs -->
+                <div class="kpi-row">
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fas fa-thermometer-half"></i> Promedio Temp</div>
+                        <div class="kpi-value" id="kpiTemp">23.4 <span class="kpi-unit">°C</span></div>
+                        <div class="kpi-trend up">▲ +0.2°C</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fas fa-tint"></i> Promedio Humedad</div>
+                        <div class="kpi-value" id="kpiHum">67 <span class="kpi-unit">%</span></div>
+                        <div class="kpi-trend down">▼ -1.1%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fas fa-wind"></i> Calidad Aire</div>
+                        <div class="kpi-value" id="kpiAir">12 <span class="kpi-unit">µg/m³</span></div>
+                        <div class="kpi-trend up">▲ +0.8</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fas fa-sun"></i> Luminosidad</div>
+                        <div class="kpi-value" id="kpiLight">784 <span class="kpi-unit">lux</span></div>
+                        <div class="kpi-trend up">▲ +23</div>
+                    </div>
+                </div>
+
+                <!-- Sensores detallados -->
+                <div class="sensor-grid" id="sensorGrid">
+                    <div class="sensor-item">
+                        <div class="label">🌡️ Temperatura</div>
+                        <div class="value" id="tempValue">23.4 <span class="unit">°C</span></div>
+                        <div class="trend up">▲ +0.2°C</div>
+                    </div>
+                    <div class="sensor-item">
+                        <div class="label">💧 Humedad</div>
+                        <div class="value" id="humValue">67 <span class="unit">%</span></div>
+                        <div class="trend down">▼ -1.1%</div>
+                    </div>
+                    <div class="sensor-item">
+                        <div class="label">🌬️ PM2.5</div>
+                        <div class="value" id="airValue">12 <span class="unit">µg/m³</span></div>
+                        <div class="trend up">▲ +0.8</div>
+                    </div>
+                    <div class="sensor-item">
+                        <div class="label">💡 Luminosidad</div>
+                        <div class="value" id="lightValue">784 <span class="unit">lux</span></div>
+                        <div class="trend up">▲ +23</div>
+                    </div>
+                </div>
+
+                <!-- Terminal -->
+                <div class="terminal" id="terminal">
+                    <div class="log-entry"><span class="time">[12:00:01]</span> Sistema EcoBot PRO inicializado</div>
+                    <div class="log-entry"><span class="time">[12:00:05]</span> Lectura de sensores OK</div>
+                    <div class="log-entry"><span class="time">[12:00:08]</span> LocalStorage cargado</div>
+                </div>
+            </div>
+
+            <!-- ===== TARJETA 2: CONTROLES (span 4) ===== -->
+            <div class="card" style="grid-column: span 4;">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-gamepad"></i> Control del sistema</span>
+                    <span class="card-icon">⚙️</span>
+                </div>
+                <div class="control-grid">
+                    <button class="btn-control" data-action="riego" id="btnRiego">
+                        <span class="icon">💧</span> Riego Inteligente
+                        <span class="sub-status" id="riegoStatus">● apagado</span>
+                    </button>
+                    <button class="btn-control" data-action="ventilacion" id="btnVentilacion">
+                        <span class="icon">🌀</span> Ventilación
+                        <span class="sub-status" id="ventilacionStatus">● apagado</span>
+                    </button>
+                    <button class="btn-control" data-action="alarma" id="btnAlarma">
+                        <span class="icon">🔔</span> Alerta Sonora
+                        <span class="sub-status" id="alarmaStatus">● apagado</span>
+                    </button>
+                    <button class="btn-control danger" data-action="reset" id="btnReset">
+                        <span class="icon">🔄</span> Reiniciar Sistema
+                        <span class="sub-status">resetear todo</span>
+                    </button>
+                </div>
+
+                <!-- ODS Tags -->
+                <div class="ods-grid" style="margin-top:12px;">
+                    <span class="ods-item"><span class="emoji">🏙️</span> ODS 11</span>
+                    <span class="ods-item"><span class="emoji">🌊</span> ODS 13</span>
+                    <span class="ods-item"><span class="emoji">🌿</span> ODS 15</span>
+                    <span class="ods-item" style="background:var(--secondary);color:white;border-color:var(--secondary);">
+                        ✅ Proyecto STEM
+                    </span>
+                    <span class="ods-item"><i class="fas fa-brain"></i> ABP</span>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="action-bar">
+                    <button class="btn-action" id="btnExportCSV">
+                        <i class="fas fa-file-csv"></i> Exportar CSV
+                    </button>
+                    <button class="btn-action" id="btnSimularEvento">
+                        <i class="fas fa-bolt"></i> Simular Evento
+                    </button>
+                    <button class="btn-action" id="btnClearAlerts">
+                        <i class="fas fa-trash-alt"></i> Limpiar Alertas
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== TARJETA 3: ALERTAS (span 4) ===== -->
+            <div class="card" style="grid-column: span 4;">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-bell"></i> Alertas y eventos</span>
+                    <span class="card-badge" id="alertCounter">0</span>
+                </div>
+                <div class="alert-list" id="alertList">
+                    <div class="alert-item success">
+                        <span>✅</span> Sistema EcoBot PRO iniciado
+                        <span class="time">hace 2m</span>
+                    </div>
+                    <div class="alert-item warning">
+                        <span>⚠️</span> Humedad por debajo del 60%
+                        <span class="time">hace 5m</span>
+                    </div>
+                </div>
+                <div style="margin-top:8px;font-size:0.65rem;color:var(--text-muted);text-align:right;">
+                    <i class="fas fa-database"></i> <span id="storageInfo">Datos guardados localmente</span>
+                </div>
+            </div>
+
+            <!-- ===== TARJETA 4: GRÁFICO (span 7) ===== -->
+            <div class="card" style="grid-column: span 7;">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-chart-area"></i> Historial de sensores (últimos 15 min)</span>
+                    <span class="card-icon">📈</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="sensorChart"></canvas>
+                </div>
+            </div>
+
+            <!-- ===== TARJETA 5: INFORMACIÓN DEL PROYECTO (span 5) ===== -->
+            <div class="card" style="grid-column: span 5;">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-flask"></i> Sobre este proyecto STEM</span>
+                    <span class="card-icon">🧪</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;color:var(--text-secondary);">
+                    <p><strong>🎯 Desafío:</strong> Diseñar un sistema robótico que resuelva un problema comunitario mediante automatización e IoT.</p>
+                    <p><strong>🔧 Tecnologías:</strong> JavaScript · HTML5 · CSS3 · Chart.js · LocalStorage · Simulación Wokwi</p>
+                    <p><strong>👥 Metodología:</strong> ABP · STEM · Aprendizaje colaborativo · Programación en pares</p>
+                    <p><strong>👨‍💻 Desarrolladores:</strong> Moises Rojas &amp; Juan Sanchez</p>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+                        <span class="ods-item">📄 Rúbrica analítica</span>
+                        <span class="ods-item">🔍 Autoevaluación</span>
+                        <span class="ods-item">🤝 Coevaluación</span>
+                        <span class="ods-item">🎤 Presentación final</span>
+                        <span class="ods-item">📚 APA</span>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /dashboard-grid -->
+
+        <!-- ================================================================
+        FOOTER
+        ================================================================ -->
+        <footer class="footer">
+            <i class="fas fa-robot"></i> EcoBot PRO v3.0 ·
+            Desarrollado con <span class="heart">❤</span> por
+            <strong>Moises Rojas</strong> &amp; <strong>Juan Sanchez</strong> ·
+            Proyecto integrador STEM 2026 ·
+            <a href="#" id="resetStorageLink"><i class="fas fa-database"></i> Resetear datos guardados</a>
+        </footer>
+
+    </div><!-- /app-container -->
+
+    <!-- ================================================================
+    JAVASCRIPT - SISTEMA COMPLETO CON LOCALSTORAGE
+    ================================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // 1. ESTADO DEL SISTEMA (con persistencia en LocalStorage)
+            // ============================================================
+            const STORAGE_KEY = 'ecobot_pro_state';
+
+            // Estado por defecto
+            const defaultState = {
+                sensors: {
+                    temperatura: { value: 23.4, unit: '°C', min: 18, max: 32 },
+                    humedad: { value: 67, unit: '%', min: 40, max: 85 },
+                    aire: { value: 12, unit: 'µg/m³', min: 5, max: 50 },

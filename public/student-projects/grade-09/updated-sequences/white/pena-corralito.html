@@ -1,0 +1,3359 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskSchool - Gestor de tareas escolares con MVC, ODS e IA">
+    <title>TaskSchool | STEM MVC</title>
+
+    <style>
+        /* =========================================================
+           VARIABLES Y CONFIGURACIÓN GENERAL
+           ========================================================= */
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #f59e0b;
+            --info: #0891b2;
+
+            --background: #f1f5f9;
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+
+            --shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        body.dark {
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-2: #334155;
+            --text: #f8fafc;
+            --muted: #cbd5e1;
+            --border: #475569;
+
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           HEADER
+           ========================================================= */
+
+        header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb 0%,
+                    #4f46e5 50%,
+                    #7c3aed 100%
+                );
+
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            top: -150px;
+            left: -80px;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            bottom: -140px;
+            right: -60px;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        .header-tags {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .header-tag {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+
+        /* =========================================================
+           CONTENEDOR
+           ========================================================= */
+
+        .container {
+            width: min(1150px, 92%);
+            margin: 30px auto;
+        }
+
+        /* =========================================================
+           BOTÓN MODO OSCURO
+           ========================================================= */
+
+        .theme-button {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* =========================================================
+           CARDS
+           ========================================================= */
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            transition: background 0.3s;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .section-description {
+            color: var(--muted);
+            margin-top: -12px;
+            margin-bottom: 20px;
+        }
+
+        /* =========================================================
+           ESTADÍSTICAS
+           ========================================================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        /* =========================================================
+           BARRA DE PROGRESO
+           ========================================================= */
+
+        .progress-wrapper {
+            margin-top: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+            border-radius: 20px;
+            transition: width 0.4s;
+        }
+
+        /* =========================================================
+           FORMULARIOS
+           ========================================================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow:
+                0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        /* =========================================================
+           BOTONES
+           ========================================================= */
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 9px;
+            padding: 11px 16px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: white;
+        }
+
+        /* =========================================================
+           FILTROS
+           ========================================================= */
+
+        .filters {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* =========================================================
+           LISTA DE TAREAS
+           ========================================================= */
+
+        .task-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .task {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
+            padding: 18px;
+            transition: 0.2s;
+        }
+
+        .task:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .task.completed {
+            border-left-color: var(--success);
+            opacity: 0.75;
+        }
+
+        .task.overdue {
+            border-left-color: var(--danger);
+        }
+
+        .task.completed h3 {
+            text-decoration: line-through;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .task h3 {
+            margin-bottom: 7px;
+        }
+
+        .task-description {
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .task-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .badge-category {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-user {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .badge-date {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-overdue {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px 20px;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        /* =========================================================
+           ODS
+           ========================================================= */
+
+        .ods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .ods-item {
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .ods-4 {
+            background: #c5192d;
+        }
+
+        .ods-12 {
+            background: #bf8b2e;
+        }
+
+        .ods-item h3 {
+            margin-bottom: 10px;
+        }
+
+        .ods-item p {
+            line-height: 1.6;
+        }
+
+        /* =========================================================
+           EQUIPO
+           ========================================================= */
+
+        .team {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .member {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .member-avatar {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .member h3 {
+            margin-bottom: 5px;
+        }
+
+        .member p {
+            color: var(--muted);
+        }
+
+        /* =========================================================
+           MODAL
+           ========================================================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.65);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            color: var(--text);
+            width: min(500px, 100%);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .close-modal {
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 1.5rem;
+        }
+
+        /* =========================================================
+           MENSAJE
+           ========================================================= */
+
+        .message {
+            position: fixed;
+            right: 20px;
+            bottom: 85px;
+            background: #1e293b;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        footer {
+            background: #0f172a;
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        footer h2 {
+            margin-bottom: 8px;
+        }
+
+        footer p {
+            color: #cbd5e1;
+            margin: 5px;
+        }
+
+        .footer-names {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-top: 15px;
+            color: #93c5fd;
+        }
+
+        .footer-project {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .stats,
+            .form-grid,
+            .filters,
+            .ods,
+            .team {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .logo {
+                font-size: 2.7rem;
+            }
+
+            .task-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <header>
+        <div class="header-content">
+
+            <div class="logo">📚</div>
+
+            <h1>TaskSchool</h1>
+
+            <p>
+                Gestor inteligente de tareas escolares
+            </p>
+
+            <div class="header-tags">
+                <span class="header-tag">🧩 MVC</span>
+                <span class="header-tag">⚡ JavaScript</span>
+                <span class="header-tag">🤖 IA</span>
+                <span class="header-tag">🌱 ODS</span>
+                <span class="header-tag">📱 Responsive</span>
+            </div>
+
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <!-- =====================================================
+             ESTADÍSTICAS
+             ===================================================== -->
+
+        <section class="stats">
+
+            <div class="stat">
+                <div class="stat-icon">📋</div>
+                <div id="totalTasks" class="stat-number">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">⏳</div>
+                <div id="pendingTasks" class="stat-number">0</div>
+                <div class="stat-label">Pendientes</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">✅</div>
+                <div id="completedTasks" class="stat-number">0</div>
+                <div class="stat-label">Completadas</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">🔥</div>
+                <div id="overdueTasks" class="stat-number">0</div>
+                <div class="stat-label">Vencidas</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">📈</div>
+                <div id="completionRate" class="stat-number">0%</div>
+                <div class="stat-label">Progreso</div>
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PROGRESO
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2>📊 Progreso general</h2>
+
+            <div class="progress-wrapper">
+
+                <div class="progress-info">
+                    <span>Avance de tareas</span>
+                    <strong id="progressText">0%</strong>
+                </div>
+
+                <div class="progress-bar">
+                    <div
+                        id="progressFill"
+                        class="progress-fill"
+                    ></div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CREAR TAREA
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2 id="formTitle">➕ Nueva tarea</h2>
+
+            <p class="section-description">
+                Organiza tus actividades académicas y proyectos.
+            </p>
+
+            <form id="taskForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="title">
+                            Título *
+                        </label>
+
+                        <input
+                            id="title"
+                            type="text"
+                            placeholder="Ej. Exposición de ciencias"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="user">
+                            Usuario *
+                        </label>
+
+                        <select id="user" required>
+                            <option value="">
+                                Seleccionar usuario
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            Categoría *
+                        </label>
+
+                        <select id="category" required>
+                            <option value="">
+                                Seleccionar categoría
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="date">
+                            Fecha límite *
+                        </label>
+
+                        <input
+                            id="date"
+                            type="date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="description">
+                            Descripción
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Describe la actividad..."
+                            maxlength="300"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="submit"
+                        id="submitButton"
+                        class="btn btn-primary"
+                    >
+                        ➕ Agregar tarea
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancelButton"
+                        class="btn btn-secondary"
+                        style="display:none"
+                    >
+                        ❌ Cancelar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- =====================================================
+             FILTROS
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2>🔎 Buscar y filtrar</h2>
+
+            <div class="filters">
+
+                <input
+                    id="search"
+                    type="search"
+                    placeholder="🔍 Buscar por título o descripción..."
+                >
+
+                <select id="filterCategory">
+                    <option value="all">
+                        Todas las categorías
+                    </option>
+                </select>
+
+                <select id="filterStatus">
+                    <option value="all">
+                        Todos los estados
+                    </option>
+
+                    <option value="pending">
+                        Pendientes
+                    </option>
+
+                    <option value="completed">
+                        Completadas
+                    </option>
+
+                    <option value="overdue">
+                        Vencidas
+                    </option>
+                </select>
+
+                <select id="sortTasks">
+
+                    <option value="newest">
+                        Más recientes
+                    </option>
+
+                    <option value="oldest">
+                        Más antiguas
+                    </option>
+
+                    <option value="date">
+                        Por fecha límite
+                    </option>
+
+                    <option value="alphabetical">
+                        Alfabéticamente
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    id="resetFilters"
+                    class="btn btn-secondary"
+                    type="button"
+                >
+                    🔄 Restablecer filtros
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             TAREAS
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2>📋 Mis tareas</h2>
+
+            <div
+                id="taskList"
+                class="task-list"
+            ></div>
+
+            <div class="buttons">
+
+                <button
+                    id="deleteCompleted"
+                    class="btn btn-danger"
+                    type="button"
+                >
+                    🗑️ Eliminar completadas
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             HERRAMIENTAS
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2>🛠️ Herramientas</h2>
+
+            <p class="section-description">
+                Guarda una copia de tus tareas o recupera información.
+            </p>
+
+            <div class="buttons">
+
+                <button
+                    id="exportButton"
+                    class="btn btn-info"
+                    type="button"
+                >
+                    📤 Exportar JSON
+                </button>
+
+                <button
+                    id="importButton"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    📥 Importar JSON
+                </button>
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    accept=".json,application/json"
+                    hidden
+                >
+
+                <button
+                    id="clearAllButton"
+                    class="btn btn-danger"
+                    type="button"
+                >
+                    ⚠️ Borrar todo
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ODS
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2>🌱 Objetivos de Desarrollo Sostenible</h2>
+
+            <div class="ods">
+
+                <article class="ods-item ods-4">
+
+                    <h3>
+                        🎓 ODS 4 · Educación de calidad
+                    </h3>
+
+                    <p>
+                        TaskSchool facilita la organización de
+                        actividades académicas, proyectos y fechas
+                        de entrega, ayudando a mejorar los hábitos
+                        de planificación y seguimiento escolar.
+                    </p>
+
+                </article>
+
+
+                <article class="ods-item ods-12">
+
+                    <h3>
+                        ♻️ ODS 12 · Producción y consumo responsables
+                    </h3>
+
+                    <p>
+                        La gestión digital de las tareas disminuye
+                        la dependencia de materiales impresos y
+                        promueve una administración responsable
+                        de los recursos.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             INFORMACIÓN MVC
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2>🧩 Arquitectura MVC</h2>
+
+            <div class="form-grid">
+
+                <div>
+                    <h3>📦 Modelo</h3>
+
+                    <p>
+                        Administra los datos de Usuario, Tarea y
+                        Categoría, además de la persistencia mediante
+                        localStorage.
+                    </p>
+                </div>
+
+
+                <div>
+                    <h3>👁️ Vista</h3>
+
+                    <p>
+                        Se encarga de mostrar dinámicamente las
+                        tareas, estadísticas, formularios y filtros.
+                    </p>
+                </div>
+
+
+                <div>
+                    <h3>🎮 Controlador</h3>
+
+                    <p>
+                        Gestiona los eventos, validaciones,
+                        filtros, modificaciones y comunicación
+                        entre Modelo y Vista.
+                    </p>
+                </div>
+
+
+                <div>
+                    <h3>🤖 IA como aliada</h3>
+
+                    <p>
+                        La inteligencia artificial puede ayudar a
+                        generar, explicar, depurar, probar y
+                        refactorizar el código.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             EQUIPO
+             ===================================================== -->
+
+        <section class="card">
+
+            <h2>👥 Nuestro equipo</h2>
+
+            <p class="section-description">
+                Proyecto STEM · MVC · Ingeniería de Prompts · IA
+            </p>
+
+            <div class="team">
+
+                <article class="member">
+
+                    <div class="member-avatar">
+                        JG
+                    </div>
+
+                    <h3>
+                        Jerónimo peña
+                    </h3>
+
+                    <p>
+                        Equipo STEM
+                    </p>
+
+                </article>
+
+
+                <article class="member">
+
+                    <div class="member-avatar">
+                        SC
+                    </div>
+
+                    <h3>
+                        Samuel Corrales
+                    </h3>
+
+                    <p>
+                        Equipo STEM
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         MODAL DE INFORMACIÓN
+         ========================================================= -->
+
+    <div
+        id="modal"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle">
+                    Información
+                </h2>
+
+                <button
+                    id="closeModal"
+                    class="close-modal"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <div id="modalBody"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         MENSAJES
+         ========================================================= -->
+
+    <div
+        id="message"
+        class="message"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer>
+
+        <h2>
+            🚀 TaskSchool
+        </h2>
+
+        <p>
+            Proyecto autónomo STEM · MVC · Ingeniería de Prompts
+        </p>
+
+        <p>
+            Desarrollado con HTML, CSS y JavaScript vanilla
+        </p>
+
+        <div class="footer-names">
+            Jerónimo peña· Samuel Corrales
+        </div>
+
+        <div class="footer-project">
+            🌱 ODS 4 · Educación de calidad &nbsp;|&nbsp;
+            ♻️ ODS 12 · Producción y consumo responsables
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         BOTÓN MODO OSCURO
+         ========================================================= -->
+
+    <button
+        id="themeButton"
+        class="theme-button"
+        aria-label="Cambiar tema"
+        title="Cambiar tema"
+    >
+        🌙
+    </button>
+
+
+    <script>
+
+        /* =========================================================
+           MODELO
+           ENTIDAD USUARIO
+           ========================================================= */
+
+        /**
+         * Representa un usuario.
+         */
+        class Usuario {
+
+            constructor(id, nombre) {
+                this.id = id;
+                this.nombre = nombre;
+            }
+
+        }
+
+
+        /* =========================================================
+           MODELO
+           ENTIDAD CATEGORÍA
+           ========================================================= */
+
+        /**
+         * Representa una categoría.
+         */
+        class Categoria {
+
+            constructor(id, nombre) {
+                this.id = id;
+                this.nombre = nombre;
+            }
+
+        }
+
+
+        /* =========================================================
+           MODELO
+           ENTIDAD TAREA
+           ========================================================= */
+
+        /**
+         * Representa una tarea.
+         */
+        class Tarea {
+
+            constructor(
+                id,
+                titulo,
+                descripcion,
+                usuarioId,
+                categoriaId,
+                fecha,
+                completada = false,
+                createdAt = Date.now()
+            ) {
+
+                this.id = id;
+                this.titulo = titulo;
+                this.descripcion = descripcion;
+                this.usuarioId = Number(usuarioId);
+                this.categoriaId = Number(categoriaId);
+                this.fecha = fecha;
+                this.completada = completada;
+                this.createdAt = createdAt;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           MODELO PRINCIPAL
+           ========================================================= */
+
+        class TaskModel {
+
+            constructor() {
+
+                this.usuarios = [
+
+                    new Usuario(
+                        1,
+                        "Jerónimo peña"
+                    ),
+
+                    new Usuario(
+                        2,
+                        "Samuel morrales"
+                    ),
+
+                    new Usuario(
+                        3,
+                        "Equipo STEM"
+                    )
+
+                ];
+
+
+                this.categorias = [
+
+                    new Categoria(
+                        1,
+                        "Matemáticas"
+                    ),
+
+                    new Categoria(
+                        2,
+                        "Ciencias"
+                    ),
+
+                    new Categoria(
+                        3,
+                        "Programación"
+                    ),
+
+                    new Categoria(
+                        4,
+                        "Proyecto"
+                    ),
+
+                    new Categoria(
+                        5,
+                        "Personal"
+                    ),
+
+                    new Categoria(
+                        6,
+                        "Investigación"
+                    )
+
+                ];
+
+
+                this.tareas =
+                    this.cargarTareas();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Cargar tareas
+               ----------------------------------------------------- */
+
+            cargarTareas() {
+
+                try {
+
+                    const datos =
+                        localStorage.getItem(
+                            "taskschool_tareas"
+                        );
+
+                    if (!datos) {
+                        return [];
+                    }
+
+                    const tareas =
+                        JSON.parse(datos);
+
+                    return tareas.map(
+                        tarea =>
+                            new Tarea(
+                                tarea.id,
+                                tarea.titulo,
+                                tarea.descripcion,
+                                tarea.usuarioId,
+                                tarea.categoriaId,
+                                tarea.fecha,
+                                tarea.completada,
+                                tarea.createdAt
+                            )
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Error cargando tareas:",
+                        error
+                    );
+
+                    return [];
+
+                }
+
+            }
+
+
+            /* -----------------------------------------------------
+               Guardar
+               ----------------------------------------------------- */
+
+            guardar() {
+
+                localStorage.setItem(
+                    "taskschool_tareas",
+                    JSON.stringify(
+                        this.tareas
+                    )
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Obtener
+               ----------------------------------------------------- */
+
+            obtenerTareas() {
+
+                return [...this.tareas];
+
+            }
+
+
+            /* -----------------------------------------------------
+               Buscar
+               ----------------------------------------------------- */
+
+            buscarTarea(id) {
+
+                return this.tareas.find(
+                    tarea =>
+                        Number(tarea.id) === Number(id)
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Agregar
+               ----------------------------------------------------- */
+
+            agregarTarea(datos) {
+
+                const tarea =
+                    new Tarea(
+                        Date.now(),
+                        datos.titulo,
+                        datos.descripcion,
+                        datos.usuarioId,
+                        datos.categoriaId,
+                        datos.fecha,
+                        false,
+                        Date.now()
+                    );
+
+                this.tareas.push(tarea);
+
+                this.guardar();
+
+                return tarea;
+
+            }
+
+
+            /* -----------------------------------------------------
+               Actualizar
+               ----------------------------------------------------- */
+
+            actualizarTarea(id, datos) {
+
+                const tarea =
+                    this.buscarTarea(id);
+
+                if (!tarea) {
+                    return false;
+                }
+
+                tarea.titulo =
+                    datos.titulo;
+
+                tarea.descripcion =
+                    datos.descripcion;
+
+                tarea.usuarioId =
+                    Number(datos.usuarioId);
+
+                tarea.categoriaId =
+                    Number(datos.categoriaId);
+
+                tarea.fecha =
+                    datos.fecha;
+
+                this.guardar();
+
+                return true;
+
+            }
+
+
+            /* -----------------------------------------------------
+               Cambiar estado
+               ----------------------------------------------------- */
+
+            cambiarEstado(id) {
+
+                const tarea =
+                    this.buscarTarea(id);
+
+                if (!tarea) {
+                    return false;
+                }
+
+                tarea.completada =
+                    !tarea.completada;
+
+                this.guardar();
+
+                return true;
+
+            }
+
+
+            /* -----------------------------------------------------
+               Eliminar
+               ----------------------------------------------------- */
+
+            eliminarTarea(id) {
+
+                const cantidadAnterior =
+                    this.tareas.length;
+
+                this.tareas =
+                    this.tareas.filter(
+                        tarea =>
+                            Number(tarea.id) !== Number(id)
+                    );
+
+                this.guardar();
+
+                return (
+                    this.tareas.length <
+                    cantidadAnterior
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Eliminar completadas
+               ----------------------------------------------------- */
+
+            eliminarCompletadas() {
+
+                this.tareas =
+                    this.tareas.filter(
+                        tarea =>
+                            !tarea.completada
+                    );
+
+                this.guardar();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Eliminar todo
+               ----------------------------------------------------- */
+
+            eliminarTodas() {
+
+                this.tareas = [];
+
+                this.guardar();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Importar
+               ----------------------------------------------------- */
+
+            importarTareas(tareas) {
+
+                if (!Array.isArray(tareas)) {
+                    throw new Error(
+                        "El archivo no contiene una lista válida."
+                    );
+                }
+
+                this.tareas =
+                    tareas.map(
+                        tarea =>
+                            new Tarea(
+                                tarea.id || Date.now(),
+                                tarea.titulo || "Sin título",
+                                tarea.descripcion || "",
+                                tarea.usuarioId || 1,
+                                tarea.categoriaId || 1,
+                                tarea.fecha || "",
+                                Boolean(tarea.completada),
+                                tarea.createdAt || Date.now()
+                            )
+                    );
+
+                this.guardar();
+
+            }
+
+        }
+
+
+        /* =========================================================
+           VISTA
+           ========================================================= */
+
+        class TaskView {
+
+            constructor() {
+
+                this.form =
+                    document.getElementById(
+                        "taskForm"
+                    );
+
+                this.title =
+                    document.getElementById(
+                        "title"
+                    );
+
+                this.description =
+                    document.getElementById(
+                        "description"
+                    );
+
+                this.user =
+                    document.getElementById(
+                        "user"
+                    );
+
+                this.category =
+                    document.getElementById(
+                        "category"
+                    );
+
+                this.date =
+                    document.getElementById(
+                        "date"
+                    );
+
+                this.taskList =
+                    document.getElementById(
+                        "taskList"
+                    );
+
+                this.search =
+                    document.getElementById(
+                        "search"
+                    );
+
+                this.filterCategory =
+                    document.getElementById(
+                        "filterCategory"
+                    );
+
+                this.filterStatus =
+                    document.getElementById(
+                        "filterStatus"
+                    );
+
+                this.sortTasks =
+                    document.getElementById(
+                        "sortTasks"
+                    );
+
+                this.submitButton =
+                    document.getElementById(
+                        "submitButton"
+                    );
+
+                this.cancelButton =
+                    document.getElementById(
+                        "cancelButton"
+                    );
+
+                this.formTitle =
+                    document.getElementById(
+                        "formTitle"
+                    );
+
+                this.totalTasks =
+                    document.getElementById(
+                        "totalTasks"
+                    );
+
+                this.pendingTasks =
+                    document.getElementById(
+                        "pendingTasks"
+                    );
+
+                this.completedTasks =
+                    document.getElementById(
+                        "completedTasks"
+                    );
+
+                this.overdueTasks =
+                    document.getElementById(
+                        "overdueTasks"
+                    );
+
+                this.completionRate =
+                    document.getElementById(
+                        "completionRate"
+                    );
+
+                this.progressFill =
+                    document.getElementById(
+                        "progressFill"
+                    );
+
+                this.progressText =
+                    document.getElementById(
+                        "progressText"
+                    );
+
+                this.message =
+                    document.getElementById(
+                        "message"
+                    );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Render usuarios
+               ----------------------------------------------------- */
+
+            renderUsuarios(usuarios) {
+
+                this.user.innerHTML =
+                    `<option value="">
+                        Seleccionar usuario
+                    </option>`;
+
+                usuarios.forEach(
+                    usuario => {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value =
+                            usuario.id;
+
+                        option.textContent =
+                            usuario.nombre;
+
+                        this.user.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Render categorías
+               ----------------------------------------------------- */
+
+            renderCategorias(categorias) {
+
+                this.category.innerHTML =
+                    `<option value="">
+                        Seleccionar categoría
+                    </option>`;
+
+                this.filterCategory.innerHTML =
+                    `<option value="all">
+                        Todas las categorías
+                    </option>`;
+
+                categorias.forEach(
+                    categoria => {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value =
+                            categoria.id;
+
+                        option.textContent =
+                            categoria.nombre;
+
+                        this.category.appendChild(
+                            option
+                        );
+
+
+                        const filter =
+                            document.createElement(
+                                "option"
+                            );
+
+                        filter.value =
+                            categoria.id;
+
+                        filter.textContent =
+                            categoria.nombre;
+
+                        this.filterCategory.appendChild(
+                            filter
+                        );
+
+                    }
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Render tareas
+               ----------------------------------------------------- */
+
+            renderTareas(
+                tareas,
+                usuarios,
+                categorias
+            ) {
+
+                this.taskList.innerHTML = "";
+
+                if (tareas.length === 0) {
+
+                    this.taskList.innerHTML = `
+
+                        <div class="empty">
+
+                            <div class="empty-icon">
+                                📭
+                            </div>
+
+                            <h3>
+                                No se encontraron tareas
+                            </h3>
+
+                            <p>
+                                Crea una tarea o modifica los filtros.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                tareas.forEach(
+                    tarea => {
+
+                        const usuario =
+                            usuarios.find(
+                                u =>
+                                    Number(u.id) ===
+                                    Number(tarea.usuarioId)
+                            );
+
+
+                        const categoria =
+                            categorias.find(
+                                c =>
+                                    Number(c.id) ===
+                                    Number(tarea.categoriaId)
+                            );
+
+
+                        const vencida =
+                            this.estaVencida(
+                                tarea
+                            );
+
+
+                        const article =
+                            document.createElement(
+                                "article"
+                            );
+
+
+                        article.className =
+                            "task";
+
+                        if (tarea.completada) {
+                            article.classList.add(
+                                "completed"
+                            );
+                        }
+
+                        if (
+                            vencida &&
+                            !tarea.completada
+                        ) {
+
+                            article.classList.add(
+                                "overdue"
+                            );
+
+                        }
+
+
+                        const estado =
+                            tarea.completada
+                            ? `
+                                <span class="badge badge-completed">
+                                    ✅ Completada
+                                </span>
+                            `
+                            : vencida
+                            ? `
+                                <span class="badge badge-overdue">
+                                    🔥 Vencida
+                                </span>
+                            `
+                            : `
+                                <span class="badge badge-pending">
+                                    ⏳ Pendiente
+                                </span>
+                            `;
+
+
+                        article.innerHTML = `
+
+                            <div class="task-header">
+
+                                <div>
+
+                                    <h3>
+                                        ${this.escape(
+                                            tarea.titulo
+                                        )}
+                                    </h3>
+
+                                    <p class="task-description">
+                                        ${this.escape(
+                                            tarea.descripcion ||
+                                            "Sin descripción"
+                                        )}
+                                    </p>
+
+                                </div>
+
+                                <div>
+                                    ${estado}
+                                </div>
+
+                            </div>
+
+
+                            <div class="task-info">
+
+                                <span class="badge badge-category">
+                                    📚
+                                    ${
+                                        categoria
+                                        ? this.escape(
+                                            categoria.nombre
+                                        )
+                                        : "Sin categoría"
+                                    }
+                                </span>
+
+
+                                <span class="badge badge-user">
+                                    👤
+                                    ${
+                                        usuario
+                                        ? this.escape(
+                                            usuario.nombre
+                                        )
+                                        : "Sin usuario"
+                                    }
+                                </span>
+
+
+                                <span class="badge badge-date">
+                                    📅
+                                    ${
+                                        tarea.fecha ||
+                                        "Sin fecha"
+                                    }
+                                </span>
+
+                            </div>
+
+
+                            <div class="task-actions">
+
+                                <button
+                                    class="btn btn-success"
+                                    data-action="toggle"
+                                    data-id="${tarea.id}"
+                                >
+                                    ${
+                                        tarea.completada
+                                        ? "↩ Pendiente"
+                                        : "✓ Completar"
+                                    }
+                                </button>
+
+
+                                <button
+                                    class="btn btn-warning"
+                                    data-action="edit"
+                                    data-id="${tarea.id}"
+                                >
+                                    ✏️ Editar
+                                </button>
+
+
+                                <button
+                                    class="btn btn-danger"
+                                    data-action="delete"
+                                    data-id="${tarea.id}"
+                                >
+                                    🗑️ Eliminar
+                                </button>
+
+                            </div>
+
+                        `;
+
+
+                        this.taskList.appendChild(
+                            article
+                        );
+
+                    }
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Estadísticas
+               ----------------------------------------------------- */
+
+            renderEstadisticas(tareas) {
+
+                const total =
+                    tareas.length;
+
+                const completadas =
+                    tareas.filter(
+                        tarea =>
+                            tarea.completada
+                    ).length;
+
+                const pendientes =
+                    tareas.filter(
+                        tarea =>
+                            !tarea.completada
+                    ).length;
+
+                const vencidas =
+                    tareas.filter(
+                        tarea =>
+                            !tarea.completada &&
+                            this.estaVencida(tarea)
+                    ).length;
+
+
+                const porcentaje =
+                    total === 0
+                    ? 0
+                    : Math.round(
+                        (completadas / total) *
+                        100
+                    );
+
+
+                this.totalTasks.textContent =
+                    total;
+
+                this.pendingTasks.textContent =
+                    pendientes;
+
+                this.completedTasks.textContent =
+                    completadas;
+
+                this.overdueTasks.textContent =
+                    vencidas;
+
+                this.completionRate.textContent =
+                    porcentaje + "%";
+
+                this.progressText.textContent =
+                    porcentaje + "%";
+
+                this.progressFill.style.width =
+                    porcentaje + "%";
+
+            }
+
+
+            /* -----------------------------------------------------
+               Detectar vencimiento
+               ----------------------------------------------------- */
+
+            estaVencida(tarea) {
+
+                if (!tarea.fecha) {
+                    return false;
+                }
+
+                const hoy =
+                    new Date();
+
+                hoy.setHours(
+                    0, 0, 0, 0
+                );
+
+                const fecha =
+                    new Date(
+                        tarea.fecha +
+                        "T00:00:00"
+                    );
+
+                return fecha < hoy;
+
+            }
+
+
+            /* -----------------------------------------------------
+               Limpiar formulario
+               ----------------------------------------------------- */
+
+            limpiarFormulario() {
+
+                this.form.reset();
+
+                this.submitButton.textContent =
+                    "➕ Agregar tarea";
+
+                this.cancelButton.style.display =
+                    "none";
+
+                this.formTitle.textContent =
+                    "➕ Nueva tarea";
+
+            }
+
+
+            /* -----------------------------------------------------
+               Cargar formulario
+               ----------------------------------------------------- */
+
+            cargarFormulario(tarea) {
+
+                this.title.value =
+                    tarea.titulo;
+
+                this.description.value =
+                    tarea.descripcion || "";
+
+                this.user.value =
+                    tarea.usuarioId;
+
+                this.category.value =
+                    tarea.categoriaId;
+
+                this.date.value =
+                    tarea.fecha;
+
+                this.submitButton.textContent =
+                    "💾 Guardar cambios";
+
+                this.cancelButton.style.display =
+                    "inline-block";
+
+                this.formTitle.textContent =
+                    "✏️ Editar tarea";
+
+            }
+
+
+            /* -----------------------------------------------------
+               Mensaje
+               ----------------------------------------------------- */
+
+            mostrarMensaje(texto) {
+
+                this.message.textContent =
+                    texto;
+
+                this.message.style.display =
+                    "block";
+
+                clearTimeout(
+                    this.messageTimer
+                );
+
+                this.messageTimer =
+                    setTimeout(
+                        () => {
+
+                            this.message.style.display =
+                                "none";
+
+                        },
+                        2500
+                    );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Escape HTML
+               ----------------------------------------------------- */
+
+            escape(texto) {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+                div.textContent =
+                    String(texto);
+
+                return div.innerHTML;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           CONTROLADOR
+           ========================================================= */
+
+        class TaskController {
+
+            constructor(
+                modelo,
+                vista
+            ) {
+
+                this.modelo =
+                    modelo;
+
+                this.vista =
+                    vista;
+
+                this.editandoId =
+                    null;
+
+                this.inicializar();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Inicialización
+               ----------------------------------------------------- */
+
+            inicializar() {
+
+                this.vista.renderUsuarios(
+                    this.modelo.usuarios
+                );
+
+                this.vista.renderCategorias(
+                    this.modelo.categorias
+                );
+
+                this.configurarEventos();
+
+                this.actualizarVista();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Eventos
+               ----------------------------------------------------- */
+
+            configurarEventos() {
+
+                this.vista.form.addEventListener(
+                    "submit",
+                    event => {
+
+                        event.preventDefault();
+
+                        this.guardarTarea();
+
+                    }
+                );
+
+
+                this.vista.cancelButton.addEventListener(
+                    "click",
+                    () => {
+
+                        this.editandoId =
+                            null;
+
+                        this.vista.limpiarFormulario();
+
+                    }
+                );
+
+
+                this.vista.search.addEventListener(
+                    "input",
+                    () =>
+                        this.actualizarVista()
+                );
+
+
+                this.vista.filterCategory.addEventListener(
+                    "change",
+                    () =>
+                        this.actualizarVista()
+                );
+
+
+                this.vista.filterStatus.addEventListener(
+                    "change",
+                    () =>
+                        this.actualizarVista()
+                );
+
+
+                this.vista.sortTasks.addEventListener(
+                    "change",
+                    () =>
+                        this.actualizarVista()
+                );
+
+
+                document
+                    .getElementById(
+                        "resetFilters"
+                    )
+                    .addEventListener(
+                        "click",
+                        () => {
+
+                            this.vista.search.value =
+                                "";
+
+                            this.vista.filterCategory.value =
+                                "all";
+
+                            this.vista.filterStatus.value =
+                                "all";
+
+                            this.vista.sortTasks.value =
+                                "newest";
+
+                            this.actualizarVista();
+
+                        }
+                    );
+
+
+                this.vista.taskList.addEventListener(
+                    "click",
+                    event => {
+
+                        const button =
+                            event.target.closest(
+                                "button[data-action]"
+                            );
+
+                        if (!button) {
+                            return;
+                        }
+
+                        const id =
+                            Number(
+                                button.dataset.id
+                            );
+
+                        const action =
+                            button.dataset.action;
+
+
+                        if (action === "toggle") {
+
+                            this.cambiarEstado(id);
+
+                        }
+
+                        if (action === "edit") {
+
+                            this.editarTarea(id);
+
+                        }
+
+                        if (action === "delete") {
+
+                            this.eliminarTarea(id);
+
+                        }
+
+                    }
+                );
+
+
+                document
+                    .getElementById(
+                        "deleteCompleted"
+                    )
+                    .addEventListener(
+                        "click",
+                        () =>
+                            this.eliminarCompletadas()
+                    );
+
+
+                document
+                    .getElementById(
+                        "clearAllButton"
+                    )
+                    .addEventListener(
+                        "click",
+                        () =>
+                            this.eliminarTodas()
+                    );
+
+
+                document
+                    .getElementById(
+                        "exportButton"
+                    )
+                    .addEventListener(
+                        "click",
+                        () =>
+                            this.exportar()
+                    );
+
+
+                document
+                    .getElementById(
+                        "importButton"
+                    )
+                    .addEventListener(
+                        "click",
+                        () =>
+                            document
+                                .getElementById(
+                                    "fileInput"
+                                )
+                                .click()
+                    );
+
+
+                document
+                    .getElementById(
+                        "fileInput"
+                    )
+                    .addEventListener(
+                        "change",
+                        event =>
+                            this.importar(
+                                event
+                            )
+                    );
+
+
+                document
+                    .getElementById(
+                        "themeButton"
+                    )
+                    .addEventListener(
+                        "click",
+                        () =>
+                            this.cambiarTema()
+                    );
+
+
+                document
+                    .getElementById(
+                        "closeModal"
+                    )
+                    .addEventListener(
+                        "click",
+                        () =>
+                            this.cerrarModal()
+                    );
+
+
+                document
+                    .getElementById(
+                        "modal"
+                    )
+                    .addEventListener(
+                        "click",
+                        event => {
+
+                            if (
+                                event.target.id ===
+                                "modal"
+                            ) {
+
+                                this.cerrarModal();
+
+                            }
+
+                        }
+                    );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Guardar tarea
+               ----------------------------------------------------- */
+
+            guardarTarea() {
+
+                const datos = {
+
+                    titulo:
+                        this.vista.title.value.trim(),
+
+                    descripcion:
+                        this.vista.description.value.trim(),
+
+                    usuarioId:
+                        this.vista.user.value,
+
+                    categoriaId:
+                        this.vista.category.value,
+
+                    fecha:
+                        this.vista.date.value
+
+                };
+
+
+                if (
+                    !datos.titulo ||
+                    !datos.usuarioId ||
+                    !datos.categoriaId ||
+                    !datos.fecha
+                ) {
+
+                    this.vista.mostrarMensaje(
+                        "⚠️ Completa los campos obligatorios."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    this.editandoId !== null
+                ) {
+
+                    this.modelo.actualizarTarea(
+                        this.editandoId,
+                        datos
+                    );
+
+                    this.vista.mostrarMensaje(
+                        "✅ Tarea actualizada."
+                    );
+
+                    this.editandoId =
+                        null;
+
+                } else {
+
+                    this.modelo.agregarTarea(
+                        datos
+                    );
+
+                    this.vista.mostrarMensaje(
+                        "🎉 Tarea creada correctamente."
+                    );
+
+                }
+
+
+                this.vista.limpiarFormulario();
+
+                this.actualizarVista();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Editar
+               ----------------------------------------------------- */
+
+            editarTarea(id) {
+
+                const tarea =
+                    this.modelo.buscarTarea(id);
+
+                if (!tarea) {
+                    return;
+                }
+
+                this.editandoId =
+                    id;
+
+                this.vista.cargarFormulario(
+                    tarea
+                );
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+
+
+            /* -----------------------------------------------------
+               Eliminar
+               ----------------------------------------------------- */
+
+            eliminarTarea(id) {
+
+                const tarea =
+                    this.modelo.buscarTarea(id);
+
+                if (!tarea) {
+                    return;
+                }
+
+                const confirmar =
+                    confirm(
+                        `¿Eliminar "${tarea.titulo}"?`
+                    );
+
+                if (!confirmar) {
+                    return;
+                }
+
+                this.modelo.eliminarTarea(
+                    id
+                );
+
+                this.vista.mostrarMensaje(
+                    "🗑️ Tarea eliminada."
+                );
+
+                this.actualizarVista();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Cambiar estado
+               ----------------------------------------------------- */
+
+            cambiarEstado(id) {
+
+                this.modelo.cambiarEstado(
+                    id
+                );
+
+                this.actualizarVista();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Eliminar completadas
+               ----------------------------------------------------- */
+
+            eliminarCompletadas() {
+
+                const tareas =
+                    this.modelo.obtenerTareas();
+
+                const cantidad =
+                    tareas.filter(
+                        tarea =>
+                            tarea.completada
+                    ).length;
+
+
+                if (cantidad === 0) {
+
+                    this.vista.mostrarMensaje(
+                        "ℹ️ No hay tareas completadas."
+                    );
+
+                    return;
+
+                }
+
+
+                const confirmar =
+                    confirm(
+                        `¿Eliminar ${cantidad} tarea(s) completada(s)?`
+                    );
+
+                if (!confirmar) {
+                    return;
+                }
+
+
+                this.modelo.eliminarCompletadas();
+
+                this.vista.mostrarMensaje(
+                    "🗑️ Tareas completadas eliminadas."
+                );
+
+                this.actualizarVista();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Eliminar todo
+               ----------------------------------------------------- */
+
+            eliminarTodas() {
+
+                const tareas =
+                    this.modelo.obtenerTareas();
+
+                if (tareas.length === 0) {
+
+                    this.vista.mostrarMensaje(
+                        "ℹ️ No hay tareas para eliminar."
+                    );
+
+                    return;
+
+                }
+
+
+                const confirmar =
+                    confirm(
+                        "⚠️ Esto eliminará TODAS las tareas. ¿Continuar?"
+                    );
+
+                if (!confirmar) {
+                    return;
+                }
+
+
+                this.modelo.eliminarTodas();
+
+                this.vista.mostrarMensaje(
+                    "🗑️ Todas las tareas fueron eliminadas."
+                );
+
+                this.actualizarVista();
+
+            }
+
+
+            /* -----------------------------------------------------
+               Filtrar
+               ----------------------------------------------------- */
+
+            filtrarTareas() {
+
+                const texto =
+                    this.vista.search.value
+                        .toLowerCase()
+                        .trim();
+
+                const categoria =
+                    this.vista.filterCategory.value;
+
+                const estado =
+                    this.vista.filterStatus.value;
+
+                const orden =
+                    this.vista.sortTasks.value;
+
+
+                let tareas =
+                    this.modelo.obtenerTareas()
+                    .filter(
+                        tarea => {
+
+                            const coincideTexto =
+                                tarea.titulo
+                                    .toLowerCase()
+                                    .includes(
+                                        texto
+                                    ) ||
+                                (
+                                    tarea.descripcion ||
+                                    ""
+                                )
+                                    .toLowerCase()
+                                    .includes(
+                                        texto
+                                    );
+
+
+                            const coincideCategoria =
+                                categoria === "all" ||
+                                Number(
+                                    tarea.categoriaId
+                                ) ===
+                                Number(
+                                    categoria
+                                );
+
+
+                            const vencida =
+                                this.vista.estaVencida(
+                                    tarea
+                                );
+
+
+                            let coincideEstado =
+                                true;
+
+
+                            if (
+                                estado ===
+                                "pending"
+                            ) {
+
+                                coincideEstado =
+                                    !tarea.completada;
+
+                            }
+
+
+                            if (
+                                estado ===
+                                "completed"
+                            ) {
+
+                                coincideEstado =
+                                    tarea.completada;
+
+                            }
+
+
+                            if (
+                                estado ===
+                                "overdue"
+                            ) {
+
+                                coincideEstado =
+                                    vencida &&
+                                    !tarea.completada;
+
+                            }
+
+
+                            return (
+                                coincideTexto &&
+                                coincideCategoria &&
+                                coincideEstado
+                            );
+
+                        }
+                    );
+
+
+                /* Ordenamiento */
+
+                tareas.sort(
+                    (a, b) => {
+
+                        if (
+                            orden ===
+                            "alphabetical"
+                        ) {
+
+                            return a.titulo
+                                .localeCompare(
+                                    b.titulo
+                                );
+
+                        }
+
+
+                        if (
+                            orden ===
+                            "date"
+                        ) {
+
+                            return (
+                                new Date(
+                                    a.fecha
+                                ) -
+                                new Date(
+                                    b.fecha
+                                )
+                            );
+
+                        }
+
+
+                        if (
+                            orden ===
+                            "oldest"
+                        ) {
+
+                            return (
+                                a.createdAt -
+                                b.createdAt
+                            );
+
+                        }
+
+
+                        return (
+                            b.createdAt -
+                            a.createdAt
+                        );
+
+                    }
+                );
+
+
+                return tareas;
+
+            }
+
+
+            /* -----------------------------------------------------
+               Actualizar vista
+               ----------------------------------------------------- */
+
+            actualizarVista() {
+
+                const tareas =
+                    this.filtrarTareas();
+
+
+                this.vista.renderTareas(
+                    tareas,
+                    this.modelo.usuarios,
+                    this.modelo.categorias
+                );
+
+
+                this.vista.renderEstadisticas(
+                    this.modelo.obtenerTareas()
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Exportar
+               ----------------------------------------------------- */
+
+            exportar() {
+
+                const tareas =
+                    this.modelo.obtenerTareas();
+
+                const contenido =
+                    JSON.stringify(
+                        tareas,
+                        null,
+                        2
+                    );
+
+
+                const blob =
+                    new Blob(
+                        [contenido],
+                        {
+                            type:
+                                "application/json"
+                        }
+                    );
+
+
+                const url =
+                    URL.createObjectURL(
+                        blob
+                    );
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+                link.href =
+                    url;
+
+                link.download =
+                    "taskschool-backup.json";
+
+                link.click();
+
+
+                URL.revokeObjectURL(
+                    url
+                );
+
+
+                this.vista.mostrarMensaje(
+                    "📤 Copia exportada correctamente."
+                );
+
+            }
+
+
+            /* -----------------------------------------------------
+               Importar
+               ----------------------------------------------------- */
+
+            importar(event) {
+
+                const archivo =
+                    event.target.files[0];
+
+                if (!archivo) {
+                    return;
+                }
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    () => {
+
+                        try {
+
+                            const datos =
+                                JSON.parse(
+                                    reader.result
+                                );
+
+
+                            this.modelo.importarTareas(
+                                datos
+                            );
+
+
+                            this.actualizarVista();
+
+
+                            this.vista.mostrarMensaje(
+                                "📥 Tareas importadas correctamente."
+                            );
+
+                        } catch (error) {
+
+                            console.error(
+                                error
+                            );
+
+                            this.vista.mostrarMensaje(
+                                "❌ No se pudo importar el archivo."
+                            );
+
+                        }
+
+                    };
+
+
+                reader.readAsText(
+                    archivo
+                );
+
+
+                event.target.value =
+                    "";
+
+            }
+
+
+            /* -----------------------------------------------------
+               Tema
+               ----------------------------------------------------- */
+
+            cambiarTema() {
+
+                document.body.classList.toggle(
+                    "dark"
+                );
+
+
+                const oscuro =
+                    document.body.classList.contains(
+                        "dark"
+                    );
+
+
+                localStorage.setItem(
+                    "taskschool_tema",
+                    oscuro
+                    ? "dark"
+                    : "light"
+                );
+
+
+                document.getElementById(
+                    "themeButton"
+                ).textContent =
+                    oscuro
+                    ? "☀️"
+                    : "🌙";
+
+            }
+
+
+            /* -----------------------------------------------------
+               Cargar tema
+               ----------------------------------------------------- */
+
+            cargarTema() {
+
+                const tema =
+                    localStorage.getItem(
+                        "taskschool_tema"
+                    );
+
+
+                if (
+                    tema ===
+                    "dark"
+                ) {
+
+                    document.body.classList.add(
+                        "dark"
+                    );
+
+                    document.getElementById(
+                        "themeButton"
+                    ).textContent =
+                        "☀️";
+
+                }
+
+            }
+
+
+            /* -----------------------------------------------------
+               Modal
+               ----------------------------------------------------- */
+
+            cerrarModal() {
+
+                document
+                    .getElementById(
+                        "modal"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+            }
+
+
+            mostrarModal(
+                titulo,
+                contenido
+            ) {
+
+                document.getElementById(
+                    "modalTitle"
+                ).textContent =
+                    titulo;
+
+                document.getElementById(
+                    "modalBody"
+                ).innerHTML =
+                    contenido;
+
+                document.getElementById(
+                    "modal"
+                ).classList.add(
+                    "show"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           INICIALIZACIÓN
+           ========================================================= */
+
+        const modelo =
+            new TaskModel();
+
+
+        const vista =
+            new TaskView();
+
+
+        const controller =
+            new TaskController(
+                modelo,
+                vista
+            );
+
+
+        controller.cargarTema();
+
+
+    </script>
+
+</body>
+</html>
+```

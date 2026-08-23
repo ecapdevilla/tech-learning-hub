@@ -2,6 +2,38 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-08-cycle-5-ai-patterns-trends",
+    grade: 8,
+    cycle: 5,
+    title: {
+      en: "Cycle 5 · AI Patterns & Trends Lab",
+      es: "Ciclo 5 · Laboratorio de IA: Patrones y Tendencias",
+    },
+    objective: {
+      en: "Explore basic AI applications to detect patterns and trends.",
+      es: "Explorar aplicaciones básicas de IA para detectar patrones y tendencias.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-08/cycle-5-ai-patterns-trends.html",
+    tags: ["Cycle 5", "AI", "Machine Learning", "Patterns", "Trends", "Data", "Survey", "Code for Change"],
+  },
+  {
+    id: "grade-07-cycle-5-automation-engineering",
+    grade: 7,
+    cycle: 5,
+    title: {
+      en: "Cycle 5 · Automated System Final Engineering Sprint",
+      es: "Ciclo 5 · Sprint Final de Ingeniería de Sistemas Automatizados",
+    },
+    objective: {
+      en: "Complete and refine the automated system design, simulation or prototype, and technical documentation by applying inputs/sensors, logical decisions, outputs/actuators, testing and debugging.",
+      es: "Completar y refinar el diseño del sistema automatizado, su simulación o prototipo y la documentación técnica aplicando entradas/sensores, decisiones lógicas, salidas/actuadores, pruebas y depuración.",
+    },
+    durationMinutes: 120,
+    guidePath: "/guides/grade-07/cycle-5-automation-engineering-sprint.html",
+    tags: ["Cycle 5", "Automation", "Sensors", "Actuators", "Testing", "Debugging", "HTML", "JavaScript", "Wokwi", "Tinkercad", "AI Prompting"],
+  },
+  {
     id: "grade-06-cycle-5-final-build-documentation",
     grade: 6,
     cycle: 5,

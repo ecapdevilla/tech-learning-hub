@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code For Change · Simulador de Impacto Profesional</title>
+    <!-- Font Awesome para iconos profesionales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ============================================================
+                    RESET Y VARIABLES (Diseño PRO)
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary: #0b2b3d;
+            --primary-light: #1a5f7a;
+            --secondary: #2e9caf;
+            --accent: #f39c12;
+            --bg-body: #f2f6fa;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 20px 60px rgba(0, 20, 30, 0.12);
+            --radius: 28px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: var(--bg-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1.5rem 4rem;
+            background-image: radial-gradient(circle at 10% 20%, rgba(46, 156, 175, 0.04) 0%, transparent 50%);
+        }
+
+        /* ============================================================
+                    CONTENEDOR PRINCIPAL
+                   ============================================================ */
+        .app-container {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+            padding: 2.5rem 2.8rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all var(--transition);
+        }
+
+        /* ============================================================
+                    HEADER PROFESIONAL
+                   ============================================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 2px solid #e8edf2;
+            padding-bottom: 1.5rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .header-left .logo-icon {
+            font-size: 2.2rem;
+            color: var(--secondary);
+        }
+
+        .header-left h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .header-left h1 small {
+            font-size: 0.9rem;
+            background: #1a5f7a18;
+            padding: 0.15rem 0.9rem;
+            border-radius: 40px;
+            color: var(--primary-light);
+            font-weight: 500;
+            background-clip: unset;
+            -webkit-background-clip: unset;
+            color: var(--primary-light);
+            margin-left: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .developer-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 1.2rem 0.4rem 0.8rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(11, 43, 61, 0.25);
+        }
+
+        .developer-badge i {
+            font-size: 1rem;
+            color: var(--accent);
+        }
+
+        .ods-badge {
+            background: #eef3f7;
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--primary);
+            border: 1px solid #d0dce6;
+        }
+
+        /* ============================================================
+                    TARJETA DE MISIÓN
+                   ============================================================ */
+        .mission-card {
+            background: linear-gradient(135deg, #ffffff, #f7faff);
+            padding: 1.2rem 2rem;
+            border-radius: 18px;
+            margin-bottom: 2.2rem;
+            border-left: 6px solid var(--secondary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .mission-card i {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .mission-card p {
+            font-size: 1rem;
+            color: #1e3b4a;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .mission-card strong {
+            color: var(--primary);
+        }
+
+        /* ============================================================
+                    GRID PRINCIPAL: 2 COLUMNAS
+                   ============================================================ */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ============================================================
+                    PANEL DE ACCIONES (COLUMNA IZQUIERDA)
+                   ============================================================ */
+        .panel-acciones {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 1.8rem 1.8rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e8edf2;
+        }
+
+        .panel-acciones h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.4rem;
+            font-size: 1.2rem;
+        }
+
+        .acciones-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .btn-accion {
+            background: #f6faff;
+            border: 1px solid #dde8f0;
+            padding: 1rem 0.6rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            text-align: center;
+        }
+
+        .btn-accion i {
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+            color: var(--primary-light);
+        }
+
+        .btn-accion .badge-impacto {
+            font-size: 0.65rem;
+            background: #eef3f7;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .btn-accion:hover {
+            background: #e1eff7;
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 156, 175, 0.12);
+        }
+
+        .btn-accion:active {
+            transform: scale(0.96);
+        }
+
+        .btn-accion.reiniciar {
+            background: #f0f2f5;
+            border-color: #d0d8e0;
+            color: #3a4a5a;
+            grid-column: span 2;
+            flex-direction: row;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .btn-accion.reiniciar:hover {
+            background: #e4e8ed;
+            border-color: #a0aab4;
+        }
+
+        .btn-accion.reiniciar i {
+            font-size: 1rem;
+            color: #5a6a7a;
+        }
+
+        /* ============================================================
+                    PANEL DE ESTADÍSTICAS (COLUMNA DERECHA)
+                   ============================================================ */
+        .panel-estadisticas {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 1.8rem 1.8rem;
+            border: 1px solid #e8edf2;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+        }
+
+        .panel-estadisticas h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.4rem;
+            font-size: 1.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background: #f6faff;
+            border-radius: 18px;
+            padding: 0.9rem 0.6rem;
+            text-align: center;
+            border: 1px solid #e8edf2;
+            transition: all var(--transition);
+        }
+
+        .stat-item:hover {
+            border-color: var(--secondary);
+            background: #f0f8fc;
+        }
+
+        .stat-item .label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #5a7a8a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .stat-item .label i {
+            font-size: 0.8rem;
+        }
+
+        .stat-item .value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+            margin: 0.1rem 0;
+        }
+
+        .stat-item .sub {
+            font-size: 0.7rem;
+            color: #5a7a8a;
+        }
+
+        .stat-item.ods4 .label i {
+            color: #c44536;
+        }
+        .stat-item.ods9 .label i {
+            color: #f39c12;
+        }
+        .stat-item.ods11 .label i {
+            color: #2e7d5e;
+        }
+        .stat-item.impacto .label i {
+            color: var(--secondary);
+        }
+
+        /* ----- BARRA DE IMPACTO MEJORADA ----- */
+        .impacto-wrapper {
+            margin: 0.2rem 0 0.8rem;
+        }
+
+        .impacto-bar {
+            background: #e3edf3;
+            border-radius: 60px;
+            height: 14px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .impacto-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2e9caf, #47b5c7, #74d0e0);
+            border-radius: 60px;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 0 16px #47b5c760;
+        }
+
+        .impacto-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #3a6a7a;
+            margin: 0.3rem 0.2rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        #nivelImpacto {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ============================================================
+                    BITÁCORA MEJORADA CON FILTROS
+                   ============================================================ */
+        .bitacora {
+            background: #fafcfe;
+            border-radius: 18px;
+            padding: 1.2rem 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid #e8edf2;
+        }
+
+        .bitacora-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .bitacora-header h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .bitacora-filtros {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .bitacora-filtros button {
+            background: transparent;
+            border: 1px solid #dde8f0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #4a6a7a;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .bitacora-filtros button:hover {
+            background: #e1eff7;
+            border-color: var(--secondary);
+        }
+
+        .bitacora-filtros button.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .bitacora ul {
+            list-style: none;
+            max-height: 140px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .bitacora ul::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .bitacora ul::-webkit-scrollbar-track {
+            background: #e8edf2;
+            border-radius: 10px;
+        }
+
+        .bitacora ul::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+
+        .bitacora li {
+            padding: 0.4rem 0.2rem;
+            border-bottom: 1px solid #eef3f7;
+            font-size: 0.85rem;
+            color: #1c4053;
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .bitacora li .hora {
+            font-weight: 400;
+            color: #5a8a9a;
+            min-width: 60px;
+            font-size: 0.75rem;
+        }
+
+        .bitacora li .icono-accion {
+            width: 24px;
+            text-align: center;
+            color: var(--primary-light);
+        }
+
+        .bitacora .empty-log {
+            color: #8aaaba;
+            font-style: italic;
+            padding: 0.6rem 0;
+        }
+
+        /* ============================================================
+                    FOOTER
+                   ============================================================ */
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: #3a6a7a;
+            font-size: 0.8rem;
+            font-weight: 400;
+            border-top: 1px solid #dce8f0;
+            padding-top: 1.8rem;
+            opacity: 0.7;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer span i {
+            margin-right: 0.3rem;
+        }
+
+        /* ============================================================
+                    RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 820px) {
+            .app-container {
+                padding: 1.5rem;
+            }
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .acciones-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .acciones-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn-accion.reiniciar {
+                grid-column: span 1;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header-left h1 {
+                font-size: 1.4rem;
+            }
+            .mission-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ============================================================
+        HEADER PROFESIONAL
+        ============================================================ -->
+        <div class="header">
+            <div class="header-left">
+                <span class="logo-icon"><i class="fas fa-code-branch"></i></span>
+                <h1>
+                    CODE FOR CHANGE
+                    <small>MVP</small>
+                </h1>
+            </div>
+            <div class="header-right">
+                <span class="ods-badge"><i class="fas fa-bullseye"></i> ODS 4 · 9 · 11</span>
+                <span class="developer-badge">
+                    <i class="fas fa-user-astronaut"></i>
+                    Alejandro Martínez · 25 años
+                </span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        MISIÓN
+        ============================================================ -->
+        <div class="mission-card">
+            <i class="fas fa-rocket"></i>
+            <p>
+                <strong>Problema:</strong> Falta de conciencia sobre el impacto cotidiano en los ODS.
+                Este simulador profesional te permite <strong>experimentar con decisiones</strong>
+                y medir su efecto en <strong>Educación (ODS 4)</strong>, <strong>Innovación (ODS 9)</strong>
+                y <strong>Comunidades Sostenibles (ODS 11)</strong>.
+                <span style="display:inline-block; margin-left:0.5rem; font-weight:500; color:var(--secondary);">
+                    <i class="fas fa-arrow-right"></i> Cada acción suma.
+                </span>
+            </p>
+        </div>
+
+        <!-- ============================================================
+        GRID PRINCIPAL
+        ============================================================ -->
+        <div class="main-grid">
+
+            <!-- ============================================================
+            COLUMNA IZQUIERDA: ACCIONES
+            ============================================================ -->
+            <div class="panel-acciones">
+                <h3><i class="fas fa-hands-helping" style="color:var(--secondary);"></i> Acciones comunitarias</h3>
+                <div class="acciones-grid">
+                    <button class="btn-accion" data-accion="educacion">
+                        <i class="fas fa-book-open"></i>
+                        Taller lectura
+                        <span class="badge-impacto">+2 Edu, +1 Inn</span>
+                    </button>
+                    <button class="btn-accion" data-accion="innovacion">
+                        <i class="fas fa-microchip"></i>
+                        Hackatón
+                        <span class="badge-impacto">+3 Inn, +1 Com</span>
+                    </button>
+                    <button class="btn-accion" data-accion="comunidad">
+                        <i class="fas fa-seedling"></i>
+                        Huerto urbano
+                        <span class="badge-impacto">+1 Edu, +3 Com</span>
+                    </button>
+                    <button class="btn-accion" data-accion="reciclaje">
+                        <i class="fas fa-recycle"></i>
+                        Reciclaje creativo
+                        <span class="badge-impacto">+1 Edu, +2 Inn, +2 Com</span>
+                    </button>
+                    <button class="btn-accion reiniciar" id="reiniciarBtn">
+                        <i class="fas fa-sync-alt"></i> Reiniciar simulación
+                    </button>
+                </div>
+                <p style="margin-top: 1rem; font-size:0.75rem; color:#5a7a8a; text-align:center; border-top:1px solid #eef3f7; padding-top:0.8rem;">
+                    <i class="fas fa-lightbulb" style="color:var(--accent);"></i> Elige una acción para mejorar tu comunidad
+                </p>
+            </div>
+
+            <!-- ============================================================
+            COLUMNA DERECHA: ESTADÍSTICAS + BITÁCORA
+            ============================================================ -->
+            <div class="panel-estadisticas">
+                <h3><i class="fas fa-chart-line" style="color:var(--secondary);"></i> Indicadores ODS</h3>
+
+                <div class="stats-grid">
+                    <div class="stat-item ods4">
+                        <div class="label"><i class="fas fa-graduation-cap"></i> ODS 4 · Edu</div>
+                        <div class="value" id="ods4Value">5</div>
+                        <div class="sub">puntos</div>
+                    </div>
+                    <div class="stat-item ods9">
+                        <div class="label"><i class="fas fa-lightbulb"></i> ODS 9 · Inn</div>
+                        <div class="value" id="ods9Value">3</div>
+                        <div class="sub">puntos</div>
+                    </div>
+                    <div class="stat-item ods11">
+                        <div class="label"><i class="fas fa-city"></i> ODS 11 · Com</div>
+                        <div class="value" id="ods11Value">4</div>
+                        <div class="sub">puntos</div>
+                    </div>
+                    <div class="stat-item impacto">
+                        <div class="label"><i class="fas fa-star"></i> Impacto total</div>
+                        <div class="value" id="impactoTotal">12</div>
+                        <div class="sub">puntos</div>
+                    </div>
+                </div>
+
+                <!-- BARRA DE IMPACTO -->
+                <div class="impacto-wrapper">
+                    <div class="impacto-bar">
+                        <div class="impacto-fill" id="impactoFill" style="width:24%;"></div>
+                    </div>
+                    <div class="impacto-label">
+                        <span><i class="fas fa-seedling"></i> Bajo</span>
+                        <span id="nivelImpacto">En progreso</span>
+                        <span><i class="fas fa-rocket"></i> Alto</span>
+                    </div>
+                </div>
+
+                <!-- ============================================================
+                BITÁCORA MEJORADA CON FILTROS
+                ============================================================ -->
+                <div class="bitacora">
+                    <div class="bitacora-header">
+                        <h4><i class="fas fa-history" style="color:var(--secondary);"></i> Bitácora de acciones</h4>
+                        <div class="bitacora-filtros">
+                            <button class="active" data-filtro="todos">Todos</button>
+                            <button data-filtro="educacion"><i class="fas fa-book-open"></i></button>
+                            <button data-filtro="innovacion"><i class="fas fa-microchip"></i></button>
+                            <button data-filtro="comunidad"><i class="fas fa-seedling"></i></button>
+                            <button data-filtro="reciclaje"><i class="fas fa-recycle"></i></button>
+                        </div>
+                    </div>
+                    <ul id="logAcciones">
+                        <li><span class="hora">🌱</span> Comienza tu impacto</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <div class="footer">
+            <span><i class="fas fa-code"></i> CODE FOR CHANGE · Ingeniería de Soluciones</span>
+            <span><i class="far fa-calendar-alt"></i> 2026</span>
+            <span><i class="fas fa-users"></i> Equipo de desarrollo</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT AVANZADO
+    ============================================================ -->
+    <script>
+        (function() {
+            "use strict";
+
+            // ============================================================
+            // ESTADO GLOBAL
+            // ============================================================
+            const estado = {
+                ods4: 5,
+                ods9: 3,
+                ods11: 4,
+                historial: [], // cada entrada: { hora, nombre, detalle, tipo, icono }
+                filtro: 'todos'
+            };
+
+            // Mapa de iconos por tipo
+            const iconos = {
+                educacion: '📚',
+                innovacion: '💡',
+                comunidad: '🌳',
+                reciclaje: '♻️',
+                sistema: '⚙️'
+            };
+
+            // ============================================================
+            // DOM REFS
+            // ============================================================
+            const ods4El = document.getElementById('ods4Value');
+            const ods9El = document.getElementById('ods9Value');
+            const ods11El = document.getElementById('ods11Value');
+            const impactoTotalEl = document.getElementById('impactoTotal');
+            const impactoFill = document.getElementById('impactoFill');
+            const nivelImpactoEl = document.getElementById('nivelImpacto');
+            const logUl = document.getElementById('logAcciones');
+            const botonesAccion = document.querySelectorAll('[data-accion]');
+            const reiniciarBtn = document.getElementById('reiniciarBtn');
+            const filtrosBtns = document.querySelectorAll('.bitacora-filtros button');
+
+            // ============================================================
+            // FUNCIONES DE ACTUALIZACIÓN
+            // ============================================================
+            function actualizarUI() {
+                // Valores ODS
+                ods4El.textContent = estado.ods4;
+                ods9El.textContent = estado.ods9;
+                ods11El.textContent = estado.ods11;
+
+                const total = estado.ods4 + estado.ods9 + estado.ods11;
+                impactoTotalEl.textContent = total;
+
+                // Barra (máx 30 puntos)
+                const porcentaje = Math.min(100, Math.round((total / 30) * 100));
+                impactoFill.style.width = porcentaje + '%';
+
+                // Nivel
+                if (total >= 24) nivelImpactoEl.textContent = '🏆 Comunidad ejemplar';
+                else if (total >= 18) nivelImpactoEl.textContent = '🌟 Impacto notable';
+                else if (total >= 12) nivelImpactoEl.textContent = '🌱 En progreso';
+                else nivelImpactoEl.textContent = '🔄 Empieza a actuar';
+
+                // Renderizar log con filtro
+                renderizarLog();
+            }
+
+            // ============================================================
+            // RENDERIZAR BITÁCORA CON FILTRO
+            // ============================================================
+            function renderizarLog() {
+                logUl.innerHTML = '';
+                let items = estado.historial.slice(-12).reverse();
+
+                // Aplicar filtro
+                if (estado.filtro !== 'todos') {
+                    items = items.filter(entry => entry.tipo === estado.filtro);
+                }
+
+                if (items.length === 0) {
+                    const li = document.createElement('li');
+                    li.className = 'empty-log';
+                    li.innerHTML = `<span class="hora"><i class="fas fa-info-circle"></i></span> No hay acciones con este filtro`;
+                    logUl.appendChild(li);
+                    return;
+                }
+
+                for (let entry of items) {
+                    const li = document.createElement('li');
+                    const icono = entry.icono || '📌';
+                    li.innerHTML = `
+                                <span class="hora">${entry.hora}</span>
+                                <span class="icono-accion">${icono}</span>
+                                <span>${entry.nombre} ${entry.detalle}</span>
+                            `;
+                    logUl.appendChild(li);
+                }
+            }
+
+            // ============================================================
+            // REGISTRAR ACCIÓN EN BITÁCORA
+            // ============================================================
+            function registrarAccion(nombre, detalle, tipo) {
+                const ahora = new Date();
+                const hora = ahora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                const icono = iconos[tipo] || '📌';
+                estado.historial.push({
+                    hora,
+                    nombre,
+                    detalle,
+                    tipo,
+                    icono
+                });
+                if (estado.historial.length > 50) estado.historial.shift();
+                actualizarUI();
+            }
+
+            // ============================================================
+            // APLICAR ACCIÓN
+            // ============================================================
+            function aplicarAccion(tipo) {
+                let inc4 = 0,
+                    inc9 = 0,
+                    inc11 = 0;
+                let nombre = '',
+                    detalle = '';
+
+                switch (tipo) {
+                    case 'educacion':
+                        inc4 = 2;
+                        inc9 = 1;
+                        nombre = 'Taller de lectura';
+                        detalle = '(+2 Edu, +1 Inn)';
+                        break;
+                    case 'innovacion':
+                        inc9 = 3;
+                        inc11 = 1;
+                        nombre = 'Hackatón escolar';
+                        detalle = '(+3 Inn, +1 Com)';
+                        break;
+                    case 'comunidad':
+                        inc4 = 1;
+                        inc11 = 3;
+                        nombre = 'Huerto urbano';
+                        detalle = '(+1 Edu, +3 Com)';
+                        break;
+                    case 'reciclaje':
+                        inc4 = 1;
+                        inc9 = 2;
+                        inc11 = 2;
+                        nombre = 'Reciclaje creativo';
+                        detalle = '(+1 Edu, +2 Inn, +2 Com)';
+                        break;
+                    default:
+                        return;
+                }
+
+                estado.ods4 = Math.max(0, estado.ods4 + inc4);
+                estado.ods9 = Math.max(0, estado.ods9 + inc9);
+                estado.ods11 = Math.max(0, estado.ods11 + inc11);
+
+                registrarAccion(nombre, detalle, tipo);
+            }
+
+            // ============================================================
+            // REINICIAR
+            // ============================================================
+            function reiniciarSimulador() {
+                estado.ods4 = 5;
+                estado.ods9 = 3;
+                estado.ods11 = 4;
+                estado.historial = [];
+                const ahora = new Date();
+                const hora = ahora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                estado.historial.push({
+                    hora,
+                    nombre: 'Simulador reiniciado',
+                    detalle: '🔄',
+                    tipo: 'sistema',
+                    icono: '🔄'
+                });
+                actualizarUI();
+                nivelImpactoEl.textContent = '🔄 Reiniciado';
+                setTimeout(() => actualizarUI(), 500);
+            }
+
+            // ============================================================
+            // EVENTOS
+            // ============================================================
+            function init() {
+                // Botones de acción
+                botonesAccion.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const accion = this.dataset.accion;
+                        if (accion) {
+                            aplicarAccion(accion);
+                            this.style.transform = 'scale(0.94)';
+                            setTimeout(() => this.style.transform = '', 150);
+                        }
+                    });
+                });
+
+                // Reiniciar
+                reiniciarBtn.addEventListener('click', function() {
+                    reiniciarSimulador();
+                    this.style.transform = 'scale(0.94)';
+                    setTimeout(() => this.style.transform = '', 150);
+                });
+
+                // Filtros de bitácora
+                filtrosBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        filtrosBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        estado.filtro = this.dataset.filtro || 'todos';
+                        renderizarLog();
+                    });
+                });
+
+                // Estado inicial
+                actualizarUI();
+
+                // Mensaje de bienvenida si está vacío
+                if (estado.historial.length === 0) {
+                    const ahora = new Date();
+                    const hora = ahora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                    estado.historial.push({
+                        hora,
+                        nombre: 'Simulador listo',
+                        detalle: '🚀',
+                        tipo: 'sistema',
+                        icono: '🚀'
+                    });
+                    actualizarUI();
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+</body>
+</html>

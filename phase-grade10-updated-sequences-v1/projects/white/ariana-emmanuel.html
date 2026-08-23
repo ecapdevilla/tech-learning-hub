@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>♻️ EcoClick · El Reciclador Veloz</title>
+  <!-- Estilos integrados (diseño pro + experiencia) -->
+  <style>
+    /* ============================================================
+       RESET + VARIABLES + ESTILOS GLOBALES (experiencia 25+ años)
+       ============================================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at 20% 30%, #1b3b2b, #0c1f17);
+      padding: 20px;
+    }
+
+    .contenedor-juego {
+      max-width: 1000px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 72px 72px 48px 48px;
+      padding: 30px 30px 40px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.25s ease;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 18px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #d4e8d0, #b3e0c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 10px rgba(0, 40, 20, 0.3);
+    }
+
+    .subtitulo {
+      color: #bcd9cd;
+      font-weight: 400;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      margin-top: 2px;
+      opacity: 0.9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .equipo-badge {
+      display: inline-flex;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 16px 4px 18px;
+      border-radius: 80px;
+      font-weight: 500;
+      color: #c4e0d2;
+      font-size: 0.85rem;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .equipo-badge span {
+      color: #f0ffe0;
+    }
+
+    /* ===== HUD ===== */
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 12px 24px;
+      border-radius: 80px;
+      margin: 20px 0 14px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+      gap: 6px 14px;
+    }
+
+    .hud-item {
+      color: #e2f3ea;
+      font-weight: 500;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hud-item span {
+      font-weight: 700;
+      color: #b9f5d0;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0 14px;
+      border-radius: 40px;
+      line-height: 1.8;
+    }
+
+    /* Barra ODS */
+    .barra-contenedor {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 80px;
+      height: 18px;
+      width: 100%;
+      margin: 8px 0 4px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    #barra-ods {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6fcf97, #27ae60, #219653);
+      border-radius: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #0f2b1e;
+      transition: width 0.3s ease;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.2);
+    }
+
+    /* ===== ESCENA PRINCIPAL ===== */
+    #pantalla-juego, #pantalla-resultados {
+      transition: opacity 0.25s ease;
+    }
+
+    .escena {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px 24px;
+      border-radius: 80px;
+      margin: 10px 0 18px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .avatar-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(0,0,0,0.2);
+      padding: 6px 20px 6px 14px;
+      border-radius: 80px;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      font-size: 3.4rem;
+      line-height: 1;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3));
+      transition: transform 0.2s;
+    }
+
+    .avatar.neutro { transform: scale(1); }
+    .avatar.feliz { transform: scale(1.1) rotate(-3deg); }
+    .avatar.triste { transform: scale(0.9) rotate(5deg); }
+
+    #estado-texto {
+      color: #d0f0de;
+      font-weight: 500;
+      font-size: 1rem;
+      background: rgba(0,0,0,0.2);
+      padding: 4px 18px;
+      border-radius: 60px;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .tarjeta-residuo {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 28px;
+      border-radius: 80px;
+      border-left: 4px solid #6fcf97;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .tarjeta-residuo .label {
+      color: #b0d5c2;
+      font-weight: 300;
+      font-size: 0.9rem;
+    }
+
+    #nombre-residuo {
+      color: #f0fff0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 8px rgba(0,30,10,0.5);
+    }
+
+    .instruccion {
+      color: #b8dccc;
+      text-align: center;
+      font-weight: 400;
+      margin: 12px 0 6px;
+      letter-spacing: 1px;
+    }
+
+    /* ===== CANECAS ===== */
+    .canecas {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin: 12px 0 18px;
+    }
+
+    .btn-caneca {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 80px;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #e5f5ec;
+      cursor: pointer;
+      transition: 0.18s ease;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+      flex: 0 1 auto;
+      min-width: 140px;
+      justify-content: center;
+    }
+
+    .btn-caneca span { font-size: 0.95rem; }
+
+    .btn-caneca.verde { border-color: #3a9b6e; background: rgba(46, 125, 80, 0.35); }
+    .btn-caneca.verde:hover { background: #2e7d5e; border-color: #6fcf97; transform: scale(1.03); }
+
+    .btn-caneca.azul { border-color: #4a8db7; background: rgba(30, 80, 120, 0.35); }
+    .btn-caneca.azul:hover { background: #1f6390; border-color: #6ab0d9; transform: scale(1.03); }
+
+    .btn-caneca.negro { border-color: #7a5c4b; background: rgba(60, 40, 30, 0.45); }
+    .btn-caneca.negro:hover { background: #4d3a2e; border-color: #b2896e; transform: scale(1.03); }
+
+    .btn-caneca:active { transform: scale(0.94); }
+
+    /* retroalimentación */
+    .retroalimentacion {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 12px 24px;
+      border-radius: 80px;
+      text-align: center;
+      margin: 6px 0 10px;
+      border-left: 3px solid #6fcf97;
+    }
+
+    #mensaje-ods {
+      color: #d3efe0;
+      font-weight: 400;
+      font-size: 1rem;
+    }
+
+    /* ===== PANTALLA RESULTADOS ===== */
+    #pantalla-resultados {
+      text-align: center;
+      padding: 30px 20px 20px;
+    }
+
+    #pantalla-resultados h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #c2f0d0;
+      text-shadow: 0 4px 20px rgba(0,40,10,0.6);
+      margin-bottom: 20px;
+    }
+
+    .stats-box {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      border-radius: 60px;
+      padding: 28px 34px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 28px;
+    }
+
+    .stats-box p {
+      color: #dff3e8;
+      font-size: 1.2rem;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .stats-box b {
+      color: #c2f7d6;
+      font-weight: 700;
+    }
+
+    .record-txt { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-top: 14px; }
+
+    .btn-reiniciar {
+      background: #2e7d5e;
+      border: none;
+      padding: 16px 48px;
+      border-radius: 80px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #f0fff0;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 30, 10, 0.5);
+      transition: 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-reiniciar:hover { background: #1f6a4b; transform: scale(1.02); }
+    .btn-reiniciar:active { transform: scale(0.94); }
+
+    .oculto { display: none !important; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 700px) {
+      .contenedor-juego { padding: 20px 16px; border-radius: 40px; }
+      header h1 { font-size: 1.6rem; }
+      .hud { flex-direction: column; align-items: stretch; gap: 8px; }
+      .escena { flex-direction: column; align-items: center; padding: 18px; }
+      .tarjeta-residuo { justify-content: center; }
+      #nombre-residuo { font-size: 1.4rem; }
+      .btn-caneca { min-width: 110px; padding: 12px 18px; }
+      .stats-box { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="contenedor-juego">
+  <header>
+    <h1>♻️ COLEGIO BIFFI LA SALLE</h1>
+    <div class="subtitulo">
+      <span>Code for Change · ODS 10°</span>
+      <span class="equipo-badge">
+        👥 <span>Emmanuel Torres</span> · <span>Ariana Castro</span> · <span>Gabriela Carreño</span>
+      </span>
+    </div>
+
+    <div class="hud">
+      <div class="hud-item">🏆 Puntos: <span id="puntaje">0</span></div>
+      <div class="hud-item">❤️ Vidas: <span id="vidas">❤️❤️❤️</span></div>
+      <div class="hud-item">⏱️ Tiempo: <span id="tiempo">30</span>s</div>
+    </div>
+
+    <div class="barra-contenedor">
+      <div id="barra-ods" class="barra-relleno">0%</div>
+    </div>
+  </header>
+
+  <!-- ===== PANTALLA JUEGO ===== -->
+  <main id="pantalla-juego">
+    <div class="escena">
+      <div class="avatar-box">
+        <div id="estudiante" class="avatar neutro">🧑‍🎓</div>
+        <span id="estado-texto">Esperando...</span>
+      </div>
+      <div class="tarjeta-residuo">
+        <span class="label">🗑️ Residuo:</span>
+        <h2 id="nombre-residuo">Cargando...</h2>
+      </div>
+    </div>
+
+    <p class="instruccion">⚡ Selecciona el contenedor correcto</p>
+    <div class="canecas">
+      <button class="btn-caneca verde" data-tipo="verde">🟢 <span>Orgánicos</span></button>
+      <button class="btn-caneca azul" data-tipo="azul">🔵 <span>Aprovechables</span></button>
+      <button class="btn-caneca negro" data-tipo="negro">🔴 <span>No Aprovechables</span></button>
+    </div>
+
+    <div class="retroalimentacion">
+      <p id="mensaje-ods">🌱 Educar para reciclar · ODS 12</p>
+    </div>
+  </main>
+
+  <!-- ===== PANTALLA RESULTADOS ===== -->
+  <div id="pantalla-resultados" class="oculto">
+    <h2>🏁 ¡Misión Cumplida!</h2>
+    <div class="stats-box">
+      <p>Puntuación Total: <b id="res-puntos">0</b> pts</p>
+      <p>Precisión de Reciclaje: <b id="res-precision">0%</b></p>
+      <p>Aciertos: <span id="res-aciertos">0</span> · Intentos: <span id="res-fallos">0</span></p>
+      <p class="record-txt">🏅 Récord Personal: <b id="res-record">0</b> pts</p>
+    </div>
+    <button class="btn-reiniciar" id="btnReiniciar">🔄 Jugar De Nuevo</button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ============================================================
+    //  ECOCLICK · LÓGICA PROFESIONAL (versión 2.0 · 2026)
+    //  Equipo: Emmanuel Torres, Ariana Castro, Gabriela Carreño
+    // ============================================================
+
+    // ---------- CATÁLOGO DE RESIDUOS ----------
+    const residuos = [
+      { nombre: 'Cáscara de plátano', tipo: 'verde' },
+      { nombre: 'Restos de verduras', tipo: 'verde' },
+      { nombre: 'Cáscara de huevo', tipo: 'verde' },
+      { nombre: 'Papel de oficina', tipo: 'azul' },
+      { nombre: 'Botella de plástico', tipo: 'azul' },
+      { nombre: 'Lata de aluminio', tipo: 'azul' },
+      { nombre: 'Cartón', tipo: 'azul' },
+      { nombre: 'Pilas usadas', tipo: 'negro' },
+      { nombre: 'Medicamentos caducados', tipo: 'negro' },
+      { nombre: 'Aceite de cocina usado', tipo: 'negro' },
+      { nombre: 'Envoltura de dulce', tipo: 'negro' },
+      { nombre: 'Colilla de cigarro', tipo: 'negro' }
+    ];
+
+    // ---------- ESTADO DEL JUEGO ----------
+    let estado = {
+      puntos: 0,
+      vidas: 3,
+      tiempo: 30,
+      aciertos: 0,
+      fallos: 0,
+      intentos: 0,
+      record: parseInt(localStorage.getItem('ecoclick_record')) || 0,
+      activo: false,
+      residuoActual: null,
+      intervalo: null,
+      temporizador: null
+    };
+
+    // ---------- DOM REFS ----------
+    const dom = {
+      puntaje: document.getElementById('puntaje'),
+      vidas: document.getElementById('vidas'),
+      tiempo: document.getElementById('tiempo'),
+      barraOds: document.getElementById('barra-ods'),
+      nombreResiduo: document.getElementById('nombre-residuo'),
+      estudiante: document.getElementById('estudiante'),
+      estadoTexto: document.getElementById('estado-texto'),
+      mensajeOds: document.getElementById('mensaje-ods'),
+      pantallaJuego: document.getElementById('pantalla-juego'),
+      pantallaResultados: document.getElementById('pantalla-resultados'),
+      resPuntos: document.getElementById('res-puntos'),
+      resPrecision: document.getElementById('res-precision'),
+      resAciertos: document.getElementById('res-aciertos'),
+      resFallos: document.getElementById('res-fallos'),
+      resRecord: document.getElementById('res-record'),
+      btnReiniciar: document.getElementById('btnReiniciar')
+    };
+
+    // ---------- FUNCIONES AUXILIARES ----------
+    function actualizarHUD() {
+      dom.puntaje.textContent = estado.puntos;
+      const corazones = '❤️'.repeat(Math.max(0, estado.vidas)) + '🖤'.repeat(Math.max(0, 3 - estado.vidas));
+      dom.vidas.textContent = corazones;
+      dom.tiempo.textContent = estado.tiempo;
+
+      // Barra ODS (progreso hacia 20 pts)
+      const progreso = Math.min(100, Math.round((estado.puntos / 20) * 100));
+      dom.barraOds.style.width = progreso + '%';
+      dom.barraOds.textContent = progreso + '%';
+    }
+
+    function mostrarMensaje(texto, tipo = 'info') {
+      dom.mensajeOds.textContent = texto;
+      dom.mensajeOds.style.color = tipo === 'ok' ? '#b9f5d0' : tipo === 'error' ? '#f7b0a0' : '#d3efe0';
+    }
+
+    function setAvatar(estadoAnimo) {
+      const animoMap = {
+        neutro: '🧑‍🎓',
+        feliz: '😃',
+        triste: '😢',
+        genial: '🌟'
+      };
+      dom.estudiante.textContent = animoMap[estadoAnimo] || '🧑‍🎓';
+      dom.estudiante.className = 'avatar ' + (estadoAnimo === 'feliz' ? 'feliz' : estadoAnimo === 'triste' ? 'triste' : 'neutro');
+    }
+
+    function actualizarEstadoTexto(texto) {
+      dom.estadoTexto.textContent = texto;
+    }
+
+    // ---------- OBTENER RESIDUO ALEATORIO ----------
+    function obtenerResiduoAleatorio() {
+      const idx = Math.floor(Math.random() * residuos.length);
+      return { ...residuos[idx], indice: idx };
+    }
+
+    // ---------- MOSTRAR NUEVO RESIDUO ----------
+    function mostrarNuevoResiduo() {
+      if (!estado.activo) return;
+      const residuo = obtenerResiduoAleatorio();
+      estado.residuoActual = residuo;
+      dom.nombreResiduo.textContent = residuo.nombre;
+      setAvatar('neutro');
+      actualizarEstadoTexto('🤔 ¿Dónde va?');
+      mostrarMensaje('Selecciona la caneca correcta', 'info');
+    }
+
+    // ---------- VERIFICAR RESPUESTA ----------
+    function verificarRespuesta(tipoSeleccionado) {
+      if (!estado.activo || estado.vidas <= 0) return;
+      if (!estado.residuoActual) {
+        mostrarMensaje('⏳ Espera un momento...', 'info');
+        return;
+      }
+
+      estado.intentos++;
+      const correcto = (tipoSeleccionado === estado.residuoActual.tipo);
+
+      if (correcto) {
+        estado.puntos += 2;
+        estado.aciertos++;
+        setAvatar('feliz');
+        actualizarEstadoTexto('✅ ¡Bien hecho!');
+        mostrarMensageODS(estado.residuoActual.nombre, estado.residuoActual.tipo);
+        dom.nombreResiduo.style.color = '#b9f5d0';
+        setTimeout(() => dom.nombreResiduo.style.color = '', 300);
+        // Efecto de puntuación
+        if (estado.puntos % 5 === 0) {
+          mostrarMensaje('🎉 ¡Excelente! Sigue así', 'ok');
+        }
+      } else {
+        estado.vidas--;
+        estado.fallos++;
+        setAvatar('triste');
+        actualizarEstadoTexto('❌ Intenta de nuevo');
+        const msj = `❌ ¡Error! "${estado.residuoActual.nombre}" va en ${traducirTipo(estado.residuoActual.tipo)}`;
+        mostrarMensaje(msj, 'error');
+        dom.nombreResiduo.style.color = '#f7b0a0';
+        setTimeout(() => dom.nombreResiduo.style.color = '', 400);
+        if (estado.vidas === 0) {
+          mostrarMensaje('💔 ¡Sin vidas! Juego terminado', 'error');
+          terminarJuego();
+          return;
+        }
+      }
+
+      actualizarHUD();
+
+      // Siguiente residuo después de breve pausa
+      setTimeout(() => {
+        if (estado.activo && estado.vidas > 0) {
+          mostrarNuevoResiduo();
+        }
+      }, 480);
+    }
+
+    function traducirTipo(tipo) {
+      const map = { verde: 'Orgánicos', azul: 'Aprovechables', negro: 'No Aprovechables' };
+      return map[tipo] || tipo;
+    }
+
+    // mensaje educativo según ODS
+    function mostrarMensageODS(nombre, tipo) {
+      const mensajes = {
+        verde: `🌱 "${nombre}" es orgánico, se convierte en abono. ¡Reducimos residuos!`,
+        azul: `♻️ "${nombre}" se recicla. ¡Ahorramos recursos y energía!`,
+        negro: `⚠️ "${nombre}" no es reciclable. ¡Evitamos contaminación!`
+      };
+      mostrarMensaje(mensajes[tipo] || `♻️ Bien clasificado.`, 'ok');
+    }
+
+    // ---------- TIEMPO ----------
+    function iniciarTemporizador() {
+      estado.tiempo = 30;
+      actualizarHUD();
+      if (estado.temporizador) clearInterval(estado.temporizador);
+      estado.temporizador = setInterval(() => {
+        estado.tiempo--;
+        actualizarHUD();
+        if (estado.tiempo <= 0) {
+          terminarJuego();
+        }
+      }, 1000);
+    }
+
+    // ---------- TERMINAR JUEGO ----------
+    function terminarJuego() {
+      if (!estado.activo) return;
+      estado.activo = false;
+      clearInterval(estado.temporizador);
+      clearTimeout(estado.intervalo);
+      // Guardar récord
+      if (estado.puntos > estado.record) {
+        estado.record = estado.puntos;
+        localStorage.setItem('ecoclick_record', String(estado.record));
+      }
+      mostrarResultados();
+    }
+
+    // ---------- MOSTRAR RESULTADOS ----------
+    function mostrarResultados() {
+      dom.pantallaJuego.classList.add('oculto');
+      dom.pantallaResultados.classList.remove('oculto');
+      dom.resPuntos.textContent = estado.puntos;
+      const precision = estado.intentos > 0 ? Math.round((estado.aciertos / estado.intentos) * 100) : 0;
+      dom.resPrecision.textContent = precision + '%';
+      dom.resAciertos.textContent = estado.aciertos;
+      dom.resFallos.textContent = estado.fallos;
+      dom.resRecord.textContent = estado.record;
+    }
+
+    // ---------- REINICIAR JUEGO ----------
+    function reiniciarJuego() {
+      // Resetear estado
+      estado.puntos = 0;
+      estado.vidas = 3;
+      estado.tiempo = 30;
+      estado.aciertos = 0;
+      estado.fallos = 0;
+      estado.intentos = 0;
+      estado.activo = true;
+      estado.residuoActual = null;
+
+      if (estado.temporizador) clearInterval(estado.temporizador);
+      if (estado.intervalo) clearTimeout(estado.intervalo);
+
+      dom.pantallaResultados.classList.add('oculto');
+      dom.pantallaJuego.classList.remove('oculto');
+      setAvatar('neutro');
+      actualizarEstadoTexto('🎯 ¡Prepárate!');
+      mostrarMensaje('♻️ Recicla rápido y salva el planeta', 'info');
+      actualizarHUD();
+
+      // Mostrar primer residuo
+      setTimeout(() => {
+        if (estado.activo) {
+          mostrarNuevoResiduo();
+          iniciarTemporizador();
+        }
+      }, 300);
+    }
+
+    // ---------- INICIALIZACIÓN ----------
+    function init() {
+      // Cargar récord
+      estado.record = parseInt(localStorage.getItem('ecoclick_record')) || 0;
+
+      // Eventos de canecas (delegación)
+      document.querySelectorAll('.btn-caneca').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const tipo = this.dataset.tipo;
+          if (tipo) verificarRespuesta(tipo);
+        });
+      });
+
+      // Botón reiniciar
+      dom.btnReiniciar.addEventListener('click', reiniciarJuego);
+
+      // Iniciar juego automáticamente
+      reiniciarJuego();
+
+      // Mostrar equipo en consola (guinda)
+      console.log('♻️ EcoClick · Equipo: Emmanuel Torres, Ariana Castro, Gabriela Carreño');
+    }
+
+    // Arrancar cuando DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+  })();
+</script>
+</body>
+</html>

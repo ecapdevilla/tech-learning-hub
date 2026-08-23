@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart To-Do · MVC Pro · STEM Project</title>
+    <style>
+        /* ============================================================
+               RESET Y ESTILOS BASE
+               ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef4f9;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 1.8rem;
+            color: #0f2b3f;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at 10% 30%, rgba(26, 95, 130, 0.03) 0%, transparent 60%);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* ============================================================
+               HEADER PREMIUM
+               ============================================================ */
+        .app-header {
+            background: linear-gradient(145deg, #0a1e2f, #1a5f82);
+            color: white;
+            padding: 2.4rem 3rem;
+            border-radius: 3.2rem;
+            box-shadow: 0 24px 48px -12px rgba(8, 30, 50, 0.40);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .app-header h1 {
+            font-size: clamp(2.6rem, 7vw, 3.8rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-right {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .stats {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .stats span {
+            background: rgba(0, 0, 0, 0.20);
+            padding: 0.3rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* ============================================================
+               CARDS
+               ============================================================ */
+        .card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 2.4rem;
+            padding: 2.2rem 2.6rem;
+            box-shadow: 0 8px 32px rgba(8, 30, 50, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 16px 48px rgba(8, 30, 50, 0.10);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #0a1e2f;
+            letter-spacing: -0.01em;
+        }
+
+        .card-title small {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: #4b6f88;
+            margin-left: 0.4rem;
+            background: #eaf1f8;
+            padding: 0.1rem 1rem;
+            border-radius: 40px;
+        }
+
+        /* ============================================================
+               FORMULARIO
+               ============================================================ */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 680px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        input,
+        select,
+        button {
+            font: inherit;
+            border-radius: 60px;
+            border: 1px solid #d0e0ec;
+            padding: 0.85rem 1.6rem;
+            background: white;
+            transition: all 0.2s;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1a5f82;
+            box-shadow: 0 0 0 4px rgba(26, 95, 130, 0.12);
+        }
+
+        button {
+            background: #0a1e2f;
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 0.85rem 2rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            letter-spacing: 0.2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(10, 30, 47, 0.25);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #0a1e2f;
+            border: 1px solid #cbdae6;
+        }
+
+        .btn-outline:hover {
+            background: #eaf1f8;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-success {
+            background: #0f765c;
+        }
+
+        .btn-success:hover {
+            background: #0b5f49;
+        }
+
+        .btn-danger {
+            background: #b13e4b;
+        }
+
+        .btn-danger:hover {
+            background: #9a323e;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .row-space {
+            justify-content: space-between;
+        }
+
+        .grow {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        /* ============================================================
+               FILTROS
+               ============================================================ */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background: transparent;
+            color: #1f4057;
+            border: 1px solid #d0e0ec;
+            padding: 0.4rem 1.6rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #e2ecf5;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .filter-btn.active {
+            background: #0a1e2f;
+            color: white;
+            border-color: #0a1e2f;
+        }
+
+        #searchInput {
+            padding: 0.5rem 1.4rem;
+            border-radius: 60px;
+            min-width: 180px;
+            width: auto;
+            background: white;
+            border: 1px solid #d0e0ec;
+        }
+
+        /* ============================================================
+               LISTA DE TAREAS
+               ============================================================ */
+        .task-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem 0.5rem;
+            padding: 1.2rem 0.8rem;
+            border-bottom: 1px solid #e2ecf5;
+            transition: background 0.15s;
+            border-radius: 1rem;
+        }
+
+        .task-item:hover {
+            background: rgba(26, 95, 130, 0.03);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-info {
+            flex: 1 1 260px;
+        }
+
+        .task-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            font-size: 1.05rem;
+        }
+
+        .task-meta {
+            font-size: 0.85rem;
+            color: #31607c;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        .task-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-left: auto;
+        }
+
+        .task-actions button {
+            padding: 0.3rem 1.2rem;
+            font-size: 0.75rem;
+            border-radius: 40px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .task-actions .btn-outline {
+            background: #f0f6fc;
+            border: 1px solid #d0e0ec;
+            color: #0a1e2f;
+        }
+
+        .task-actions .btn-outline:hover {
+            background: #e2ecf5;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .cat-badge {
+            background: #dce8f2;
+            padding: 0.1rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        .status-badge {
+            padding: 0.1rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            background: #e9f0f5;
+            color: #1f4057;
+        }
+
+        .status-done {
+            background: #0f765c20;
+            color: #0f765c;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: #4f7490;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        /* ============================================================
+               FOOTER / CRÉDITOS
+               ============================================================ */
+        .footer-credits {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0.5rem 0.2rem;
+            font-size: 0.8rem;
+            color: #3d6580;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            margin-top: 0.8rem;
+        }
+
+        .footer-credits .devs {
+            display: flex;
+            gap: 1.4rem;
+            font-weight: 500;
+        }
+
+        .footer-credits .devs span {
+            background: #e2ecf5;
+            padding: 0.2rem 1.4rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .footer-credits .devs span::before {
+            content: '◆';
+            font-size: 0.5rem;
+            color: #1a5f82;
+        }
+
+        /* ============================================================
+               SECCIÓN ODS
+               ============================================================ */
+        .ods-section {
+            background: linear-gradient(135deg, #f0f7fc, #e8f0f7);
+            border-left: 6px solid #1a5f82;
+            border-radius: 1.8rem;
+            padding: 1.8rem 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .ods-section h3 {
+            color: #0a1e2f;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .ods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .ods-item {
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 1.2rem;
+            border: 1px solid #d0e0ec;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ods-item .icon {
+            font-size: 1.4rem;
+        }
+
+        /* ============================================================
+               RESPONSIVE
+               ============================================================ */
+        @media (max-width: 700px) {
+            body {
+                padding: 1rem;
+            }
+            .app-header {
+                padding: 1.6rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.2rem;
+                border-radius: 2.4rem;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .card {
+                padding: 1.4rem 1.2rem;
+            }
+            .task-actions {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .footer-credits {
+                flex-direction: column;
+                gap: 0.8rem;
+                align-items: flex-start;
+            }
+            .footer-credits .devs {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats span {
+                font-size: 0.7rem;
+                padding: 0.1rem 0.8rem;
+            }
+            .filter-bar {
+                gap: 0.3rem;
+            }
+            .filter-btn {
+                padding: 0.2rem 1rem;
+                font-size: 0.75rem;
+            }
+            #searchInput {
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+
+        <!-- ============================================================
+        HEADER
+        ============================================================ -->
+        <header class="app-header">
+            <h1>📋 Smart To-Do</h1>
+            <div class="header-right">
+                <span class="badge">MVC · LocalStorage</span>
+                <div class="stats">
+                    <span>📌 <span id="totalCount">0</span></span>
+                    <span>✅ <span id="doneCount">0</span></span>
+                    <span>⏳ <span id="pendingCount">0</span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        SECCIÓN ODS (Objetivos de Desarrollo Sostenible)
+        ============================================================ -->
+        <section class="card ods-section">
+            <h3>🌍 Objetivos de Desarrollo Sostenible (ODS) · Nuestro compromiso</h3>
+            <p style="color: #1f4057; font-size: 0.95rem; margin-bottom: 0.5rem;">
+                Este proyecto contribuye directamente a los siguientes ODS, promoviendo una educación de calidad,
+                innovación tecnológica y gestión responsable de datos.
+            </p>
+            <div class="ods-grid">
+                <div class="ods-item"><span class="icon">📚</span> ODS 4 · Educación de Calidad</div>
+                <div class="ods-item"><span class="icon">💡</span> ODS 9 · Industria e Innovación</div>
+                <div class="ods-item"><span class="icon">🤝</span> ODS 17 · Alianzas para los Objetivos</div>
+                <div class="ods-item"><span class="icon">🌱</span> ODS 12 · Producción y Consumo Responsables</div>
+            </div>
+            <p style="font-size: 0.8rem; color: #4b6f88; margin-top: 0.8rem;">
+                <strong>Reflexión:</strong> La aplicación fomenta la organización responsable, la colaboración
+                y el uso eficiente de recursos digitales, alineándose con los principios de sostenibilidad
+                y desarrollo integral.
+            </p>
+        </section>
+
+        <!-- ============================================================
+        FORMULARIO: TAREA + CATEGORÍA + USUARIO
+        ============================================================ -->
+        <section class="card">
+            <div class="card-title">✏️ Nueva tarea <small>completa todos los campos</small></div>
+            <div class="form-grid">
+                <input type="text" id="taskTitle" placeholder="Título (ej. Matemáticas)" />
+                <input type="text" id="taskDesc" placeholder="Descripción (opcional)" />
+            </div>
+            <div class="row" style="margin-top:0.8rem;">
+                <select id="userSelect" class="grow">
+                    <option value="">Seleccionar usuario</option>
+                </select>
+                <select id="categorySelect" class="grow">
+                    <option value="">Seleccionar categoría</option>
+                </select>
+                <button id="addTaskBtn" class="btn-success">➕ Agregar</button>
+            </div>
+            <div class="row" style="margin-top:1.2rem; border-top: 1px dashed #d0e0ec; padding-top:1.2rem;">
+                <input type="text" id="newUserName" placeholder="Nuevo usuario (ej. Ana)" class="grow" />
+                <button id="addUserBtn" class="btn-outline">👤 + Usuario</button>
+                <input type="text" id="newCategoryName" placeholder="Nueva categoría (ej. Estudio)" class="grow" />
+                <button id="addCategoryBtn" class="btn-outline">🏷️ + Categoría</button>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        FILTROS + BÚSQUEDA
+        ============================================================ -->
+        <section class="card">
+            <div class="row row-space">
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">📋 Todas</button>
+                    <button class="filter-btn" data-filter="pending">⏳ Pendientes</button>
+                    <button class="filter-btn" data-filter="done">✅ Completadas</button>
+                </div>
+                <input type="text" id="searchInput" placeholder="🔍 Buscar tarea..." />
+            </div>
+        </section>
+
+        <!-- ============================================================
+        LISTA DE TAREAS
+        ============================================================ -->
+        <section class="card" style="padding-bottom:0.5rem;">
+            <div id="taskList">
+                <div class="empty-state">✨ No hay tareas. ¡Agrega una!</div>
+            </div>
+            <!-- FOOTER CRÉDITOS DENTRO DE LA CARD -->
+            <div class="footer-credits">
+                <span>💾 Datos guardados en LocalStorage</span>
+                <div class="devs">
+                    <span>👨‍💻 Sebastián Arciniegas</span>
+                    <span>👨‍💻 Alexander Ballestero</span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        /**
+         * ============================================================
+         * SMART TO-DO · MVC ARCHITECTURE
+         * ============================================================
+         * MODELO: state, funciones CRUD (create, read, update, delete)
+         * VISTA: render(), actualización de DOM
+         * CONTROLADOR: eventos, interacción del usuario
+         * 
+         * Equipo desarrollador:
+         * - Sebastián Arciniegas
+         * - Alexander Ballestero
+         * ============================================================
+         */
+
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // MODELO
+            // ============================================================
+
+            const STORAGE_KEY = 'smartTodoData';
+
+            // Estado central de la aplicación
+            let state = {
+                users: [],
+                categories: [],
+                tasks: [],
+                nextId: 1
+            };
+
+            /**
+             * Carga el estado desde localStorage.
+             * Si no hay datos, inicializa con datos de ejemplo (seed).
+             */
+            function loadState() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    try {
+                        const parsed = JSON.parse(stored);
+                        state = parsed;
+                        // Asegurar que todas las propiedades existan
+                        if (!state.nextId) state.nextId = 1;
+                        if (!state.users) state.users = [];
+                        if (!state.categories) state.categories = [];
+                        if (!state.tasks) state.tasks = [];
+                        return;
+                    } catch (e) {
+                        // Si falla el parseo, continuar con seed
+                    }
+                }
+
+                // Datos semilla (seed) para demostración
+                state.users = [
+                    { id: 1, name: 'Emma' },
+                    { id: 2, name: 'Lucas' }
+                ];
+                state.categories = [
+                    { id: 1, name: 'Académico', color: '#d5a126' },
+                    { id: 2, name: 'Personal', color: '#168063' }
+                ];
+                state.tasks = [{
+                    id: 1,
+                    title: 'Revisar matemáticas',
+                    description: 'Capítulo 5 - Ecuaciones',
+                    status: 'pending',
+                    userId: 1,
+                    categoryId: 1,
+                    createdAt: Date.now() - 3600000
+                }, {
+                    id: 2,
+                    title: 'Leer capítulo 3',
+                    description: 'Historia - Revolución Industrial',
+                    status: 'done',
+                    userId: 2,
+                    categoryId: 1,
+                    createdAt: Date.now() - 7200000
+                }];
+                state.nextId = 3;
+                saveState();
+            }
+
+            /**
+             * Guarda el estado actual en localStorage.
+             */
+            function saveState() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            }
+
+            /**
+             * Obtiene el siguiente ID disponible.
+             * @returns {number} Siguiente ID
+             */
+            function getNextId() {
+                return state.nextId++;
+            }
+
+            // ---------- OPERACIONES DEL MODELO (CRUD) ----------
+
+            /**
+             * Agrega un nuevo usuario.
+             * @param {string} name - Nombre del usuario
+             * @returns {boolean} true si se agregó correctamente
+             */
+            function addUser(name) {
+                if (!name || name.trim() === '') return false;
+                const exists = state.users.some(u => u.name.toLowerCase() === name.trim().toLowerCase());
+                if (exists) return false;
+                state.users.push({ id: getNextId(), name: name.trim() });
+                saveState();
+                return true;
+            }
+
+            /**
+             * Agrega una nueva categoría.
+             * @param {string} name - Nombre de la categoría
+             * @returns {boolean} true si se agregó correctamente
+             */
+            function addCategory(name) {
+                if (!name || name.trim() === '') return false;
+                const exists = state.categories.some(c => c.name.toLowerCase() === name.trim().toLowerCase());
+                if (exists) return false;
+                state.categories.push({ id: getNextId(), name: name.trim(), color: '#7a9bb5' });
+                saveState();
+                return true;
+            }
+
+            /**
+             * Agrega una nueva tarea.
+             * @param {string} title - Título de la tarea
+             * @param {string} description - Descripción (opcional)
+             * @param {number} userId - ID del usuario asignado
+             * @param {number} categoryId - ID de la categoría
+             * @returns {boolean} true si se agregó correctamente
+             */
+            function addTask(title, description, userId, categoryId) {
+                if (!title || title.trim() === '') return false;
+                if (!userId) return false;
+                const userExists = state.users.some(u => u.id === userId);
+                if (!userExists) return false;
+                const catExists = state.categories.some(c => c.id === categoryId);
+                if (!catExists) return false;
+
+                state.tasks.push({
+                    id: getNextId(),
+                    title: title.trim(),
+                    description: description ? description.trim() : '',
+                    status: 'pending',
+                    userId: userId,
+                    categoryId: categoryId,
+                    createdAt: Date.now()
+                });
+                saveState();
+                return true;
+            }
+
+            /**
+             * Cambia el estado de una tarea (pending ↔ done).
+             * @param {number} taskId - ID de la tarea
+             * @returns {boolean} true si se actualizó correctamente
+             */
+            function toggleTaskStatus(taskId) {
+                const task = state.tasks.find(t => t.id === taskId);
+                if (!task) return false;
+                task.status = (task.status === 'pending') ? 'done' : 'pending';
+                saveState();
+                return true;
+            }
+
+            /**
+             * Elimina una tarea.
+             * @param {number} taskId - ID de la tarea
+             */
+            function deleteTask(taskId) {
+                state.tasks = state.tasks.filter(t => t.id !== taskId);
+                saveState();
+            }
+
+            /**
+             * Actualiza los datos de una tarea.
+             * @param {number} taskId - ID de la tarea
+             * @param {string} title - Nuevo título
+             * @param {string} description - Nueva descripción
+             * @param {number} userId - Nuevo usuario
+             * @param {number} categoryId - Nueva categoría
+             * @returns {boolean} true si se actualizó correctamente
+             */
+            function updateTask(taskId, title, description, userId, categoryId) {
+                const task = state.tasks.find(t => t.id === taskId);
+                if (!task) return false;
+                if (!title || title.trim() === '') return false;
+                if (!userId) return false;
+                const userExists = state.users.some(u => u.id === userId);
+                if (!userExists) return false;
+                const catExists = state.categories.some(c => c.id === categoryId);
+                if (!catExists) return false;
+
+                task.title = title.trim();
+                task.description = description ? description.trim() : '';
+                task.userId = userId;
+                task.categoryId = categoryId;
+                saveState();
+                return true;
+            }
+
+            // ============================================================
+            // VISTA
+            // ============================================================
+
+            // Referencias al DOM
+            const taskListEl = document.getElementById('taskList');
+            const taskTitle = document.getElementById('taskTitle');
+            const taskDesc = document.getElementById('taskDesc');
+            const userSelect = document.getElementById('userSelect');
+            const categorySelect = document.getElementById('categorySelect');
+            const addTaskBtn = document.getElementById('addTaskBtn');
+            const addUserBtn = document.getElementById('addUserBtn');
+            const addCategoryBtn = document.getElementById('addCategoryBtn');
+            const newUserName = document.getElementById('newUserName');
+            const newCategoryName = document.getElementById('newCategoryName');
+            const searchInput = document.getElementById('searchInput');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const totalSpan = document.getElementById('totalCount');
+            const doneSpan = document.getElementById('doneCount');
+            const pendingSpan = document.getElementById('pendingCount');
+
+            // Estado de la vista
+            let currentFilter = 'all';
+            let searchTerm = '';
+
+            /**
+             * Escapa caracteres HTML para prevenir XSS.
+             * @param {string} text - Texto a escapar
+             * @returns {string} Texto escapado
+             */
+            function escapeHtml(text) {
+                if (!text) return '';
+                return String(text).replace(/[&<>"]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    if (m === '"') return '&quot;';
+                    return m;
+                });
+            }
+
+            /**
+             * Renderiza los selects de usuarios y categorías.
+             */
+            function renderSelects() {
+                let userHtml = '<option value="">Seleccionar usuario</option>';
+                state.users.forEach(u => {
+                    userHtml += `<option value="${u.id}">${escapeHtml(u.name)}</option>`;
+                });
+                userSelect.innerHTML = userHtml;
+
+                let catHtml = '<option value="">Seleccionar categoría</option>';
+                state.categories.forEach(c => {
+                    catHtml += `<option value="${c.id}">${escapeHtml(c.name)}</option>`;
+                });
+                categorySelect.innerHTML = catHtml;
+            }
+
+            /**
+             * Renderiza la lista de tareas, estadísticas y filtros.
+             * Esta es la función principal que actualiza toda la interfaz.
+             */
+            function render() {
+                // Actualizar selects (por si hay cambios)
+                renderSelects();
+
+                // Filtrar tareas según filtro activo
+                let filtered = [...state.tasks];
+                if (currentFilter === 'pending') {
+                    filtered = filtered.filter(t => t.status === 'pending');
+                } else if (currentFilter === 'done') {
+                    filtered = filtered.filter(t => t.status === 'done');
+                }
+
+                // Aplicar búsqueda
+                if (searchTerm.trim() !== '') {
+                    const term = searchTerm.trim().toLowerCase();
+                    filtered = filtered.filter(t =>
+                        t.title.toLowerCase().includes(term) ||
+                        (t.description && t.description.toLowerCase().includes(term))
+                    );
+                }
+
+                // Ordenar por fecha de creación (más reciente primero)
+                filtered.sort((a, b) => b.createdAt - a.createdAt);
+
+                // Renderizar tareas
+                if (filtered.length === 0) {
+                    taskListEl.innerHTML = `<div class="empty-state">✨ No hay tareas que coincidan</div>`;
+                } else {
+                    let html = '';
+                    filtered.forEach(task => {
+                        const user = state.users.find(u => u.id === task.userId);
+                        const cat = state.categories.find(c => c.id === task.categoryId);
+                        const userName = user ? user.name : 'Sin usuario';
+                        const catName = cat ? cat.name : 'Sin categoría';
+                        const catColor = cat ? cat.color : '#a0b8c9';
+                        const statusText = task.status === 'done' ? '✅ Completada' : '⏳ Pendiente';
+                        const statusClass = task.status === 'done' ? 'status-done' : '';
+
+                        html += `
+                                <div class="task-item" data-id="${task.id}">
+                                    <div class="task-info">
+                                        <div class="task-title">
+                                            <span>${escapeHtml(task.title)}</span>
+                                            <span class="status-badge ${statusClass}">${statusText}</span>
+                                        </div>
+                                        <div class="task-meta">
+                                            <span>👤 ${escapeHtml(userName)}</span>
+                                            <span class="cat-badge" style="background:${catColor}30; color:#0a1e2f;">${escapeHtml(catName)}</span>
+                                            ${task.description ? `<span>📝 ${escapeHtml(task.description)}</span>` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="task-actions">
+                                        <button class="btn-outline" data-action="edit" data-id="${task.id}">✏️ Editar</button>
+                                        <button class="btn-success" data-action="toggle" data-id="${task.id}">${task.status === 'pending' ? '✅' : '↩️'}</button>
+                                        <button class="btn-danger" data-action="delete" data-id="${task.id}">🗑️</button>
+                                    </div>
+                                </div>
+                            `;
+                    });
+                    taskListEl.innerHTML = html;
+                }
+
+                // Actualizar estadísticas
+                const total = state.tasks.length;
+                const done = state.tasks.filter(t => t.status === 'done').length;
+                const pending = total - done;
+                totalSpan.textContent = total;
+                doneSpan.textContent = done;
+                pendingSpan.textContent = pending;
+
+                // Resaltar filtro activo
+                filterBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.filter === currentFilter);
+                });
+            }
+
+            // ============================================================
+            // CONTROLADOR
+            // ============================================================
+
+            /**
+             * Maneja la creación de una nueva tarea.
+             */
+            addTaskBtn.addEventListener('click', function() {
+                const title = taskTitle.value.trim();
+                const desc = taskDesc.value.trim();
+                const userId = parseInt(userSelect.value, 10);
+                const categoryId = parseInt(categorySelect.value, 10);
+
+                // Validaciones
+                if (!title) { alert('⚠️ El título es obligatorio'); return; }
+                if (!userId) { alert('⚠️ Selecciona un usuario'); return; }
+                if (!categoryId) { alert('⚠️ Selecciona una categoría'); return; }
+
+                const success = addTask(title, desc, userId, categoryId);
+                if (success) {
+                    taskTitle.value = '';
+                    taskDesc.value = '';
+                    render();
+                } else {
+                    alert('❌ Error al crear la tarea. Verifica que el usuario y categoría existan.');
+                }
+            });
+
+            /**
+             * Maneja la creación de un nuevo usuario.
+             */
+            addUserBtn.addEventListener('click', function() {
+                const name = newUserName.value.trim();
+                if (!name) { alert('⚠️ Escribe un nombre de usuario'); return; }
+                if (addUser(name)) {
+                    newUserName.value = '';
+                    render();
+                } else {
+                    alert('❌ El usuario ya existe o el nombre es inválido.');
+                }
+            });
+
+            /**
+             * Maneja la creación de una nueva categoría.
+             */
+            addCategoryBtn.addEventListener('click', function() {
+                const name = newCategoryName.value.trim();
+                if (!name) { alert('⚠️ Escribe un nombre de categoría'); return; }
+                if (addCategory(name)) {
+                    newCategoryName.value = '';
+                    render();
+                } else {
+                    alert('❌ La categoría ya existe o el nombre es inválido.');
+                }
+            });
+
+            /**
+             * Delegación de eventos para la lista de tareas.
+             * Maneja: toggle (cambiar estado), delete (eliminar), edit (editar).
+             */
+            taskListEl.addEventListener('click', function(e) {
+                const target = e.target.closest('button');
+                if (!target) return;
+                const action = target.dataset.action;
+                const id = parseInt(target.dataset.id, 10);
+                if (isNaN(id)) return;
+
+                if (action === 'toggle') {
+                    toggleTaskStatus(id);
+                    render();
+                } else if (action === 'delete') {
+                    if (confirm('🗑️ ¿Eliminar esta tarea definitivamente?')) {
+                        deleteTask(id);
+                        render();
+                    }
+                } else if (action === 'edit') {
+                    const task = state.tasks.find(t => t.id === id);
+                    if (!task) return;
+                    const newTitle = prompt('✏️ Editar título:', task.title);
+                    if (newTitle === null) return; // Cancelar
+                    const newDesc = prompt('✏️ Editar descripción:', task.description) || '';
+                    // Mantener usuario y categoría (para simplificar)
+                    const ok = updateTask(id, newTitle, newDesc, task.userId, task.categoryId);
+                    if (ok) {
+                        render();
+                    } else {
+                        alert('❌ Error al editar la tarea.');
+                    }
+                }
+            });
+
+            /**
+             * Maneja el cambio de filtro (Todas, Pendientes, Completadas).
+             */
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentFilter = this.dataset.filter;
+                    render();
+                });
+            });
+
+            /**
+             * Maneja la búsqueda en tiempo real.
+             */
+            searchInput.addEventListener('input', function() {
+                searchTerm = this.value;
+                render();
+            });
+
+            // ============================================================
+            // INICIALIZACIÓN
+            // ============================================================
+            loadState();
+            render();
+
+            // Exponer el estado para depuración (opcional)
+            window.__state = state;
+
+        })();
+    </script>
+</body>
+</html>

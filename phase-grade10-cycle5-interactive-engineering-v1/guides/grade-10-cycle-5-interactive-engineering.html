@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>10th Grade · Cycle 5 · Interactive Application Engineering</title>
+<style>
+:root{--ink:#17243a;--navy:#111a3c;--purple:#5b43aa;--cyan:#14899b;--green:#238463;--gold:#d6a12d;--red:#b94c59;--line:#dde2ed}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(#f1effb,#fff 34%);color:var(--ink);font:16px/1.55 Inter,Segoe UI,Arial}main{max-width:1180px;margin:auto;padding:22px 18px 70px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.top a{font-weight:900;color:#563fa3;text-decoration:none}.lang,.copy{border:0;cursor:pointer;font-weight:900}.lang{background:#25204f;color:#fff;border-radius:999px;padding:9px 15px}
+.hero{margin-top:16px;padding:39px;border-radius:29px;color:#fff;background:radial-gradient(circle at 88% 10%,#21b2bc4d,transparent 30%),linear-gradient(135deg,#111a3c,#493077 58%,#126474);box-shadow:0 18px 45px #35256322}.hero small{color:#a5ece7;font-weight:1000;letter-spacing:.12em}.hero h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1;margin:8px 0 14px}.hero p{max-width:900px;color:#e7e8f5}.pills,.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.pills span{background:#ffffff15;border:1px solid #ffffff20;padding:7px 10px;border-radius:999px;font-size:.82rem;font-weight:900}
+.grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:18px}.panel,.card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:20px}.theme{background:linear-gradient(145deg,#f0ecff,#ebfafb)}.theme strong{font-size:1.35rem;color:#51399c}.title{margin:36px 0 13px;font-size:1.65rem}.note{margin:17px 0;background:#fff9eb;border:1px solid #ead399;border-left:6px solid var(--gold);border-radius:16px;padding:18px}.note h3{margin:0 0 7px;color:#765610}
+.sequence{background:#f0ecff;border:1px solid #ddd4f7;border-radius:18px;padding:19px}.sequence a{display:inline-block;margin-top:8px;background:#292451;color:#fff;padding:9px 12px;border-radius:10px;text-decoration:none;font-weight:900}
+.flow{margin:18px 0;font-weight:1000}.flow span{background:#efebff;border:1px solid #ddd3f7;border-radius:999px;padding:9px 12px}.flow b{color:#8173ad}
+.structures{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.structure{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.structure code{display:inline-block;background:#eff1f6;padding:3px 7px;border-radius:7px}.structure strong{display:block;color:#51399c;font-size:1.1rem;margin-bottom:5px}.rule{background:#fff0f1;border:1px solid #efc7cb;border-left:5px solid var(--red);border-radius:13px;padding:14px;margin:14px 0}.good{background:#edf9f3;border:1px solid #c5e6d6;border-left:5px solid var(--green);border-radius:13px;padding:14px;margin:14px 0}
+.code{background:#11182e;color:#e9edf8;border-radius:16px;padding:16px;overflow:auto;font:14px/1.55 Consolas,monospace;white-space:pre-wrap}.code .c{color:#8ed9b6}
+.steps,.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step,.check{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.n{display:inline-flex;width:31px;height:31px;align-items:center;justify-content:center;background:#5b43aa;color:#fff;border-radius:50%;font-weight:1000}.step h3{margin:9px 0 5px}
+.debug{background:#171f42;color:#fff;border-radius:21px;padding:21px}.debuggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:13px}.debuggrid div{background:#ffffff12;border:1px solid #ffffff1f;border-radius:13px;padding:13px;text-align:center;font-weight:900}
+.promptgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.prompt{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.prompt textarea{width:100%;min-height:310px;resize:vertical;border:1px solid #d7dbea;border-radius:12px;padding:12px;background:#fafbff;font:13px/1.5 Consolas,monospace;color:#1a2940}.copy{margin-top:9px;background:#292451;color:#fff;border-radius:10px;padding:8px 11px}
+.route{display:grid;grid-template-columns:110px 1fr;gap:15px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;margin:10px 0}.time{height:max-content;text-align:center;background:#eeeaff;color:#523c9e;border-radius:13px;padding:9px;font-weight:1000}.checks ul{list-style:none;padding:0}.checks li{margin:8px 0}.checks li:before{content:"□";margin-right:8px;color:var(--green);font-weight:1000}
+.peer{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.peer div{padding:18px;border-radius:16px;background:#fff;border:1px solid var(--line);text-align:center;font-weight:1000}.footer{text-align:center;color:#70768a;margin-top:35px}.toast{position:fixed;right:18px;bottom:18px;background:#292451;color:#fff;padding:10px 14px;border-radius:999px;opacity:0;transition:.2s}.toast.show{opacity:1}
+@media(max-width:820px){.grid2,.structures,.steps,.checks,.debuggrid,.promptgrid,.peer{grid-template-columns:1fr}.route{grid-template-columns:1fr}.hero{padding:27px 22px}}
+</style></head><body><main>
+<div class="top"><a href="/grades/10" data-en="← Back to 10th Grade" data-es="← Volver a 10°">← Back to 10th Grade</a><button id="lang" class="lang">Español</button></div>
+<section class="hero"><small data-en="10TH GRADE · CYCLE 5 · AUG 24–31" data-es="10° · CICLO 5 · 24–31 DE AGOSTO">10TH GRADE · CYCLE 5 · AUG 24–31</small><h1 data-en="Interactive Application Engineering" data-es="Ingeniería de Aplicaciones Interactivas">Interactive Application Engineering</h1><p data-en="From prototype to complete game or simulator. Improve your team's existing project and integrate JavaScript structures with a real purpose." data-es="Del prototipo a un juego o simulador completo. Mejora el proyecto existente de tu equipo e integra estructuras de JavaScript con un propósito real.">From prototype to complete game or simulator. Improve your team's existing project and integrate JavaScript structures with a real purpose.</p><div class="pills"><span>⏱ 2 hours</span><span>Variables</span><span>Conditionals</span><span>Loops</span><span>Functions</span><span>Arrays</span><span>Events</span><span>DOM</span></div></section>
+
+<div class="grid2"><section class="panel"><h2 data-en="🎯 Learning Objective" data-es="🎯 Objetivo de aprendizaje">🎯 Learning Objective</h2><strong data-en="Create a complete interactive application (game or simulator) integrating all structures." data-es="Crear una aplicación interactiva completa (juego o simulador) integrando todas las estructuras.">Create a complete interactive application (game or simulator) integrating all structures.</strong></section><section class="panel theme"><h2 data-en="🧭 Cycle Topic" data-es="🧭 Tema del ciclo">🧭 Cycle Topic</h2><strong data-en="From Prototype to Complete Game or Simulator" data-es="Del prototipo a un juego o simulador completo">From Prototype to Complete Game or Simulator</strong></section></div>
+
+<section class="note"><h3 data-en="📓 Start in your notebook" data-es="📓 Inicia en tu cuaderno">📓 Start in your notebook</h3><p data-en="Write the Cycle 5 topic and learning objective. Then answer: What kind of game or simulator would you like to create or improve, and what should the user be able to do?" data-es="Escribe el tema y el objetivo de aprendizaje del Ciclo 5. Luego responde: ¿Qué tipo de juego o simulador te gustaría crear o mejorar y qué debería poder hacer el usuario?">Write the Cycle 5 topic and learning objective. Then answer: What kind of game or simulator would you like to create or improve, and what should the user be able to do?</p></section>
+
+<h2 class="title" data-en="1 · Continue Your Real Project" data-es="1 · Continúa tu proyecto real">1 · Continue Your Real Project</h2>
+<section class="sequence"><h3 data-en="Do not restart if your team already has a working prototype." data-es="No reinicies si tu equipo ya tiene un prototipo funcional.">Do not restart if your team already has a working prototype.</h3><p data-en="Open your team's most recent classroom project. Cycle 5 is the engineering stage where you complete, connect, test and improve it. The official examples—number guessing, rock-paper-scissors, quiz and interactive story—remain useful references for teams that need an idea." data-es="Abre el proyecto de clase más reciente de tu equipo. El Ciclo 5 es la etapa de ingeniería donde lo completas, conectas, pruebas y mejoras. Los ejemplos oficiales —adivinar números, piedra-papel-tijera, quiz e historia interactiva— siguen siendo referencias útiles para equipos que necesiten una idea.">Open your team's most recent classroom project. Cycle 5 is the engineering stage where you complete, connect, test and improve it. The official examples—number guessing, rock-paper-scissors, quiz and interactive story—remain useful references for teams that need an idea.</p><a href="/guides/grade-10/updated-class-sequences.html" data-en="Open Updated Class Sequences ↗" data-es="Abrir Secuencias de Clase Actualizadas ↗">Open Updated Class Sequences ↗</a></section>
+
+<div class="flow"><span data-en="CURRENT PROJECT" data-es="PROYECTO ACTUAL">CURRENT PROJECT</span><b>→</b><span>ANALYZE</span><b>→</b><span>PLAN</span><b>→</b><span>CODE</span><b>→</b><span>INTERACT</span><b>→</b><span>TEST</span><b>→</b><span>IMPROVE</span><b>→</b><span data-en="COMPLETE APP" data-es="APP COMPLETA">COMPLETE APP</span></div>
+
+<h2 class="title" data-en="2 · Project Upgrade Plan" data-es="2 · Plan de mejora del proyecto">2 · Project Upgrade Plan</h2>
+<section class="note"><h3 data-en="📓 Engineering planning — notebook" data-es="📓 Planeación de ingeniería — cuaderno">📓 Engineering planning — notebook</h3><p data-en="Before coding, write short answers for your own project:" data-es="Antes de programar, escribe respuestas cortas para tu propio proyecto:">Before coding, write short answers for your own project:</p>
+<pre class="code">PROJECT NAME:
+CURRENT VERSION: What already works?
+PROBLEM: What still needs improvement?
+CYCLE 5 GOAL: What will we complete today?
+
+VARIABLES: What state or values will we store?
+CONDITIONALS: What decisions will the program make?
+LOOPS: What data/process needs repetition?
+FUNCTIONS: What logic should be reusable?
+ARRAYS: What collection of data will we manage?
+NEW INTERACTION: What new action can the user perform?</pre></section>
+
+<h2 class="title" data-en="3 · Integrate All JavaScript Structures" data-es="3 · Integra todas las estructuras de JavaScript">3 · Integrate All JavaScript Structures</h2>
+<div class="structures">
+<article class="structure"><strong>Variables</strong><p data-en="Store meaningful state: score, level, total, selected option, timer or user input." data-es="Almacena estados significativos: puntaje, nivel, total, opción seleccionada, temporizador o entrada del usuario.">Store meaningful state: score, level, total, selected option, timer or user input.</p></article>
+<article class="structure"><strong>Conditionals</strong><p data-en="Create decisions and rules with if/else or equivalent logic." data-es="Crea decisiones y reglas con if/else o lógica equivalente.">Create decisions and rules with if/else or equivalent logic.</p></article>
+<article class="structure"><strong>Loops</strong><p data-en="Process or display repeated data instead of duplicating code." data-es="Procesa o muestra datos repetidos en lugar de duplicar código.">Process or display repeated data instead of duplicating code.</p></article>
+<article class="structure"><strong>Functions</strong><p data-en="Organize reusable actions with clear responsibilities." data-es="Organiza acciones reutilizables con responsabilidades claras.">Organize reusable actions with clear responsibilities.</p></article>
+<article class="structure"><strong>Arrays</strong><p data-en="Manage collections: questions, waste items, records, options, scenarios or products." data-es="Administra colecciones: preguntas, residuos, registros, opciones, escenarios o productos.">Manage collections: questions, waste items, records, options, scenarios or products.</p></article>
+<article class="structure"><strong>Events + DOM</strong><p data-en="Respond to user actions and update the screen with the new application state." data-es="Responde a acciones del usuario y actualiza la pantalla con el nuevo estado de la aplicación.">Respond to user actions and update the screen with the new application state.</p></article>
+</div>
+<div class="rule"><b data-en="Engineering rule:" data-es="Regla de ingeniería:">Engineering rule:</b> <span data-en="Do not add code only to satisfy the checklist. Every structure must have a real purpose in your application." data-es="No agregues código solamente para cumplir una lista. Cada estructura debe tener un propósito real en tu aplicación.">Do not add code only to satisfy the checklist. Every structure must have a real purpose in your application.</span></div>
+
+<h2 class="title" data-en="4 · Turn the Prototype Into an Interactive Experience" data-es="4 · Convierte el prototipo en una experiencia interactiva">4 · Turn the Prototype Into an Interactive Experience</h2>
+<div class="steps"><article class="step"><span class="n">1</span><h3 data-en="Input" data-es="Entrada">Input</h3><p data-en="The user clicks, chooses, types, drags or starts an action." data-es="El usuario hace clic, elige, escribe, arrastra o inicia una acción.">The user clicks, chooses, types, drags or starts an action.</p></article><article class="step"><span class="n">2</span><h3 data-en="Logic" data-es="Lógica">Logic</h3><p data-en="JavaScript processes the action using your structures and rules." data-es="JavaScript procesa la acción usando tus estructuras y reglas.">JavaScript processes the action using your structures and rules.</p></article><article class="step"><span class="n">3</span><h3 data-en="Feedback" data-es="Retroalimentación">Feedback</h3><p data-en="The interface visibly responds with a result, state, score, message, chart or next step." data-es="La interfaz responde visiblemente con un resultado, estado, puntaje, mensaje, gráfica o siguiente paso.">The interface visibly responds with a result, state, score, message, chart or next step.</p></article></div>
+<div class="good"><b data-en="Your project can keep its identity." data-es="Tu proyecto puede conservar su identidad.">Your project can keep its identity.</b> <span data-en="A recycling game can add levels and scoring; a footprint simulator can add scenarios and classifications; a data application can add filters, calculations or interactive results. You do not all need the same feature." data-es="Un juego de reciclaje puede agregar niveles y puntaje; un simulador de huella puede agregar escenarios y clasificaciones; una aplicación de datos puede agregar filtros, cálculos o resultados interactivos. No todos necesitan la misma funcionalidad.">A recycling game can add levels and scoring; a footprint simulator can add scenarios and classifications; a data application can add filters, calculations or interactive results. You do not all need the same feature.</span></div>
+
+<h2 class="title" data-en="5 · Example of Meaningful Integration" data-es="5 · Ejemplo de integración significativa">5 · Example of Meaningful Integration</h2>
+<pre class="code"><span class="c">// Array: collection of scenarios</span>
+const scenarios = [
+  { name: "Low impact", limit: 20 },
+  { name: "Medium impact", limit: 50 },
+  { name: "High impact", limit: Infinity }
+];
+
+<span class="c">// Function + loop + conditional</span>
+function classifyImpact(total) {
+  for (const scenario of scenarios) {
+    if (total <= scenario.limit) return scenario.name;
+  }
+}
+
+<span class="c">// Event + DOM feedback</span>
+calculateButton.addEventListener("click", () => {
+  const total = calculateTotal();
+  result.textContent = classifyImpact(total);
+});</pre>
+<p data-en="Do not copy this blindly. Identify the equivalent need in your own project and adapt the logic." data-es="No copies esto sin pensar. Identifica la necesidad equivalente en tu propio proyecto y adapta la lógica.">Do not copy this blindly. Identify the equivalent need in your own project and adapt the logic.</p>
+
+<h2 class="title" data-en="6 · Test and Debug Like an Engineer" data-es="6 · Prueba y depura como un ingeniero">6 · Test and Debug Like an Engineer</h2>
+<section class="debug"><h2 data-en="Find the failing layer before changing code." data-es="Encuentra la parte que falla antes de cambiar código.">Find the failing layer before changing code.</h2><div class="debuggrid"><div data-en="1. Input / Event" data-es="1. Entrada / Evento">1. Input / Event</div><div data-en="2. Data / State" data-es="2. Datos / Estado">2. Data / State</div><div data-en="3. Logic / Function" data-es="3. Lógica / Función">3. Logic / Function</div><div data-en="4. DOM / Feedback" data-es="4. DOM / Respuesta">4. DOM / Feedback</div></div></section>
+<section class="note"><h3 data-en="Minimum test cases" data-es="Casos mínimos de prueba">Minimum test cases</h3><p data-en="Test a normal case, a limit/edge case and an invalid or unexpected input. Record what you expected and what actually happened." data-es="Prueba un caso normal, un caso límite y una entrada inválida o inesperada. Registra qué esperabas y qué ocurrió realmente.">Test a normal case, a limit/edge case and an invalid or unexpected input. Record what you expected and what actually happened.</p></section>
+
+<h2 class="title" data-en="7 · Prompt Engineering · Use AI With Control" data-es="7 · Ingeniería de prompts · Usa IA con control">7 · Prompt Engineering · Use AI With Control</h2>
+<p data-en="A useful technical prompt provides context, current code, a precise requirement, constraints, expected behavior and a way to test the answer. AI should help you reason about a change—not replace the whole project." data-es="Un prompt técnico útil proporciona contexto, código actual, un requisito preciso, restricciones, comportamiento esperado y una forma de probar la respuesta. La IA debe ayudarte a razonar un cambio, no reemplazar todo el proyecto.">A useful technical prompt provides context, current code, a precise requirement, constraints, expected behavior and a way to test the answer. AI should help you reason about a change—not replace the whole project.</p>
+<div class="flow"><span>CONTEXT</span><b>+</b><span data-en="CURRENT CODE" data-es="CÓDIGO ACTUAL">CURRENT CODE</span><b>+</b><span>REQUIREMENT</span><b>+</b><span>CONSTRAINT</span><b>+</b><span data-en="EXPECTED BEHAVIOR" data-es="COMPORTAMIENTO ESPERADO">EXPECTED BEHAVIOR</span><b>+</b><span>TEST</span></div>
+<div class="promptgrid"><article class="prompt"><h3 data-en="Controlled Improvement Prompt" data-es="Prompt de mejora controlada">Controlled Improvement Prompt</h3><textarea id="p1" readonly>I am improving an existing 10th grade JavaScript game or simulator.
+
+PROJECT:
+[briefly explain its purpose]
+
+CURRENT FUNCTIONALITY:
+[what already works]
+
+CURRENT CODE:
+[paste only the relevant section]
+
+I NEED TO ADD OR IMPROVE:
+[one precise requirement]
+
+EXPECTED BEHAVIOR:
+[what should happen]
+
+CONSTRAINTS:
+- Do not rewrite my application.
+- Preserve my current HTML/CSS unless a small change is necessary.
+- Explain the logic before giving code.
+- Show only the section that needs to change.
+- Use my existing variable/function names when possible.
+- Give me 3 test cases to verify the change.</textarea><button class="copy" data-id="p1" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article>
+<article class="prompt"><h3 data-en="AI Code Review Prompt" data-es="Prompt de revisión de código con IA">AI Code Review Prompt</h3><textarea id="p2" readonly>Review this 10th grade JavaScript application.
+
+PROJECT PURPOSE:
+[describe the project]
+
+CODE:
+[paste the relevant JavaScript]
+
+Check whether the application genuinely uses:
+1. Variables
+2. Conditionals
+3. Loops
+4. Functions
+5. Arrays
+6. Events
+7. DOM updates
+
+For each structure:
+- Show where it appears.
+- Explain its purpose.
+- Tell me whether it is meaningful or only decorative.
+
+If something is missing, suggest the smallest meaningful improvement.
+
+Do not rewrite the whole project.
+End with a short testing checklist.</textarea><button class="copy" data-id="p2" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article></div>
+
+<h2 class="title" data-en="8 · Your 2-Hour Engineering Route" data-es="8 · Tu ruta de ingeniería de 2 horas">8 · Your 2-Hour Engineering Route</h2>
+<section>
+<article class="route"><div class="time">0–10</div><div><b data-en="Opening + emotional check" data-es="Apertura + chequeo emocional">Opening + emotional check</b><p data-en="Lasallian greeting and official opening question." data-es="Saludo Lasallista y pregunta oficial de apertura.">Lasallian greeting and official opening question.</p></div></article>
+<article class="route"><div class="time">10–20</div><div><b data-en="Open and test your current project" data-es="Abre y prueba tu proyecto actual">Open and test your current project</b><p data-en="Identify what already works and what is incomplete." data-es="Identifica qué ya funciona y qué está incompleto.">Identify what already works and what is incomplete.</p></div></article>
+<article class="route"><div class="time">20–35</div><div><b data-en="Project Upgrade Plan" data-es="Plan de mejora del proyecto">Project Upgrade Plan</b><p data-en="Complete the engineering plan in your notebook before changing code." data-es="Completa el plan de ingeniería en tu cuaderno antes de cambiar código.">Complete the engineering plan in your notebook before changing code.</p></div></article>
+<article class="route"><div class="time">35–80</div><div><b data-en="Implementation" data-es="Implementación">Implementation</b><p data-en="Integrate variables, conditionals, loops, functions and arrays with real purpose." data-es="Integra variables, condicionales, ciclos, funciones y arreglos con propósito real.">Integrate variables, conditionals, loops, functions and arrays with real purpose.</p></div></article>
+<article class="route"><div class="time">80–95</div><div><b data-en="New interaction" data-es="Nueva interacción">New interaction</b><p data-en="Complete at least one meaningful user interaction or improve an existing one." data-es="Completa al menos una interacción significativa del usuario o mejora una existente.">Complete at least one meaningful user interaction or improve an existing one.</p></div></article>
+<article class="route"><div class="time">95–105</div><div><b data-en="Debug + test" data-es="Depuración + pruebas">Debug + test</b><p data-en="Run normal, edge and invalid-input tests." data-es="Ejecuta pruebas normales, límite y de entrada inválida.">Run normal, edge and invalid-input tests.</p></div></article>
+<article class="route"><div class="time">105–113</div><div><b data-en="Code review" data-es="Revisión de código">Code review</b><p data-en="Use the structure checklist or the AI review prompt and make only justified corrections." data-es="Usa la lista de estructuras o el prompt de revisión con IA y realiza solamente correcciones justificadas.">Use the structure checklist or the AI review prompt and make only justified corrections.</p></div></article>
+<article class="route"><div class="time">113–118</div><div><b data-en="Peer testing" data-es="Prueba entre compañeros">Peer testing</b><p data-en="Exchange projects. The tester should try the application before the creator explains it." data-es="Intercambien proyectos. El compañero debe intentar usar la aplicación antes de que el creador la explique.">Exchange projects. The tester should try the application before the creator explains it.</p></div></article>
+<article class="route"><div class="time">118–120</div><div><b data-en="Progress check + closure" data-es="Revisión de progreso + cierre">Progress check + closure</b><p data-en="What have you completed? What's left? Finish with the Lasallian prayer." data-es="¿Qué has completado? ¿Qué falta? Finaliza con la oración Lasallista.">What have you completed? What's left? Finish with the Lasallian prayer.</p></div></article>
+</section>
+
+<h2 class="title" data-en="9 · Peer Feedback" data-es="9 · Retroalimentación entre compañeros">9 · Peer Feedback</h2>
+<p data-en="Give short, constructive evidence. Do not redesign your partner's project." data-es="Entrega evidencia breve y constructiva. No rediseñes el proyecto de tu compañero.">Give short, constructive evidence. Do not redesign your partner's project.</p><div class="peer"><div>✅ WORKS</div><div>❓ CONFUSING</div><div>🐞 BUG</div><div>💡 SUGGESTION</div></div>
+
+<h2 class="title" data-en="10 · Definition of Done" data-es="10 · Definición de terminado">10 · Definition of Done</h2>
+<div class="checks"><article class="check"><h3 data-en="JavaScript Structures" data-es="Estructuras JavaScript">JavaScript Structures</h3><ul><li>Variables</li><li>Conditionals</li><li>Loops</li><li>Functions</li><li>Arrays</li></ul></article><article class="check"><h3 data-en="Interaction" data-es="Interacción">Interaction</h3><ul><li data-en="User input/event works" data-es="Entrada/evento funciona">User input/event works</li><li data-en="Logic produces a result" data-es="La lógica produce un resultado">Logic produces a result</li><li data-en="DOM gives visible feedback" data-es="El DOM da respuesta visible">DOM gives visible feedback</li><li data-en="Project keeps a clear purpose" data-es="El proyecto conserva un propósito claro">Project keeps a clear purpose</li></ul></article><article class="check"><h3 data-en="Engineering Quality" data-es="Calidad de ingeniería">Engineering Quality</h3><ul><li data-en="Main flow tested" data-es="Flujo principal probado">Main flow tested</li><li data-en="Edge case tested" data-es="Caso límite probado">Edge case tested</li><li data-en="Peer feedback received" data-es="Retroalimentación recibida">Peer feedback received</li><li data-en="Team can explain its code" data-es="El equipo puede explicar su código">Team can explain its code</li></ul></article></div>
+
+<section class="note"><h3 data-en="📓 Final Progress Check" data-es="📓 Revisión final de progreso">📓 Final Progress Check</h3><strong data-en="What have you completed? What's left?" data-es="¿Qué has completado? ¿Qué falta?">What have you completed? What's left?</strong><p data-en="Write a short answer based on evidence from today's project version." data-es="Escribe una respuesta corta basada en evidencia de la versión del proyecto trabajada hoy.">Write a short answer based on evidence from today's project version.</p></section>
+<div class="footer">Tech Learning Hub · 10th Grade · Cycle 5 · Interactive Application Engineering</div>
+</main><div id="toast" class="toast">Copied</div>
+<script>
+let L='en';const b=document.getElementById('lang'),t=document.getElementById('toast');
+function setLang(l){L=l;document.documentElement.lang=l;document.querySelectorAll('[data-en][data-es]').forEach(e=>e.textContent=e.getAttribute('data-'+l));b.textContent=l==='en'?'Español':'English';document.title=l==='en'?'10th Grade · Cycle 5 · Interactive Application Engineering':'10° · Ciclo 5 · Ingeniería de Aplicaciones Interactivas'}
+b.onclick=()=>setLang(L==='en'?'es':'en');
+document.querySelectorAll('.copy').forEach(x=>x.onclick=async()=>{const a=document.getElementById(x.dataset.id);try{await navigator.clipboard.writeText(a.value);t.textContent=L==='en'?'Prompt copied':'Prompt copiado';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1300)}catch{a.select()}});
+setLang('en');
+</script></body></html>

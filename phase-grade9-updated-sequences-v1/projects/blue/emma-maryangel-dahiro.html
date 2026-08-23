@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart To-Do · MVC Architecture · Team Maldonado · Torres · Hernandez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+                   ROOT VARIABLES & DESIGN SYSTEM
+                   ============================================ */
+        :root {
+            /* Color Palette - Refined */
+            --primary: #0A1E2F;
+            --primary-light: #1A3A5C;
+            --secondary: #2A7FAA;
+            --secondary-light: #4A9FC4;
+            --accent: #1A8A6A;
+            --accent-light: #3AB08A;
+            --gold: #C9922E;
+            --gold-light: #E8B84A;
+            --danger: #D94A4A;
+            --danger-light: #F06A6A;
+
+            /* Neutrals */
+            --bg: #F0F4F8;
+            --bg-card: #FFFFFF;
+            --bg-input: #F8FAFC;
+            --ink: #1A2A3A;
+            --ink-light: #4A5A6A;
+            --ink-lighter: #8A9AAA;
+            --line: #DCE4EC;
+            --line-light: #E8EEF4;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(10, 30, 47, 0.06);
+            --shadow-md: 0 8px 32px rgba(10, 30, 47, 0.10);
+            --shadow-lg: 0 16px 48px rgba(10, 30, 47, 0.14);
+            --shadow-xl: 0 24px 64px rgba(10, 30, 47, 0.18);
+
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+
+            /* Transitions */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Font */
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        /* ============================================
+                   RESET & BASE
+                   ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            padding: 24px;
+            min-height: 100vh;
+            background-image: radial-gradient(ellipse at 10% 20%, rgba(42, 127, 170, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 90% 80%, rgba(26, 138, 106, 0.04) 0%, transparent 60%);
+        }
+
+        /* ============================================
+                   SCROLLBAR
+                   ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-light);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+
+        /* ============================================
+                   CONTAINER
+                   ============================================ */
+        .app-container {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+                   HEADER / HERO - REDESIGNED
+                   ============================================ */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--secondary) 100%);
+            color: #fff;
+            padding: 40px 44px 36px;
+            border-radius: var(--radius-xl);
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(26, 138, 106, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 6px 16px 6px 14px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .hero-badge .dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold-light);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+            font-weight: 900;
+            line-height: 1.08;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.85));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.88;
+            max-width: 580px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            margin-bottom: 4px;
+        }
+
+        .hero-sub {
+            font-size: 0.85rem;
+            opacity: 0.65;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px 40px;
+            margin-top: 22px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-stats .stat {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .hero-stats .stat strong {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-stats .stat span {
+            opacity: 0.7;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .hero-stats .stat .stat-label {
+            opacity: 0.5;
+            font-size: 0.75rem;
+            font-weight: 400;
+            margin-left: 2px;
+        }
+
+        /* Team credits in hero */
+        .hero-team {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.8rem;
+            opacity: 0.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-team .team-label {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.65rem;
+            opacity: 0.5;
+        }
+
+        .hero-team .team-name {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .hero-team .team-name:not(:last-child)::after {
+            content: '·';
+            margin-left: 6px;
+            opacity: 0.3;
+        }
+
+        /* ============================================
+                   CARDS - REDESIGNED
+                   ============================================ */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--line-light);
+            border-radius: var(--radius-lg);
+            padding: 26px 28px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+            position: relative;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .card-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header h2 .icon {
+            font-size: 1.2rem;
+        }
+
+        .card-header .badge {
+            background: var(--bg);
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--secondary);
+            letter-spacing: 0.3px;
+            border: 1px solid var(--line-light);
+        }
+
+        /* ============================================
+                   FORM - REDESIGNED
+                   ============================================ */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--ink-light);
+            letter-spacing: 0.2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 11px 16px;
+            border: 2px solid var(--line);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: var(--font);
+            transition: var(--transition-fast);
+            background: var(--bg-input);
+            color: var(--ink);
+            width: 100%;
+            outline: none;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover {
+            border-color: var(--secondary-light);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(42, 127, 170, 0.10);
+            background: #fff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 64px;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            grid-column: 1 / -1;
+            margin-top: 4px;
+        }
+
+        .form-actions .edit-id-indicator {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            margin-left: auto;
+            font-weight: 500;
+        }
+
+        .form-actions .edit-id-indicator strong {
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* ============================================
+                   BUTTONS - REDESIGNED
+                   ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-base);
+            text-decoration: none;
+            font-family: var(--font);
+            letter-spacing: 0.2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0);
+            transition: var(--transition-fast);
+        }
+
+        .btn:hover::after {
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(42, 127, 170, 0.30);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            box-shadow: 0 6px 20px rgba(42, 127, 170, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(26, 138, 106, 0.30);
+        }
+
+        .btn-success:hover {
+            background: #0F6B52;
+            box-shadow: 0 6px 20px rgba(26, 138, 106, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(217, 74, 74, 0.25);
+        }
+
+        .btn-danger:hover {
+            background: #C0392B;
+            box-shadow: 0 6px 20px rgba(217, 74, 74, 0.30);
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: var(--gold);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(201, 146, 46, 0.30);
+        }
+
+        .btn-warning:hover {
+            background: #B88A2A;
+            box-shadow: 0 6px 20px rgba(201, 146, 46, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--line);
+            color: var(--ink-light);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            background: rgba(42, 127, 170, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.75rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .btn-xs {
+            padding: 4px 12px;
+            font-size: 0.68rem;
+            border-radius: 6px;
+        }
+
+        /* ============================================
+                   TASK LIST - REDESIGNED
+                   ============================================ */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 16px;
+            padding: 16px 20px;
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            border-left: 5px solid var(--secondary);
+            transition: var(--transition-base);
+            position: relative;
+        }
+
+        .task-item:hover {
+            background: #EAF1F7;
+            transform: translateX(4px);
+        }
+
+        .task-item.completed {
+            opacity: 0.65;
+            border-left-color: var(--accent);
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+        }
+
+        .task-info {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .task-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+
+        .task-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 14px;
+            font-size: 0.78rem;
+            color: var(--ink-light);
+            margin-top: 3px;
+        }
+
+        .task-meta .category-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 1px 12px 1px 8px;
+            border-radius: 999px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.7rem;
+            line-height: 1.8;
+        }
+
+        .task-meta .category-tag .color-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .task-meta .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 1px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .task-meta .status-badge.pending {
+            background: rgba(201, 146, 46, 0.15);
+            color: var(--gold);
+        }
+
+        .task-meta .status-badge.completed {
+            background: rgba(26, 138, 106, 0.15);
+            color: var(--accent);
+        }
+
+        .task-meta .user-name {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .task-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .task-description {
+            font-size: 0.88rem;
+            color: var(--ink-light);
+            width: 100%;
+            margin-top: 6px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--line);
+        }
+
+        /* ============================================
+                   EMPTY STATE - REDESIGNED
+                   ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px 40px;
+            color: var(--ink-lighter);
+        }
+
+        .empty-state .emoji {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 12px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .empty-state h3 {
+            color: var(--ink);
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 1.1rem;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+                   FILTER BAR - REDESIGNED
+                   ============================================ */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-bar .btn-filter {
+            background: transparent;
+            border: 2px solid var(--line);
+            color: var(--ink-light);
+            padding: 6px 18px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: var(--font);
+        }
+
+        .filter-bar .btn-filter:hover {
+            border-color: var(--secondary-light);
+            color: var(--secondary);
+        }
+
+        .filter-bar .btn-filter.active {
+            background: var(--secondary);
+            color: #fff;
+            border-color: var(--secondary);
+            box-shadow: 0 4px 12px rgba(42, 127, 170, 0.25);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            min-width: 180px;
+            margin-left: auto;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 8px 16px;
+            border: 2px solid var(--line);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-family: var(--font);
+            background: var(--bg-input);
+            transition: var(--transition-fast);
+            outline: none;
+            min-width: 100px;
+        }
+
+        .search-box input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(42, 127, 170, 0.08);
+            background: #fff;
+        }
+
+        .search-box input::placeholder {
+            color: var(--ink-lighter);
+        }
+
+        /* ============================================
+                   CONFIG SECTION - REDESIGNED
+                   ============================================ */
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .config-block {
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            border: 1px solid var(--line-light);
+        }
+
+        .config-block h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .config-block .config-input-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .config-block .config-input-row input[type="text"] {
+            flex: 1;
+            padding: 8px 14px;
+            border: 2px solid var(--line);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-family: var(--font);
+            background: #fff;
+            transition: var(--transition-fast);
+            outline: none;
+            min-width: 80px;
+        }
+
+        .config-block .config-input-row input[type="text"]:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(42, 127, 170, 0.08);
+        }
+
+        .config-block .config-input-row input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            background: none;
+        }
+
+        .config-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .config-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            padding: 4px 12px 4px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            font-size: 0.78rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+
+        .config-tag:hover {
+            border-color: var(--secondary-light);
+        }
+
+        .config-tag .tag-color {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .config-tag .btn-remove {
+            background: none;
+            border: none;
+            color: var(--ink-lighter);
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 0 2px;
+            transition: var(--transition-fast);
+            line-height: 1;
+        }
+
+        .config-tag .btn-remove:hover {
+            color: var(--danger);
+        }
+
+        /* ============================================
+                   TOAST - REDESIGNED
+                   ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: #fff;
+            padding: 16px 28px 16px 22px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-xl);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            max-width: 420px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left-color: var(--accent);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast .toast-icon {
+            font-size: 1.2rem;
+        }
+
+        /* ============================================
+                   FOOTER
+                   ============================================ */
+        .app-footer {
+            margin-top: 32px;
+            padding: 20px 24px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--ink-lighter);
+            border-top: 1px solid var(--line-light);
+            letter-spacing: 0.3px;
+        }
+
+        .app-footer strong {
+            color: var(--ink-light);
+            font-weight: 600;
+        }
+
+        .app-footer .footer-team {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+            margin-top: 4px;
+        }
+
+        .app-footer .footer-team span {
+            font-weight: 500;
+            color: var(--ink-light);
+        }
+
+        .app-footer .footer-team span:not(:last-child)::after {
+            content: '·';
+            margin-left: 12px;
+            opacity: 0.3;
+        }
+
+        /* ============================================
+                   RESPONSIVE
+                   ============================================ */
+        @media (max-width: 900px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 14px;
+            }
+
+            .hero {
+                padding: 28px 22px 24px;
+                border-radius: var(--radius-lg);
+            }
+
+            .hero-stats {
+                gap: 16px 24px;
+            }
+
+            .hero-stats .stat strong {
+                font-size: 1.4rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                grid-column: 1;
+            }
+
+            .card {
+                padding: 18px 16px;
+                border-radius: var(--radius-md);
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .task-item {
+                padding: 14px 16px;
+            }
+
+            .task-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .toast {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+                max-width: none;
+                padding: 14px 18px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 20px 16px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-stats {
+                gap: 10px 16px;
+            }
+
+            .hero-stats .stat strong {
+                font-size: 1.2rem;
+            }
+
+            .hero-team {
+                font-size: 0.7rem;
+                gap: 4px 10px;
+            }
+
+            .card {
+                padding: 14px 12px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-actions .edit-id-indicator {
+                margin-left: 0;
+                text-align: center;
+            }
+
+            .config-block .config-input-row {
+                flex-direction: column;
+            }
+
+            .config-block .config-input-row input[type="color"] {
+                width: 100%;
+                height: 44px;
+            }
+
+            .task-item {
+                padding: 12px 14px;
+            }
+
+            .task-meta {
+                font-size: 0.7rem;
+                gap: 3px 10px;
+            }
+        }
+
+        /* ============================================
+                   ANIMATIONS
+                   ============================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+        .card:nth-child(3) {
+            animation-delay: 0.10s;
+        }
+        .card:nth-child(4) {
+            animation-delay: 0.15s;
+        }
+        .card:nth-child(5) {
+            animation-delay: 0.20s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container" id="app">
+
+        <!-- ==========================================
+        HERO / HEADER - REDESIGNED
+        ========================================== -->
+        <header class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    MVC Architecture · Cycle 4 · 9th Grade
+                </div>
+                <h1>Smart To-Do</h1>
+                <p>Gestión inteligente de tareas con arquitectura profesional</p>
+                <div class="hero-sub">ODS 4 · Educación de Calidad · Organización escolar</div>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <strong id="totalTasks">0</strong>
+                        <span>Total <span class="stat-label">tareas</span></span>
+                    </div>
+                    <div class="stat">
+                        <strong id="pendingTasks">0</strong>
+                        <span>Pendientes</span>
+                    </div>
+                    <div class="stat">
+                        <strong id="completedTasks">0</strong>
+                        <span>Completadas</span>
+                    </div>
+                </div>
+
+                <div class="hero-team">
+                    <span class="team-label">👨‍💻 Desarrolladores</span>
+                    <span class="team-name">Emma Maldonado</span>
+                    <span class="team-name">Maryangel Torres</span>
+                    <span class="team-name">Dahiro Hernandez</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==========================================
+        FORM: CREATE TASK - REDESIGNED
+        ========================================== -->
+        <section class="card" id="formCard">
+            <div class="card-header">
+                <h2><span class="icon">✏️</span> Nueva Tarea</h2>
+                <span class="badge">Completa todos los campos</span>
+            </div>
+            <form id="taskForm" class="form-grid">
+                <div class="form-group">
+                    <label for="taskTitle">Título <span class="required">*</span></label>
+                    <input type="text" id="taskTitle" placeholder="Ej: Terminar informe de ciencias" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskUser">Usuario <span class="required">*</span></label>
+                    <select id="taskUser" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskCategory">Categoría <span class="required">*</span></label>
+                    <select id="taskCategory" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskStatus">Estado</label>
+                    <select id="taskStatus">
+                        <option value="pending">⏳ Pendiente</option>
+                        <option value="completed">✅ Completada</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label for="taskDescription">Descripción</label>
+                    <textarea id="taskDescription" placeholder="Detalles adicionales de la tarea..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">➕ Crear Tarea</button>
+                    <button type="reset" class="btn btn-outline">Limpiar</button>
+                    <span class="edit-id-indicator">Editando ID: <strong id="editId">—</strong></span>
+                </div>
+            </form>
+        </section>
+
+        <!-- ==========================================
+        FILTERS + SEARCH - REDESIGNED
+        ========================================== -->
+        <section class="card">
+            <div class="filter-bar">
+                <button class="btn-filter active" data-filter="all">📋 Todas</button>
+                <button class="btn-filter" data-filter="pending">⏳ Pendientes</button>
+                <button class="btn-filter" data-filter="completed">✅ Completadas</button>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Buscar tarea por título o descripción...">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+        TASK LIST - REDESIGNED
+        ========================================== -->
+        <section class="card">
+            <div class="card-header">
+                <h2><span class="icon">📌</span> Lista de Tareas</h2>
+                <span class="badge" id="taskCount">0 tareas</span>
+            </div>
+            <div id="taskList" class="task-list">
+                <!-- Renderizado dinámico por JavaScript -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+        CONFIGURATION: USERS & CATEGORIES - REDESIGNED
+        ========================================== -->
+        <section class="card">
+            <div class="card-header">
+                <h2><span class="icon">⚙️</span> Configuración</h2>
+                <span class="badge">Usuarios y Categorías</span>
+            </div>
+            <div class="config-grid">
+                <!-- Users -->
+                <div class="config-block">
+                    <h4>👤 Usuarios</h4>
+                    <div class="config-input-row">
+                        <input type="text" id="newUserName" placeholder="Nombre del usuario">
+                        <button class="btn btn-success btn-sm" id="addUserBtn">➕ Añadir</button>
+                    </div>
+                    <div id="userList" class="config-tags">
+                        <!-- Renderizado dinámico -->
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="config-block">
+                    <h4>🏷️ Categorías</h4>
+                    <div class="config-input-row">
+                        <input type="text" id="newCategoryName" placeholder="Nombre de la categoría">
+                        <input type="color" id="newCategoryColor" value="#2A7FAA">
+                        <button class="btn btn-success btn-sm" id="addCategoryBtn">➕ Añadir</button>
+                    </div>
+                    <div id="categoryList" class="config-tags">
+                        <!-- Renderizado dinámico -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+        TOAST NOTIFICATION - REDESIGNED
+        ========================================== -->
+        <div id="toast" class="toast">
+            <span class="toast-icon">✅</span>
+            <span id="toastMessage">Mensaje</span>
+        </div>
+
+        <!-- ==========================================
+        FOOTER
+        ========================================== -->
+        <footer class="app-footer">
+            <div>
+                <strong>Smart To-Do</strong> · MVC Architecture · 9th Grade · Cycle 4
+            </div>
+            <div class="footer-team">
+                <span>👩‍💻 Emma Maldonado</span>
+                <span>👩‍💻 Maryangel Torres</span>
+                <span>👨‍💻 Dahiro Hernandez</span>
+            </div>
+            <div style="margin-top:4px;opacity:0.5;font-size:0.7rem;">
+                ODS 4 · Educación de Calidad · Proyecto Escolar
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ==========================================
+    ==========================================
+    JAVASCRIPT — MVC ARCHITECTURE
+    ==========================================
+    ========================================== -->
+    <script>
+        /**
+         * ============================================
+         *  MODEL
+         *  - Gestiona los datos y la lógica de negocio
+         *  - Persistencia en localStorage
+         *  - Entidades: User, Category, Task
+         * ============================================
+         */
+        const Model = {
+
+            STORAGE_KEY: 'smartTodoData',
+
+            /**
+             * Estructura base de datos
+             */
+            getDefaultData() {
+                return {
+                    users: [
+                        { id: 'u1', name: 'Emma Maldonado' },
+                        { id: 'u2', name: 'Maryangel Torres' },
+                        { id: 'u3', name: 'Dahiro Hernandez' }
+                    ],
+                    categories: [
+                        { id: 'c1', name: 'Académico', color: '#2A7FAA' },
+                        { id: 'c2', name: 'Personal', color: '#1A8A6A' },
+                        { id: 'c3', name: 'Trabajo', color: '#C9922E' }
+                    ],
+                    tasks: [
+                        { id: 't1', title: 'Terminar proyecto MVC', description: 'Completar la interfaz y los controladores con arquitectura profesional',
+                            status: 'pending', userId: 'u1', categoryId: 'c1', createdAt: Date.now() - 3600000 },
+                        { id: 't2', title: 'Revisar ejercicios ciclo 4', description: 'Corregir y documentar los ejercicios del ciclo',
+                            status: 'completed', userId: 'u2', categoryId: 'c1', createdAt: Date.now() - 7200000 },
+                        { id: 't3', title: 'Planificar reunión de equipo', description: 'Organizar la reunión semanal con los desarrolladores',
+                            status: 'pending', userId: 'u3', categoryId: 'c3', createdAt: Date.now() - 1800000 }
+                    ]
+                };
+            },
+
+            /**
+             * Cargar datos desde localStorage
+             */
+            load() {
+                try {
+                    const raw = localStorage.getItem(this.STORAGE_KEY);
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        if (data.users && data.categories && data.tasks) {
+                            return data;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Error al cargar datos, usando defaults:', e);
+                }
+                const defaults = this.getDefaultData();
+                this.save(defaults);
+                return defaults;
+            },
+
+            /**
+             * Guardar datos en localStorage
+             */
+            save(data) {
+                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+            },
+
+            /**
+             * Obtener todos los datos
+             */
+            getAll() {
+                return this.load();
+            },
+
+            /**
+             * Obtener tareas con datos de usuario y categoría expandidos
+             */
+            getTasksWithDetails() {
+                const data = this.load();
+                return data.tasks.map(task => {
+                    const user = data.users.find(u => u.id === task.userId);
+                    const category = data.categories.find(c => c.id === task.categoryId);
+                    return {
+                        ...task,
+                        userName: user ? user.name : 'Sin usuario',
+                        categoryName: category ? category.name : 'Sin categoría',
+                        categoryColor: category ? category.color : '#999'
+                    };
+                }).sort((a, b) => b.createdAt - a.createdAt);
+            },
+
+            /**
+             * CRUD: Users
+             */
+            addUser(name) {
+                if (!name || name.trim() === '') return null;
+                const data = this.load();
+                const newUser = {
+                    id: 'u_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                    name: name.trim()
+                };
+                data.users.push(newUser);
+                this.save(data);
+                return newUser;
+            },
+
+            deleteUser(userId) {
+                const data = this.load();
+                const hasTasks = data.tasks.some(t => t.userId === userId);
+                if (hasTasks) {
+                    throw new Error('No se puede eliminar: el usuario tiene tareas asignadas.');
+                }
+                data.users = data.users.filter(u => u.id !== userId);
+                this.save(data);
+                return true;
+            },
+
+            /**
+             * CRUD: Categories
+             */
+            addCategory(name, color) {
+                if (!name || name.trim() === '') return null;
+                const data = this.load();
+                const newCategory = {
+                    id: 'c_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                    name: name.trim(),
+                    color: color || '#2A7FAA'
+                };
+                data.categories.push(newCategory);
+                this.save(data);
+                return newCategory;
+            },
+
+            deleteCategory(categoryId) {
+                const data = this.load();
+                const hasTasks = data.tasks.some(t => t.categoryId === categoryId);
+                if (hasTasks) {
+                    throw new Error('No se puede eliminar: la categoría tiene tareas asignadas.');
+                }
+                data.categories = data.categories.filter(c => c.id !== categoryId);
+                this.save(data);
+                return true;
+            },
+
+            /**
+             * CRUD: Tasks
+             */
+            addTask(title, description, status, userId, categoryId) {
+                if (!title || title.trim() === '') return null;
+                if (!userId || !categoryId) return null;
+
+                const data = this.load();
+                const newTask = {
+                    id: 't_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                    title: title.trim(),
+                    description: description ? description.trim() : '',
+                    status: status || 'pending',
+                    userId: userId,
+                    categoryId: categoryId,
+                    createdAt: Date.now()
+                };
+                data.tasks.push(newTask);
+                this.save(data);
+                return newTask;
+            },
+
+            updateTask(taskId, updates) {
+                const data = this.load();
+                const taskIndex = data.tasks.findIndex(t => t.id === taskId);
+                if (taskIndex === -1) return null;
+                data.tasks[taskIndex] = { ...data.tasks[taskIndex], ...updates };
+                this.save(data);
+                return data.tasks[taskIndex];
+            },
+
+            deleteTask(taskId) {
+                const data = this.load();
+                data.tasks = data.tasks.filter(t => t.id !== taskId);
+                this.save(data);
+                return true;
+            },
+
+            toggleTaskStatus(taskId) {
+                const data = this.load();
+                const task = data.tasks.find(t => t.id === taskId);
+                if (!task) return null;
+                task.status = task.status === 'pending' ? 'completed' : 'pending';
+                this.save(data);
+                return task;
+            }
+        };
+
+
+        /**
+         * ============================================
+         *  VIEW
+         *  - Renderiza la interfaz de usuario
+         *  - Escucha eventos del DOM
+         *  - Actualiza la UI según los datos del Modelo
+         * ============================================
+         */
+        const View = {
+
+            /**
+             * Referencias a elementos del DOM
+             */
+            el: {
+                taskList: document.getElementById('taskList'),
+                taskForm: document.getElementById('taskForm'),
+                taskTitle: document.getElementById('taskTitle'),
+                taskDescription: document.getElementById('taskDescription'),
+                taskStatus: document.getElementById('taskStatus'),
+                taskUser: document.getElementById('taskUser'),
+                taskCategory: document.getElementById('taskCategory'),
+                submitBtn: document.getElementById('submitBtn'),
+                editId: document.getElementById('editId'),
+                totalTasks: document.getElementById('totalTasks'),
+                pendingTasks: document.getElementById('pendingTasks'),
+                completedTasks: document.getElementById('completedTasks'),
+                taskCount: document.getElementById('taskCount'),
+                searchInput: document.getElementById('searchInput'),
+                userList: document.getElementById('userList'),
+                categoryList: document.getElementById('categoryList'),
+                newUserName: document.getElementById('newUserName'),
+                newCategoryName: document.getElementById('newCategoryName'),
+                newCategoryColor: document.getElementById('newCategoryColor'),
+                addUserBtn: document.getElementById('addUserBtn'),
+                addCategoryBtn: document.getElementById('addCategoryBtn'),
+                toast: document.getElementById('toast'),
+                toastMessage: document.getElementById('toastMessage'),
+                filterButtons: document.querySelectorAll('.btn-filter')
+            },
+
+            /**
+             * Estado de filtro actual
+             */
+            currentFilter: 'all',
+            searchTerm: '',
+
+            /**
+             * Inicializar la vista
+             */
+            init(controller) {
+                this.controller = controller;
+
+                // Eventos del formulario
+                this.el.taskForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.controller.handleSubmit();
+                });
+
+                // Eventos de filtros
+                this.el.filterButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.el.filterButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentFilter = btn.dataset.filter;
+                        this.render();
+                    });
+                });
+
+                // Evento de búsqueda
+                this.el.searchInput.addEventListener('input', () => {
+                    this.searchTerm = this.el.searchInput.value.toLowerCase();
+                    this.render();
+                });
+
+                // Eventos de configuración
+                this.el.addUserBtn.addEventListener('click', () => {
+                    const name = this.el.newUserName.value.trim();
+                    if (name) {
+                        this.controller.addUser(name);
+                        this.el.newUserName.value = '';
+                    } else {
+                        this.showToast('Ingresa un nombre de usuario', 'error');
+                    }
+                });
+
+                this.el.newUserName.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.el.addUserBtn.click();
+                    }
+                });
+
+                this.el.addCategoryBtn.addEventListener('click', () => {
+                    const name = this.el.newCategoryName.value.trim();
+                    const color = this.el.newCategoryColor.value;
+                    if (name) {
+                        this.controller.addCategory(name, color);
+                        this.el.newCategoryName.value = '';
+                    } else {
+                        this.showToast('Ingresa un nombre de categoría', 'error');
+                    }
+                });
+
+                this.el.newCategoryName.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.el.addCategoryBtn.click();
+                    }
+                });
+
+                // Render inicial
+                this.render();
+            },
+
+            /**
+             * Renderizar toda la UI
+             */
+            render() {
+                this.renderTaskList();
+                this.renderStats();
+                this.renderSelectOptions();
+                this.renderUsersAndCategories();
+            },
+
+            /**
+             * Renderizar lista de tareas con filtros y búsqueda
+             */
+            renderTaskList() {
+                const tasks = Model.getTasksWithDetails();
+                const filtered = tasks.filter(task => {
+                    if (this.currentFilter === 'pending' && task.status !== 'pending') return false;
+                    if (this.currentFilter === 'completed' && task.status !== 'completed') return false;
+                    if (this.searchTerm) {
+                        const title = task.title.toLowerCase();
+                        const desc = task.description.toLowerCase();
+                        return title.includes(this.searchTerm) || desc.includes(this.searchTerm);
+                    }
+                    return true;
+                });
+
+                const container = this.el.taskList;
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <span class="emoji">📭</span>
+                            <h3>No hay tareas</h3>
+                            <p>${tasks.length === 0 ? 'Crea tu primera tarea usando el formulario.' : 'No hay tareas que coincidan con el filtro actual.'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = filtered.map(task => `
+                    <div class="task-item ${task.status === 'completed' ? 'completed' : ''}">
+                        <div class="task-info">
+                            <div class="task-title">${this.escapeHtml(task.title)}</div>
+                            <div class="task-meta">
+                                <span class="user-name">👤 ${this.escapeHtml(task.userName)}</span>
+                                <span class="category-tag" style="background:${task.categoryColor}">
+                                    <span class="color-dot"></span>
+                                    ${this.escapeHtml(task.categoryName)}
+                                </span>
+                                <span class="status-badge ${task.status}">
+                                    ${task.status === 'pending' ? '⏳ Pendiente' : '✅ Completada'}
+                                </span>
+                                <span>📅 ${new Date(task.createdAt).toLocaleDateString()}</span>
+                            </div>
+                            ${task.description ? `<div class="task-description">${this.escapeHtml(task.description)}</div>` : ''}
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn btn-success btn-xs" onclick="Controller.toggleStatus('${task.id}')">
+                                ${task.status === 'pending' ? '✅ Completar' : '↩️ Reabrir'}
+                            </button>
+                            <button class="btn btn-warning btn-xs" onclick="Controller.editTask('${task.id}')">✏️ Editar</button>
+                            <button class="btn btn-danger btn-xs" onclick="Controller.deleteTask('${task.id}')">🗑️ Eliminar</button>
+                        </div>
+                    </div>
+                `).join('');
+            },
+
+            /**
+             * Renderizar estadísticas
+             */
+            renderStats() {
+                const tasks = Model.getTasksWithDetails();
+                const total = tasks.length;
+                const pending = tasks.filter(t => t.status === 'pending').length;
+                const completed = tasks.filter(t => t.status === 'completed').length;
+
+                this.el.totalTasks.textContent = total;
+                this.el.pendingTasks.textContent = pending;
+                this.el.completedTasks.textContent = completed;
+                this.el.taskCount.textContent = `${total} tarea${total !== 1 ? 's' : ''}`;
+            },
+
+            /**
+             * Renderizar opciones de selects
+             */
+            renderSelectOptions() {
+                const data = Model.load();
+
+                const userSelect = this.el.taskUser;
+                const currentUser = userSelect.value;
+                userSelect.innerHTML = '<option value="">Seleccionar...</option>';
+                data.users.forEach(u => {
+                    userSelect.innerHTML += `<option value="${u.id}">${this.escapeHtml(u.name)}</option>`;
+                });
+                if (currentUser && data.users.some(u => u.id === currentUser)) {
+                    userSelect.value = currentUser;
+                }
+
+                const catSelect = this.el.taskCategory;
+                const currentCat = catSelect.value;
+                catSelect.innerHTML = '<option value="">Seleccionar...</option>';
+                data.categories.forEach(c => {
+                    catSelect.innerHTML += `<option value="${c.id}">${this.escapeHtml(c.name)}</option>`;
+                });
+                if (currentCat && data.categories.some(c => c.id === currentCat)) {
+                    catSelect.value = currentCat;
+                }
+            },
+
+            /**
+             * Renderizar usuarios y categorías en configuración
+             */
+            renderUsersAndCategories() {
+                const data = Model.load();
+
+                const userContainer = this.el.userList;
+                userContainer.innerHTML = data.users.map(u => `
+                    <span class="config-tag">
+                        👤 ${this.escapeHtml(u.name)}
+                        <button class="btn-remove" onclick="Controller.deleteUser('${u.id}')" title="Eliminar usuario">✕</button>
+                    </span>
+                `).join('');
+
+                const catContainer = this.el.categoryList;
+                catContainer.innerHTML = data.categories.map(c => `
+                    <span class="config-tag">
+                        <span class="tag-color" style="background:${c.color}"></span>
+                        ${this.escapeHtml(c.name)}
+                        <button class="btn-remove" onclick="Controller.deleteCategory('${c.id}')" title="Eliminar categoría">✕</button>
+                    </span>
+                `).join('');
+            },
+
+            /**
+             * Llenar formulario para edición
+             */
+            fillFormForEdit(task) {
+                this.el.taskTitle.value = task.title;
+                this.el.taskDescription.value = task.description || '';
+                this.el.taskStatus.value = task.status;
+                this.el.taskUser.value = task.userId;
+                this.el.taskCategory.value = task.categoryId;
+                this.el.editId.textContent = task.id;
+                this.el.submitBtn.textContent = '💾 Actualizar Tarea';
+                this.el.submitBtn.dataset.editId = task.id;
+            },
+
+            /**
+             * Resetear formulario
+             */
+            resetForm() {
+                this.el.taskForm.reset();
+                this.el.editId.textContent = '—';
+                this.el.submitBtn.textContent = '➕ Crear Tarea';
+                delete this.el.submitBtn.dataset.editId;
+                this.renderSelectOptions();
+            },
+
+            /**
+             * Mostrar toast notification
+             */
+            showToast(message, type = 'success') {
+                const toast = this.el.toast;
+                const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+                this.el.toastMessage.textContent = message;
+                toast.className = 'toast ' + type;
+                toast.querySelector('.toast-icon').textContent = icon;
+                toast.classList.add('show');
+                clearTimeout(this._toastTimeout);
+                this._toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            },
+
+            /**
+             * Escape HTML para prevenir XSS
+             */
+            escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
+
+        /**
+         * ============================================
+         *  CONTROLLER
+         *  - Orquesta la interacción entre Modelo y Vista
+         *  - Maneja eventos del usuario
+         *  - Expone funciones globales para el HTML
+         * ============================================
+         */
+        const Controller = {
+
+            /**
+             * Inicializar
+             */
+            init() {
+                View.init(this);
+                window.Controller = this;
+                this.syncUI();
+            },
+
+            /**
+             * Sincronizar UI con datos actuales
+             */
+            syncUI() {
+                View.render();
+            },
+
+            /**
+             * Manejar envío del formulario (Crear / Actualizar)
+             */
+            handleSubmit() {
+                const title = View.el.taskTitle.value.trim();
+                const description = View.el.taskDescription.value.trim();
+                const status = View.el.taskStatus.value;
+                const userId = View.el.taskUser.value;
+                const categoryId = View.el.taskCategory.value;
+                const editId = View.el.submitBtn.dataset.editId;
+
+                if (!title) {
+                    View.showToast('El título es obligatorio', 'error');
+                    return;
+                }
+                if (!userId) {
+                    View.showToast('Selecciona un usuario', 'error');
+                    return;
+                }
+                if (!categoryId) {
+                    View.showToast('Selecciona una categoría', 'error');
+                    return;
+                }
+
+                if (editId) {
+                    const updated = Model.updateTask(editId, {
+                        title,
+                        description,
+                        status,
+                        userId,
+                        categoryId
+                    });
+                    if (updated) {
+                        View.showToast('✅ Tarea actualizada correctamente');
+                        View.resetForm();
+                        this.syncUI();
+                    } else {
+                        View.showToast('Error al actualizar la tarea', 'error');
+                    }
+                } else {
+                    const newTask = Model.addTask(title, description, status, userId, categoryId);
+                    if (newTask) {
+                        View.showToast('✅ Tarea creada correctamente');
+                        View.resetForm();
+                        this.syncUI();
+                    } else {
+                        View.showToast('Error al crear la tarea', 'error');
+                    }
+                }
+            },
+
+            /**
+             * Editar tarea (cargar datos en formulario)
+             */
+            editTask(taskId) {
+                const tasks = Model.getTasksWithDetails();
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    View.fillFormForEdit(task);
+                    document.getElementById('formCard').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    View.showToast('Tarea no encontrada', 'error');
+                }
+            },
+
+            /**
+             * Cambiar estado de tarea (completar / reabrir)
+             */
+            toggleStatus(taskId) {
+                const task = Model.toggleTaskStatus(taskId);
+                if (task) {
+                    View.showToast(task.status === 'completed' ? '✅ Tarea completada' : '↩️ Tarea reabierta');
+                    this.syncUI();
+                } else {
+                    View.showToast('Error al cambiar estado', 'error');
+                }
+            },
+
+            /**
+             * Eliminar tarea (con confirmación)
+             */
+            deleteTask(taskId) {
+                if (confirm('¿Estás seguro de eliminar esta tarea?')) {
+                    const result = Model.deleteTask(taskId);
+                    if (result) {
+                        View.showToast('🗑️ Tarea eliminada');
+                        if (View.el.submitBtn.dataset.editId === taskId) {
+                            View.resetForm();
+                        }
+                        this.syncUI();
+                    } else {
+                        View.showToast('Error al eliminar tarea', 'error');
+                    }
+                }
+            },
+
+            /**
+             * Agregar usuario
+             */
+            addUser(name) {
+                const result = Model.addUser(name);
+                if (result) {
+                    View.showToast(`👤 Usuario "${name}" agregado`);
+                    this.syncUI();
+                } else {
+                    View.showToast('Error al agregar usuario', 'error');
+                }
+            },
+
+            /**
+             * Eliminar usuario (con verificación)
+             */
+            deleteUser(userId) {
+                const data = Model.load();
+                const user = data.users.find(u => u.id === userId);
+                if (!user) return;
+                if (confirm(`¿Eliminar al usuario "${user.name}"? Se requiere que no tenga tareas asignadas.`)) {
+                    try {
+                        Model.deleteUser(userId);
+                        View.showToast(`👤 Usuario eliminado`);
+                        this.syncUI();
+                    } catch (e) {
+                        View.showToast(e.message, 'error');
+                    }
+                }
+            },
+
+            /**
+             * Agregar categoría
+             */
+            addCategory(name, color) {
+                const result = Model.addCategory(name, color);
+                if (result) {
+                    View.showToast(`🏷️ Categoría "${name}" agregada`);
+                    this.syncUI();
+                } else {
+                    View.showToast('Error al agregar categoría', 'error');
+                }
+            },
+
+            /**
+             * Eliminar categoría (con verificación)
+             */
+            deleteCategory(categoryId) {
+                const data = Model.load();
+                const category = data.categories.find(c => c.id === categoryId);
+                if (!category) return;
+                if (confirm(`¿Eliminar la categoría "${category.name}"? Se requiere que no tenga tareas asignadas.`)) {
+                    try {
+                        Model.deleteCategory(categoryId);
+                        View.showToast(`🏷️ Categoría eliminada`);
+                        this.syncUI();
+                    } catch (e) {
+                        View.showToast(e.message, 'error');
+                    }
+                }
+            }
+        };
+
+        /**
+         * ============================================
+         *  INICIALIZAR APLICACIÓN
+         * ============================================
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            Controller.init();
+        });
+    </script>
+
+</body>
+</html>

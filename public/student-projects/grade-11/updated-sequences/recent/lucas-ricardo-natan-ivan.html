@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Riego Inteligente · STEM · Asistente IA</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+  </script>
+  <style>
+    /* ===== RESET & VARIABLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-body: #f0f4fa;
+      --bg-card: #ffffff;
+      --bg-header: linear-gradient(145deg, #0a2533, #154a5e);
+      --text-primary: #1a2c3d;
+      --text-secondary: #4b657a;
+      --border-light: #e2eaf2;
+      --shadow-card: 0 8px 30px rgba(0, 20, 30, 0.08);
+      --shadow-hover: 0 16px 40px rgba(0, 20, 30, 0.14);
+      --accent: #1d7a8f;
+      --accent-light: #e6f2f7;
+      --log-bg: #f7fafc;
+      --status-ok: #1f8a6a;
+      --status-warn: #c47d3a;
+      --status-alert: #bc4b4b;
+      --chat-bg: #ffffff;
+      --chat-shadow: 0 12px 40px rgba(0, 20, 30, 0.2);
+      --chat-bubble-user: #1d7a8f;
+      --chat-bubble-bot: #e6f2f7;
+      --chat-text-user: #ffffff;
+      --chat-text-bot: #1a2c3d;
+    }
+
+    body.dark {
+      --bg-body: #141e28;
+      --bg-card: #1f2c38;
+      --bg-header: linear-gradient(145deg, #0b1a24, #1c3b4a);
+      --text-primary: #e2edf5;
+      --text-secondary: #9bb3c7;
+      --border-light: #2e4050;
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+      --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.7);
+      --accent: #3aa5bd;
+      --accent-light: #1f3645;
+      --log-bg: #1a2835;
+      --status-ok: #5cbf8a;
+      --status-warn: #dba15a;
+      --status-alert: #d46a6a;
+      --chat-bg: #1f2c38;
+      --chat-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      --chat-bubble-user: #3aa5bd;
+      --chat-bubble-bot: #2a4050;
+      --chat-text-user: #ffffff;
+      --chat-text-bot: #e2edf5;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Roboto, system-ui, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      padding: 1.8rem 1.5rem;
+      line-height: 1.5;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-header);
+      color: #fff;
+      padding: 1.2rem 2rem;
+      border-radius: 30px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .header-left h1 {
+      font-weight: 600;
+      font-size: 1.7rem;
+      letter-spacing: -0.3px;
+    }
+
+    .header-left h1 small {
+      font-weight: 300;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-left: 0.5rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .wifi-status {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .wifi-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #4cd964;
+      display: inline-block;
+      box-shadow: 0 0 8px #4cd96488;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scale(0.9);
+      }
+    }
+
+    .theme-toggle {
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      border-radius: 40px;
+      padding: 0.4rem 1rem;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      backdrop-filter: blur(4px);
+      transition: 0.15s;
+    }
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .dev-team {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.2rem;
+      font-size: 0.8rem;
+      opacity: 0.9;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+    }
+    .dev-team span {
+      font-weight: 400;
+    }
+    .dev-team strong {
+      font-weight: 500;
+    }
+
+    /* ===== DASHBOARD GRID ===== */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 920px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 1.6rem 1.8rem;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-light);
+      transition: box-shadow 0.25s, background 0.25s, border 0.25s;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* ===== SENSORES ===== */
+    .sensor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .sensor-item {
+      background: var(--accent-light);
+      border-radius: 18px;
+      padding: 0.9rem 1.2rem;
+      text-align: center;
+      border: 1px solid var(--border-light);
+      transition: 0.15s;
+    }
+
+    .sensor-item .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      letter-spacing: 0.3px;
+    }
+
+    .sensor-item .value {
+      font-size: 2.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0.15rem 0 0.05rem;
+    }
+
+    .sensor-item .unit {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .sensor-item .status-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.8rem;
+      border-radius: 60px;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-light);
+      margin-top: 0.2rem;
+    }
+
+    /* ===== ACTUADORES ===== */
+    .actuator-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    .actuator-btn {
+      flex: 1 1 110px;
+      background: var(--accent-light);
+      border: 1px solid var(--border-light);
+      border-radius: 60px;
+      padding: 0.7rem 0.9rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .actuator-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    .actuator-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 6px 16px var(--accent)44;
+    }
+
+    .actuator-btn .icon {
+      font-size: 1.2rem;
+    }
+
+    /* ===== LOG ===== */
+    .log-area {
+      background: var(--log-bg);
+      border-radius: 16px;
+      padding: 0.6rem 1rem;
+      max-height: 130px;
+      overflow-y: auto;
+      font-size: 0.8rem;
+      border: 1px solid var(--border-light);
+      margin-top: 1rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .log-entry {
+      padding: 0.2rem 0;
+      border-bottom: 1px dashed var(--border-light);
+      color: var(--text-primary);
+    }
+
+    .log-entry .time {
+      color: var(--text-secondary);
+      margin-right: 0.7rem;
+    }
+
+    /* ===== CHART ===== */
+    .chart-wrapper {
+      height: 200px;
+      margin-top: 0.2rem;
+    }
+
+    /* ===== STATS BAR ===== */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.8rem;
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .stats-bar div {
+      font-size: 0.85rem;
+    }
+
+    .stats-bar .stat-label {
+      color: var(--text-secondary);
+    }
+
+    .stats-bar .stat-value {
+      font-weight: 600;
+    }
+
+    .last-reading {
+      background: var(--accent-light);
+      border-radius: 40px;
+      padding: 0.2rem 1.2rem;
+      display: inline-block;
+      font-size: 0.75rem;
+      border: 1px solid var(--border-light);
+    }
+
+    /* ===== ETHICS ===== */
+    .ethics-section {
+      background: var(--accent-light);
+      border-radius: 20px;
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      border-left: 6px solid var(--accent);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--border-light);
+      transition: 0.25s;
+    }
+
+    .ethics-section .text {
+      flex: 2;
+      min-width: 220px;
+    }
+
+    .ethics-section .text h3 {
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .ethics-section .text p {
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+      font-size: 0.95rem;
+    }
+
+    .ethics-section .ods-icons {
+      display: flex;
+      gap: 0.8rem;
+      font-size: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-light);
+      padding-top: 1.5rem;
+    }
+
+    /* ===== CHAT FLOATING ===== */
+    .chat-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-size: 2rem;
+      box-shadow: 0 8px 28px var(--accent)66;
+      cursor: pointer;
+      transition: 0.2s;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-toggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 36px var(--accent)88;
+    }
+
+    .chat-window {
+      position: fixed;
+      bottom: 6rem;
+      right: 2rem;
+      width: 360px;
+      max-width: 90vw;
+      height: 480px;
+      max-height: 70vh;
+      background: var(--chat-bg);
+      border-radius: 24px;
+      box-shadow: var(--chat-shadow);
+      border: 1px solid var(--border-light);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+      transition: 0.25s;
+    }
+
+    .chat-window.open {
+      display: flex;
+    }
+
+    .chat-header {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.8rem 1.2rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header .close-chat {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    .chat-header .close-chat:hover {
+      opacity: 1;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      background: var(--bg-body);
+    }
+
+    .chat-message {
+      max-width: 85%;
+      padding: 0.6rem 1rem;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .chat-message.user {
+      align-self: flex-end;
+      background: var(--chat-bubble-user);
+      color: var(--chat-text-user);
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-message.bot {
+      align-self: flex-start;
+      background: var(--chat-bubble-bot);
+      color: var(--chat-text-bot);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-input-area {
+      display: flex;
+      padding: 0.6rem 0.8rem;
+      gap: 0.5rem;
+      border-top: 1px solid var(--border-light);
+      background: var(--bg-card);
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-light);
+      border-radius: 30px;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      outline: none;
+      font-size: 0.9rem;
+    }
+
+    .chat-input-area input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .chat-input-area button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .chat-input-area button:hover {
+      opacity: 0.85;
+    }
+
+    @media (max-width: 640px) {
+      .chat-window {
+        right: 0.5rem;
+        bottom: 5.5rem;
+        width: calc(100% - 1rem);
+        height: 70vh;
+        max-height: 70vh;
+      }
+      .chat-toggle {
+        bottom: 1rem;
+        right: 1rem;
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+      }
+    }
+
+    /* ===== RESPONSIVE GENERAL ===== */
+    @media (max-width: 640px) {
+      body {
+        padding: 0.8rem;
+      }
+      .header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+        padding: 1.2rem;
+      }
+      .header-left h1 {
+        font-size: 1.3rem;
+      }
+      .header-right {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .dev-team {
+        justify-content: center;
+        padding: 0.4rem 0.8rem;
+      }
+      .sensor-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .actuator-group {
+        flex-direction: column;
+      }
+      .actuator-btn {
+        flex: 1;
+      }
+      .ethics-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <h1>
+          🌿 Riego Inteligente
+          <small>v3.0 · STEM</small>
+        </h1>
+        <div class="dev-team">
+          <span><strong>Lucas Silva</strong></span>
+          <span><strong>Natan Torregroza</strong></span>
+          <span><strong>Ricardo Villadiego</strong></span>
+          <span><strong>Ivan Cepeda</strong></span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="wifi-status">
+          <span class="wifi-dot"></span>
+          <span>WiFi · <strong id="wifi-ip">192.168.1.104</strong></span>
+          <span style="opacity:0.5;margin:0 0.2rem;">|</span>
+          <span id="last-update" style="font-weight:300;">actualizando...</span>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌓 Modo</button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard-grid">
+
+      <!-- COLUMNA IZQUIERDA: SENSORES + ACTUADORES + LOG -->
+      <div class="card">
+        <div class="card-title">📡 Sensores en tiempo real</div>
+        <div class="sensor-grid" id="sensorGrid">
+          <div class="sensor-item">
+            <div class="label">🌡️ Temperatura</div>
+            <div class="value" id="tempValue">22.4</div>
+            <div class="unit">°C</div>
+            <span class="status-badge" id="tempStatus">Normal</span>
+          </div>
+          <div class="sensor-item">
+            <div class="label">💧 Humedad suelo</div>
+            <div class="value" id="humValue">68</div>
+            <div class="unit">%</div>
+            <span class="status-badge" id="humStatus">Óptimo</span>
+          </div>
+          <div class="sensor-item">
+            <div class="label">☀️ Luminosidad</div>
+            <div class="value" id="lightValue">412</div>
+            <div class="unit">lux</div>
+            <span class="status-badge" id="lightStatus">Moderado</span>
+          </div>
+          <div class="sensor-item">
+            <div class="label">💨 Humedad ambiente</div>
+            <div class="value" id="humAmbValue">55</div>
+            <div class="unit">%</div>
+            <span class="status-badge" id="humAmbStatus">Confort</span>
+          </div>
+        </div>
+
+        <div style="margin-top:1.5rem;">
+          <div class="card-title" style="margin-bottom:0.6rem;">⚙️ Actuadores</div>
+          <div class="actuator-group">
+            <button class="actuator-btn" data-actuator="riego" id="btnRiego">
+              <span class="icon">💦</span> Riego
+            </button>
+            <button class="actuator-btn" data-actuator="ventilacion" id="btnVentilacion">
+              <span class="icon">🌀</span> Ventilación
+            </button>
+            <button class="actuator-btn" data-actuator="iluminacion" id="btnIluminacion">
+              <span class="icon">💡</span> Iluminación
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top:1.2rem;">
+          <div class="card-title" style="margin-bottom:0.3rem;">📋 Bitácora</div>
+          <div class="log-area" id="logContainer">
+            <!-- los logs se inyectan desde JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: GRÁFICO + ESTADÍSTICAS -->
+      <div class="card">
+        <div class="card-title">📈 Evolución de sensores</div>
+        <div class="chart-wrapper">
+          <canvas id="sensorChart"></canvas>
+        </div>
+        <div class="stats-bar">
+          <div><span class="stat-label">🌡️ Temp. media</span> <span class="stat-value" id="avgTemp">22.4</span> °C</div>
+          <div><span class="stat-label">💧 Hum. media</span> <span class="stat-value" id="avgHum">68</span> %</div>
+          <div><span class="stat-label">☀️ Lux medio</span> <span class="stat-value" id="avgLight">412</span> lux</div>
+          <div class="last-reading">⏱️ <span id="lastReadingTime">hace 3s</span></div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.8rem 1.5rem; margin-top:0.4rem; font-size:0.8rem; color:var(--text-secondary);">
+          <span>Mín temp: <strong id="minTemp">18.0</strong> °C</span>
+          <span>Máx temp: <strong id="maxTemp">28.5</strong> °C</span>
+          <span>Mín hum: <strong id="minHum">40</strong> %</span>
+          <span>Máx hum: <strong id="maxHum">85</strong> %</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN ÉTICA Y ODS -->
+    <div class="ethics-section">
+      <div class="text">
+        <h3>🌍 Ética y Objetivos de Desarrollo Sostenible</h3>
+        <p>
+          Este sistema promueve los <strong>ODS 6</strong> (Agua limpia), <strong>ODS 7</strong> (Energía asequible)
+          y <strong>ODS 11</strong> (Ciudades sostenibles). La automatización responsable reduce el desperdicio
+          de agua y optimiza el consumo energético. Debatimos el impacto social y la equidad en el acceso
+          a la tecnología.
+        </p>
+      </div>
+      <div class="ods-icons">
+        <span title="ODS 6">💧</span>
+        <span title="ODS 7">⚡</span>
+        <span title="ODS 11">🏙️</span>
+        <span title="ODS 12">♻️</span>
+      </div>
+    </div>
+
+    <footer class="footer">
+      Proyecto STEM · Desarrollo colaborativo · Simulación de sistema robótico con Wokwi (concepto) · Datos persistentes con localStorage · Asistente IA integrado
+    </footer>
+  </div>
+
+  <!-- ===== CHAT FLOTANTE ===== -->
+  <button class="chat-toggle" id="chatToggle" aria-label="Abrir asistente IA">🤖</button>
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <span>🤖 Asistente IA · STEM</span>
+      <button class="close-chat" id="chatClose">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-message bot">👋 Hola, soy tu asistente del proyecto Riego Inteligente. Pregúntame sobre sensores, actuadores, ODS, el equipo o cómo usar la simulación.</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Escribe tu pregunta..." />
+      <button id="chatSend">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ============================================================
+      //  REFERENCIAS DOM
+      // ============================================================
+      const tempEl = document.getElementById('tempValue');
+      const humEl = document.getElementById('humValue');
+      const lightEl = document.getElementById('lightValue');
+      const humAmbEl = document.getElementById('humAmbValue');
+      const tempStatus = document.getElementById('tempStatus');
+      const humStatus = document.getElementById('humStatus');
+      const lightStatus = document.getElementById('lightStatus');
+      const humAmbStatus = document.getElementById('humAmbStatus');
+      const logContainer = document.getElementById('logContainer');
+      const lastUpdate = document.getElementById('last-update');
+      const lastReadingTime = document.getElementById('lastReadingTime');
+      const avgTemp = document.getElementById('avgTemp');
+      const avgHum = document.getElementById('avgHum');
+      const avgLight = document.getElementById('avgLight');
+      const minTemp = document.getElementById('minTemp');
+      const maxTemp = document.getElementById('maxTemp');
+      const minHum = document.getElementById('minHum');
+      const maxHum = document.getElementById('maxHum');
+
+      const btnRiego = document.getElementById('btnRiego');
+      const btnVentilacion = document.getElementById('btnVentilacion');
+      const btnIluminacion = document.getElementById('btnIluminacion');
+      const themeToggle = document.getElementById('themeToggle');
+      const wifiIp = document.getElementById('wifi-ip');
+
+      // ===== CHAT =====
+      const chatToggle = document.getElementById('chatToggle');
+      const chatWindow = document.getElementById('chatWindow');
+      const chatClose = document.getElementById('chatClose');
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInput = document.getElementById('chatInput');
+      const chatSend = document.getElementById('chatSend');
+
+      // ============================================================
+      //  ESTADO DEL SISTEMA (con valores por defecto)
+      // ============================================================
+      const defaultState = {
+        temperatura: 22.4,
+        humedadSuelo: 68,
+        luminosidad: 412,
+        humedadAmbiente: 55,
+        riego: false,
+        ventilacion: false,
+        iluminacion: false,
+        history: {
+          temp: Array(20).fill(22.4),
+          hum: Array(20).fill(68),
+          light: Array(20).fill(412)
+        },
+        logs: [
+          { time: '10:32:15', msg: 'Sistema iniciado · WiFi conectado' },
+          { time: '10:32:18', msg: 'Sensor humedad: 68%' }
+        ]
+      };
+
+      let state;
+      const STORAGE_KEY = 'riegoInteligenteState';
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          ['temp', 'hum', 'light'].forEach(key => {
+            if (!parsed.history[key] || parsed.history[key].length === 0) {
+              parsed.history[key] = defaultState.history[key];
+            } else if (parsed.history[key].length > 40) {
+              parsed.history[key] = parsed.history[key].slice(-20);
+            }
+          });
+          state = parsed;
+        } else {
+          state = JSON.parse(JSON.stringify(defaultState));
+        }
+      } catch (e) {
+        state = JSON.parse(JSON.stringify(defaultState));
+      }
+
+      ['temp', 'hum', 'light'].forEach(key => {
+        while (state.history[key].length < 20) {
+          state.history[key].push(state.history[key][state.history[key].length - 1] || 0);
+        }
+        if (state.history[key].length > 20) {
+          state.history[key] = state.history[key].slice(-20);
+        }
+      });
+
+      // ============================================================
+      //  GRÁFICO (Chart.js)
+      // ============================================================
+      const ctx = document.getElementById('sensorChart').getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: 20 }, (_, i) => i + 1),
+          datasets: [{
+            label: 'Temperatura °C',
+            data: state.history.temp,
+            borderColor: '#2d6a7a',
+            backgroundColor: 'rgba(45,106,122,0.08)',
+            tension: 0.2,
+            pointRadius: 2,
+            borderWidth: 2,
+            fill: true,
+          }, {
+            label: 'Humedad suelo %',
+            data: state.history.hum,
+            borderColor: '#4b9b6d',
+            backgroundColor: 'rgba(75,155,109,0.08)',
+            tension: 0.2,
+            pointRadius: 2,
+            borderWidth: 2,
+            fill: true,
+          }, {
+            label: 'Luminosidad lux',
+            data: state.history.light,
+            borderColor: '#d48b3c',
+            backgroundColor: 'rgba(212,139,60,0.08)',
+            tension: 0.2,
+            pointRadius: 2,
+            borderWidth: 2,
+            fill: true,
+            yAxisID: 'y1',
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              labels: { boxWidth: 12, padding: 10, font: { size: 10 } }
+            }
+          },
+          scales: {
+            x: { display: false },
+            y: {
+              beginAtZero: false,
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            },
+            y1: {
+              position: 'right',
+              beginAtZero: false,
+              grid: { drawOnChartArea: false },
+            }
+          }
+        }
+      });
+
+      // ============================================================
+      //  FUNCIONES AUXILIARES
+      // ============================================================
+      function getTime() {
+        return new Date().toTimeString().slice(0, 8);
+      }
+
+      function addLog(message) {
+        const time = getTime();
+        state.logs.push({ time, msg: message });
+        if (state.logs.length > 100) state.logs.shift();
+        renderLogs();
+        saveState();
+      }
+
+      function renderLogs() {
+        logContainer.innerHTML = '';
+        const recent = state.logs.slice(-30);
+        recent.forEach(entry => {
+          const div = document.createElement('div');
+          div.className = 'log-entry';
+          div.innerHTML = `<span class="time">[${entry.time}]</span> ${entry.msg}`;
+          logContainer.appendChild(div);
+        });
+        logContainer.scrollTop = logContainer.scrollHeight;
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) { /* ignore */ }
+      }
+
+      // ============================================================
+      //  ACTUALIZAR UI Y GRÁFICO
+      // ============================================================
+      function updateUI() {
+        const t = state.temperatura;
+        const h = state.humedadSuelo;
+        const l = state.luminosidad;
+        const ha = state.humedadAmbiente;
+
+        tempEl.textContent = t.toFixed(1);
+        humEl.textContent = Math.round(h);
+        lightEl.textContent = Math.round(l);
+        humAmbEl.textContent = Math.round(ha);
+
+        tempStatus.textContent = (t > 28) ? 'Alta' : (t < 18) ? 'Baja' : 'Normal';
+        tempStatus.style.color = (t > 28) ? 'var(--status-alert)' : (t < 18) ? 'var(--status-warn)' : 'var(--status-ok)';
+        humStatus.textContent = (h < 40) ? 'Seca' : (h > 80) ? 'Exceso' : 'Óptimo';
+        humStatus.style.color = (h < 40 || h > 80) ? 'var(--status-alert)' : 'var(--status-ok)';
+        lightStatus.textContent = (l < 200) ? 'Baja' : (l > 600) ? 'Alta' : 'Moderado';
+        lightStatus.style.color = (l < 200 || l > 600) ? 'var(--status-alert)' : 'var(--status-ok)';
+        humAmbStatus.textContent = (ha < 30) ? 'Seco' : (ha > 70) ? 'Húmedo' : 'Confort';
+        humAmbStatus.style.color = (ha < 30 || ha > 70) ? 'var(--status-alert)' : 'var(--status-ok)';
+
+        btnRiego.classList.toggle('active', state.riego);
+        btnVentilacion.classList.toggle('active', state.ventilacion);
+        btnIluminacion.classList.toggle('active', state.iluminacion);
+
+        const histTemp = state.history.temp;
+        const histHum = state.history.hum;
+        const avg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+        avgTemp.textContent = avg(histTemp).toFixed(1);
+        avgHum.textContent = Math.round(avg(histHum));
+        avgLight.textContent = Math.round(avg(state.history.light));
+        minTemp.textContent = Math.min(...histTemp).toFixed(1);
+        maxTemp.textContent = Math.max(...histTemp).toFixed(1);
+        minHum.textContent = Math.round(Math.min(...histHum));
+        maxHum.textContent = Math.round(Math.max(...histHum));
+
+        const now = new Date();
+        lastUpdate.textContent = now.toTimeString().slice(0, 8);
+        lastReadingTime.textContent = 'hace ' + (Math.random() * 2 + 1).toFixed(0) + 's';
+
+        chart.data.datasets[0].data = state.history.temp.slice(-20);
+        chart.data.datasets[1].data = state.history.hum.slice(-20);
+        chart.data.datasets[2].data = state.history.light.slice(-20);
+        chart.update('none');
+
+        saveState();
+      }
+
+      // ============================================================
+      //  SIMULACIÓN DE SENSORES
+      // ============================================================
+      function simulateSensors() {
+        state.temperatura += (Math.random() - 0.5) * 0.6;
+        state.temperatura = Math.min(38, Math.max(10, state.temperatura));
+
+        state.humedadSuelo += (Math.random() - 0.5) * 4;
+        state.humedadSuelo = Math.min(95, Math.max(20, state.humedadSuelo));
+
+        state.luminosidad += (Math.random() - 0.5) * 30;
+        state.luminosidad = Math.min(850, Math.max(80, state.luminosidad));
+
+        state.humedadAmbiente += (Math.random() - 0.5) * 2.5;
+        state.humedadAmbiente = Math.min(80, Math.max(25, state.humedadAmbiente));
+
+        if (state.riego) {
+          state.humedadSuelo = Math.min(90, state.humedadSuelo + 0.8);
+          if (Math.random() < 0.07) addLog('💧 Riego activo · humedad +0.8%');
+        }
+        if (state.ventilacion) {
+          state.humedadAmbiente = Math.max(30, state.humedadAmbiente - 0.4);
+          if (Math.random() < 0.05) addLog('🌀 Ventilación · humedad ambiente -0.4%');
+        }
+        if (state.iluminacion) {
+          state.temperatura = Math.min(35, state.temperatura + 0.15);
+          if (Math.random() < 0.04) addLog('💡 Iluminación · temperatura +0.15°C');
+        }
+
+        state.history.temp.push(state.temperatura);
+        state.history.hum.push(state.humedadSuelo);
+        state.history.light.push(state.luminosidad);
+        if (state.history.temp.length > 40) {
+          state.history.temp.shift();
+          state.history.hum.shift();
+          state.history.light.shift();
+        }
+
+        updateUI();
+      }
+
+      // ============================================================
+      //  MANEJADORES DE ACTUADORES
+      // ============================================================
+      function toggleActuator(name) {
+        const map = {
+          riego: () => { state.riego = !state.riego;
+            addLog(state.riego ? '💦 Riego activado' : '💦 Riego desactivado'); },
+          ventilacion: () => { state.ventilacion = !state.ventilacion;
+            addLog(state.ventilacion ? '🌀 Ventilación activada' : '🌀 Ventilación desactivada'); },
+          iluminacion: () => { state.iluminacion = !state.iluminacion;
+            addLog(state.iluminacion ? '💡 Iluminación activada' : '💡 Iluminación desactivada'); }
+        };
+        if (map[name]) map[name]();
+        updateUI();
+      }
+
+      btnRiego.addEventListener('click', () => toggleActuator('riego'));
+      btnVentilacion.addEventListener('click', () => toggleActuator('ventilacion'));
+      btnIluminacion.addEventListener('click', () => toggleActuator('iluminacion'));
+
+      // ============================================================
+      //  TEMA OSCURO
+      // ============================================================
+      let darkMode = localStorage.getItem('darkMode') === 'true';
+      if (darkMode) document.body.classList.add('dark');
+
+      themeToggle.addEventListener('click', () => {
+        darkMode = !darkMode;
+        document.body.classList.toggle('dark', darkMode);
+        localStorage.setItem('darkMode', darkMode);
+      });
+
+      // ============================================================
+      //  IP SIMULADA
+      // ============================================================
+      function randomIP() {
+        return `192.168.${Math.floor(Math.random()*254)}.${Math.floor(Math.random()*254)}`;
+      }
+      wifiIp.textContent = randomIP();
+
+      // ============================================================
+      //  ASISTENTE IA (conversacional)
+      // ============================================================
+      function getBotResponse(input) {
+        const q = input.toLowerCase().trim();
+        // Detectar palabras clave
+        if (q.includes('hola') || q.includes('buenas') || q.includes('saludo')) {
+          return '👋 ¡Hola! Soy tu asistente del proyecto Riego Inteligente. Puedo ayudarte con información sobre sensores, actuadores, ODS, el equipo o cómo usar la simulación.';
+        }
+        if (q.includes('temperatura') || q.includes('temp') || q.includes('calor') || q.includes('frío')) {
+          const t = state.temperatura.toFixed(1);
+          return `🌡️ La temperatura actual es de ${t} °C. El rango normal es entre 18°C y 28°C. Actualmente está en estado "${tempStatus.textContent}".`;
+        }
+        if (q.includes('humedad suelo') || q.includes('humedad del suelo') || q.includes('humedad de la tierra')) {
+          const h = Math.round(state.humedadSuelo);
+          return `💧 La humedad del suelo es de ${h}%. El nivel óptimo está entre 40% y 80%. Ahora se encuentra en estado "${humStatus.textContent}".`;
+        }
+        if (q.includes('luminosidad') || q.includes('luz') || q.includes('lux')) {
+          const l = Math.round(state.luminosidad);
+          return `☀️ La luminosidad es de ${l} lux. Se considera baja por debajo de 200 lux y alta por encima de 600 lux. Estado: "${lightStatus.textContent}".`;
+        }
+        if (q.includes('humedad ambiente') || q.includes('humedad del ambiente')) {
+          const ha = Math.round(state.humedadAmbiente);
+          return `💨 La humedad ambiente es de ${ha}%. El rango confortable está entre 30% y 70%. Estado: "${humAmbStatus.textContent}".`;
+        }
+        if (q.includes('riego') || q.includes('regar')) {
+          const on = state.riego ? '✅ activado' : '❌ desactivado';
+          return `💦 El actuador de riego está ${on}. Puedes activarlo o desactivarlo con el botón correspondiente.`;
+        }
+        if (q.includes('ventilación') || q.includes('ventilador') || q.includes('aire')) {
+          const on = state.ventilacion ? '✅ activado' : '❌ desactivado';
+          return `🌀 La ventilación está ${on}. Se utiliza para regular la humedad ambiente.`;
+        }
+        if (q.includes('iluminación') || q.includes('luz artificial') || q.includes('foco')) {
+          const on = state.iluminacion ? '✅ activada' : '❌ desactivada';
+          return `💡 La iluminación artificial está ${on}. Ayuda a mantener la temperatura en invernaderos.`;
+        }
+        if (q.includes('ods') || q.includes('objetivos') || q.includes('sostenible') || q.includes('sostenibilidad')) {
+          return `🌍 El proyecto está alineado con los ODS 6 (Agua limpia), 7 (Energía asequible) y 11 (Ciudades sostenibles). La automatización reduce el desperdicio de agua y energía, promoviendo un desarrollo más sostenible.`;
+        }
+        if (q.includes('equipo') || q.includes('desarrolladores') || q.includes('creadores') || q.includes('quiénes')) {
+          return `👥 El equipo está formado por Lucas Silva, Natan Torregroza, Ricardo Villadiego e Ivan Cepeda. Juntos desarrollamos este sistema STEM.`;
+        }
+        if (q.includes('qué es') || q.includes('proyecto') || q.includes('objetivo') || q.includes('finalidad')) {
+          return `🌱 El proyecto "Riego Inteligente" es una simulación STEM que integra robótica, sensores, actuadores, comunicación WiFi y una interfaz web. Su objetivo es resolver problemas comunitarios mediante automatización, aplicando conceptos de programación, electrónica y ética.`;
+        }
+        if (q.includes('cómo usar') || q.includes('uso') || q.includes('funciona') || q.includes('utilizar')) {
+          return `🛠️ Para usar la simulación, observa los sensores en tiempo real. Puedes activar/desactivar los actuadores (Riego, Ventilación, Iluminación) con los botones. El gráfico muestra la evolución de los datos. La bitácora registra todos los eventos. ¡Pregúntame lo que necesites!`;
+        }
+        if (q.includes('ayuda') || q.includes('socorro') || q.includes('what')) {
+          return `🤖 Puedes preguntarme sobre: sensores (temperatura, humedad, luminosidad), actuadores (riego, ventilación, iluminación), ODS, el equipo, el proyecto y su uso. ¿En qué más puedo ayudarte?`;
+        }
+        // Respuesta por defecto
+        return `🤔 No estoy seguro de entender tu pregunta. Puedes preguntarme sobre sensores, actuadores, ODS, el equipo, el proyecto o cómo usar la simulación. Por ejemplo: "¿cómo está la temperatura?" o "¿qué son los ODS?".`;
+      }
+
+      function addChatMessage(text, sender) {
+        const div = document.createElement('div');
+        div.className = `chat-message ${sender}`;
+        div.textContent = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function handleUserMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+        addChatMessage(text, 'user');
+        chatInput.value = '';
+        // Simular tiempo de respuesta
+        setTimeout(() => {
+          const reply = getBotResponse(text);
+          addChatMessage(reply, 'bot');
+        }, 400);
+      }
+
+      // Eventos del chat
+      chatToggle.addEventListener('click', () => {
+        chatWindow.classList.toggle('open');
+        if (chatWindow.classList.contains('open')) {
+          chatInput.focus();
+        }
+      });
+
+      chatClose.addEventListener('click', () => {
+        chatWindow.classList.remove('open');
+      });
+
+      chatSend.addEventListener('click', handleUserMessage);
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleUserMessage();
+      });
+
+      // ============================================================
+      //  INICIALIZACIÓN
+      // ============================================================
+      renderLogs();
+      updateUI();
+
+      setInterval(simulateSensors, 1200);
+
+      setInterval(() => {
+        wifiIp.textContent = randomIP();
+        addLog(`📶 IP renovada: ${wifiIp.textContent}`);
+      }, 30000);
+
+      if (state.logs.length <= 2) {
+        addLog('🌱 Sistema de Riego Inteligente listo · ODS 6,7,11');
+        addLog('👥 Equipo: Lucas, Natan, Ricardo, Ivan');
+      }
+
+      // Mensaje de bienvenida del chat (solo si no hay mensajes)
+      if (chatMessages.children.length === 0) {
+        addChatMessage('👋 Hola, soy tu asistente del proyecto Riego Inteligente. Pregúntame sobre sensores, actuadores, ODS, el equipo o cómo usar la simulación.', 'bot');
+      }
+
+    })();
+  </script>
+</body>
+</html>

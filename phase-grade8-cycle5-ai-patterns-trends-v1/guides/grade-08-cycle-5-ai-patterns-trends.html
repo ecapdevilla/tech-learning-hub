@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>8th Grade · Cycle 5 · AI Patterns & Trends Lab</title>
+<style>
+:root{--ink:#15243a;--navy:#101c3c;--violet:#6447b8;--purple:#7957c8;--cyan:#18a7b8;--green:#258b68;--gold:#e5ad38;--red:#b94e58;--paper:#fff;--soft:#f7f8fc;--line:#dde2ef;--lav:#f1edff;--sky:#edf9fb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f1effb,#fbfcff 38%,#fff);line-height:1.55}a{text-decoration:none;color:inherit}button{font:inherit}.page{max-width:1180px;margin:auto;padding:22px 18px 70px}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.back{font-weight:900;color:#513ba0}.lang{border:0;background:#24204e;color:#fff;border-radius:999px;padding:9px 15px;font-weight:950;cursor:pointer}
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 86% 12%,rgba(103,222,219,.23),transparent 28%),linear-gradient(135deg,#151c42,#432e78 55%,#12687a);color:#fff;border-radius:29px;padding:38px;box-shadow:0 18px 48px rgba(54,38,103,.18)}
+.hero:after{content:"AI";position:absolute;right:24px;bottom:-65px;font-size:205px;font-weight:1000;color:rgba(255,255,255,.035)}.kicker{font-size:.78rem;font-weight:1000;letter-spacing:.14em;color:#9eeae4}h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1;margin:8px 0 15px;max-width:900px}.hero p{max-width:900px;color:#e7e8fb;font-size:1.06rem}.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pills span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:.82rem;font-weight:900}
+.two{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin:20px 0}.panel{background:#fff;border:1px solid var(--line);border-radius:21px;padding:22px;box-shadow:0 8px 25px rgba(49,43,99,.05)}.panel h2,.panel h3{margin-top:0}.objective{font-size:1.08rem}.theme{background:linear-gradient(145deg,#eeeaff,#eafafb)}.theme strong{display:block;font-size:1.5rem;color:#513da0}
+.notebook{background:#fffaf0;border:1px solid #edd59a;border-left:6px solid var(--gold);border-radius:17px;padding:19px;margin:17px 0}.notebook h3{margin:0 0 8px;color:#7d5a12}.notebook .write{background:#fff;border:1px dashed #d8bf80;border-radius:12px;padding:13px;margin-top:10px}
+.section-title{margin:37px 0 13px;font-size:1.65rem}.concepts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.card .icon{font-size:2rem}.card strong{display:block;margin:7px 0 5px;color:#4c3b94}
+.flow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:18px 0;font-weight:1000}.flow span{background:var(--lav);border:1px solid #ddd4f7;padding:9px 12px;border-radius:999px}.arrow{color:#8879ba}
+.ai-life{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.life{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}.life b{color:#4e3a9b}
+.lesson{display:grid;grid-template-columns:115px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;margin:11px 0}.lesson .time{background:var(--lav);color:#513da0;border-radius:14px;padding:10px;font-weight:1000;text-align:center;height:max-content}.lesson h3{margin:0 0 6px}
+.demo{background:linear-gradient(145deg,#171f47,#49347d);color:#fff;border-radius:23px;padding:24px}.demo h2{margin-top:0}.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.demo-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:17px}.demo-box strong{color:#9de6e2}
+table{width:100%;border-collapse:collapse;background:#fff}th,td{border-bottom:1px solid var(--line);padding:11px;text-align:left;vertical-align:top}th{background:#28214f;color:#fff}tr:last-child td{border-bottom:0}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:17px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.step-num{display:inline-flex;width:31px;height:31px;align-items:center;justify-content:center;background:#5b45ae;color:#fff;border-radius:50%;font-weight:1000}.step h3{margin:9px 0 5px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:13px}.human{background:#edf9fb;border:1px solid #c8e8ed;border-radius:18px;padding:18px}.machine{background:#f2edff;border:1px solid #ddd3f6;border-radius:18px;padding:18px}
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.prompt{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.prompt textarea{width:100%;min-height:225px;border:1px solid #d5d9e8;background:#f9faff;padding:12px;border-radius:12px;resize:vertical;font:inherit;font-size:.86rem;color:#1b2b44}.copy{margin-top:10px;border:0;background:#2c2859;color:#fff;border-radius:10px;padding:8px 11px;font-weight:900;cursor:pointer}
+.warning{background:#fff1f1;border:1px solid #edc8cb;border-left:5px solid var(--red);border-radius:14px;padding:15px 17px;margin:14px 0}.success{background:#edf9f3;border:1px solid #c7e7d7;border-left:5px solid var(--green);border-radius:14px;padding:15px 17px;margin:14px 0}
+.challenge{background:linear-gradient(145deg,#eefaf8,#f5f1ff);border:1px solid #d7e4e7;border-radius:23px;padding:23px}.challenge-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}.challenge-flow div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;font-weight:900}
+.web-grid,.check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.web-card,.check{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}.web-card strong{color:#513da0}.check ul{list-style:none;padding:0;margin:0}.check li{margin:8px 0}.check li:before{content:"□";margin-right:8px;font-weight:1000;color:var(--green)}
+.formula{background:#171f42;color:#fff;border-radius:20px;padding:22px}.formula-code{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.formula-code span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);padding:9px 11px;border-radius:999px;font-weight:900}
+.footer{text-align:center;margin-top:36px;color:#697086;font-size:.9rem}.toast{position:fixed;right:18px;bottom:18px;background:#28214f;color:#fff;padding:10px 14px;border-radius:999px;font-weight:900;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+@media(max-width:850px){.two,.demo-grid,.compare,.prompt-grid{grid-template-columns:1fr}.concepts,.ai-life,.steps,.web-grid,.check-grid,.challenge-flow{grid-template-columns:1fr}.lesson{grid-template-columns:1fr}.hero{padding:28px 22px}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="top">
+<a href="/grades/8" class="back" data-en="← Back to 8th Grade" data-es="← Volver a 8°">← Back to 8th Grade</a>
+<button id="langBtn" class="lang">Español</button>
+</div>
+
+<section class="hero">
+<div class="kicker" data-en="8TH GRADE · CYCLE 5 · AUG 24–31" data-es="8° · CICLO 5 · 24–31 DE AGOSTO">8TH GRADE · CYCLE 5 · AUG 24–31</div>
+<h1 data-en="AI Patterns & Trends Lab" data-es="Laboratorio de IA: Patrones y Tendencias">AI Patterns & Trends Lab</h1>
+<p data-en="Learn how basic AI applications can help you recognize patterns and trends in data. Then apply the same process to the survey data from your Code for Change project." data-es="Aprende cómo aplicaciones básicas de IA pueden ayudarte a reconocer patrones y tendencias en los datos. Luego aplica el mismo proceso a los datos de encuesta de tu proyecto Code for Change.">Learn how basic AI applications can help you recognize patterns and trends in data. Then apply the same process to the survey data from your Code for Change project.</p>
+<div class="pills"><span data-en="⏱ 2 hours" data-es="⏱ 2 horas">⏱ 2 hours</span><span data-en="🤖 Artificial Intelligence" data-es="🤖 Inteligencia Artificial">🤖 Artificial Intelligence</span><span data-en="🔎 Patterns" data-es="🔎 Patrones">🔎 Patterns</span><span data-en="📈 Trends" data-es="📈 Tendencias">📈 Trends</span><span data-en="🧠 Human Verification" data-es="🧠 Verificación humana">🧠 Human Verification</span></div>
+</section>
+
+<section class="two">
+<article class="panel objective"><h2 data-en="🎯 Learning Objective" data-es="🎯 Objetivo de aprendizaje">🎯 Learning Objective</h2><p><strong data-en="Explore basic AI applications to detect patterns and trends." data-es="Explorar aplicaciones básicas de IA para detectar patrones y tendencias.">Explore basic AI applications to detect patterns and trends.</strong></p></article>
+<article class="panel theme"><h2 data-en="🧭 Cycle Topic" data-es="🧭 Tema del ciclo">🧭 Cycle Topic</h2><strong data-en="Artificial Intelligence: Patterns and Trends" data-es="Inteligencia Artificial: Patrones y Tendencias">Artificial Intelligence: Patterns and Trends</strong></article>
+</section>
+
+<section class="notebook">
+<h3 data-en="📓 Start in your notebook" data-es="📓 Inicia en tu cuaderno">📓 Start in your notebook</h3>
+<p data-en="Write the Cycle 5 topic and learning objective exactly as shown below." data-es="Escribe el tema y el objetivo de aprendizaje del Ciclo 5 exactamente como aparecen a continuación.">Write the Cycle 5 topic and learning objective exactly as shown below.</p>
+<div class="write"><b data-en="Topic:" data-es="Tema:">Topic:</b> <span data-en="Artificial Intelligence: Patterns and Trends" data-es="Inteligencia Artificial: Patrones y Tendencias">Artificial Intelligence: Patterns and Trends</span><br><b data-en="Learning Objective:" data-es="Objetivo de aprendizaje:">Learning Objective:</b> <span data-en="Explore basic AI applications to detect patterns and trends." data-es="Explorar aplicaciones básicas de IA para detectar patrones y tendencias.">Explore basic AI applications to detect patterns and trends.</span></div>
+</section>
+
+<h2 class="section-title" data-en="1 · What do you know about AI?" data-es="1 · ¿Qué sabes sobre IA?">1 · What do you know about AI?</h2>
+<section class="panel"><p data-en="Before reading, think of three places where you have seen or used AI. AI is not only a chatbot: recommendation systems, image recognition, navigation, voice assistants and automated classification can also use AI." data-es="Antes de leer, piensa en tres lugares donde hayas visto o usado IA. La IA no es solamente un chatbot: los sistemas de recomendación, reconocimiento de imágenes, navegación, asistentes de voz y clasificación automatizada también pueden usar IA.">Before reading, think of three places where you have seen or used AI. AI is not only a chatbot: recommendation systems, image recognition, navigation, voice assistants and automated classification can also use AI.</p></section>
+
+<h2 class="section-title" data-en="2 · Learn the Four Key Ideas" data-es="2 · Aprende las cuatro ideas clave">2 · Learn the Four Key Ideas</h2>
+<section class="concepts">
+<article class="card"><div class="icon">🤖</div><strong data-en="Artificial Intelligence" data-es="Inteligencia Artificial">Artificial Intelligence</strong><p data-en="Technology designed to perform tasks that can involve recognition, prediction, classification, generation or decision support." data-es="Tecnología diseñada para realizar tareas que pueden involucrar reconocimiento, predicción, clasificación, generación o apoyo a decisiones.">Technology designed to perform tasks that can involve recognition, prediction, classification, generation or decision support.</p></article>
+<article class="card"><div class="icon">🧠</div><strong data-en="Machine Learning" data-es="Aprendizaje Automático">Machine Learning</strong><p data-en="A way of building AI systems that learn useful relationships or patterns from examples and data." data-es="Una forma de construir sistemas de IA que aprenden relaciones o patrones útiles a partir de ejemplos y datos.">A way of building AI systems that learn useful relationships or patterns from examples and data.</p></article>
+<article class="card"><div class="icon">🔎</div><strong data-en="Pattern" data-es="Patrón">Pattern</strong><p data-en="A repeated characteristic, relationship or behavior that can be observed in data." data-es="Una característica, relación o comportamiento repetido que puede observarse en los datos.">A repeated characteristic, relationship or behavior that can be observed in data.</p></article>
+<article class="card"><div class="icon">📈</div><strong data-en="Trend" data-es="Tendencia">Trend</strong><p data-en="A general direction or tendency visible across data, often as values increase, decrease or behave consistently." data-es="Una dirección o tendencia general visible en los datos, por ejemplo cuando los valores aumentan, disminuyen o se comportan de manera consistente.">A general direction or tendency visible across data, often as values increase, decrease or behave consistently.</p></article>
+</section>
+<div class="flow"><span>DATA</span><b class="arrow">→</b><span>AI ANALYSIS</span><b class="arrow">→</b><span data-en="PATTERN" data-es="PATRÓN">PATTERN</span><b class="arrow">→</b><span data-en="TREND" data-es="TENDENCIA">TREND</span><b class="arrow">→</b><span data-en="VERIFY" data-es="VERIFICAR">VERIFY</span><b class="arrow">→</b><span data-en="DECISION" data-es="DECISIÓN">DECISION</span></div>
+
+<section class="notebook">
+<h3 data-en="📓 Concept Check" data-es="📓 Verificación de conceptos">📓 Concept Check</h3>
+<p data-en="In your notebook, write a short definition in your own words for: Artificial Intelligence, Machine Learning, Pattern and Trend. Then write three examples of AI you see in daily life." data-es="En tu cuaderno, escribe una definición corta con tus propias palabras de: Inteligencia Artificial, Aprendizaje Automático, Patrón y Tendencia. Luego escribe tres ejemplos de IA que observes en la vida diaria.">In your notebook, write a short definition in your own words for: Artificial Intelligence, Machine Learning, Pattern and Trend. Then write three examples of AI you see in daily life.</p>
+</section>
+
+<h2 class="section-title" data-en="3 · AI in Daily Life" data-es="3 · IA en la vida diaria">3 · AI in Daily Life</h2>
+<section class="ai-life">
+<article class="life"><b data-en="Recommendations" data-es="Recomendaciones">Recommendations</b><p data-en="Music, videos or products can be suggested from patterns in previous interactions." data-es="Música, videos o productos pueden recomendarse a partir de patrones en interacciones anteriores.">Music, videos or products can be suggested from patterns in previous interactions.</p></article>
+<article class="life"><b data-en="Classification" data-es="Clasificación">Classification</b><p data-en="A system can classify images, messages or other inputs into categories." data-es="Un sistema puede clasificar imágenes, mensajes u otras entradas en categorías.">A system can classify images, messages or other inputs into categories.</p></article>
+<article class="life"><b data-en="Data Analysis" data-es="Análisis de datos">Data Analysis</b><p data-en="AI assistants can help summarize a dataset, compare values and propose patterns to investigate." data-es="Los asistentes de IA pueden ayudar a resumir un conjunto de datos, comparar valores y proponer patrones para investigar.">AI assistants can help summarize a dataset, compare values and propose patterns to investigate.</p></article>
+</section>
+
+<h2 class="section-title" data-en="4 · Simple AI Demonstration" data-es="4 · Demostración sencilla de IA">4 · Simple AI Demonstration</h2>
+<section class="demo">
+<h2 data-en="Two ways AI can work with patterns" data-es="Dos formas en que la IA puede trabajar con patrones">Two ways AI can work with patterns</h2>
+<div class="demo-grid">
+<article class="demo-box"><strong data-en="Classification Demo" data-es="Demostración de clasificación">Classification Demo</strong><p data-en="With a tool such as Teachable Machine, examples are grouped into classes. The model uses the examples to classify a new input." data-es="Con una herramienta como Teachable Machine, los ejemplos se agrupan en clases. El modelo usa esos ejemplos para clasificar una nueva entrada.">With a tool such as Teachable Machine, examples are grouped into classes. The model uses the examples to classify a new input.</p><p><b data-en="Flow:" data-es="Flujo:">Flow:</b> <span data-en="Examples → Training → New input → Prediction" data-es="Ejemplos → Entrenamiento → Nueva entrada → Predicción">Examples → Training → New input → Prediction</span></p></article>
+<article class="demo-box"><strong data-en="AI Assistant Data Analysis" data-es="Análisis de datos con asistente de IA">AI Assistant Data Analysis</strong><p data-en="An AI assistant can receive structured data and help identify high values, low values, repeated relationships and possible trends. The result must be checked against the original data." data-es="Un asistente de IA puede recibir datos estructurados y ayudar a identificar valores altos, bajos, relaciones repetidas y posibles tendencias. El resultado debe verificarse contra los datos originales.">An AI assistant can receive structured data and help identify high values, low values, repeated relationships and possible trends. The result must be checked against the original data.</p></article>
+</div>
+</section>
+
+<h2 class="section-title" data-en="5 · Guided Activity: Human Pattern Detective" data-es="5 · Actividad guiada: Detective humano de patrones">5 · Guided Activity: Human Pattern Detective</h2>
+<p data-en="Do this first WITHOUT AI. Read the dataset and make your own observations." data-es="Haz esto primero SIN IA. Lee el conjunto de datos y realiza tus propias observaciones.">Do this first WITHOUT AI. Read the dataset and make your own observations.</p>
+<div class="table-wrap"><table><thead><tr><th data-en="Student Interest" data-es="Interés estudiantil">Student Interest</th><th data-en="Students" data-es="Estudiantes">Students</th></tr></thead><tbody><tr><td>Football</td><td>18</td></tr><tr><td>Robotics</td><td>17</td></tr><tr><td>Video Games</td><td>15</td></tr><tr><td>Music</td><td>12</td></tr><tr><td>Art</td><td>10</td></tr><tr><td>Reading</td><td>8</td></tr></tbody></table></div>
+<section class="steps">
+<article class="step"><span class="step-num">1</span><h3 data-en="Observe" data-es="Observa">Observe</h3><p data-en="Which values are highest and lowest?" data-es="¿Cuáles valores son los más altos y los más bajos?">Which values are highest and lowest?</p></article>
+<article class="step"><span class="step-num">2</span><h3 data-en="Find a pattern" data-es="Encuentra un patrón">Find a pattern</h3><p data-en="What relationship or grouping do you notice?" data-es="¿Qué relación o agrupación observas?">What relationship or grouping do you notice?</p></article>
+<article class="step"><span class="step-num">3</span><h3 data-en="Suggest a decision" data-es="Sugiere una decisión">Suggest a decision</h3><p data-en="What could a school consider doing based only on these values?" data-es="¿Qué podría considerar hacer una escuela basándose solamente en estos valores?">What could a school consider doing based only on these values?</p></article>
+</section>
+
+<section class="notebook"><h3 data-en="📓 Before AI" data-es="📓 Antes de la IA">📓 Before AI</h3><p data-en="Write: the three highest interests, the lowest interest, two patterns you notice and one possible decision supported by the data." data-es="Escribe: los tres intereses más altos, el interés más bajo, dos patrones que observes y una posible decisión respaldada por los datos.">Write: the three highest interests, the lowest interest, two patterns you notice and one possible decision supported by the data.</p></section>
+
+<h2 class="section-title" data-en="6 · Guided Activity: Ask AI" data-es="6 · Actividad guiada: Pregunta a la IA">6 · Guided Activity: Ask AI</h2>
+<section class="prompt-grid">
+<article class="prompt"><h3 data-en="Practice Prompt" data-es="Prompt de práctica">Practice Prompt</h3><textarea id="practice" readonly>Act as a data analyst.
+
+Analyze this dataset of student interests:
+
+Football: 18
+Robotics: 17
+Video Games: 15
+Music: 12
+Art: 10
+Reading: 8
+
+Identify:
+1. The three highest values.
+2. The lowest value.
+3. Two patterns visible in the data.
+4. One possible conclusion.
+5. One possible school decision based on the data.
+
+Use only the provided data.
+Do not invent missing information.
+Separate facts from suggestions.</textarea><button class="copy" data-copy="practice" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article>
+<article class="prompt"><h3 data-en="Now Compare" data-es="Ahora compara">Now Compare</h3><p data-en="Compare your analysis with the AI response. A good AI answer is not automatically correct. Look back at every number." data-es="Compara tu análisis con la respuesta de la IA. Una buena respuesta de IA no es automáticamente correcta. Vuelve a revisar cada número.">Compare your analysis with the AI response. A good AI answer is not automatically correct. Look back at every number.</p><div class="warning"><b data-en="Critical rule:" data-es="Regla crítica:">Critical rule:</b> <span data-en="If you cannot point to evidence in the dataset, do not present the AI statement as a data finding." data-es="Si no puedes señalar evidencia en el conjunto de datos, no presentes la afirmación de la IA como un hallazgo de datos.">If you cannot point to evidence in the dataset, do not present the AI statement as a data finding.</span></div></article>
+</section>
+
+<h2 class="section-title" data-en="7 · Apply It to Your Real Code for Change Project" data-es="7 · Aplícalo a tu proyecto real Code for Change">7 · Apply It to Your Real Code for Change Project</h2>
+<section class="challenge">
+<h2 data-en="Your survey becomes your dataset" data-es="Tu encuesta se convierte en tu conjunto de datos">Your survey becomes your dataset</h2>
+<p data-en="Use the survey your team has already collected. Work with the real responses available to your team. If a value is an estimate, label it as an estimate; do not present it as a survey result." data-es="Usa la encuesta que tu equipo ya ha recolectado. Trabaja con las respuestas reales disponibles para tu equipo. Si un valor es una estimación, identifícalo como estimación; no lo presentes como resultado de encuesta.">Use the survey your team has already collected. Work with the real responses available to your team. If a value is an estimate, label it as an estimate; do not present it as a survey result.</p>
+<div class="challenge-flow"><div data-en="1 · SURVEY" data-es="1 · ENCUESTA">1 · SURVEY</div><div data-en="2 · ORGANIZE DATA" data-es="2 · ORGANIZAR DATOS">2 · ORGANIZE DATA</div><div data-en="3 · FIND PATTERNS" data-es="3 · HALLAR PATRONES">3 · FIND PATTERNS</div><div data-en="4 · AI ANALYSIS" data-es="4 · ANÁLISIS IA">4 · AI ANALYSIS</div><div data-en="5 · VERIFY" data-es="5 · VERIFICAR">5 · VERIFY</div><div data-en="6 · FIND TRENDS" data-es="6 · HALLAR TENDENCIAS">6 · FIND TRENDS</div><div data-en="7 · PROPOSE SOLUTION" data-es="7 · PROPONER SOLUCIÓN">7 · PROPOSE SOLUTION</div><div data-en="8 · IMPROVE PROJECT" data-es="8 · MEJORAR PROYECTO">8 · IMPROVE PROJECT</div></div>
+</section>
+
+<section class="notebook"><h3 data-en="📓 Your Project Data" data-es="📓 Datos de tu proyecto">📓 Your Project Data</h3><div class="write"><span data-en="Research problem:" data-es="Problema de investigación:">Research problem:</span> ____________<br><span data-en="Number of responses:" data-es="Número de respuestas:">Number of responses:</span> ____________<br><span data-en="Most common response:" data-es="Respuesta más común:">Most common response:</span> ____________<br><span data-en="Least common response:" data-es="Respuesta menos común:">Least common response:</span> ____________<br><span data-en="Pattern 1:" data-es="Patrón 1:">Pattern 1:</span> ____________<br><span data-en="Pattern 2:" data-es="Patrón 2:">Pattern 2:</span> ____________<br><span data-en="Possible trend:" data-es="Posible tendencia:">Possible trend:</span> ____________</div></section>
+
+<h2 class="section-title" data-en="8 · Prompt Engineering Mini-Lab" data-es="8 · Mini laboratorio de ingeniería de prompts">8 · Prompt Engineering Mini-Lab</h2>
+<section class="formula"><h2 data-en="A useful data prompt has structure" data-es="Un prompt útil para datos tiene estructura">A useful data prompt has structure</h2><div class="formula-code"><span>ROLE</span><b>+</b><span>DATA</span><b>+</b><span>TASK</span><b>+</b><span>OUTPUT</span><b>+</b><span>LIMIT</span></div><p data-en="Instead of “Analyze this”, tell the AI what data it has, what to find, how to present the answer and what it must not invent." data-es="En lugar de “Analiza esto”, dile a la IA qué datos tiene, qué debe encontrar, cómo presentar la respuesta y qué no debe inventar.">Instead of “Analyze this”, tell the AI what data it has, what to find, how to present the answer and what it must not invent.</p></section>
+
+<section class="prompt-grid">
+<article class="prompt"><h3 data-en="Prompt · Analyze Your Survey" data-es="Prompt · Analiza tu encuesta">Prompt · Analyze Your Survey</h3><textarea id="surveyPrompt" readonly>Act as a data analyst.
+
+Our school research problem is:
+[WRITE THE PROBLEM]
+
+These are our real survey results:
+[PASTE OR WRITE THE DATA]
+
+Use only the data provided.
+
+Identify:
+1. Three important patterns.
+2. Any trend that is actually supported by the data.
+3. The strongest finding.
+4. The exact evidence supporting each finding.
+5. One conclusion.
+6. Three possible actions the school could consider.
+
+Separate:
+- facts from the data,
+- interpretations,
+- suggestions.
+
+Do not invent missing values.
+If the data cannot support a conclusion, say so.</textarea><button class="copy" data-copy="surveyPrompt" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article>
+<article class="prompt"><h3 data-en="Prompt · Verify an AI Finding" data-es="Prompt · Verifica un hallazgo de IA">Prompt · Verify an AI Finding</h3><textarea id="verifyPrompt" readonly>Check this AI-generated finding against our original data.
+
+ORIGINAL DATA:
+[PASTE DATA]
+
+AI FINDING:
+[PASTE FINDING]
+
+Answer:
+1. Is the finding directly supported by the data?
+2. Which exact values support it?
+3. Is any part an assumption?
+4. Rewrite the finding so it matches only what the data can prove.
+
+Do not add information that is not in the original data.</textarea><button class="copy" data-copy="verifyPrompt" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article>
+</section>
+
+<h2 class="section-title" data-en="9 · Human vs. AI Verification" data-es="9 · Verificación Humano vs. IA">9 · Human vs. AI Verification</h2>
+<section class="compare">
+<article class="human"><h3 data-en="🧠 Human responsibility" data-es="🧠 Responsabilidad humana">🧠 Human responsibility</h3><p data-en="Read the original data, check calculations, question conclusions, identify missing information and decide whether a finding is justified." data-es="Leer los datos originales, revisar cálculos, cuestionar conclusiones, identificar información faltante y decidir si un hallazgo está justificado.">Read the original data, check calculations, question conclusions, identify missing information and decide whether a finding is justified.</p></article>
+<article class="machine"><h3 data-en="🤖 AI support" data-es="🤖 Apoyo de la IA">🤖 AI support</h3><p data-en="Help summarize, compare, classify, propose patterns, explain findings and suggest possible actions for human evaluation." data-es="Ayudar a resumir, comparar, clasificar, proponer patrones, explicar hallazgos y sugerir posibles acciones para evaluación humana.">Help summarize, compare, classify, propose patterns, explain findings and suggest possible actions for human evaluation.</p></article>
+</section>
+<div class="table-wrap"><table><thead><tr><th data-en="AI finding" data-es="Hallazgo de IA">AI finding</th><th data-en="Evidence in our data" data-es="Evidencia en nuestros datos">Evidence in our data</th><th data-en="Valid?" data-es="¿Válido?">Valid?</th><th data-en="Why?" data-es="¿Por qué?">Why?</th></tr></thead><tbody><tr><td>________</td><td>________</td><td>Yes / No</td><td>________</td></tr><tr><td>________</td><td>________</td><td>Yes / No</td><td>________</td></tr><tr><td>________</td><td>________</td><td>Yes / No</td><td>________</td></tr></tbody></table></div>
+<div class="warning"><b data-en="Never confuse these:" data-es="Nunca confundas esto:">Never confuse these:</b> <span data-en="Survey Result ≠ Estimate ≠ AI Suggestion. Label each one correctly." data-es="Resultado de encuesta ≠ Estimación ≠ Sugerencia de IA. Identifica correctamente cada uno.">Survey Result ≠ Estimate ≠ AI Suggestion. Label each one correctly.</span></div>
+
+<h2 class="section-title" data-en="10 · Challenge: AI for a School Problem" data-es="10 · Reto: IA para un problema escolar">10 · Challenge: AI for a School Problem</h2>
+<section class="panel">
+<p data-en="This is the Cycle 5 challenge: use AI to suggest a solution to your school problem based on data. The proposed solution must connect to evidence from your survey." data-es="Este es el reto del Ciclo 5: usa IA para sugerir una solución a tu problema escolar basada en datos. La solución propuesta debe conectarse con evidencia de tu encuesta.">This is the Cycle 5 challenge: use AI to suggest a solution to your school problem based on data. The proposed solution must connect to evidence from your survey.</p>
+<div class="success"><b data-en="Evidence rule:" data-es="Regla de evidencia:">Evidence rule:</b> <span data-en="No data → no claim. No evidence → no conclusion. AI suggestion → human verification." data-es="Sin datos → no hay afirmación. Sin evidencia → no hay conclusión. Sugerencia de IA → verificación humana.">No data → no claim. No evidence → no conclusion. AI suggestion → human verification.</span></div>
+</section>
+
+<h2 class="section-title" data-en="11 · Apply the Findings to Your Code for Change Website" data-es="11 · Aplica los hallazgos a tu sitio Code for Change">11 · Apply the Findings to Your Code for Change Website</h2>
+<p data-en="Your website is a way to communicate what your team discovered. Improve it only with findings you can support." data-es="Tu sitio web es una forma de comunicar lo que descubrió tu equipo. Mejóralo solamente con hallazgos que puedas respaldar.">Your website is a way to communicate what your team discovered. Improve it only with findings you can support.</p>
+<section class="web-grid">
+<article class="web-card"><strong data-en="📊 Our Data" data-es="📊 Nuestros datos">📊 Our Data</strong><p data-en="Show the number of responses and important survey results." data-es="Muestra el número de respuestas y resultados importantes de la encuesta.">Show the number of responses and important survey results.</p></article>
+<article class="web-card"><strong data-en="📈 Patterns & Trends" data-es="📈 Patrones y tendencias">📈 Patterns & Trends</strong><p data-en="Present verified findings in clear language." data-es="Presenta hallazgos verificados con lenguaje claro.">Present verified findings in clear language.</p></article>
+<article class="web-card"><strong data-en="📉 Visualizations" data-es="📉 Visualizaciones">📉 Visualizations</strong><p data-en="Use charts or statistic cards that make the evidence easier to understand." data-es="Usa gráficos o tarjetas estadísticas que faciliten comprender la evidencia.">Use charts or statistic cards that make the evidence easier to understand.</p></article>
+<article class="web-card"><strong data-en="🤖 AI Analysis" data-es="🤖 Análisis con IA">🤖 AI Analysis</strong><p data-en="Explain how AI helped identify or interpret possible patterns." data-es="Explica cómo la IA ayudó a identificar o interpretar posibles patrones.">Explain how AI helped identify or interpret possible patterns.</p></article>
+<article class="web-card"><strong data-en="🧠 Human Validation" data-es="🧠 Validación humana">🧠 Human Validation</strong><p data-en="Show what your team verified against the original data." data-es="Muestra qué verificó tu equipo contra los datos originales.">Show what your team verified against the original data.</p></article>
+<article class="web-card"><strong data-en="💡 Proposed Solution" data-es="💡 Solución propuesta">💡 Proposed Solution</strong><p data-en="Connect your proposed action directly to evidence." data-es="Conecta tu acción propuesta directamente con evidencia.">Connect your proposed action directly to evidence.</p></article>
+</section>
+
+<section class="prompt-grid">
+<article class="prompt"><h3 data-en="Optional Prompt · Improve Your Existing HTML" data-es="Prompt opcional · Mejora tu HTML existente">Optional Prompt · Improve Your Existing HTML</h3><textarea id="webPrompt" readonly>I already have a Code for Change school project website.
+
+Do NOT replace or delete my existing project.
+
+Research problem:
+[PROBLEM]
+
+Real survey results:
+[DATA]
+
+Verified patterns/trends:
+[FINDINGS]
+
+Proposed solution:
+[SOLUTION]
+
+Help me improve my existing HTML/CSS/JavaScript project by adding or refining:
+- Our Data
+- Key Findings
+- Patterns & Trends
+- useful statistic cards or chart area
+- AI Analysis
+- Human Validation
+- Proposed Solution
+
+Keep the code simple and readable.
+Preserve my current content and design where possible.
+Do not invent statistics or survey results.
+Clearly tell me which code I should add and where.</textarea><button class="copy" data-copy="webPrompt" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article>
+<article class="prompt"><h3 data-en="Optional Prompt · Improve the Explanation" data-es="Prompt opcional · Mejora la explicación">Optional Prompt · Improve the Explanation</h3><textarea id="explainPrompt" readonly>Help our 8th grade team explain this data finding clearly.
+
+Research problem:
+[PROBLEM]
+
+Original data:
+[DATA]
+
+Verified finding:
+[FINDING]
+
+Proposed action:
+[ACTION]
+
+Write:
+1. A short finding title.
+2. A 2-sentence explanation.
+3. The evidence supporting it.
+4. A short action recommendation.
+
+Use only the information provided.
+Do not exaggerate the conclusion.</textarea><button class="copy" data-copy="explainPrompt" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article>
+</section>
+
+<h2 class="section-title" data-en="12 · Your 2-Hour Route" data-es="12 · Tu ruta de 2 horas">12 · Your 2-Hour Route</h2>
+<section>
+<article class="lesson"><div class="time">0–10</div><div><h3 data-en="Opening & AI Check" data-es="Apertura y exploración de IA">Opening & AI Check</h3><p data-en="Lasallian greeting, emotional check, “What do you know about AI?” and a quick review of AI in daily life." data-es="Saludo Lasallista, chequeo emocional, “¿Qué sabes sobre IA?” y repaso rápido de IA en la vida diaria.">Lasallian greeting, emotional check, “What do you know about AI?” and a quick review of AI in daily life.</p></div></article>
+<article class="lesson"><div class="time">10–30</div><div><h3 data-en="Learn AI, ML, Patterns & Trends" data-es="Aprende IA, ML, patrones y tendencias">Learn AI, ML, Patterns & Trends</h3><p data-en="Read the concepts, examples and complete the notebook concept check." data-es="Lee los conceptos, ejemplos y completa la verificación de conceptos en el cuaderno.">Read the concepts, examples and complete the notebook concept check.</p></div></article>
+<article class="lesson"><div class="time">30–48</div><div><h3 data-en="AI Demo & Classification" data-es="Demostración de IA y clasificación">AI Demo & Classification</h3><p data-en="Observe a simple classification or AI-assisted data analysis demonstration." data-es="Observa una demostración sencilla de clasificación o análisis de datos asistido por IA.">Observe a simple classification or AI-assisted data analysis demonstration.</p></div></article>
+<article class="lesson"><div class="time">48–65</div><div><h3 data-en="Human Pattern Detective" data-es="Detective humano de patrones">Human Pattern Detective</h3><p data-en="Analyze the practice dataset without AI first." data-es="Analiza primero el conjunto de datos de práctica sin IA.">Analyze the practice dataset without AI first.</p></div></article>
+<article class="lesson"><div class="time">65–82</div><div><h3 data-en="AI Pattern Detective" data-es="Detective de patrones con IA">AI Pattern Detective</h3><p data-en="Ask an AI assistant to analyze the same dataset, then compare its findings with yours." data-es="Pide a un asistente de IA analizar el mismo conjunto de datos y compara sus hallazgos con los tuyos.">Ask an AI assistant to analyze the same dataset, then compare its findings with yours.</p></div></article>
+<article class="lesson"><div class="time">82–105</div><div><h3 data-en="Your Survey + School Challenge" data-es="Tu encuesta + reto escolar">Your Survey + School Challenge</h3><p data-en="Analyze your team's real survey, identify patterns/trends, verify AI findings and propose a data-supported solution." data-es="Analiza la encuesta real de tu equipo, identifica patrones/tendencias, verifica hallazgos de IA y propone una solución respaldada por datos.">Analyze your team's real survey, identify patterns/trends, verify AI findings and propose a data-supported solution.</p></div></article>
+<article class="lesson"><div class="time">105–115</div><div><h3 data-en="Improve Your Project" data-es="Mejora tu proyecto">Improve Your Project</h3><p data-en="Use verified findings to improve the data, visualization, AI analysis or solution sections of your Code for Change website." data-es="Usa hallazgos verificados para mejorar las secciones de datos, visualización, análisis con IA o solución de tu sitio Code for Change.">Use verified findings to improve the data, visualization, AI analysis or solution sections of your Code for Change website.</p></div></article>
+<article class="lesson"><div class="time">115–120</div><div><h3 data-en="Notebook Closure" data-es="Cierre en el cuaderno">Notebook Closure</h3><p data-en="Complete the official Cycle 5 reflection." data-es="Completa la reflexión oficial del Ciclo 5.">Complete the official Cycle 5 reflection.</p></div></article>
+</section>
+
+<h2 class="section-title" data-en="13 · Completion Checklist" data-es="13 · Lista de verificación">13 · Completion Checklist</h2>
+<section class="check-grid">
+<article class="check"><h3 data-en="Concepts" data-es="Conceptos">Concepts</h3><ul><li data-en="I can explain AI" data-es="Puedo explicar IA">I can explain AI</li><li data-en="I can explain Machine Learning" data-es="Puedo explicar Machine Learning">I can explain Machine Learning</li><li data-en="I know pattern vs. trend" data-es="Sé diferenciar patrón y tendencia">I know pattern vs. trend</li></ul></article>
+<article class="check"><h3 data-en="Data Analysis" data-es="Análisis de datos">Data Analysis</h3><ul><li data-en="I analyzed data before AI" data-es="Analicé datos antes de usar IA">I analyzed data before AI</li><li data-en="I used AI to explore patterns" data-es="Usé IA para explorar patrones">I used AI to explore patterns</li><li data-en="I identified possible trends" data-es="Identifiqué posibles tendencias">I identified possible trends</li></ul></article>
+<article class="check"><h3 data-en="Verification" data-es="Verificación">Verification</h3><ul><li data-en="I checked AI against original data" data-es="Verifiqué la IA contra datos originales">I checked AI against original data</li><li data-en="I separated facts and suggestions" data-es="Separé hechos y sugerencias">I separated facts and suggestions</li><li data-en="I did not invent data" data-es="No inventé datos">I did not invent data</li></ul></article>
+<article class="check"><h3 data-en="School Challenge" data-es="Reto escolar">School Challenge</h3><ul><li data-en="Our problem is clear" data-es="Nuestro problema es claro">Our problem is clear</li><li data-en="Our solution uses evidence" data-es="Nuestra solución usa evidencia">Our solution uses evidence</li><li data-en="We can explain the connection" data-es="Podemos explicar la conexión">We can explain the connection</li></ul></article>
+<article class="check"><h3 data-en="Project" data-es="Proyecto">Project</h3><ul><li data-en="Real survey data is identified" data-es="Los datos reales están identificados">Real survey data is identified</li><li data-en="Findings are understandable" data-es="Los hallazgos son comprensibles">Findings are understandable</li><li data-en="Website improvements use verified data" data-es="Las mejoras web usan datos verificados">Website improvements use verified data</li></ul></article>
+<article class="check"><h3 data-en="Notebook" data-es="Cuaderno">Notebook</h3><ul><li data-en="Topic and objective written" data-es="Tema y objetivo escritos">Topic and objective written</li><li data-en="Concept check completed" data-es="Verificación de conceptos completada">Concept check completed</li><li data-en="Project evidence recorded" data-es="Evidencia del proyecto registrada">Project evidence recorded</li><li data-en="Final reflection completed" data-es="Reflexión final completada">Final reflection completed</li></ul></article>
+</section>
+
+<h2 class="section-title" data-en="14 · Official Cycle 5 Closure" data-es="14 · Cierre oficial del Ciclo 5">14 · Official Cycle 5 Closure</h2>
+<section class="notebook">
+<h3 data-en="📓 Notebook Reflection" data-es="📓 Reflexión en el cuaderno">📓 Notebook Reflection</h3>
+<p data-en="Answer the official Cycle 5 question in your notebook:" data-es="Responde en tu cuaderno la pregunta oficial del Ciclo 5:">Answer the official Cycle 5 question in your notebook:</p>
+<div class="write"><strong data-en="How can AI help us make better decisions?" data-es="¿Cómo puede la IA ayudarnos a tomar mejores decisiones?">How can AI help us make better decisions?</strong></div>
+</section>
+
+<div class="footer" data-en="Tech Learning Hub · 8th Grade · Cycle 5 · AI Patterns & Trends Lab" data-es="Tech Learning Hub · 8° · Ciclo 5 · Laboratorio de IA: Patrones y Tendencias">Tech Learning Hub · 8th Grade · Cycle 5 · AI Patterns & Trends Lab</div>
+</div>
+<div id="toast" class="toast">Copied</div>
+<script>
+let lang='en';const btn=document.getElementById('langBtn'),toast=document.getElementById('toast');
+function apply(l){lang=l;document.documentElement.lang=l;document.querySelectorAll('[data-en][data-es]').forEach(el=>el.textContent=el.getAttribute('data-'+l));btn.textContent=l==='en'?'Español':'English';document.title=l==='en'?'8th Grade · Cycle 5 · AI Patterns & Trends Lab':'8° · Ciclo 5 · Laboratorio de IA: Patrones y Tendencias';}
+btn.addEventListener('click',()=>apply(lang==='en'?'es':'en'));
+document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',async()=>{const a=document.getElementById(b.dataset.copy);try{await navigator.clipboard.writeText(a.value);toast.textContent=lang==='en'?'Prompt copied':'Prompt copiado';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1400)}catch{a.select()}}));
+apply('en');
+</script>
+</body></html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11th Grade · Cycle 5 · Full System Integration</title>
+<style>
+:root{--ink:#17243a;--navy:#10193b;--purple:#563fa3;--cyan:#147f91;--green:#247d61;--gold:#d2a031;--red:#b84957;--line:#dce2ed}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(#f1effb,#fff 33%);color:var(--ink);font:16px/1.55 Inter,Segoe UI,Arial}main{max-width:1180px;margin:auto;padding:22px 18px 70px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.top a{font-weight:900;color:var(--purple);text-decoration:none}.lang,.copy{border:0;cursor:pointer;font-weight:900}.lang{background:#25204f;color:#fff;border-radius:999px;padding:9px 15px}
+.hero{margin-top:16px;padding:40px;border-radius:30px;color:#fff;background:radial-gradient(circle at 88% 10%,#21b2bc55,transparent 30%),linear-gradient(135deg,#10193b,#493075 57%,#106474);box-shadow:0 18px 45px #35256322}.hero small{color:#a6ece8;font-weight:1000;letter-spacing:.12em}.hero h1{font-size:clamp(2.25rem,5vw,4rem);line-height:1;margin:8px 0 14px}.hero p{max-width:900px;color:#e7e9f5}.pills,.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.pills span{background:#ffffff14;border:1px solid #ffffff20;padding:7px 10px;border-radius:999px;font-size:.82rem;font-weight:900}
+.grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:18px}.panel,.card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:20px}.theme{background:linear-gradient(145deg,#f0ecff,#eafafb)}.theme strong{font-size:1.3rem;color:#50389a}.title{margin:36px 0 13px;font-size:1.65rem}.note{margin:17px 0;background:#fff9eb;border:1px solid #ead399;border-left:6px solid var(--gold);border-radius:16px;padding:18px}.note h3{margin:0 0 7px;color:#765610}.sequence{background:#f0ecff;border:1px solid #ddd4f7;border-radius:18px;padding:19px}.sequence a{display:inline-block;margin-top:8px;background:#292451;color:#fff;padding:9px 12px;border-radius:10px;text-decoration:none;font-weight:900}
+.arch{background:#111a3c;color:#fff;border-radius:21px;padding:22px;text-align:center}.arch .row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin:12px 0}.arch span{padding:9px 12px;background:#ffffff12;border:1px solid #ffffff22;border-radius:12px;font-weight:900}.arch b{color:#9ee8e5}.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.level{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.level strong{display:block;color:#523b9d;font-size:1.1rem}.level em{display:inline-block;margin-bottom:9px;background:#eeeaff;border-radius:999px;padding:5px 8px;font-style:normal;font-weight:900;font-size:.78rem}
+.structures{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.structure{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.structure strong{display:block;color:#51399c;font-size:1.08rem;margin-bottom:5px}.flow{margin:18px 0;font-weight:1000}.flow span{background:#efebff;border:1px solid #ddd3f7;border-radius:999px;padding:9px 12px}.flow b{color:#8173ad}.code{background:#11182e;color:#e9edf8;border-radius:16px;padding:16px;overflow:auto;font:14px/1.55 Consolas,monospace;white-space:pre-wrap}.rule{background:#fff0f1;border:1px solid #efc7cb;border-left:5px solid var(--red);border-radius:13px;padding:14px;margin:14px 0}.good{background:#edf9f3;border:1px solid #c5e6d6;border-left:5px solid var(--green);border-radius:13px;padding:14px;margin:14px 0}
+.steps,.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step,.check{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.n{display:inline-flex;width:31px;height:31px;align-items:center;justify-content:center;background:#5b43aa;color:#fff;border-radius:50%;font-weight:1000}.step h3{margin:9px 0 5px}.promptgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.prompt{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.prompt textarea{width:100%;min-height:340px;resize:vertical;border:1px solid #d7dbea;border-radius:12px;padding:12px;background:#fafbff;font:13px/1.5 Consolas,monospace;color:#1a2940}.copy{margin-top:9px;background:#292451;color:#fff;border-radius:10px;padding:8px 11px}.route{display:grid;grid-template-columns:110px 1fr;gap:15px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;margin:10px 0}.time{height:max-content;text-align:center;background:#eeeaff;color:#523c9e;border-radius:13px;padding:9px;font-weight:1000}.checks ul{list-style:none;padding:0}.checks li{margin:8px 0}.checks li:before{content:"□";margin-right:8px;color:var(--green);font-weight:1000}.peer{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.peer div{padding:18px;border-radius:16px;background:#fff;border:1px solid var(--line);text-align:center;font-weight:1000}.footer{text-align:center;color:#70768a;margin-top:35px}.toast{position:fixed;right:18px;bottom:18px;background:#292451;color:#fff;padding:10px 14px;border-radius:999px;opacity:0;transition:.2s}.toast.show{opacity:1}
+@media(max-width:820px){.grid2,.levels,.structures,.steps,.checks,.promptgrid,.peer{grid-template-columns:1fr}.route{grid-template-columns:1fr}.hero{padding:27px 22px}}
+</style></head><body><main>
+<div class="top"><a href="/grades/11" data-en="← Back to 11th Grade" data-es="← Volver a 11°">← Back to 11th Grade</a><button id="lang" class="lang">Español</button></div>
+<section class="hero"><small data-en="11TH GRADE · CYCLE 5 · AUG 24–31" data-es="11° · CICLO 5 · 24–31 DE AGOSTO">11TH GRADE · CYCLE 5 · AUG 24–31</small><h1 data-en="Full System Integration" data-es="Integración Completa del Sistema">Full System Integration</h1><p data-en="Robot + Web + Data. Connect the parts you have already built into one functional IoT system, prove the data flow and close the project at its current scope." data-es="Robot + Web + Datos. Conecta las partes que ya construiste en un solo sistema IoT funcional, demuestra el flujo de datos y cierra el proyecto en su alcance actual.">Robot + Web + Data. Connect the parts you have already built into one functional IoT system, prove the data flow and close the project at its current scope.</p><div class="pills"><span>⏱ 2 hours</span><span>ESP32</span><span>Wokwi</span><span>Sensors</span><span>Actuators</span><span>Web UI</span><span>localStorage</span><span>Alerts</span></div></section>
+
+<div class="grid2"><section class="panel"><h2 data-en="🎯 Learning Objective" data-es="🎯 Objetivo de aprendizaje">🎯 Learning Objective</h2><strong data-en="Integrate the complete system: Robot + Web + Database with full functionality." data-es="Integrar el sistema completo: Robot + Web + Base de Datos con funcionalidad completa.">Integrate the complete system: Robot + Web + Database with full functionality.</strong></section><section class="panel theme"><h2 data-en="🧭 Cycle Topic" data-es="🧭 Tema del ciclo">🧭 Cycle Topic</h2><strong data-en="Robot + Web + Data: From Components to a Complete IoT System" data-es="Robot + Web + Datos: De componentes a un sistema IoT completo">Robot + Web + Data: From Components to a Complete IoT System</strong></section></div>
+
+<section class="note"><h3 data-en="📓 Start in your notebook" data-es="📓 Inicia en tu cuaderno">📓 Start in your notebook</h3><p data-en="Write the Cycle 5 topic and learning objective. Then answer the official opening question: How do all the parts work together?" data-es="Escribe el tema y el objetivo de aprendizaje del Ciclo 5. Luego responde la pregunta oficial de apertura: ¿Cómo trabajan juntas todas las partes?">Write the Cycle 5 topic and learning objective. Then answer the official opening question: How do all the parts work together?</p></section>
+
+<h2 class="title" data-en="1 · Start From the Work You Already Have" data-es="1 · Parte del trabajo que ya tienes">1 · Start From the Work You Already Have</h2>
+<section class="sequence"><h3 data-en="This is a project-closing integration cycle." data-es="Este es un ciclo de integración para cerrar el proyecto.">This is a project-closing integration cycle.</h3><p data-en="Open your latest project first. Do not restart a working system. Your goal is to identify the missing connections, complete the agreed scope, test the complete flow and leave a demonstrable final version." data-es="Abre primero tu proyecto más reciente. No reinicies un sistema que ya funciona. Tu meta es identificar las conexiones faltantes, completar el alcance acordado, probar el flujo completo y dejar una versión final demostrable.">Open your latest project first. Do not restart a working system. Your goal is to identify the missing connections, complete the agreed scope, test the complete flow and leave a demonstrable final version.</p><a href="/guides/grade-11/updated-class-sequences.html" data-en="Open Updated Class Sequences ↗" data-es="Abrir Secuencias de Clase Actualizadas ↗">Open Updated Class Sequences ↗</a></section>
+
+<h2 class="title" data-en="2 · Catch-Up Fast Track" data-es="2 · Ruta rápida de nivelación">2 · Catch-Up Fast Track</h2>
+<p data-en="Use the level that matches your current system. The goal is not for every team to repeat the same steps; the goal is for every team to reach a complete, explainable integration." data-es="Usa el nivel que corresponda al estado actual de tu sistema. La meta no es que todos repitan los mismos pasos; la meta es que cada equipo alcance una integración completa y explicable.">Use the level that matches your current system. The goal is not for every team to repeat the same steps; the goal is for every team to reach a complete, explainable integration.</p>
+<div class="levels"><article class="level"><em>LEVEL 1</em><strong data-en="Catch Up" data-es="Nivelación">Catch Up</strong><p data-en="I have separate pieces or I need to recover the sequence. Identify sensor, ESP32/Wokwi, actuator and web interface; make one complete data path work first." data-es="Tengo piezas separadas o necesito recuperar la secuencia. Identifico sensor, ESP32/Wokwi, actuador e interfaz web; primero hago funcionar un flujo completo de datos.">I have separate pieces or I need to recover the sequence. Identify sensor, ESP32/Wokwi, actuator and web interface; make one complete data path work first.</p></article><article class="level"><em>LEVEL 2</em><strong data-en="Integration" data-es="Integración">Integration</strong><p data-en="My components already work. Connect web control, system state and historical data so they behave as one system." data-es="Mis componentes ya funcionan. Conecto control web, estado del sistema y datos históricos para que se comporten como un solo sistema.">My components already work. Connect web control, system state and historical data so they behave as one system.</p></article><article class="level"><em>LEVEL 3</em><strong data-en="Engineering Challenge" data-es="Reto de ingeniería">Engineering Challenge</strong><p data-en="My system is integrated. Add meaningful alerts, validation, history visualization, safer control logic or another justified improvement." data-es="Mi sistema está integrado. Agrego alertas significativas, validación, visualización del historial, lógica de control más segura u otra mejora justificada.">My system is integrated. Add meaningful alerts, validation, history visualization, safer control logic or another justified improvement.</p></article></div>
+
+<h2 class="title" data-en="3 · Understand the Complete Architecture" data-es="3 · Comprende la arquitectura completa">3 · Understand the Complete Architecture</h2>
+<section class="arch"><div class="row"><span>SENSOR</span><b>→</b><span>ESP32 / WOKWI</span><b>→</b><span data-en="SYSTEM LOGIC" data-es="LÓGICA">SYSTEM LOGIC</span><b>→</b><span>WEB UI</span></div><div class="row"><span>USER</span><b>→</b><span>WEB CONTROL</span><b>→</b><span>ESP32 / LOGIC</span><b>→</b><span>ACTUATOR</span></div><div class="row"><span data-en="SENSOR STATE" data-es="ESTADO SENSOR">SENSOR STATE</span><b>→</b><span>localStorage</span><b>→</b><span>HISTORY</span><b>→</b><span>ALERTS / INSIGHTS</span></div></section>
+<div class="note"><h3 data-en="📓 System Integration Map" data-es="📓 Mapa de integración del sistema">📓 System Integration Map</h3><pre class="code">PROJECT:
+PROBLEM: What problem does the system solve?
+SENSOR: What does it measure?
+ESP32: What data does it process?
+ACTUATOR: What action can it perform?
+WEB: What information does the user see?
+CONTROL: What can the user control?
+DATA: What information should be stored?
+ALERT: When should the system warn the user?
+
+Draw:
+SENSOR → ESP32 → WEB → USER
+                  ↓
+             localStorage
+
+USER → WEB → COMMAND → ESP32/LOGIC → ACTUATOR</pre></div>
+
+<h2 class="title" data-en="4 · Integration Requirements" data-es="4 · Requisitos de integración">4 · Integration Requirements</h2>
+<div class="structures"><article class="structure"><strong>Sensor → Data</strong><p data-en="Generate or simulate a meaningful sensor value and make its current state visible." data-es="Genera o simula un valor significativo del sensor y hace visible su estado actual.">Generate or simulate a meaningful sensor value and make its current state visible.</p></article><article class="structure"><strong>Web → Control</strong><p data-en="The interface must perform a meaningful action: ON/OFF, value, mode or another justified control." data-es="La interfaz debe realizar una acción significativa: ON/OFF, valor, modo u otro control justificado.">The interface must perform a meaningful action: ON/OFF, value, mode or another justified control.</p></article><article class="structure"><strong>Actuator</strong><p data-en="At least one actuator or simulated output must visibly respond to system logic or user control." data-es="Al menos un actuador o salida simulada debe responder visiblemente a la lógica o al control del usuario.">At least one actuator or simulated output must visibly respond to system logic or user control.</p></article><article class="structure"><strong>Persistence</strong><p data-en="Store useful historical readings in localStorage and recover them after refresh." data-es="Guarda lecturas históricas útiles en localStorage y recupéralas después de recargar.">Store useful historical readings in localStorage and recover them after refresh.</p></article><article class="structure"><strong>History</strong><p data-en="Stored data must be used: show readings, status changes, events or another useful history." data-es="Los datos guardados deben utilizarse: muestra lecturas, cambios de estado, eventos u otro historial útil.">Stored data must be used: show readings, status changes, events or another useful history.</p></article><article class="structure"><strong>Alert</strong><p data-en="Create at least one justified notification or alert based on a sensor value or system condition." data-es="Crea al menos una notificación o alerta justificada basada en un valor del sensor o condición del sistema.">Create at least one justified notification or alert based on a sensor value or system condition.</p></article></div>
+<div class="good"><b data-en="About “Database” in this cycle:" data-es="Sobre “Base de Datos” en este ciclo:">About “Database” in this cycle:</b> <span data-en="The official activity specifies localStorage for historical data. In this guide, localStorage is the persistence layer for the required practice. A remote database is not required to close Cycle 5." data-es="La actividad oficial especifica localStorage para datos históricos. En esta guía, localStorage es la capa de persistencia para la práctica requerida. No se exige una base de datos remota para cerrar el Ciclo 5.">The official activity specifies localStorage for historical data. In this guide, localStorage is the persistence layer for the required practice. A remote database is not required to close Cycle 5.</span></div>
+
+<h2 class="title" data-en="5 · Historical Data With Purpose" data-es="5 · Datos históricos con propósito">5 · Historical Data With Purpose</h2>
+<pre class="code">const reading = {
+  timestamp: new Date().toISOString(),
+  humidity: 32,
+  temperature: 29,
+  pump: "ON"
+};
+
+function saveReading(reading) {
+  let history = [];
+  try {
+    history = JSON.parse(localStorage.getItem("sensorHistory")) || [];
+    if (!Array.isArray(history)) history = [];
+  } catch {
+    history = [];
+  }
+
+  history.push(reading);
+  history = history.slice(-20); // keep recent history
+  localStorage.setItem("sensorHistory", JSON.stringify(history));
+}</pre>
+<div class="rule"><b data-en="Do not store data just to satisfy a requirement." data-es="No guardes datos solamente para cumplir un requisito.">Do not store data just to satisfy a requirement.</b> <span data-en="Your application must retrieve and use the stored information—for example, to show recent readings, status history or trends." data-es="Tu aplicación debe recuperar y utilizar la información almacenada, por ejemplo para mostrar lecturas recientes, historial de estados o tendencias.">Your application must retrieve and use the stored information—for example, to show recent readings, status history or trends.</span></div>
+
+<h2 class="title" data-en="6 · Alerts Are Engineering Decisions" data-es="6 · Las alertas son decisiones de ingeniería">6 · Alerts Are Engineering Decisions</h2>
+<pre class="code">function evaluateHumidity(humidity) {
+  if (humidity < 30) {
+    showAlert("Low soil humidity");
+    return "critical";
+  }
+  return "normal";
+}</pre>
+<p data-en="Before accepting a threshold, explain: Why this value? What should happen? Is it a warning or critical condition? Should the actuator respond automatically? Should the event be stored?" data-es="Antes de aceptar un umbral, explica: ¿Por qué ese valor? ¿Qué debe ocurrir? ¿Es advertencia o condición crítica? ¿Debe responder automáticamente el actuador? ¿Debe almacenarse el evento?">Before accepting a threshold, explain: Why this value? What should happen? Is it a warning or critical condition? Should the actuator respond automatically? Should the event be stored?</p>
+
+<h2 class="title" data-en="7 · Integration Testing" data-es="7 · Pruebas de integración">7 · Integration Testing</h2>
+<div class="steps"><article class="step"><span class="n">1</span><h3>Sensor → Web</h3><p data-en="Change the sensor value. Does the interface show the correct state?" data-es="Cambia el valor del sensor. ¿La interfaz muestra el estado correcto?">Change the sensor value. Does the interface show the correct state?</p></article><article class="step"><span class="n">2</span><h3>Web → Actuator</h3><p data-en="Use the control. Does the intended actuator/state respond?" data-es="Usa el control. ¿Responde el actuador/estado esperado?">Use the control. Does the intended actuator/state respond?</p></article><article class="step"><span class="n">3</span><h3>Data → Refresh</h3><p data-en="Store readings and refresh. Is the history recovered correctly?" data-es="Guarda lecturas y recarga. ¿El historial se recupera correctamente?">Store readings and refresh. Is the history recovered correctly?</p></article><article class="step"><span class="n">4</span><h3>Threshold → Alert</h3><p data-en="Force a value beyond the threshold. Does the correct alert appear?" data-es="Fuerza un valor fuera del umbral. ¿Aparece la alerta correcta?">Force a value beyond the threshold. Does the correct alert appear?</p></article><article class="step"><span class="n">5</span><h3>Invalid State</h3><p data-en="Test missing, invalid or corrupted stored data. Does the interface remain usable?" data-es="Prueba datos almacenados faltantes, inválidos o corruptos. ¿La interfaz sigue siendo utilizable?">Test missing, invalid or corrupted stored data. Does the interface remain usable?</p></article><article class="step"><span class="n">6</span><h3>Full Flow</h3><p data-en="Demonstrate one complete scenario from sensor/input to decision, output, persistence and feedback." data-es="Demuestra un escenario completo desde sensor/entrada hasta decisión, salida, persistencia y respuesta.">Demonstrate one complete scenario from sensor/input to decision, output, persistence and feedback.</p></article></div>
+
+<h2 class="title" data-en="8 · Prompt Engineering for System Integration" data-es="8 · Ingeniería de prompts para integración de sistemas">8 · Prompt Engineering for System Integration</h2>
+<div class="flow"><span>SYSTEM CONTEXT</span><b>+</b><span>ARCHITECTURE</span><b>+</b><span>COMPONENT</span><b>+</b><span>DATA FLOW</span><b>+</b><span>CONSTRAINTS</span><b>+</b><span>EXPECTED BEHAVIOR</span><b>+</b><span>TESTS</span></div>
+<div class="promptgrid"><article class="prompt"><h3 data-en="Integration Prompt" data-es="Prompt de integración">Integration Prompt</h3><textarea id="p1" readonly>I am integrating an existing 11th grade IoT project.
+
+SYSTEM PURPOSE:
+[what problem it solves]
+
+CURRENT ARCHITECTURE:
+Sensor: [...]
+ESP32/Wokwi: [...]
+Actuator: [...]
+Web interface: [...]
+Current data flow: [...]
+
+COMPONENT I NEED TO INTEGRATE:
+[one precise integration]
+
+EXPECTED DATA FLOW:
+[input] → [processing] → [output] → [persistence/feedback]
+
+CURRENT CODE:
+[paste only relevant sections]
+
+CONSTRAINTS:
+- Do not rewrite the complete project.
+- Preserve working components.
+- Explain the proposed data flow first.
+- Identify exactly which existing functions/files should change.
+- Keep the solution appropriate for our current architecture.
+- Include error handling where needed.
+- Give me 4 integration tests.
+
+EXPECTED BEHAVIOR:
+[describe the final observable result]</textarea><button class="copy" data-id="p1" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article>
+<article class="prompt"><h3 data-en="System Review Prompt" data-es="Prompt de revisión del sistema">System Review Prompt</h3><textarea id="p2" readonly>Review this existing IoT system as an integration reviewer.
+
+SYSTEM:
+[describe it]
+
+ARCHITECTURE / CODE:
+[paste the relevant information]
+
+Verify these flows:
+1. Sensor → processing → web display
+2. Web control → logic → actuator/output
+3. Reading/event → localStorage
+4. localStorage → history display after refresh
+5. Sensor threshold → alert/notification
+
+For each flow:
+- Mark PASS, PARTIAL or MISSING.
+- Cite the function or code responsible.
+- Explain the smallest change required if incomplete.
+- Do not redesign or rewrite the whole system.
+
+Then give:
+- 3 highest-risk integration bugs
+- 4 final test scenarios
+- a short demo checklist</textarea><button class="copy" data-id="p2" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button></article></div>
+
+<h2 class="title" data-en="9 · Two-Hour Project Closing Route" data-es="9 · Ruta de cierre del proyecto en dos horas">9 · Two-Hour Project Closing Route</h2>
+<article class="route"><div class="time">0–10</div><div><b data-en="Opening + system demo" data-es="Apertura + demostración del sistema">Opening + system demo</b><p data-en="Lasallian greeting, emotional check and: How do all the parts work together?" data-es="Saludo Lasallista, chequeo emocional y: ¿Cómo trabajan juntas todas las partes?">Lasallian greeting, emotional check and: How do all the parts work together?</p></div></article>
+<article class="route"><div class="time">10–25</div><div><b data-en="Recover the project" data-es="Recupera el proyecto">Recover the project</b><p data-en="Open the latest version, choose your level and complete the System Integration Map." data-es="Abre la versión más reciente, elige tu nivel y completa el Mapa de Integración del Sistema.">Open the latest version, choose your level and complete the System Integration Map.</p></div></article>
+<article class="route"><div class="time">25–50</div><div><b data-en="Complete the main integration" data-es="Completa la integración principal">Complete the main integration</b><p data-en="Make the essential Sensor/ESP32/Web/Actuator path work." data-es="Haz funcionar el flujo esencial Sensor/ESP32/Web/Actuador.">Make the essential Sensor/ESP32/Web/Actuator path work.</p></div></article>
+<article class="route"><div class="time">50–70</div><div><b data-en="Web control + actuator" data-es="Control web + actuador">Web control + actuator</b><p data-en="Complete a meaningful ON/OFF, value, mode or equivalent control." data-es="Completa un control significativo ON/OFF, valor, modo o equivalente.">Complete a meaningful ON/OFF, value, mode or equivalent control.</p></div></article>
+<article class="route"><div class="time">70–88</div><div><b data-en="Historical data" data-es="Datos históricos">Historical data</b><p data-en="Store useful data in localStorage and display/recover it." data-es="Guarda datos útiles en localStorage y muéstralos/recupéralos.">Store useful data in localStorage and display/recover it.</p></div></article>
+<article class="route"><div class="time">88–100</div><div><b data-en="Alert challenge" data-es="Reto de alertas">Alert challenge</b><p data-en="Add a justified sensor/system alert. Advanced teams can improve validation or visualization." data-es="Agrega una alerta justificada del sensor/sistema. Equipos avanzados pueden mejorar validación o visualización.">Add a justified sensor/system alert. Advanced teams can improve validation or visualization.</p></div></article>
+<article class="route"><div class="time">100–110</div><div><b data-en="Integration tests" data-es="Pruebas de integración">Integration tests</b><p data-en="Test the complete flows, refresh persistence and at least one edge/failure case." data-es="Prueba los flujos completos, la persistencia al recargar y al menos un caso límite/falla.">Test the complete flows, refresh persistence and at least one edge/failure case.</p></div></article>
+<article class="route"><div class="time">110–117</div><div><b data-en="Peer review + final demo" data-es="Revisión entre pares + demo final">Peer review + final demo</b><p data-en="Another team tests the system. Fix only critical closing issues and prepare the demonstration." data-es="Otro equipo prueba el sistema. Corrige solamente problemas críticos de cierre y prepara la demostración.">Another team tests the system. Fix only critical closing issues and prepare the demonstration.</p></div></article>
+<article class="route"><div class="time">117–120</div><div><b data-en="Reflection + closure" data-es="Reflexión + cierre">Reflection + closure</b><p data-en="What was the most challenging part of integration? Finish with the Lasallian prayer." data-es="¿Cuál fue la parte más desafiante de la integración? Finaliza con la oración Lasallista.">What was the most challenging part of integration? Finish with the Lasallian prayer.</p></div></article>
+
+<h2 class="title" data-en="10 · Final Peer Review" data-es="10 · Revisión final entre pares">10 · Final Peer Review</h2>
+<div class="peer"><div>✅ FLOW WORKS</div><div>🔗 CONNECTION ISSUE</div><div>🐞 BUG</div><div>💡 FINAL SUGGESTION</div></div>
+
+<h2 class="title" data-en="11 · Final Definition of Done" data-es="11 · Definición final de terminado">11 · Final Definition of Done</h2>
+<div class="checks"><article class="check"><h3 data-en="System" data-es="Sistema">System</h3><ul><li data-en="Sensor produces/simulates data" data-es="Sensor produce/simula datos">Sensor produces/simulates data</li><li>ESP32 / Wokwi logic</li><li data-en="Actuator/output responds" data-es="Actuador/salida responde">Actuator/output responds</li><li data-en="Web displays system state" data-es="Web muestra el estado">Web displays system state</li></ul></article><article class="check"><h3 data-en="Integration" data-es="Integración">Integration</h3><ul><li data-en="Meaningful web control works" data-es="Control web significativo funciona">Meaningful web control works</li><li data-en="History persists in localStorage" data-es="Historial persiste en localStorage">History persists in localStorage</li><li data-en="History returns after refresh" data-es="Historial regresa al recargar">History returns after refresh</li><li data-en="Sensor-based alert works" data-es="Alerta basada en sensor funciona">Sensor-based alert works</li></ul></article><article class="check"><h3 data-en="Project Closure" data-es="Cierre del proyecto">Project Closure</h3><ul><li data-en="Complete flow tested" data-es="Flujo completo probado">Complete flow tested</li><li data-en="Peer review completed" data-es="Revisión entre pares completada">Peer review completed</li><li data-en="Team can explain data flow" data-es="Equipo explica el flujo de datos">Team can explain data flow</li><li data-en="Final version is demonstrable" data-es="Versión final es demostrable">Final version is demonstrable</li></ul></article></div>
+<div class="good"><b data-en="Cycle 5 closure:" data-es="Cierre del Ciclo 5:">Cycle 5 closure:</b> <span data-en="The goal is a stable, explainable final version at the scope reached by the team—not an endless list of new features. Close critical integration gaps, prove the complete flow and document what remains as future improvement." data-es="La meta es una versión final estable y explicable dentro del alcance alcanzado por el equipo, no una lista interminable de funciones nuevas. Cierra brechas críticas de integración, demuestra el flujo completo y documenta lo restante como mejora futura.">The goal is a stable, explainable final version at the scope reached by the team—not an endless list of new features. Close critical integration gaps, prove the complete flow and document what remains as future improvement.</span></div>
+
+<section class="note"><h3 data-en="📓 Final Reflection" data-es="📓 Reflexión final">📓 Final Reflection</h3><strong data-en="What was the most challenging part of integration?" data-es="¿Cuál fue la parte más desafiante de la integración?">What was the most challenging part of integration?</strong><p data-en="Answer using one concrete example from your team's final system." data-es="Responde usando un ejemplo concreto del sistema final de tu equipo.">Answer using one concrete example from your team's final system.</p></section>
+<div class="footer">Tech Learning Hub · 11th Grade · Cycle 5 · Full System Integration</div>
+</main><div id="toast" class="toast">Copied</div>
+<script>
+let L='en';const b=document.getElementById('lang'),t=document.getElementById('toast');
+function setLang(l){L=l;document.documentElement.lang=l;document.querySelectorAll('[data-en][data-es]').forEach(e=>e.textContent=e.getAttribute('data-'+l));b.textContent=l==='en'?'Español':'English';document.title=l==='en'?'11th Grade · Cycle 5 · Full System Integration':'11° · Ciclo 5 · Integración Completa del Sistema'}
+b.onclick=()=>setLang(L==='en'?'es':'en');
+document.querySelectorAll('.copy').forEach(x=>x.onclick=async()=>{const a=document.getElementById(x.dataset.id);try{await navigator.clipboard.writeText(a.value);t.textContent=L==='en'?'Prompt copied':'Prompt copiado';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1300)}catch{a.select()}});
+setLang('en');
+</script></body></html>

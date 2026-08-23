@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCycle · STEM Project</title>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f7f0 0%, #e1efe1 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        /* ===== TARJETA PRINCIPAL ===== */
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 48px;
+            padding: 40px 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 40, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+        }
+
+        /* ===== HEADER ===== */
+        .project-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            border-bottom: 2px solid #2b6e4c;
+            padding-bottom: 20px;
+        }
+
+        .project-header h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #1d4b34;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .project-header h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #2b6e4c;
+            background: #d4eee0;
+            padding: 4px 16px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .ods-badge {
+            background: #1d4b34;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .ods-badge span {
+            background: #f5c542;
+            color: #1d3b2a;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        /* ===== PANEL DE CONTROL ===== */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 28px;
+            margin-top: 12px;
+        }
+
+        /* ===== FORMULARIO ===== */
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px 28px;
+            box-shadow: 0 8px 20px rgba(0, 30, 10, 0.08);
+            border: 1px solid #d9ece0;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1d4b34;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #1f3f2e;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1.5px solid #c8dfd0;
+            background: #f9fdfa;
+            font-size: 1rem;
+            transition: 0.2s;
+            outline: none;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #2b6e4c;
+            box-shadow: 0 0 0 4px rgba(43, 110, 76, 0.15);
+            background: white;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #1d4b34;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 0 #0f2f20;
+            margin-top: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #2b6e4c;
+            box-shadow: 0 6px 0 #0f2f20;
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #0f2f20;
+        }
+
+        .btn-secondary {
+            background: #d4eee0;
+            color: #1d4b34;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary:hover {
+            background: #b6ddc9;
+        }
+
+        /* ===== LISTA DE REGISTROS ===== */
+        .record-list {
+            max-height: 360px;
+            overflow-y: auto;
+            margin: 18px 0 12px;
+            padding-right: 4px;
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f6fbf8;
+            padding: 12px 16px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            border-left: 6px solid #2b6e4c;
+            transition: 0.1s;
+        }
+
+        .record-item .material {
+            font-weight: 600;
+            color: #1a3b2a;
+        }
+
+        .record-item .weight {
+            background: #e4f2ea;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .record-item .delete-btn {
+            background: none;
+            border: none;
+            color: #a95c5c;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: 0.2s;
+        }
+
+        .record-item .delete-btn:hover {
+            color: #c0392b;
+            transform: scale(1.2);
+        }
+
+        .empty-message {
+            color: #6d8d7a;
+            text-align: center;
+            padding: 32px 0;
+            font-style: italic;
+        }
+
+        /* ===== ESTADÍSTICAS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 18px 0;
+        }
+
+        .stat-box {
+            background: #eaf5ef;
+            border-radius: 20px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1d4b34;
+        }
+
+        .stat-box .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #2b5c41;
+        }
+
+        .impact-message {
+            background: #d9ece0;
+            border-radius: 20px;
+            padding: 16px;
+            margin: 16px 0 8px;
+            text-align: center;
+            font-weight: 500;
+            color: #1d4b34;
+        }
+
+        .impact-message strong {
+            font-size: 1.3rem;
+        }
+
+        /* ===== ACCIONES ===== */
+        .actions-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 860px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .project-header {
+                flex-direction: column;
+                align-items: start;
+                gap: 16px;
+            }
+            .project-header h1 {
+                font-size: 2rem;
+            }
+            .app-container {
+                padding: 24px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== SCROLL ===== */
+        .record-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .record-list::-webkit-scrollbar-track {
+            background: #e0ede5;
+            border-radius: 10px;
+        }
+        .record-list::-webkit-scrollbar-thumb {
+            background: #2b6e4c;
+            border-radius: 10px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-note {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #3a624b;
+            border-top: 1px solid #c8dfd0;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- HEADER -->
+    <header class="project-header">
+        <h1>
+            ♻️ EcoCycle
+            <small>v1.0 · STEM</small>
+        </h1>
+        <div class="ods-badge">
+            🎯 ODS 12 <span>Consumo responsable</span>
+        </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard">
+        <!-- COLUMNA IZQUIERDA: REGISTRO Y LISTA -->
+        <div class="card">
+            <h2>📦 Registrar reciclaje</h2>
+            <form id="recycleForm">
+                <div class="form-group">
+                    <label for="materialType">Tipo de material</label>
+                    <select id="materialType" required>
+                        <option value="Plástico">♻️ Plástico</option>
+                        <option value="Papel/Cartón">📄 Papel / Cartón</option>
+                        <option value="Vidrio">🍾 Vidrio</option>
+                        <option value="Metal">🔩 Metal</option>
+                        <option value="Orgánico">🌿 Orgánico</option>
+                        <option value="Otro">📦 Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="weightInput">Peso (kg)</label>
+                    <input type="number" id="weightInput" placeholder="Ej: 1.5" min="0.01" step="0.01" required>
+                </div>
+                <button type="submit" class="btn-primary">➕ Agregar registro</button>
+            </form>
+
+            <div style="margin-top: 28px;">
+                <h2>📋 Historial</h2>
+                <div id="recordList" class="record-list">
+                    <!-- Los registros se inyectan con JS -->
+                    <div class="empty-message">Aún no hay registros. ¡Comienza a reciclar!</div>
+                </div>
+                <div class="actions-row">
+                    <button id="clearAllBtn" class="btn-secondary" style="background: #f8e1e1; color:#7a3e3e;">🗑️ Vaciar todo</button>
+                    <button id="sampleDataBtn" class="btn-secondary">📊 Cargar ejemplo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: ESTADÍSTICAS E IMPACTO -->
+        <div class="card">
+            <h2>📊 Impacto ambiental</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="number" id="totalItems">0</div>
+                    <div class="label">Total registros</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="totalWeight">0</div>
+                    <div class="label">Peso total (kg)</div>
+                </div>
+            </div>
+
+            <div class="impact-message" id="impactMessage">
+                🌱 <strong>0 kg</strong> de residuos gestionados correctamente.
+            </div>
+
+            <div style="margin-top: 18px;">
+                <h2 style="font-size:1.1rem;">🏆 Desglose por material</h2>
+                <div id="materialBreakdown" style="margin-top: 12px; font-size:0.95rem;">
+                    <p style="color: #4b6b5a;">Agrega registros para ver el desglose.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; background: #eaf3ee; border-radius: 20px; padding: 16px;">
+                <p style="font-weight:600; color:#1a3b2a;">🎯 ODS 12.5 · Reducción de residuos</p>
+                <p style="font-size:0.9rem; color: #2a4f3a;">Cada registro ayuda a visualizar el impacto del reciclaje en tu comunidad. ¡Sigue así!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        🧪 Proyecto STEM · 10° grado · Ciclo 4 · <strong>EcoCycle</strong> — solución para la gestión de residuos y conciencia ambiental.
+    </div>
+</div>
+
+<script>
+    // ================================================================
+    //  ECOCYCLE - APLICACIÓN COMPLETA
+    //  Estructuras: Variables, Arrays, Funciones, Condicionales, Bucles,
+    //  Manipulación del DOM, Interacción con el usuario.
+    // ================================================================
+
+    // ----- 1. ESTADO (DATOS) -----
+    // Array que almacena todos los registros de reciclaje
+    let recyclingRecords = [];
+
+    // Referencias a elementos del DOM
+    const form = document.getElementById('recycleForm');
+    const materialSelect = document.getElementById('materialType');
+    const weightInput = document.getElementById('weightInput');
+    const recordListEl = document.getElementById('recordList');
+    const totalItemsEl = document.getElementById('totalItems');
+    const totalWeightEl = document.getElementById('totalWeight');
+    const impactMessageEl = document.getElementById('impactMessage');
+    const materialBreakdownEl = document.getElementById('materialBreakdown');
+    const clearAllBtn = document.getElementById('clearAllBtn');
+    const sampleDataBtn = document.getElementById('sampleDataBtn');
+
+    // ----- 2. FUNCIONES PRINCIPALES -----
+
+    // Función para agregar un nuevo registro
+    function addRecord(material, weight) {
+        // Validación
+        if (!material || weight <= 0) {
+            alert('Por favor, selecciona un material y un peso válido (mayor a 0).');
+            return false;
+        }
+
+        // Crear objeto registro
+        const newRecord = {
+            id: Date.now(), // identificador único
+            material: material,
+            weight: parseFloat(weight.toFixed(2))
+        };
+
+        // Agregar al array
+        recyclingRecords.push(newRecord);
+
+        // Actualizar la interfaz
+        renderAll();
+
+        // Limpiar campo de peso (dejamos el material seleccionado)
+        weightInput.value = '';
+        weightInput.focus();
+
+        return true;
+    }
+
+    // Función para eliminar un registro por ID
+    function deleteRecord(id) {
+        // Filtrar el array, dejando solo los registros con ID diferente
+        recyclingRecords = recyclingRecords.filter(record => record.id !== id);
+        renderAll();
+    }
+
+    // Función para vaciar todos los registros
+    function clearAllRecords() {
+        if (recyclingRecords.length === 0) return;
+        if (confirm('¿Seguro que deseas eliminar todos los registros de reciclaje?')) {
+            recyclingRecords = [];
+            renderAll();
+        }
+    }
+
+    // Función para cargar datos de ejemplo (muestra)
+    function loadSampleData() {
+        const samples = [
+            { material: 'Plástico', weight: 2.3 },
+            { material: 'Papel/Cartón', weight: 1.8 },
+            { material: 'Vidrio', weight: 0.7 },
+            { material: 'Metal', weight: 3.1 },
+            { material: 'Orgánico', weight: 4.5 },
+            { material: 'Plástico', weight: 1.2 },
+            { material: 'Papel/Cartón', weight: 0.9 }
+        ];
+
+        // Agregar cada muestra
+        samples.forEach(item => {
+            const record = {
+                id: Date.now() + Math.random() * 1000,
+                material: item.material,
+                weight: item.weight
+            };
+            recyclingRecords.push(record);
+        });
+
+        renderAll();
+    }
+
+    // ----- 3. FUNCIONES DE RENDERIZADO -----
+
+    // Renderiza la lista de registros
+    function renderRecords() {
+        if (recyclingRecords.length === 0) {
+            recordListEl.innerHTML = `<div class="empty-message">📭 Aún no hay registros. ¡Comienza a reciclar!</div>`;
+            return;
+        }
+
+        let html = '';
+        // BUCLE: recorremos todos los registros
+        for (let i = 0; i < recyclingRecords.length; i++) {
+            const record = recyclingRecords[i];
+            html += `
+                <div class="record-item">
+                    <span class="material">${record.material}</span>
+                    <span class="weight">${record.weight} kg</span>
+                    <button class="delete-btn" data-id="${record.id}" title="Eliminar">✕</button>
+                </div>
+            `;
+        }
+        recordListEl.innerHTML = html;
+
+        // Agregar eventos a los botones de eliminar (delegación o directo)
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const id = Number(this.dataset.id);
+                deleteRecord(id);
+            });
+        });
+    }
+
+    // Actualiza estadísticas (total items, peso total, impacto)
+    function renderStats() {
+        const totalItems = recyclingRecords.length;
+
+        // BUCLE: sumamos los pesos
+        let totalWeight = 0;
+        for (let i = 0; i < recyclingRecords.length; i++) {
+            totalWeight += recyclingRecords[i].weight;
+        }
+        totalWeight = parseFloat(totalWeight.toFixed(2));
+
+        totalItemsEl.textContent = totalItems;
+        totalWeightEl.textContent = totalWeight;
+
+        // Mensaje de impacto (ODS)
+        let impactText = '';
+        if (totalWeight === 0) {
+            impactText = '🌱 <strong>0 kg</strong> de residuos gestionados correctamente.';
+        } else if (totalWeight < 5) {
+            impactText = `🌿 <strong>${totalWeight} kg</strong> · ¡Buen inicio! Cada acción cuenta.`;
+        } else if (totalWeight < 15) {
+            impactText = `🌳 <strong>${totalWeight} kg</strong> · ¡Excelente! Estás ayudando al planeta.`;
+        } else {
+            impactText = `🏆 <strong>${totalWeight} kg</strong> · ¡Impacto significativo! Eres un agente de cambio.`;
+        }
+        impactMessageEl.innerHTML = impactText;
+    }
+
+    // Renderiza el desglose por material (uso de objeto y arrays)
+    function renderBreakdown() {
+        if (recyclingRecords.length === 0) {
+            materialBreakdownEl.innerHTML = `<p style="color: #4b6b5a;">Agrega registros para ver el desglose.</p>`;
+            return;
+        }
+
+        // Objeto para acumular pesos por material
+        const breakdown = {};
+
+        // BUCLE: recorremos registros
+        for (let i = 0; i < recyclingRecords.length; i++) {
+            const record = recyclingRecords[i];
+            if (breakdown[record.material]) {
+                breakdown[record.material] += record.weight;
+            } else {
+                breakdown[record.material] = record.weight;
+            }
+        }
+
+        // Convertir a array de pares [material, peso] para ordenar
+        const sortedMaterials = Object.keys(breakdown).sort();
+
+        let html = '<ul style="list-style: none; padding:0;">';
+        // BUCLE: mostramos cada material con su peso
+        for (let i = 0; i < sortedMaterials.length; i++) {
+            const material = sortedMaterials[i];
+            const weight = breakdown[material].toFixed(2);
+            html += `
+                <li style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #d4e8db;">
+                    <span>${material}</span>
+                    <span style="font-weight:600;">${weight} kg</span>
+                </li>
+            `;
+        }
+        html += '</ul>';
+        materialBreakdownEl.innerHTML = html;
+    }
+
+    // Función que actualiza toda la interfaz
+    function renderAll() {
+        renderRecords();
+        renderStats();
+        renderBreakdown();
+    }
+
+    // ----- 4. EVENTOS E INTERACCIÓN -----
+
+    // Evento submit del formulario
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Evita recargar la página
+
+        const material = materialSelect.value;
+        const weight = parseFloat(weightInput.value);
+
+        if (!weight || weight <= 0) {
+            alert('Ingresa un peso válido (número mayor a 0).');
+            return;
+        }
+
+        addRecord(material, weight);
+    });
+
+    // Botón "Vaciar todo"
+    clearAllBtn.addEventListener('click', clearAllRecords);
+
+    // Botón "Cargar ejemplo"
+    sampleDataBtn.addEventListener('click', loadSampleData);
+
+    // ----- 5. INICIALIZACIÓN -----
+    // Al cargar la página, si no hay datos, mostramos el estado vacío.
+    // Pero también podemos cargar algunos datos de ejemplo para demostración.
+    // (Para una experiencia más rica, cargamos datos de ejemplo al inicio)
+    // Comentamos la siguiente línea si queremos empezar desde cero.
+    // loadSampleData(); // <-- Descomentar si se desea iniciar con datos de ejemplo.
+
+    // Inicialmente, mostramos el estado vacío.
+    renderAll();
+
+    // Pequeña bienvenida en consola (evidencia de programación)
+    console.log('♻️ EcoCycle iniciado correctamente.');
+    console.log('📦 Registros actuales:', recyclingRecords.length);
+    console.log('💡 Usa el formulario para agregar materiales reciclables.');
+
+    // ----- 6. EVIDENCIA DE ESTRUCTURAS DE PROGRAMACIÓN -----
+    // 1. Variables: ya usadas (recyclingRecords, materialSelect, etc.)
+    // 2. Condicionales: en addRecord (validación), en renderStats (impacto)
+    // 3. Bucles: en renderRecords, renderStats, renderBreakdown (for)
+    // 4. Funciones: addRecord, deleteRecord, renderAll, etc.
+    // 5. Arrays: recyclingRecords (manipulación con push, filter)
+    // 6. DOM: innerHTML, textContent, addEventListener
+    // 7. Comentarios: a lo largo del código.
+
+    // También se incluye una función de orden superior (filter en deleteRecord)
+    // y uso de objetos literales.
+
+</script>
+
+</body>
+</html>

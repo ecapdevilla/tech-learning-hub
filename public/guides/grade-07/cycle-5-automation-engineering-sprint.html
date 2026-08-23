@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>7th Grade · Cycle 5 · Automated System Final Engineering Sprint</title>
+<style>
+:root{
+ --ink:#10283f;--navy:#0a2336;--blue:#15627f;--cyan:#20a7b5;--green:#2c9167;
+ --mint:#e9f9f2;--sky:#edf8fc;--paper:#fff;--line:#d8e7ee;--gold:#f1b84a;
+ --purple:#7355a9;--soft:#f8fbfd;--danger:#b94b4b
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);
+background:linear-gradient(180deg,#eef8fb,#fbfdfe 44%,#fff);line-height:1.55}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.page{max-width:1180px;margin:auto;padding:22px 18px 70px}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.back{font-weight:900;color:var(--blue)}
+.lang{border:0;background:#123d57;color:#fff;border-radius:999px;padding:9px 14px;font-weight:950;cursor:pointer}
+.hero{background:radial-gradient(circle at 88% 8%,rgba(52,210,191,.24),transparent 30%),linear-gradient(135deg,#0a2336,#12445e 58%,#176d83);color:#fff;border-radius:28px;padding:38px;box-shadow:0 18px 48px rgba(18,70,92,.18);position:relative;overflow:hidden}
+.hero:after{content:"⚙";position:absolute;right:22px;bottom:-72px;font-size:220px;color:rgba(255,255,255,.045)}
+.kicker{font-size:.78rem;font-weight:1000;letter-spacing:.14em;color:#83e8df}
+h1{font-size:clamp(2.05rem,5vw,4.05rem);line-height:1;margin:8px 0 15px;max-width:900px}
+.hero p{font-size:1.06rem;max-width:900px;color:#dceff4}
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.hero-meta span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);font-size:.82rem;font-weight:900}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:13px;font-weight:950;border:1px solid transparent;cursor:pointer}
+.btn.primary{background:#44d8b1;color:#082f31}
+.btn.secondary{background:rgba(255,255,255,.09);color:#fff;border-color:rgba(255,255,255,.18)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:21px;padding:22px;box-shadow:0 8px 25px rgba(23,74,98,.055)}
+.two{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin:20px 0}
+.panel h2,.panel h3{margin-top:0}
+.big-objective{font-size:1.07rem}
+.cycle-theme{background:linear-gradient(145deg,#e9f8fc,#ebfbf3)}
+.cycle-theme .theme{font-size:1.5rem;font-weight:1000;color:#155e78}
+.section-title{margin:37px 0 13px;font-size:1.65rem}
+.foundation{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.concept{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.concept .icon{font-size:2rem}
+.concept strong{display:block;margin:7px 0 5px}
+.flowbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:18px 0;font-weight:1000}
+.flowbar span{background:var(--sky);border:1px solid #cae6ef;padding:9px 12px;border-radius:999px}
+.arrow{color:#6598aa}
+.lesson{display:grid;grid-template-columns:115px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;margin:11px 0}
+.lesson .time{background:var(--sky);color:#145e7a;border-radius:14px;padding:10px;font-weight:1000;text-align:center;height:max-content}
+.lesson h3{margin:0 0 6px}
+.callout{background:#fff8e8;border:1px solid #efd996;border-left:5px solid var(--gold);border-radius:14px;padding:15px 17px;margin:14px 0}
+.system-card{background:linear-gradient(145deg,#0e3247,#15576a);color:#fff;border-radius:23px;padding:24px}
+.system-card h2{margin-top:0}
+.system-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:14px}
+.system-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:16px}
+.system-box strong{display:block;color:#7de3d8;margin-bottom:5px}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.example{background:#fff;border:1px solid var(--line);border-radius:18px;padding:19px}
+.example pre{white-space:pre-wrap;background:#0f2433;color:#dbf4f5;border-radius:13px;padding:13px;overflow:auto;font-size:.84rem}
+.test-grid,.doc-grid,.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.test,.doc,.prompt{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.test table{font-size:.88rem}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{border-bottom:1px solid var(--line);padding:11px;text-align:left;vertical-align:top}
+th{background:#123f58;color:#fff}
+tr:last-child td{border-bottom:0}
+.prompt textarea{width:100%;min-height:180px;border:1px solid #cbdde5;background:#f8fbfd;padding:12px;border-radius:12px;resize:vertical;font:inherit;font-size:.87rem;color:#153b4b}
+.copy{margin-top:10px;border:0;background:#173f57;color:#fff;border-radius:10px;padding:8px 11px;font-weight:900;cursor:pointer}
+.check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.check{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}
+.check h3{font-size:1rem;color:#145d76}
+.check ul{list-style:none;padding:0;margin:0}
+.check li{margin:8px 0}
+.check li:before{content:"□";margin-right:8px;font-weight:1000;color:var(--green)}
+.mini-rubric{overflow:auto;border-radius:18px}
+.exit{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.question{background:linear-gradient(145deg,#f2effb,#fbfaff);border:1px solid #ded7ef;border-radius:18px;padding:18px}
+.planner{background:#f7fbfd;border:2px dashed #a7ccd9;border-radius:21px;padding:20px}
+.planner blockquote{margin:12px 0;background:#fff;border-left:4px solid var(--cyan);padding:13px 15px;border-radius:9px}
+.footer{text-align:center;margin-top:35px;color:#587281;font-size:.9rem}
+.toast{position:fixed;right:18px;bottom:18px;background:#133d53;color:#fff;padding:10px 14px;border-radius:999px;font-weight:900;opacity:0;pointer-events:none;transition:.2s}
+.toast.show{opacity:1}
+@media(max-width:850px){
+ .two,.examples,.test-grid,.doc-grid,.prompt-grid,.exit{grid-template-columns:1fr}
+ .foundation,.system-grid,.check-grid{grid-template-columns:1fr}
+ .lesson{grid-template-columns:1fr}
+ .hero{padding:28px 22px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <a class="back" href="/grades/7" data-en="← Back to 7th Grade" data-es="← Volver a 7°">← Back to 7th Grade</a>
+    <button id="langBtn" class="lang">Español</button>
+  </div>
+
+  <section class="hero">
+    <div class="kicker" data-en="7TH GRADE · CYCLE 5 · AUG 24–31" data-es="7° · CICLO 5 · 24–31 DE AGOSTO">7TH GRADE · CYCLE 5 · AUG 24–31</div>
+    <h1 data-en="Automated System Final Engineering Sprint" data-es="Sprint Final de Ingeniería de Sistemas Automatizados">Automated System Final Engineering Sprint</h1>
+    <p data-en="Complete, refine, test and document your automated system. Your goal is to prove that the complete flow works: the system senses an input, makes a logical decision and produces an output." data-es="Completa, mejora, prueba y documenta tu sistema automatizado. Tu meta es demostrar que el flujo completo funciona: el sistema detecta una entrada, toma una decisión lógica y produce una salida.">Complete, refine, test and document your automated system. Your goal is to prove that the complete flow works: the system senses an input, makes a logical decision and produces an output.</p>
+    <div class="hero-meta">
+      <span data-en="⏱ 2 hours" data-es="⏱ 2 horas">⏱ 2 hours</span>
+      <span data-en="⚙ Automation" data-es="⚙ Automatización">⚙ Automation</span>
+      <span data-en="🧪 Testing & Debugging" data-es="🧪 Pruebas y depuración">🧪 Testing & Debugging</span>
+      <span data-en="📘 Technical Documentation" data-es="📘 Documentación técnica">📘 Technical Documentation</span>
+    </div>
+    <div class="hero-actions">
+      <a class="btn primary" href="/gamification/live/host" data-en="🎮 Teacher Warm-up · 7th Automation Arena" data-es="🎮 Activador docente · 7° Automation Arena">🎮 Teacher Warm-up · 7th Automation Arena</a>
+      <a class="btn secondary" href="/guides/grade-07/cycle-4-automated-systems-lab.html" data-en="↩ Review Cycle 4" data-es="↩ Revisar Ciclo 4">↩ Review Cycle 4</a>
+    </div>
+  </section>
+
+  <section class="two">
+    <article class="panel big-objective">
+      <h2 data-en="🎯 Learning Objective" data-es="🎯 Objetivo de aprendizaje">🎯 Learning Objective</h2>
+      <p data-en="Complete and refine the automated system design, simulation or prototype, and technical documentation by applying inputs/sensors, logical decisions, outputs/actuators, testing and debugging." data-es="Completar y refinar el diseño del sistema automatizado, su simulación o prototipo y la documentación técnica aplicando entradas/sensores, decisiones lógicas, salidas/actuadores, pruebas y depuración.">Complete and refine the automated system design, simulation or prototype, and technical documentation by applying inputs/sensors, logical decisions, outputs/actuators, testing and debugging.</p>
+    </article>
+    <article class="panel cycle-theme">
+      <h2 data-en="🧭 Cycle Theme" data-es="🧭 Tema del ciclo">🧭 Cycle Theme</h2>
+      <div class="theme" data-en="Complete & Refine the Automated System" data-es="Completar y refinar el sistema automatizado">Complete & Refine the Automated System</div>
+      <p data-en="Sense → Think → Act → Test → Document" data-es="Detectar → Pensar → Actuar → Probar → Documentar">Sense → Think → Act → Test → Document</p>
+    </article>
+  </section>
+
+  <h2 class="section-title" data-en="1 · Understand the Engineering Flow" data-es="1 · Comprende el flujo de ingeniería">1 · Understand the Engineering Flow</h2>
+  <section class="foundation">
+    <article class="concept"><div class="icon">👁️</div><strong data-en="SENSE · Input" data-es="DETECTAR · Entrada">SENSE · Input</strong><p data-en="A sensor, button, value or user action provides information to the system." data-es="Un sensor, botón, valor o acción del usuario entrega información al sistema.">A sensor, button, value or user action provides information to the system.</p></article>
+    <article class="concept"><div class="icon">🧠</div><strong data-en="THINK · Logic" data-es="PENSAR · Lógica">THINK · Logic</strong><p data-en="The system evaluates the input using rules, comparisons or logical operators." data-es="El sistema evalúa la entrada utilizando reglas, comparaciones u operadores lógicos.">The system evaluates the input using rules, comparisons or logical operators.</p></article>
+    <article class="concept"><div class="icon">⚙️</div><strong data-en="ACT · Output" data-es="ACTUAR · Salida">ACT · Output</strong><p data-en="An actuator or interface performs an action: light, sound, movement, message, alarm or other response." data-es="Un actuador o interfaz ejecuta una acción: luz, sonido, movimiento, mensaje, alarma u otra respuesta.">An actuator or interface performs an action: light, sound, movement, message, alarm or other response.</p></article>
+  </section>
+  <div class="flowbar"><span data-en="INPUT" data-es="ENTRADA">INPUT</span><b class="arrow">→</b><span data-en="PROCESS / LOGIC" data-es="PROCESO / LÓGICA">PROCESS / LOGIC</span><b class="arrow">→</b><span data-en="OUTPUT" data-es="SALIDA">OUTPUT</span><b class="arrow">→</b><span data-en="TEST" data-es="PRUEBA">TEST</span><b class="arrow">→</b><span data-en="IMPROVE" data-es="MEJORA">IMPROVE</span></div>
+
+  <h2 class="section-title" data-en="2 · Choose Your Development Environment" data-es="2 · Elige tu entorno de desarrollo">2 · Choose Your Development Environment</h2>
+  <section class="foundation">
+    <article class="concept"><div class="icon">🔌</div><strong>Wokwi</strong><p data-en="Build and test electronic simulations with sensors, actuators and microcontrollers." data-es="Construye y prueba simulaciones electrónicas con sensores, actuadores y microcontroladores.">Build and test electronic simulations with sensors, actuators and microcontrollers.</p></article>
+    <article class="concept"><div class="icon">🧩</div><strong>Tinkercad</strong><p data-en="Design circuits and automation logic in a visual simulation environment." data-es="Diseña circuitos y lógica de automatización en un entorno visual de simulación.">Design circuits and automation logic in a visual simulation environment.</p></article>
+    <article class="concept"><div class="icon">🌐</div><strong>HTML + CSS + JavaScript</strong><p data-en="Create a simple web-based representation that simulates the system input, decision and output." data-es="Crea una representación web sencilla que simule la entrada, decisión y salida del sistema.">Create a simple web-based representation that simulates the system input, decision and output.</p></article>
+  </section>
+  <div class="callout" data-en="The platform may change, but the engineering requirement does not: your team must demonstrate a meaningful input, logical processing, an output, testing and clear documentation." data-es="La plataforma puede cambiar, pero el requisito de ingeniería no: el equipo debe demostrar una entrada significativa, procesamiento lógico, una salida, pruebas y documentación clara.">The platform may change, but the engineering requirement does not: your team must demonstrate a meaningful input, logical processing, an output, testing and clear documentation.</div>
+
+  <h2 class="section-title" data-en="3 · Learn Before You Build" data-es="3 · Aprende antes de construir">3 · Learn Before You Build</h2>
+  <section class="system-card">
+    <h2 data-en="The 3 questions every automated system must answer" data-es="Las 3 preguntas que todo sistema automatizado debe responder">The 3 questions every automated system must answer</h2>
+    <div class="system-grid">
+      <article class="system-box"><strong data-en="1. What does it detect?" data-es="1. ¿Qué detecta?">1. What does it detect?</strong><span data-en="Motion, light, temperature, distance, water level, a button, a typed value..." data-es="Movimiento, luz, temperatura, distancia, nivel de agua, un botón, un valor escrito...">Motion, light, temperature, distance, water level, a button, a typed value...</span></article>
+      <article class="system-box"><strong data-en="2. What decision does it make?" data-es="2. ¿Qué decisión toma?">2. What decision does it make?</strong><span data-en="IF the value meets a condition, THEN the system chooses an action." data-es="SI el valor cumple una condición, ENTONCES el sistema elige una acción.">IF the value meets a condition, THEN the system chooses an action.</span></article>
+      <article class="system-box"><strong data-en="3. What action does it perform?" data-es="3. ¿Qué acción ejecuta?">3. What action does it perform?</strong><span data-en="Turn on a light, activate an alarm, move a servo, display a warning or change the interface." data-es="Encender una luz, activar una alarma, mover un servo, mostrar una advertencia o cambiar la interfaz.">Turn on a light, activate an alarm, move a servo, display a warning or change the interface.</span></article>
+    </div>
+  </section>
+
+  <section class="examples">
+    <article class="example">
+      <h3 data-en="Example A · Physical automation" data-es="Ejemplo A · Automatización física">Example A · Physical automation</h3>
+      <p data-en="Problem: a room should alert when motion is detected." data-es="Problema: una sala debe alertar cuando detecta movimiento.">Problem: a room should alert when motion is detected.</p>
+      <pre data-en="INPUT: PIR motion sensor
+LOGIC: IF motion = detected
+OUTPUT: LED ON + buzzer ON
+TEST 1: no motion → outputs OFF
+TEST 2: motion → outputs ON" data-es="ENTRADA: sensor PIR de movimiento
+LÓGICA: SI movimiento = detectado
+SALIDA: LED ON + buzzer ON
+PRUEBA 1: sin movimiento → salidas OFF
+PRUEBA 2: movimiento → salidas ON">INPUT: PIR motion sensor
+LOGIC: IF motion = detected
+OUTPUT: LED ON + buzzer ON
+TEST 1: no motion → outputs OFF
+TEST 2: motion → outputs ON</pre>
+    </article>
+    <article class="example">
+      <h3 data-en="Example B · HTML simulation" data-es="Ejemplo B · Simulación HTML">Example B · HTML simulation</h3>
+      <p data-en="Problem: simulate an automatic temperature alert in a web page." data-es="Problema: simular una alerta automática de temperatura en una página web.">Problem: simulate an automatic temperature alert in a web page.</p>
+      <pre data-en="INPUT: temperature value
+LOGIC: IF temperature > 30
+OUTPUT: show red alert
+ELSE: show normal status
+
+The interface can use:
+- number input
+- button or automatic event
+- status card
+- color/message change" data-es="ENTRADA: valor de temperatura
+LÓGICA: SI temperatura > 30
+SALIDA: mostrar alerta roja
+SI NO: mostrar estado normal
+
+La interfaz puede usar:
+- campo numérico
+- botón o evento automático
+- tarjeta de estado
+- cambio de color/mensaje">INPUT: temperature value
+LOGIC: IF temperature > 30
+OUTPUT: show red alert
+ELSE: show normal status
+
+The interface can use:
+- number input
+- button or automatic event
+- status card
+- color/message change</pre>
+    </article>
+  </section>
+
+  <h2 class="section-title" data-en="4 · Your 2-Hour Engineering Sprint" data-es="4 · Tu sprint de ingeniería de 2 horas">4 · Your 2-Hour Engineering Sprint</h2>
+  <section>
+    <article class="lesson"><div class="time">0–12</div><div><h3 data-en="Warm-up · Automation Arena" data-es="Activador · Automation Arena">Warm-up · Automation Arena</h3><p data-en="Review sensors, actuators, IF/THEN logic, automation and testing with Code Battle Live." data-es="Repasa sensores, actuadores, lógica SI/ENTONCES, automatización y pruebas con Code Battle Live.">Review sensors, actuators, IF/THEN logic, automation and testing with Code Battle Live.</p></div></article>
+    <article class="lesson"><div class="time">12–25</div><div><h3 data-en="System Audit" data-es="Auditoría del sistema">System Audit</h3><p data-en="Identify what is already complete and what is missing: input, logic, output, diagram, tests and documentation." data-es="Identifica qué está completo y qué falta: entrada, lógica, salida, diagrama, pruebas y documentación.">Identify what is already complete and what is missing: input, logic, output, diagram, tests and documentation.</p></div></article>
+    <article class="lesson"><div class="time">25–80</div><div><h3 data-en="Final Build Sprint" data-es="Sprint final de construcción">Final Build Sprint</h3><p data-en="Complete and refine the simulation, prototype or web representation. Make the Sense → Think → Act flow visible and functional." data-es="Completa y mejora la simulación, prototipo o representación web. Haz visible y funcional el flujo Detectar → Pensar → Actuar.">Complete and refine the simulation, prototype or web representation. Make the Sense → Think → Act flow visible and functional.</p></div></article>
+    <article class="lesson"><div class="time">80–102</div><div><h3 data-en="Testing & Debugging" data-es="Pruebas y depuración">Testing & Debugging</h3><p data-en="Test at least three input situations, compare expected vs. actual behavior, fix failures and retest." data-es="Prueba al menos tres situaciones de entrada, compara el comportamiento esperado vs. real, corrige fallas y vuelve a probar.">Test at least three input situations, compare expected vs. actual behavior, fix failures and retest.</p></div></article>
+    <article class="lesson"><div class="time">102–114</div><div><h3 data-en="Engineering Documentation" data-es="Documentación de ingeniería">Engineering Documentation</h3><p data-en="Complete the system diagram, components, input-process-output explanation, logical rule, test evidence and final technical explanation." data-es="Completa el diagrama del sistema, componentes, explicación entrada-proceso-salida, regla lógica, evidencia de pruebas y explicación técnica final.">Complete the system diagram, components, input-process-output explanation, logical rule, test evidence and final technical explanation.</p></div></article>
+    <article class="lesson"><div class="time">114–120</div><div><h3 data-en="Progress Check & Reflection" data-es="Chequeo de progreso y reflexión">Progress Check & Reflection</h3><p data-en="What have you completed? What is left? What was the most difficult part of designing the system?" data-es="¿Qué han completado? ¿Qué falta? ¿Cuál fue la parte más difícil de diseñar el sistema?">What have you completed? What is left? What was the most difficult part of designing the system?</p></div></article>
+  </section>
+
+  <h2 class="section-title" data-en="5 · Testing Lab" data-es="5 · Laboratorio de pruebas">5 · Testing Lab</h2>
+  <section class="test-grid">
+    <article class="test">
+      <h3 data-en="Minimum Test Matrix" data-es="Matriz mínima de pruebas">Minimum Test Matrix</h3>
+      <table>
+        <thead><tr><th data-en="Test" data-es="Prueba">Test</th><th data-en="Input" data-es="Entrada">Input</th><th data-en="Expected" data-es="Esperado">Expected</th><th data-en="Actual" data-es="Real">Actual</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td data-en="Normal / low condition" data-es="Condición normal / baja">Normal / low condition</td><td>________</td><td>________</td></tr>
+          <tr><td>2</td><td data-en="Trigger / high condition" data-es="Condición de activación / alta">Trigger / high condition</td><td>________</td><td>________</td></tr>
+          <tr><td>3</td><td data-en="Boundary / special case" data-es="Caso límite / especial">Boundary / special case</td><td>________</td><td>________</td></tr>
+        </tbody>
+      </table>
+    </article>
+    <article class="test">
+      <h3 data-en="Debug Cycle" data-es="Ciclo de depuración">Debug Cycle</h3>
+      <p><b data-en="1. Observe:" data-es="1. Observa:">1. Observe:</b> <span data-en="What failed?" data-es="¿Qué falló?">What failed?</span></p>
+      <p><b data-en="2. Locate:" data-es="2. Localiza:">2. Locate:</b> <span data-en="Input, logic or output?" data-es="¿Entrada, lógica o salida?">Input, logic or output?</span></p>
+      <p><b data-en="3. Fix:" data-es="3. Corrige:">3. Fix:</b> <span data-en="Change the smallest necessary part." data-es="Cambia la parte mínima necesaria.">Change the smallest necessary part.</span></p>
+      <p><b data-en="4. Retest:" data-es="4. Reprueba:">4. Retest:</b> <span data-en="Run the same case again." data-es="Ejecuta el mismo caso nuevamente.">Run the same case again.</span></p>
+      <p><b data-en="5. Record:" data-es="5. Registra:">5. Record:</b> <span data-en="What changed and why?" data-es="¿Qué cambió y por qué?">What changed and why?</span></p>
+    </article>
+  </section>
+
+  <h2 class="section-title" data-en="6 · Technical Documentation Template" data-es="6 · Plantilla de documentación técnica">6 · Technical Documentation Template</h2>
+  <section class="doc-grid">
+    <article class="doc"><h3 data-en="System Definition" data-es="Definición del sistema">System Definition</h3><p data-en="System name" data-es="Nombre del sistema">System name</p><p data-en="Problem / purpose" data-es="Problema / propósito">Problem / purpose</p><p data-en="Who benefits?" data-es="¿Quién se beneficia?">Who benefits?</p></article>
+    <article class="doc"><h3 data-en="Inputs" data-es="Entradas">Inputs</h3><p data-en="Sensor(s), buttons or values" data-es="Sensor(es), botones o valores">Sensor(s), buttons or values</p><p data-en="What does each input detect or represent?" data-es="¿Qué detecta o representa cada entrada?">What does each input detect or represent?</p></article>
+    <article class="doc"><h3 data-en="Logic" data-es="Lógica">Logic</h3><p>IF ____________________</p><p>THEN __________________</p><p>ELSE __________________</p></article>
+    <article class="doc"><h3 data-en="Outputs" data-es="Salidas">Outputs</h3><p data-en="Actuator(s), alerts or interface responses" data-es="Actuador(es), alertas o respuestas de interfaz">Actuator(s), alerts or interface responses</p><p data-en="What action does each output perform?" data-es="¿Qué acción ejecuta cada salida?">What action does each output perform?</p></article>
+    <article class="doc"><h3 data-en="System Diagram" data-es="Diagrama del sistema">System Diagram</h3><p data-en="Show the flow clearly: Input → Process → Output." data-es="Muestra claramente el flujo: Entrada → Proceso → Salida.">Show the flow clearly: Input → Process → Output.</p></article>
+    <article class="doc"><h3 data-en="Testing Evidence" data-es="Evidencia de pruebas">Testing Evidence</h3><p data-en="Record at least 3 tests, one bug found, the correction and the final retest." data-es="Registra al menos 3 pruebas, un error encontrado, la corrección y la prueba final.">Record at least 3 tests, one bug found, the correction and the final retest.</p></article>
+  </section>
+
+  <h2 class="section-title" data-en="7 · AI Prompt Lab" data-es="7 · Laboratorio de prompts con IA">7 · AI Prompt Lab</h2>
+  <section class="prompt-grid">
+    <article class="prompt">
+      <h3 data-en="Prompt A · Build a simple HTML simulation" data-es="Prompt A · Construir una simulación HTML sencilla">Prompt A · Build a simple HTML simulation</h3>
+      <textarea id="p1" readonly>I am a 7th grade student building an automated system.
+
+Problem:
+[describe the problem]
+
+Input / sensor:
+[write the input]
+
+Decision rule:
+IF ______________________
+
+Output / actuator:
+_________________________
+
+Create a simple HTML/CSS/JavaScript prototype that visually simulates the input, decision and output.
+
+Requirements:
+- Keep the code simple and readable.
+- Do not use external libraries.
+- Explain the HTML, CSS and JavaScript sections.
+- Include one input control, one logical condition and one visible output.
+- Add a reset button.
+- Suggest three test cases.</textarea>
+      <button class="copy" data-copy="p1" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button>
+    </article>
+    <article class="prompt">
+      <h3 data-en="Prompt B · Debug the system" data-es="Prompt B · Depurar el sistema">Prompt B · Debug the system</h3>
+      <textarea id="p2" readonly>Review this automated-system logic or code:
+
+[PASTE CODE OR LOGIC]
+
+Expected behavior:
+_________________________
+
+Actual behavior:
+_________________________
+
+Help me debug it.
+
+First identify whether the likely problem is in:
+1. input,
+2. logical condition,
+3. output,
+4. event/interaction.
+
+Then explain the smallest correction and give me a test to verify the fix.
+Do not rewrite the entire project unless necessary.</textarea>
+      <button class="copy" data-copy="p2" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button>
+    </article>
+    <article class="prompt">
+      <h3 data-en="Prompt C · Improve testing" data-es="Prompt C · Mejorar las pruebas">Prompt C · Improve testing</h3>
+      <textarea id="p3" readonly>My automated system works like this:
+
+INPUT:
+____________________
+
+LOGIC:
+____________________
+
+OUTPUT:
+____________________
+
+Create 5 test cases:
+- normal condition
+- activation condition
+- boundary value
+- unexpected input
+- recovery/reset
+
+For each test give:
+Input | Expected result | Why this test matters</textarea>
+      <button class="copy" data-copy="p3" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button>
+    </article>
+    <article class="prompt">
+      <h3 data-en="Prompt D · Improve documentation" data-es="Prompt D · Mejorar la documentación">Prompt D · Improve documentation</h3>
+      <textarea id="p4" readonly>Help me improve the technical documentation for this 7th grade automated system.
+
+System purpose:
+____________________
+
+Input(s):
+____________________
+
+Logic:
+____________________
+
+Output(s):
+____________________
+
+Tests performed:
+____________________
+
+Write a short, clear technical explanation using these headings:
+Purpose
+Inputs
+Logic
+Outputs
+System Flow
+Testing
+Bug Fixed
+Final Improvement
+
+Keep the language understandable for a 7th grade student.</textarea>
+      <button class="copy" data-copy="p4" data-en="Copy prompt" data-es="Copiar prompt">Copy prompt</button>
+    </article>
+  </section>
+
+  <h2 class="section-title" data-en="8 · Final Completion Checklist" data-es="8 · Lista final de verificación">8 · Final Completion Checklist</h2>
+  <section class="check-grid">
+    <article class="check"><h3 data-en="Engineering Flow" data-es="Flujo de ingeniería">Engineering Flow</h3><ul><li data-en="Input / sensor identified" data-es="Entrada / sensor identificado">Input / sensor identified</li><li data-en="Logical decision works" data-es="La decisión lógica funciona">Logical decision works</li><li data-en="Output / actuator responds" data-es="La salida / actuador responde">Output / actuator responds</li><li data-en="Sense → Think → Act is clear" data-es="Detectar → Pensar → Actuar es claro">Sense → Think → Act is clear</li></ul></article>
+    <article class="check"><h3 data-en="Functionality" data-es="Funcionamiento">Functionality</h3><ul><li data-en="Main system flow works" data-es="El flujo principal funciona">Main system flow works</li><li data-en="No known critical error" data-es="No hay error crítico conocido">No known critical error</li><li data-en="User/system feedback is clear" data-es="La retroalimentación es clara">User/system feedback is clear</li><li data-en="Reset/recovery works when relevant" data-es="Reinicio/recuperación funciona cuando aplica">Reset/recovery works when relevant</li></ul></article>
+    <article class="check"><h3 data-en="Testing" data-es="Pruebas">Testing</h3><ul><li data-en="3 or more test cases" data-es="3 o más casos de prueba">3 or more test cases</li><li data-en="Expected vs. actual recorded" data-es="Esperado vs. real registrado">Expected vs. actual recorded</li><li data-en="At least one bug analyzed" data-es="Al menos un error analizado">At least one bug analyzed</li><li data-en="Fix and retest completed" data-es="Corrección y nueva prueba completadas">Fix and retest completed</li></ul></article>
+    <article class="check"><h3 data-en="Documentation" data-es="Documentación">Documentation</h3><ul><li data-en="Purpose explained" data-es="Propósito explicado">Purpose explained</li><li data-en="Components or elements listed" data-es="Componentes o elementos listados">Components or elements listed</li><li data-en="Diagram completed" data-es="Diagrama completado">Diagram completed</li><li data-en="Logic explained" data-es="Lógica explicada">Logic explained</li></ul></article>
+    <article class="check"><h3 data-en="Team Understanding" data-es="Comprensión del equipo">Team Understanding</h3><ul><li data-en="Each member can explain the system" data-es="Cada integrante puede explicar el sistema">Each member can explain the system</li><li data-en="Team can identify input, logic and output" data-es="El equipo identifica entrada, lógica y salida">Team can identify input, logic and output</li><li data-en="Team can explain one bug/fix" data-es="El equipo explica un error/corrección">Team can explain one bug/fix</li><li data-en="Team can describe one improvement" data-es="El equipo describe una mejora">Team can describe one improvement</li></ul></article>
+    <article class="check"><h3 data-en="Final Evidence" data-es="Evidencia final">Final Evidence</h3><ul><li data-en="Working simulation/prototype/link" data-es="Simulación/prototipo/enlace funcional">Working simulation/prototype/link</li><li data-en="Testing evidence ready" data-es="Evidencia de pruebas lista">Testing evidence ready</li><li data-en="Technical explanation ready" data-es="Explicación técnica lista">Technical explanation ready</li><li data-en="Ready for final review" data-es="Listo para revisión final">Ready for final review</li></ul></article>
+  </section>
+
+  <h2 class="section-title" data-en="9 · Quick Progress Rubric" data-es="9 · Rúbrica rápida de progreso">9 · Quick Progress Rubric</h2>
+  <section class="mini-rubric">
+    <table>
+      <thead><tr><th data-en="Criterion" data-es="Criterio">Criterion</th><th data-en="Ready" data-es="Listo">Ready</th><th data-en="Developing" data-es="En desarrollo">Developing</th><th data-en="Needs action" data-es="Requiere acción">Needs action</th></tr></thead>
+      <tbody>
+        <tr><td data-en="Input–Logic–Output" data-es="Entrada–Lógica–Salida">Input–Logic–Output</td><td data-en="Complete and explainable" data-es="Completo y explicable">Complete and explainable</td><td data-en="Mostly works" data-es="Funciona en su mayoría">Mostly works</td><td data-en="Flow is incomplete" data-es="Flujo incompleto">Flow is incomplete</td></tr>
+        <tr><td data-en="Automation" data-es="Automatización">Automation</td><td data-en="System responds correctly" data-es="El sistema responde correctamente">System responds correctly</td><td data-en="Minor logic issues" data-es="Problemas menores de lógica">Minor logic issues</td><td data-en="Response is unreliable" data-es="Respuesta poco confiable">Response is unreliable</td></tr>
+        <tr><td data-en="Testing" data-es="Pruebas">Testing</td><td data-en="Multiple tests + fix + retest" data-es="Varias pruebas + corrección + nueva prueba">Multiple tests + fix + retest</td><td data-en="Some tests recorded" data-es="Algunas pruebas registradas">Some tests recorded</td><td data-en="No clear evidence" data-es="Sin evidencia clara">No clear evidence</td></tr>
+        <tr><td data-en="Documentation" data-es="Documentación">Documentation</td><td data-en="Clear diagram and explanation" data-es="Diagrama y explicación claros">Clear diagram and explanation</td><td data-en="Partially complete" data-es="Parcialmente completa">Partially complete</td><td data-en="Missing key sections" data-es="Faltan secciones clave">Missing key sections</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <h2 class="section-title" data-en="10 · Exit Reflection" data-es="10 · Reflexión de salida">10 · Exit Reflection</h2>
+  <section class="exit">
+    <article class="question"><h3 data-en="Progress" data-es="Progreso">Progress</h3><p data-en="What have you completed? What is left?" data-es="¿Qué han completado? ¿Qué falta?">What have you completed? What is left?</p></article>
+    <article class="question"><h3 data-en="Engineering Challenge" data-es="Reto de ingeniería">Engineering Challenge</h3><p data-en="What was the most difficult part of designing the system?" data-es="¿Cuál fue la parte más difícil de diseñar el sistema?">What was the most difficult part of designing the system?</p></article>
+  </section>
+
+  <h2 class="section-title" data-en="Updated Planner Alignment" data-es="Alineación actualizada del planeador">Updated Planner Alignment</h2>
+  <section class="planner">
+    <p data-en="Cycle 5 theme: Complete and refine the automated system design, simulation/prototype and technical documentation." data-es="Tema del Ciclo 5: Completar y refinar el diseño del sistema automatizado, su simulación/prototipo y la documentación técnica.">Cycle 5 theme: Complete and refine the automated system design, simulation/prototype and technical documentation.</p>
+    <blockquote data-en="Development / Representation:
+1. Review automated-system requirements: inputs/sensors, process/logic, outputs/actuators and documentation.
+2. Complete and refine simulations, prototypes or web-based representations using Wokwi, Tinkercad, HTML/CSS/JavaScript or another teacher-approved environment.
+3. Validate the complete Sense → Think → Act flow.
+4. Test different input conditions, compare expected vs. actual results, identify errors and retest after corrections.
+5. Complete diagrams, components, system flow, logical rules, testing evidence and written explanations.
+6. Use AI-assisted prompting when useful to generate ideas, debug logic, improve HTML structure or create test scenarios; all final work must be understood and validated." data-es="Desarrollo / Representación:
+1. Revisar los requisitos del sistema automatizado: entradas/sensores, proceso/lógica, salidas/actuadores y documentación.
+2. Completar y refinar simulaciones, prototipos o representaciones web usando Wokwi, Tinkercad, HTML/CSS/JavaScript u otro entorno aprobado.
+3. Validar el flujo completo Detectar → Pensar → Actuar.
+4. Probar diferentes condiciones de entrada, comparar resultados esperados vs. reales, identificar errores y volver a probar después de corregir.
+5. Completar diagramas, componentes, flujo del sistema, reglas lógicas, evidencia de pruebas y explicaciones escritas.
+6. Usar prompts con IA cuando sea útil para generar ideas, depurar lógica, mejorar la estructura HTML o crear escenarios de prueba; todo el trabajo final debe ser comprendido y validado.">Development / Representation:
+1. Review automated-system requirements: inputs/sensors, process/logic, outputs/actuators and documentation.
+2. Complete and refine simulations, prototypes or web-based representations using Wokwi, Tinkercad, HTML/CSS/JavaScript or another teacher-approved environment.
+3. Validate the complete Sense → Think → Act flow.
+4. Test different input conditions, compare expected vs. actual results, identify errors and retest after corrections.
+5. Complete diagrams, components, system flow, logical rules, testing evidence and written explanations.
+6. Use AI-assisted prompting when useful to generate ideas, debug logic, improve HTML structure or create test scenarios; all final work must be understood and validated.</blockquote>
+    <blockquote data-en="Resources: computers, web browser, Wokwi, Tinkercad, HTML/CSS/JavaScript environment or another approved simulation/development environment, project rubric and testing checklist." data-es="Recursos: computadores, navegador web, Wokwi, Tinkercad, entorno HTML/CSS/JavaScript u otro entorno aprobado de simulación/desarrollo, rúbrica del proyecto y lista de verificación de pruebas.">Resources: computers, web browser, Wokwi, Tinkercad, HTML/CSS/JavaScript environment or another approved simulation/development environment, project rubric and testing checklist.</blockquote>
+  </section>
+
+  <div class="footer" data-en="Tech Learning Hub · 7th Grade · Cycle 5 · Automated System Final Engineering Sprint" data-es="Tech Learning Hub · 7° · Ciclo 5 · Sprint Final de Ingeniería de Sistemas Automatizados">Tech Learning Hub · 7th Grade · Cycle 5 · Automated System Final Engineering Sprint</div>
+</div>
+
+<div id="toast" class="toast">Copied</div>
+
+<script>
+let currentLang='en';
+const langBtn=document.getElementById('langBtn');
+const toast=document.getElementById('toast');
+
+function applyLanguage(lang){
+ currentLang=lang;
+ document.documentElement.lang=lang;
+ document.querySelectorAll('[data-en][data-es]').forEach(el=>{
+   const value=el.getAttribute('data-'+lang);
+   if(el.tagName==='PRE' || el.tagName==='BLOCKQUOTE'){
+     el.textContent=value;
+   }else{
+     el.textContent=value;
+   }
+ });
+ langBtn.textContent=lang==='en'?'Español':'English';
+ document.title=lang==='en'
+   ?'7th Grade · Cycle 5 · Automated System Final Engineering Sprint'
+   :'7° · Ciclo 5 · Sprint Final de Ingeniería de Sistemas Automatizados';
+}
+
+langBtn.addEventListener('click',()=>applyLanguage(currentLang==='en'?'es':'en'));
+
+document.querySelectorAll('.copy').forEach(btn=>{
+ btn.addEventListener('click',async()=>{
+   const id=btn.getAttribute('data-copy');
+   const text=document.getElementById(id).value;
+   try{
+     await navigator.clipboard.writeText(text);
+     toast.textContent=currentLang==='en'?'Prompt copied':'Prompt copiado';
+     toast.classList.add('show');
+     setTimeout(()=>toast.classList.remove('show'),1400);
+   }catch{
+     const area=document.getElementById(id);
+     area.select();
+   }
+ });
+});
+
+applyLanguage('en');
+</script>
+</body>
+</html>

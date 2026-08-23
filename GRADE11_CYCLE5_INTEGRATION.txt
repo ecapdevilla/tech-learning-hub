@@ -1,0 +1,21 @@
+﻿11TH GRADE · CYCLE 5
+Title: Cycle 5 · Full System Integration
+Topic: Robot + Web + Data: From Components to a Complete IoT System
+Official objective: Integrate the complete system: Robot + Web + Database with full functionality.
+Guide: /guides/grade-11/cycle-5-full-system-integration.html
+
+Integrar en Grade 11 SIN reemplazar contenido existente.
+Mantener Updated Class Sequences visible antes de Cycle 5.
+La guia incluye Catch-Up Fast Track para equipos que necesitan recuperar la secuencia,
+pero no etiqueta publicamente ningun salon como atrasado.
+
+Cierre esperado:
+- sensor / simulacion
+- ESP32 / Wokwi
+- web state + control
+- actuator/output
+- localStorage history
+- alert
+- integration testing
+- peer review
+- final demonstrable version

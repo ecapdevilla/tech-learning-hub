@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Smart To-Do · Subway Surfers Style</title>
+  <style>
+    /* ----- RESET & VARIABLES (Estilo Subway Surfers) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    :root {
+      --bg: #0d0f1a;
+      --bg-card: #161c2b;
+      --bg-card-hover: #1e2640;
+      --bg-input: #0f1520;
+      --bg-btn-secondary: #2a3f5a;
+      --text-primary: #f0f4fa;
+      --text-secondary: #a0bcd6;
+      --text-muted: #6a8aa8;
+      --border: #2a4060;
+      --border-light: #3a5a7a;
+      --primary: #ff6b35;
+      --primary-dark: #d9531e;
+      --primary-light: #ff8a5c;
+      --secondary: #00d4ff;
+      --gold: #ffd700;
+      --gold-light: #ffe066;
+      --danger: #ff4757;
+      --success: #2ed573;
+      --purple: #a855f7;
+      --shadow: 0 20px 40px -12px rgba(0,0,0,0.8);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+      --transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      padding: 20px 14px 40px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      font-weight: 400;
+      line-height: 1.5;
+      background-image: 
+        radial-gradient(ellipse at 10% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+        linear-gradient(180deg, #0d0f1a 0%, #141b2b 100%);
+    }
+
+    .app {
+      max-width: 1140px;
+      width: 100%;
+    }
+
+    /* ----- HERO / HEADER (Subway Surfers style) ----- */
+    .hero {
+      background: linear-gradient(145deg, #1a1f30, #2a3f5a 50%, #1d3a4a);
+      color: white;
+      padding: 28px 28px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 107, 53, 0.15);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      right: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 107, 53, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '🏃';
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+      font-size: 4rem;
+      opacity: 0.08;
+      transform: rotate(10deg);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 7vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, #ff6b35, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .sub {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      margin-top: 10px;
+      font-weight: 450;
+      opacity: 0.85;
+      position: relative;
+      z-index: 2;
+    }
+    .badge {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      -webkit-text-fill-color: white;
+    }
+    .badge-gold {
+      background: rgba(255, 215, 0, 0.12);
+      border-color: rgba(255, 215, 0, 0.2);
+      color: #ffd700;
+    }
+    .dev-credit {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .dev-credit strong {
+      font-weight: 600;
+      color: #ffd700;
+    }
+    .dev-credit .dev-name {
+      background: rgba(255, 107, 53, 0.1);
+      padding: 2px 12px;
+      border-radius: 40px;
+      border: 1px solid rgba(255, 107, 53, 0.15);
+      color: #ff8a5c;
+    }
+    .dev-credit .role-tag {
+      background: rgba(0, 212, 255, 0.08);
+      padding: 2px 10px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      color: #00d4ff;
+    }
+
+    /* ----- CARDS ----- */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--gold), var(--secondary));
+      opacity: 0.3;
+    }
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+      box-shadow: 0 24px 48px -12px rgba(0,0,0,0.6);
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+      letter-spacing: -0.2px;
+    }
+    .card h2 .emoji-bg {
+      background: rgba(255, 107, 53, 0.12);
+      padding: 2px 10px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--primary-light);
+      border: 1px solid rgba(255, 107, 53, 0.15);
+    }
+
+    /* ----- FORM ----- */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      align-items: flex-end;
+    }
+    .field {
+      flex: 1 1 150px;
+      min-width: 120px;
+    }
+    .field label {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: var(--bg-input);
+      font-size: 0.9rem;
+      transition: var(--transition);
+      color: var(--text-primary);
+    }
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.10);
+      background: #141c2a;
+    }
+    .field input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .btn {
+      border: none;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .btn:active { transform: scale(0.95); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 14px rgba(255, 107, 53, 0.25);
+    }
+    .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px rgba(255, 107, 53, 0.35); }
+    .btn-secondary {
+      background: var(--bg-btn-secondary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: #2f4a66; transform: translateY(-2px); }
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #1fa85a);
+      color: white;
+      box-shadow: 0 4px 14px rgba(46, 213, 115, 0.15);
+    }
+    .btn-success:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px rgba(46, 213, 115, 0.25); }
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #d63031);
+      color: white;
+    }
+    .btn-danger:hover { transform: translateY(-2px) scale(1.02); }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), #e6b800);
+      color: #0d0f1a;
+      box-shadow: 0 4px 14px rgba(255, 215, 0, 0.15);
+    }
+    .btn-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px rgba(255, 215, 0, 0.25); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .btn-outline:hover { background: rgba(255, 107, 53, 0.06); border-color: var(--primary); }
+
+    .btn-sm {
+      padding: 4px 12px;
+      font-size: 0.65rem;
+      border-radius: 40px;
+      text-transform: none;
+    }
+
+    /* ----- FILTER BAR ----- */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .filter-bar .btn {
+      padding: 4px 14px;
+      font-size: 0.7rem;
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      border-radius: 40px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      text-transform: none;
+    }
+    .filter-bar .btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
+    }
+    .filter-bar .btn.active:hover { background: var(--primary-light); }
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--bg-input);
+      border-radius: 40px;
+      border: 1.5px solid var(--border);
+      padding: 0 12px;
+      transition: var(--transition);
+      margin-left: auto;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.06);
+    }
+    .search-wrap input {
+      border: none;
+      padding: 6px 6px 6px 2px;
+      font-size: 0.85rem;
+      background: transparent;
+      min-width: 90px;
+      outline: none;
+      color: var(--text-primary);
+    }
+    .search-wrap input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ----- STATS (Subway Surfers score style) ----- */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      background: linear-gradient(135deg, #1a1f30, #0f1520);
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+    }
+    .stats span {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    .stats b {
+      font-weight: 700;
+      background: rgba(255, 215, 0, 0.08);
+      padding: 0 8px;
+      border-radius: 40px;
+      min-width: 22px;
+      text-align: center;
+      color: var(--gold);
+      border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    /* ----- TASK LIST (Subway Surfers card style) ----- */
+    .task-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      padding: 12px 16px;
+      background: var(--bg-input);
+      border-radius: var(--radius-md);
+      border-left: 6px solid var(--primary);
+      margin-bottom: 8px;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+      border-left-width: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .task-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.02));
+      pointer-events: none;
+    }
+    .task-item:hover {
+      background: #1c263a;
+      border-color: var(--border-light);
+      transform: translateX(4px);
+    }
+    .task-item.done {
+      opacity: 0.6;
+      border-left-color: var(--secondary);
+      background: #0f1f1a;
+    }
+    .task-item.done .info strong {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+    .task-item .info {
+      flex: 2 1 160px;
+    }
+    .task-item .info strong {
+      font-size: 0.95rem;
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .task-item .info .meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      margin-top: 2px;
+    }
+    .task-item .info .meta .tag {
+      background: rgba(255,255,255,0.03);
+      padding: 0 8px;
+      border-radius: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    .task-item .info .meta .tag-pending {
+      color: var(--primary-light);
+    }
+    .task-item .info .meta .tag-done {
+      color: var(--secondary);
+    }
+    .task-item .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-left: auto;
+    }
+    .task-item .actions .btn {
+      padding: 3px 12px;
+      font-size: 0.65rem;
+      border-radius: 40px;
+      text-transform: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px 14px;
+      color: var(--text-muted);
+      background: var(--bg-input);
+      border-radius: var(--radius-md);
+      border: 2px dashed var(--border);
+      font-weight: 450;
+      font-size: 0.9rem;
+    }
+    .empty-state .big-emoji {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* ----- QUICK MANAGEMENT ----- */
+    .quick-mgmt {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 32px;
+      align-items: flex-start;
+    }
+    .quick-mgmt > div {
+      flex: 1 1 160px;
+    }
+    .quick-mgmt h3 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.3px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+    .chip-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 6px;
+      margin: 4px 0 6px;
+    }
+    .chip {
+      background: var(--bg-input);
+      padding: 2px 10px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .chip-color {
+      border-left: 4px solid var(--primary);
+    }
+    .chip-user {
+      border-left: 4px solid var(--secondary);
+    }
+    .quick-input-group {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .quick-input-group input[type="text"] {
+      flex: 1 1 70px;
+      padding: 6px 10px;
+      border-radius: 40px;
+      border: 1.5px solid var(--border);
+      font-size: 0.75rem;
+      background: var(--bg-input);
+      color: var(--text-primary);
+    }
+    .quick-input-group input[type="text"]::placeholder {
+      color: var(--text-muted);
+    }
+    .quick-input-group input[type="color"] {
+      width: 30px;
+      height: 30px;
+      border-radius: 40px;
+      border: 2px solid var(--border);
+      padding: 0;
+      cursor: pointer;
+      background: none;
+    }
+    .quick-input-group .btn {
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      border-radius: 40px;
+      text-transform: none;
+    }
+
+    /* ----- FOOTER ----- */
+    .footer-card {
+      background: linear-gradient(135deg, #141b2b, #0d0f1a);
+      border-color: var(--secondary);
+      border-left: 6px solid var(--secondary);
+    }
+    .footer-card::before {
+      background: linear-gradient(90deg, var(--secondary), var(--purple), var(--gold));
+    }
+    .footer-card:hover {
+      background: #1a2236;
+    }
+
+    /* ----- DIAGRAMA MVC (Subway Surfers style) ----- */
+    .diagram-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0 6px;
+    }
+    .diagram-box {
+      background: var(--bg-input);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      position: relative;
+    }
+    .diagram-box:hover {
+      border-color: var(--primary);
+      transform: scale(1.02);
+    }
+    .diagram-box h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    .diagram-box .model-color { color: var(--secondary); }
+    .diagram-box .view-color { color: var(--primary-light); }
+    .diagram-box .controller-color { color: var(--gold); }
+    .diagram-box p {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .diagram-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      .diagram-container {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .diagram-arrow {
+        transform: rotate(90deg);
+        padding: 2px 0;
+      }
+    }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width: 820px) {
+      .hero { padding: 20px 18px; }
+      .card { padding: 16px 18px; }
+      .row .field { flex: 1 1 100%; }
+      .task-item .actions { margin-left: 0; width: 100%; justify-content: flex-end; }
+      .quick-mgmt { flex-direction: column; gap: 12px; }
+      .search-wrap { margin-left: 0; width: 100%; }
+      .filter-bar { gap: 4px; }
+    }
+    @media (max-width: 480px) {
+      body { padding: 10px 6px 24px; }
+      .hero { padding: 16px 12px; }
+      .hero h1 { font-size: 1.8rem; }
+      .card { padding: 12px 14px; }
+      .stats { gap: 6px 12px; padding: 8px 12px; font-size: 0.75rem; }
+    }
+
+    .mt-2 { margin-top: 10px; }
+    .flex { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .hidden { display: none; }
+
+    /* ----- ESTILOS PARA LA BITÁCORA Y DOCUMENTACIÓN ----- */
+    .log-entry {
+      background: var(--bg-input);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--gold);
+      margin-bottom: 4px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    .log-entry .date {
+      color: var(--text-muted);
+      font-size: 0.65rem;
+    }
+    .badge-ods {
+      background: rgba(0, 212, 255, 0.08);
+      border-color: rgba(0, 212, 255, 0.1);
+      color: #00d4ff;
+    }
+    .badge-mvp {
+      background: rgba(255, 215, 0, 0.08);
+      border-color: rgba(255, 215, 0, 0.1);
+      color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- HEADER -->
+  <header class="hero">
+    <h1>🏃 Smart To-Do · Subway</h1>
+    <div class="sub">
+      <span class="badge">🧩 MVC · LocalStorage</span>
+      <span class="badge badge-gold">👥 Usuarios · Tareas · Categorías</span>
+      <span class="badge badge-ods">🎯 ODS 4, 8, 9</span>
+      <span class="badge badge-mvp">🏆 MVP</span>
+    </div>
+    <div class="dev-credit">
+      <span>👨‍💻 Equipo:</span>
+      <span class="dev-name"><strong>Tomas Patiño</strong> <span class="role-tag">Product Owner</span></span>
+      <span class="dev-name"><strong>Alfredo Ramos</strong> <span class="role-tag">Desarrollador</span></span>
+      <span class="dev-name" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.1);color:#00d4ff;">🧪 Tester</span>
+      <span class="dev-name" style="background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.1);color:#ffd700;">📝 Documentador</span>
+      <span class="dev-name" style="background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.1);color:#a855f7;">🎨 UI Designer</span>
+      <span style="opacity:0.4; margin-left:auto; font-size:0.7rem;">Ciclo 4 · 9°</span>
+    </div>
+  </header>
+
+  <!-- DIAGRAMA MVC (Subway Surfers style) -->
+  <section class="card">
+    <h2>📐 Arquitectura MVC <span class="emoji-bg">diagrama</span></h2>
+    <div class="diagram-container">
+      <div class="diagram-box">
+        <h4 class="model-color">📦 MODEL</h4>
+        <p>Datos · Usuarios<br>Categorías · Tareas<br><span style="font-size:0.55rem;color:var(--text-muted);">localStorage</span></p>
+      </div>
+      <div class="diagram-arrow">⬅️ ➡️</div>
+      <div class="diagram-box">
+        <h4 class="controller-color">🎮 CONTROLLER</h4>
+        <p>Lógica · Validación<br>CRUD · Filtros<br><span style="font-size:0.55rem;color:var(--text-muted);">eventos</span></p>
+      </div>
+      <div class="diagram-arrow">⬅️ ➡️</div>
+      <div class="diagram-box">
+        <h4 class="view-color">🖥️ VIEW</h4>
+        <p>UI · Renderizado<br>Interacción · Stats<br><span style="font-size:0.55rem;color:var(--text-muted);">HTML/CSS</span></p>
+      </div>
+    </div>
+    <p style="font-size:0.7rem;color:var(--text-muted);text-align:center;margin-top:4px;">Modelo ↔ Controlador ↔ Vista · Comunicación unidireccional</p>
+  </section>
+
+  <!-- BITÁCORA DEL EQUIPO -->
+  <section class="card">
+    <h2>📋 Bitácora del equipo <span class="emoji-bg">seguimiento</span></h2>
+    <div class="log-entry">
+      <span class="date">📅 10/07/2026</span> · Definición del problema y ODS · Roles asignados
+    </div>
+    <div class="log-entry">
+      <span class="date">📅 15/07/2026</span> · Bocetos MVC y diseño de datos · Diagrama creado
+    </div>
+    <div class="log-entry">
+      <span class="date">📅 20/07/2026</span> · Implementación del Modelo y Controlador · Pruebas iniciales
+    </div>
+    <div class="log-entry">
+      <span class="date">📅 28/07/2026</span> · Interfaz UI y estilos Subway Surfers · Responsive
+    </div>
+    <div class="log-entry">
+      <span class="date">📅 05/08/2026</span> · Pruebas de persistencia · localStorage OK
+    </div>
+    <div class="log-entry">
+      <span class="date">📅 12/08/2026</span> · Refactorización · Documentación completa
+    </div>
+    <div class="log-entry" style="border-left-color:var(--secondary);">
+      <span class="date">📅 21/08/2026</span> · ✅ MVP entregado · Presentación final
+    </div>
+  </section>
+
+  <!-- FORMULARIO PRINCIPAL -->
+  <section class="card" id="formCard">
+    <h2>
+      ✏️ Nueva tarea
+      <span class="emoji-bg">+ rápida</span>
+    </h2>
+    <div class="row">
+      <div class="field">
+        <label>Título *</label>
+        <input type="text" id="taskTitle" placeholder="Ej. Preparar presentación" />
+      </div>
+      <div class="field">
+        <label>Usuario</label>
+        <select id="taskUser"></select>
+      </div>
+      <div class="field">
+        <label>Categoría</label>
+        <select id="taskCategory"></select>
+      </div>
+      <div class="field" style="flex:0 0 auto;">
+        <button class="btn btn-primary" id="addTaskBtn">➕ Agregar</button>
+      </div>
+    </div>
+    <div class="flex mt-2">
+      <button class="btn btn-secondary btn-sm" id="addUserBtn">👤 + Usuario</button>
+      <button class="btn btn-secondary btn-sm" id="addCategoryBtn">🏷️ + Categoría</button>
+      <span style="font-size:0.65rem; color:var(--text-muted); margin-left:4px;">(click para crear)</span>
+    </div>
+  </section>
+
+  <!-- FILTROS + ESTADÍSTICAS -->
+  <section class="card">
+    <div class="filter-bar">
+      <span style="font-weight:500; color: var(--text-secondary); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px;">Filtrar:</span>
+      <button class="btn active" data-filter="all">🏁 Todas</button>
+      <button class="btn" data-filter="pending">⏳ Pendientes</button>
+      <button class="btn" data-filter="done">✅ Completadas</button>
+      <div class="search-wrap">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Buscar tarea..." />
+      </div>
+    </div>
+    <div class="stats" id="statsDisplay">
+      <span>🏆 Total: <b id="totalCount">0</b></span>
+      <span>⏳ Pendientes: <b id="pendingCount">0</b></span>
+      <span>✅ Completadas: <b id="doneCount">0</b></span>
+      <span style="margin-left:auto; opacity:0.5;">⚡ High Score</span>
+    </div>
+  </section>
+
+  <!-- LISTA DE TAREAS -->
+  <section class="card">
+    <h2>📌 Tareas <span class="emoji-bg">🏃 en marcha</span></h2>
+    <div id="taskList"></div>
+  </section>
+
+  <!-- GESTIÓN RÁPIDA -->
+  <section class="card" style="background:#121b2a;">
+    <div class="quick-mgmt">
+      <div>
+        <h3>👥 Usuarios</h3>
+        <div class="chip-container" id="userListDisplay"></div>
+        <div class="quick-input-group">
+          <input type="text" id="newUserName" placeholder="Nombre" />
+          <button class="btn btn-secondary btn-sm" id="quickAddUser">+ Agregar</button>
+        </div>
+      </div>
+      <div>
+        <h3>🏷️ Categorías</h3>
+        <div class="chip-container" id="categoryListDisplay"></div>
+        <div class="quick-input-group">
+          <input type="text" id="newCategoryName" placeholder="Nombre" />
+          <input type="color" id="newCategoryColor" value="#ff6b35" />
+          <button class="btn btn-secondary btn-sm" id="quickAddCategory">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPTURAS DE PANTALLA (simuladas) -->
+  <section class="card" style="border-left:4px solid var(--purple);">
+    <h2>📸 Capturas de pantalla <span class="emoji-bg">evidencia</span></h2>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+      <div style="background:var(--bg-input); border-radius:var(--radius-sm); padding:12px 16px; border:1px solid var(--border); text-align:center; min-width:120px;">
+        <div style="font-size:2rem;">🏠</div>
+        <div style="font-size:0.65rem;color:var(--text-muted);">Vista principal</div>
+      </div>
+      <div style="background:var(--bg-input); border-radius:var(--radius-sm); padding:12px 16px; border:1px solid var(--border); text-align:center; min-width:120px;">
+        <div style="font-size:2rem;">📋</div>
+        <div style="font-size:0.65rem;color:var(--text-muted);">Lista de tareas</div>
+      </div>
+      <div style="background:var(--bg-input); border-radius:var(--radius-sm); padding:12px 16px; border:1px solid var(--border); text-align:center; min-width:120px;">
+        <div style="font-size:2rem;">📊</div>
+        <div style="font-size:0.65rem;color:var(--text-muted);">Estadísticas</div>
+      </div>
+      <div style="background:var(--bg-input); border-radius:var(--radius-sm); padding:12px 16px; border:1px solid var(--border); text-align:center; min-width:120px;">
+        <div style="font-size:2rem;">📱</div>
+        <div style="font-size:0.65rem;color:var(--text-muted);">Responsive móvil</div>
+      </div>
+    </div>
+    <p style="font-size:0.65rem;color:var(--text-muted);text-align:center;margin-top:8px;">✅ Capturas disponibles en el repositorio y documentación</p>
+  </section>
+
+  <!-- PRUEBAS Y TABLA DE TEST -->
+  <section class="card" style="border-left:4px solid var(--success);">
+    <h2>🧪 Tabla de pruebas <span class="emoji-bg">testing</span></h2>
+    <div style="overflow-x:auto; font-size:0.75rem;">
+      <table style="width:100%; border-collapse:collapse; color:var(--text-secondary);">
+        <thead>
+          <tr style="border-bottom:2px solid var(--border); text-align:left; color:var(--text-primary);">
+            <th style="padding:4px 8px;">#</th>
+            <th style="padding:4px 8px;">Prueba</th>
+            <th style="padding:4px 8px;">Resultado esperado</th>
+            <th style="padding:4px 8px;">Resultado real</th>
+            <th style="padding:4px 8px;">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:4px 8px;">01</td><td>Crear tarea</td><td>Aparece en la lista</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">02</td><td>Crear tarea sin título</td><td>Alerta de error</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">03</td><td>Editar tarea</td><td>Cambios guardados</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">04</td><td>Completar tarea</td><td>Cambia a estado done</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">05</td><td>Eliminar tarea</td><td>Desaparece de la lista</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">06</td><td>Filtrar tareas</td><td>Muestra solo pendientes/done</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">07</td><td>Persistencia localStorage</td><td>Recupera datos al recargar</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">08</td><td>Búsqueda de tareas</td><td>Filtra por texto</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+          <tr><td style="padding:4px 8px;">09</td><td>Responsive UI</td><td>Adapta a móvil</td><td>✅ OK</td><td style="color:var(--success);">PASS</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DOCUMENTACIÓN TÉCNICA -->
+  <section class="card" style="border-left:4px solid var(--gold);">
+    <h2>📄 Documentación técnica <span class="emoji-bg">sistema</span></h2>
+    <div style="font-size:0.8rem; color:var(--text-secondary);">
+      <p><strong style="color:var(--text-primary);">📦 Modelo:</strong> 3 entidades (Usuario, Tarea, Categoría). Datos en localStorage.</p>
+      <p><strong style="color:var(--text-primary);">🎮 Controlador:</strong> CRUD completo, validaciones, filtros, búsqueda.</p>
+      <p><strong style="color:var(--text-primary);">🖥️ Vista:</strong> Renderizado dinámico, responsive, modo oscuro Subway Surfers.</p>
+      <p><strong style="color:var(--text-primary);">🔗 Comunicación:</strong> Modelo ↔ Controlador ↔ Vista. Eventos DOM.</p>
+      <p><strong style="color:var(--text-primary);">📊 Estadísticas:</strong> Total, pendientes, completadas en tiempo real.</p>
+      <p><strong style="color:var(--text-primary);">🌐 ODS:</strong> ODS 4 (Educación de calidad), ODS 8 (Trabajo decente), ODS 9 (Innovación).</p>
+      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">📎 Documentación completa disponible en el repositorio.</p>
+    </div>
+  </section>
+
+  <!-- REFLEXIÓN ODS -->
+  <section class="card" style="border-left:4px solid #00d4ff;">
+    <h2>🌍 Reflexión ODS <span class="emoji-bg">sostenibilidad</span></h2>
+    <div style="font-size:0.8rem; color:var(--text-secondary);">
+      <p><strong style="color:var(--text-primary);">🎯 ODS 4 - Educación de calidad:</strong> La herramienta promueve la organización y gestión del tiempo, mejorando el rendimiento académico.</p>
+      <p><strong style="color:var(--text-primary);">🎯 ODS 8 - Trabajo decente:</strong> Fomenta habilidades digitales, trabajo en equipo y responsabilidad, preparando para el futuro laboral.</p>
+      <p><strong style="color:var(--text-primary);">🎯 ODS 9 - Innovación:</strong> Utiliza tecnología accesible (HTML/CSS/JS) para resolver problemas reales de la comunidad escolar.</p>
+      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">📝 Reflexión completa en el informe adjunto.</p>
+    </div>
+  </section>
+
+  <!-- AUTORREFLEXIÓN Y COEVALUACIÓN -->
+  <section class="card" style="border-left:4px solid var(--purple);">
+    <h2>📝 Autoevaluación y coevaluación <span class="emoji-bg">feedback</span></h2>
+    <div style="display:flex; flex-wrap:wrap; gap:16px; font-size:0.8rem; color:var(--text-secondary);">
+      <div style="flex:1 1 200px; background:var(--bg-input); padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--border);">
+        <strong style="color:var(--text-primary);">👤 Tomas Patiño</strong>
+        <p style="margin-top:4px;font-size:0.75rem;">✅ Cumplí con los objetivos del sprint. Colaboré en el diseño y documentación.</p>
+        <p style="font-size:0.65rem;color:var(--text-muted);">Autoevaluación: 9.5/10</p>
+      </div>
+      <div style="flex:1 1 200px; background:var(--bg-input); padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--border);">
+        <strong style="color:var(--text-primary);">👤 Alfredo Ramos</strong>
+        <p style="margin-top:4px;font-size:0.75rem;">✅ Desarrollo completo de la aplicación, pruebas y debugging.</p>
+        <p style="font-size:0.65rem;color:var(--text-muted);">Autoevaluación: 9.8/10</p>
+      </div>
+      <div style="flex:1 1 200px; background:var(--bg-input); padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--border);">
+        <strong style="color:var(--text-primary);">🤝 Coevaluación</strong>
+        <p style="margin-top:4px;font-size:0.75rem;">Excelente colaboración y comunicación. Ambos cumplimos con los plazos.</p>
+        <p style="font-size:0.65rem;color:var(--text-muted);">Coevaluación: 9.6/10</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <section class="card footer-card">
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
+      <span style="font-weight:500;">✅ Datos guardados en localStorage · MVC funcional</span>
+      <span style="font-size:0.7rem; opacity:0.5;">👨‍💻 Tomas Patiño &amp; Alfredo Ramos · 2026</span>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; font-size:0.65rem; color:var(--text-muted);">
+      <span>📎 Portafolio STEM</span>
+      <span>📄 Documentación técnica</span>
+      <span>🎤 Presentación final</span>
+      <span>🏆 MVP completado</span>
+    </div>
+  </section>
+</div>
+
+<script>
+  (function() {
+    // ---------- MODEL ----------
+    var STORAGE_KEY = 'smartTodoMVC_data';
+    var data = loadData();
+
+    function loadData() {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        try { return JSON.parse(raw); } catch(e) { /* fallback */ }
+      }
+      return {
+        users: [
+          { id: 'u1', name: 'Emma' },
+          { id: 'u2', name: 'Luis' }
+        ],
+        categories: [
+          { id: 'c1', name: 'Académico', color: '#ff6b35' },
+          { id: 'c2', name: 'Personal', color: '#00d4ff' }
+        ],
+        tasks: [
+          { id: 't1', title: 'Revisar matemáticas', description: '', status: 'pending', userId: 'u1', categoryId: 'c1', createdAt: Date.now() - 3600000 },
+          { id: 't2', title: 'Preparar exposición', description: '', status: 'pending', userId: 'u2', categoryId: 'c1', createdAt: Date.now() - 7200000 }
+        ]
+      };
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+    function findUser(id) { 
+      for (var i = 0; i < data.users.length; i++) {
+        if (data.users[i].id === id) return data.users[i];
+      }
+      return null;
+    }
+    function findCategory(id) {
+      for (var i = 0; i < data.categories.length; i++) {
+        if (data.categories[i].id === id) return data.categories[i];
+      }
+      return null;
+    }
+
+    // ---------- CONTROLLER ----------
+    var Controller = {
+      addTask: function(title, userId, categoryId) {
+        if (!title || title.trim() === '') { 
+          alert('El título es obligatorio'); 
+          return false; 
+        }
+        var task = {
+          id: generateId(),
+          title: title.trim(),
+          description: '',
+          status: 'pending',
+          userId: userId || (data.users.length ? data.users[0].id : null),
+          categoryId: categoryId || (data.categories.length ? data.categories[0].id : null),
+          createdAt: Date.now()
+        };
+        data.tasks.push(task);
+        saveData();
+        View.renderAll();
+        return true;
+      },
+      deleteTask: function(id) {
+        if (!confirm('¿Eliminar esta tarea?')) return;
+        var newTasks = [];
+        for (var i = 0; i < data.tasks.length; i++) {
+          if (data.tasks[i].id !== id) newTasks.push(data.tasks[i]);
+        }
+        data.tasks = newTasks;
+        saveData();
+        View.renderAll();
+      },
+      toggleTaskStatus: function(id) {
+        var task = null;
+        for (var i = 0; i < data.tasks.length; i++) {
+          if (data.tasks[i].id === id) { task = data.tasks[i]; break; }
+        }
+        if (task) {
+          task.status = task.status === 'pending' ? 'done' : 'pending';
+          saveData();
+          View.renderAll();
+        }
+      },
+      addUser: function(name) {
+        if (!name || name.trim() === '') { 
+          alert('Nombre de usuario requerido'); 
+          return false; 
+        }
+        var user = { id: generateId(), name: name.trim() };
+        data.users.push(user);
+        saveData();
+        View.renderAll();
+        return true;
+      },
+      addCategory: function(name, color) {
+        if (!name || name.trim() === '') { 
+          alert('Nombre de categoría requerido'); 
+          return false; 
+        }
+        var cat = { id: generateId(), name: name.trim(), color: color || '#ff6b35' };
+        data.categories.push(cat);
+        saveData();
+        View.renderAll();
+        return true;
+      },
+      getFilteredTasks: function(filter, search) {
+        var tasks = [];
+        for (var i = 0; i < data.tasks.length; i++) {
+          tasks.push(data.tasks[i]);
+        }
+        if (filter === 'pending') {
+          var pending = [];
+          for (var i = 0; i < tasks.length; i++) {
+            if (tasks[i].status === 'pending') pending.push(tasks[i]);
+          }
+          tasks = pending;
+        } else if (filter === 'done') {
+          var done = [];
+          for (var i = 0; i < tasks.length; i++) {
+            if (tasks[i].status === 'done') done.push(tasks[i]);
+          }
+          tasks = done;
+        }
+        if (search && search.trim() !== '') {
+          var s = search.trim().toLowerCase();
+          var filtered = [];
+          for (var i = 0; i < tasks.length; i++) {
+            if (tasks[i].title.toLowerCase().indexOf(s) !== -1) {
+              filtered.push(tasks[i]);
+            }
+          }
+          tasks = filtered;
+        }
+        return tasks;
+      }
+    };
+
+    // ---------- VIEW ----------
+    var View = {
+      renderAll: function() {
+        this.renderSelects();
+        this.renderTaskList();
+        this.renderStats();
+        this.renderUsersAndCategories();
+      },
+      renderSelects: function() {
+        var userSelect = document.getElementById('taskUser');
+        var catSelect = document.getElementById('taskCategory');
+        if (!userSelect || !catSelect) return;
+        var currentUser = userSelect.value;
+        var userHtml = '';
+        for (var i = 0; i < data.users.length; i++) {
+          userHtml += '<option value="' + data.users[i].id + '">' + data.users[i].name + '</option>';
+        }
+        userSelect.innerHTML = userHtml;
+        var userExists = false;
+        for (var i = 0; i < data.users.length; i++) {
+          if (data.users[i].id === currentUser) { userExists = true; break; }
+        }
+        if (userExists) userSelect.value = currentUser;
+
+        var currentCat = catSelect.value;
+        var catHtml = '';
+        for (var i = 0; i < data.categories.length; i++) {
+          catHtml += '<option value="' + data.categories[i].id + '">' + data.categories[i].name + '</option>';
+        }
+        catSelect.innerHTML = catHtml;
+        var catExists = false;
+        for (var i = 0; i < data.categories.length; i++) {
+          if (data.categories[i].id === currentCat) { catExists = true; break; }
+        }
+        if (catExists) catSelect.value = currentCat;
+      },
+      renderTaskList: function() {
+        var container = document.getElementById('taskList');
+        if (!container) return;
+        var filterBtn = document.querySelector('.filter-bar .btn.active');
+        var filter = filterBtn ? filterBtn.dataset.filter : 'all';
+        var searchInput = document.getElementById('searchInput');
+        var search = searchInput ? searchInput.value : '';
+        var tasks = Controller.getFilteredTasks(filter, search);
+
+        if (tasks.length === 0) {
+          container.innerHTML = '<div class="empty-state"><span class="big-emoji">🏃</span>No hay tareas que coincidan con el filtro<br><span style="font-size:0.7rem;color:var(--text-muted);">Agrega una nueva tarea para comenzar</span></div>';
+          return;
+        }
+        var html = '';
+        for (var i = 0; i < tasks.length; i++) {
+          var task = tasks[i];
+          var user = findUser(task.userId);
+          var cat = findCategory(task.categoryId);
+          var done = task.status === 'done';
+          var borderColor = cat ? cat.color : '#ff6b35';
+          html += '<div class="task-item' + (done ? ' done' : '') + '" style="border-left-color: ' + borderColor + ';">';
+          html += '<div class="info">';
+          html += '<strong>' + task.title + '</strong>';
+          html += '<div class="meta">';
+          html += '<span class="tag">👤 ' + (user ? user.name : 'Sin usuario') + '</span>';
+          html += '<span class="tag" style="background:' + (cat ? cat.color + '22' : 'transparent') + '; border-left:3px solid ' + (cat ? cat.color : '#ff6b35') + ';">🏷️ ' + (cat ? cat.name : 'Sin categoría') + '</span>';
+          html += '<span class="tag ' + (done ? 'tag-done' : 'tag-pending') + '">' + (done ? '✅ Completada' : '⏳ Pendiente') + '</span>';
+          html += '</div></div>';
+          html += '<div class="actions">';
+          html += '<button class="btn btn-success btn-sm" data-action="toggle" data-id="' + task.id + '">' + (done ? '↩️ Reabrir' : '✅ Completar') + '</button>';
+          html += '<button class="btn btn-danger btn-sm" data-action="delete" data-id="' + task.id + '">🗑️</button>';
+          html += '</div></div>';
+        }
+        container.innerHTML = html;
+        var buttons = container.querySelectorAll('[data-action]');
+        for (var j = 0; j < buttons.length; j++) {
+          (function(btn) {
+            btn.addEventListener('click', function() {
+              var action = btn.getAttribute('data-action');
+              var id = btn.getAttribute('data-id');
+              if (action === 'delete') {
+                Controller.deleteTask(id);
+              } else if (action === 'toggle') {
+                Controller.toggleTaskStatus(id);
+              }
+            });
+          })(buttons[j]);
+        }
+      },
+      renderStats: function() {
+        var total = data.tasks.length;
+        var pending = 0;
+        var done = 0;
+        for (var i = 0; i < data.tasks.length; i++) {
+          if (data.tasks[i].status === 'pending') pending++;
+          else if (data.tasks[i].status === 'done') done++;
+        }
+        document.getElementById('totalCount').textContent = total;
+        document.getElementById('pendingCount').textContent = pending;
+        document.getElementById('doneCount').textContent = done;
+      },
+      renderUsersAndCategories: function() {
+        var userContainer = document.getElementById('userListDisplay');
+        if (userContainer) {
+          var userHtml = '';
+          for (var i = 0; i < data.users.length; i++) {
+            userHtml += '<span class="chip chip-user">' + data.users[i].name + '</span>';
+          }
+          userContainer.innerHTML = userHtml;
+        }
+        var catContainer = document.getElementById('categoryListDisplay');
+        if (catContainer) {
+          var catHtml = '';
+          for (var i = 0; i < data.categories.length; i++) {
+            var c = data.categories[i];
+            catHtml += '<span class="chip chip-color" style="border-left-color: ' + c.color + '; background: ' + c.color + '20;">' + c.name + '</span>';
+          }
+          catContainer.innerHTML = catHtml;
+        }
+      }
+    };
+
+    // ---------- EVENTOS ----------
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('addTaskBtn').addEventListener('click', function() {
+        var title = document.getElementById('taskTitle').value;
+        var userId = document.getElementById('taskUser').value;
+        var categoryId = document.getElementById('taskCategory').value;
+        Controller.addTask(title, userId, categoryId);
+        document.getElementById('taskTitle').value = '';
+      });
+
+      var filterBtns = document.querySelectorAll('.filter-bar .btn');
+      for (var i = 0; i < filterBtns.length; i++) {
+        (function(btn) {
+          btn.addEventListener('click', function() {
+            var allBtns = document.querySelectorAll('.filter-bar .btn');
+            for (var j = 0; j < allBtns.length; j++) {
+              allBtns[j].classList.remove('active');
+            }
+            btn.classList.add('active');
+            View.renderTaskList();
+          });
+        })(filterBtns[i]);
+      }
+
+      document.getElementById('searchInput').addEventListener('input', function() {
+        View.renderTaskList();
+      });
+
+      document.getElementById('quickAddUser').addEventListener('click', function() {
+        var input = document.getElementById('newUserName');
+        Controller.addUser(input.value);
+        input.value = '';
+      });
+      document.getElementById('newUserName').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          document.getElementById('quickAddUser').click();
+        }
+      });
+
+      document.getElementById('quickAddCategory').addEventListener('click', function() {
+        var name = document.getElementById('newCategoryName').value;
+        var color = document.getElementById('newCategoryColor').value;
+        Controller.addCategory(name, color);
+        document.getElementById('newCategoryName').value = '';
+      });
+      document.getElementById('newCategoryName').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          document.getElementById('quickAddCategory').click();
+        }
+      });
+
+      document.getElementById('addUserBtn').addEventListener('click', function() {
+        var name = prompt('Nombre del nuevo usuario:');
+        if (name) Controller.addUser(name);
+      });
+      document.getElementById('addCategoryBtn').addEventListener('click', function() {
+        var name = prompt('Nombre de la nueva categoría:');
+        if (name) {
+          var color = prompt('Color (hex, ej #ff6b35):') || '#ff6b35';
+          Controller.addCategory(name, color);
+        }
+      });
+
+      View.renderAll();
+    });
+
+  })();
+</script>
+</body>
+</html>

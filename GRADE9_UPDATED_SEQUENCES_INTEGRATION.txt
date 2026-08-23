@@ -1,0 +1,7 @@
+﻿UPDATED CLASS SEQUENCES
+URL: /guides/grade-09/updated-class-sequences.html
+
+Agregar este acceso ANTES de las secuencias existentes en /grades/9, sin borrar ni reescribir lo actual:
+Title: Updated Class Sequences
+Subtitle: Recent classroom projects and development evidence.
+Link: /guides/grade-09/updated-class-sequences.html

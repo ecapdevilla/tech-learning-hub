@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplicación de lista de tareas con arquitectura MVC y persistencia en LocalStorage">
+    <title>TaskMaster Pro - Lista de Tareas MVC</title>
+    <style>
+        /* ===== RESET Y VARIABLES ===== */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --primary-light: #818CF8;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--gray-800);
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
+        .app-container {
+            width: 100%;
+            max-width: 820px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 32px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .task-card:hover {
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-title h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--gray-900);
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .app-title .icon {
+            font-size: 32px;
+            -webkit-text-fill-color: initial;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: var(--gray-50);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .stat-item .number {
+            color: var(--gray-900);
+            font-weight: 700;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .stat-item .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .badge-total {
+            background: var(--primary);
+        }
+        .badge-pending {
+            background: var(--warning);
+        }
+        .badge-completed {
+            background: var(--success);
+        }
+
+        /* ===== FORMULARIO ===== */
+        .task-form {
+            margin-bottom: 24px;
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .task-form:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group:last-of-type {
+            margin-bottom: 16px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: var(--transition);
+            background: white;
+            color: var(--gray-800);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--gray-400);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 56px;
+            max-height: 150px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-family: inherit;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== FILTROS ===== */
+        .filters-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            padding: 4px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            background: transparent;
+            color: var(--gray-600);
+            font-family: inherit;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .filter-btn:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-btn .count {
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* ===== LISTA DE TAREAS ===== */
+        .task-list-container {
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .task-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .task-list-container::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+
+        .task-list-container::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 10px;
+        }
+
+        .task-list-container::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 16px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            gap: 12px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .task-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
+        }
+
+        .task-item.completed {
+            background: var(--gray-50);
+            border-left: 4px solid var(--success);
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        .task-item.completed:hover {
+            border-left-color: var(--success);
+        }
+
+        .task-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .task-checkbox {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .task-checkbox:hover {
+            transform: scale(1.1);
+        }
+
+        .task-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-800);
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .task-description {
+            font-size: 14px;
+            color: var(--gray-600);
+            margin-top: 4px;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--gray-400);
+            flex-wrap: wrap;
+        }
+
+        .task-meta .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .task-actions button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .task-actions .btn-edit {
+            color: var(--gray-500);
+        }
+
+        .task-actions .btn-edit:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .task-actions .btn-delete {
+            color: var(--gray-500);
+        }
+
+        .task-actions .btn-delete:hover {
+            background: #FEE2E2;
+            color: var(--danger);
+            transform: scale(1.1);
+        }
+
+        /* ===== ESTADO VACÍO ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-400);
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 16px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: var(--gray-400);
+        }
+
+        /* ===== NOTIFICACIONES ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            background: var(--gray-900);
+            color: white;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 400px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast.success {
+            border-left-color: var(--success);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast.fade-out {
+            animation: slideOutRight 0.3s ease-in forwards;
+        }
+
+        @keyframes slideOutRight {
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .task-card {
+                padding: 20px;
+            }
+
+            .app-title h1 {
+                font-size: 22px;
+            }
+
+            .stats-container {
+                padding: 8px 16px;
+                gap: 12px;
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .stat-item {
+                font-size: 12px;
+            }
+
+            .task-form {
+                padding: 16px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .filters-container {
+                gap: 4px;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+                min-width: 60px;
+            }
+
+            .task-item {
+                padding: 12px;
+                flex-direction: column;
+            }
+
+            .task-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 8px;
+            }
+
+            .task-header {
+                align-items: center;
+            }
+
+            .task-checkbox {
+                width: 20px;
+                height: 20px;
+                min-width: 20px;
+            }
+
+            .toast {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                font-size: 14px;
+                padding: 14px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .task-card {
+                padding: 16px;
+                border-radius: var(--radius);
+            }
+
+            .app-title h1 {
+                font-size: 20px;
+            }
+
+            .stats-container {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .stat-item {
+                font-size: 11px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                font-size: 15px;
+                padding: 10px 14px;
+            }
+
+            .filter-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+                min-width: 50px;
+            }
+
+            .task-title {
+                font-size: 14px;
+            }
+
+            .task-description {
+                font-size: 13px;
+            }
+        }
+
+        /* ===== UTILIDADES ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-8 {
+            margin-top: 8px;
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            .task-form,
+            .filters-container,
+            .task-actions {
+                display: none !important;
+            }
+
+            .task-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd;
+            }
+
+            .task-item {
+                break-inside: avoid;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* ===== DARK MODE ===== */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --gray-50: #1F2937;
+                --gray-100: #374151;
+                --gray-200: #4B5563;
+                --gray-300: #6B7280;
+                --gray-400: #9CA3AF;
+                --gray-500: #D1D5DB;
+                --gray-600: #E5E7EB;
+                --gray-700: #F3F4F6;
+                --gray-800: #F9FAFB;
+                --gray-900: #FFFFFF;
+            }
+
+            body {
+                background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+            }
+
+            .task-card {
+                background: #1F2937;
+                border-color: #374151;
+            }
+
+            .task-form {
+                background: #111827;
+                border-color: #374151;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                background: #1F2937;
+                border-color: #374151;
+                color: #F9FAFB;
+            }
+
+            .form-group input:focus,
+            .form-group textarea:focus {
+                border-color: var(--primary-light);
+            }
+
+            .stats-container {
+                background: #111827;
+                border-color: #374151;
+            }
+
+            .filters-container {
+                background: #111827;
+                border-color: #374151;
+            }
+
+            .filter-btn {
+                color: var(--gray-400);
+            }
+
+            .filter-btn:hover {
+                background: #374151;
+                color: var(--gray-200);
+            }
+
+            .task-item {
+                background: #1F2937;
+                border-color: #374151;
+            }
+
+            .task-item:hover {
+                border-color: var(--primary-light);
+            }
+
+            .task-item.completed {
+                background: #111827;
+            }
+
+            .task-description {
+                color: var(--gray-400);
+            }
+
+            .task-meta .tag {
+                background: #374151;
+                color: var(--gray-400);
+            }
+
+            .empty-state {
+                color: var(--gray-400);
+            }
+
+            .empty-state h3 {
+                color: var(--gray-500);
+            }
+
+            .toast {
+                background: #1F2937;
+                color: #F9FAFB;
+            }
+
+            .stat-item {
+                color: var(--gray-400);
+            }
+
+            .stat-item .number {
+                color: var(--gray-200);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container" role="main">
+        <div class="task-card">
+            <!-- HEADER -->
+            <header class="app-header">
+                <div class="app-title">
+                    <span class="icon" aria-hidden="true">📋</span>
+                    <h1>TaskMaster Pro</h1>
+                </div>
+                <div class="stats-container" id="statsContainer" role="status" aria-live="polite">
+                    <span class="stat-item">
+                        📊 Total: <span class="number" id="totalCount">0</span>
+                    </span>
+                    <span class="stat-item">
+                        ⏳ Pendientes: <span class="number" id="pendingCount">0</span>
+                    </span>
+                    <span class="stat-item">
+                        ✅ Completadas: <span class="number" id="completedCount">0</span>
+                    </span>
+                </div>
+            </header>
+
+            <!-- FORMULARIO -->
+            <section class="task-form" aria-label="Formulario de nueva tarea">
+                <form id="taskForm" novalidate>
+                    <div class="form-group">
+                        <label for="taskInput" class="sr-only">Título de la tarea</label>
+                        <input
+                            type="text"
+                            id="taskInput"
+                            placeholder="¿Qué necesitas hacer?"
+                            autocomplete="off"
+                            required
+                            aria-required="true"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDescription" class="sr-only">Descripción</label>
+                        <textarea
+                            id="taskDescription"
+                            placeholder="Descripción (opcional)"
+                            rows="2"
+                        ></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="addTaskBtn">
+                            <span aria-hidden="true">➕</span> Agregar Tarea
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- FILTROS -->
+            <nav class="filters-container" aria-label="Filtros de tareas">
+                <button class="filter-btn active" data-filter="all" aria-pressed="true">
+                    Todas <span class="count" id="filterAllCount">(0)</span>
+                </button>
+                <button class="filter-btn" data-filter="pending" aria-pressed="false">
+                    Pendientes <span class="count" id="filterPendingCount">(0)</span>
+                </button>
+                <button class="filter-btn" data-filter="completed" aria-pressed="false">
+                    Completadas <span class="count" id="filterCompletedCount">(0)</span>
+                </button>
+            </nav>
+
+            <!-- LISTA DE TAREAS -->
+            <div class="task-list-container" id="taskListContainer" role="list">
+                <div class="empty-state" id="emptyState">
+                    <span class="icon" aria-hidden="true">📭</span>
+                    <h3>No hay tareas</h3>
+                    <p>¡Comienza agregando una nueva tarea!</p>
+                </div>
+                <div id="taskList" role="list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            /**
+             * ========================================================
+             * MODELO - Gestión de datos y persistencia
+             * ========================================================
+             */
+            class TaskModel {
+                constructor() {
+                    this.storageKey = 'taskmaster_pro_data';
+                    this.tasks = [];
+                    this.nextId = 1;
+                    this.loadData();
+                }
+
+                /**
+                 * Carga los datos desde LocalStorage
+                 */
+                loadData() {
+                    try {
+                        const stored = localStorage.getItem(this.storageKey);
+                        if (stored) {
+                            const parsed = JSON.parse(stored);
+                            this.tasks = parsed.tasks || [];
+                            this.nextId = parsed.nextId || 1;
+                            // Validación de integridad
+                            if (!Array.isArray(this.tasks)) {
+                                throw new Error('Datos corruptos');
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Error al cargar datos:', error);
+                        this.tasks = [];
+                        this.nextId = 1;
+                        this.saveData();
+                    }
+                }
+
+                /**
+                 * Guarda los datos en LocalStorage
+                 */
+                saveData() {
+                    try {
+                        const data = {
+                            tasks: this.tasks,
+                            nextId: this.nextId,
+                            updatedAt: new Date().toISOString()
+                        };
+                        localStorage.setItem(this.storageKey, JSON.stringify(data));
+                    } catch (error) {
+                        console.error('Error al guardar datos:', error);
+                        this.showToast('Error al guardar los datos', 'error');
+                    }
+                }
+
+                /**
+                 * Obtiene todas las tareas
+                 */
+                getTasks() {
+                    return this.tasks.slice(); // Retorna copia para inmutabilidad
+                }
+
+                /**
+                 * Obtiene tareas filtradas por estado
+                 */
+                getTasksByFilter(filter) {
+                    if (filter === 'all') return this.getTasks();
+                    const isCompleted = filter === 'completed';
+                    return this.tasks.filter(task => task.completed === isCompleted);
+                }
+
+                /**
+                 * Agrega una nueva tarea
+                 */
+                addTask(title, description = '') {
+                    if (!title || title.trim() === '') {
+                        throw new Error('El título es obligatorio');
+                    }
+
+                    const task = {
+                        id: this.nextId++,
+                        title: title.trim(),
+                        description: description.trim() || '',
+                        completed: false,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+
+                    this.tasks.push(task);
+                    this.saveData();
+                    return task;
+                }
+
+                /**
+                 * Elimina una tarea por ID
+                 */
+                deleteTask(id) {
+                    const index = this.tasks.findIndex(task => task.id === id);
+                    if (index === -1) {
+                        throw new Error('Tarea no encontrada');
+                    }
+                    this.tasks.splice(index, 1);
+                    this.saveData();
+                }
+
+                /**
+                 * Alterna el estado de completado de una tarea
+                 */
+                toggleTask(id) {
+                    const task = this.tasks.find(t => t.id === id);
+                    if (!task) {
+                        throw new Error('Tarea no encontrada');
+                    }
+                    task.completed = !task.completed;
+                    task.updatedAt = new Date().toISOString();
+                    this.saveData();
+                    return task;
+                }
+
+                /**
+                 * Actualiza una tarea existente
+                 */
+                updateTask(id, updates) {
+                    const task = this.tasks.find(t => t.id === id);
+                    if (!task) {
+                        throw new Error('Tarea no encontrada');
+                    }
+
+                    // Validar campos
+                    if (updates.title !== undefined && (!updates.title || updates.title.trim() === '')) {
+                        throw new Error('El título no puede estar vacío');
+                    }
+
+                    if (updates.title !== undefined) {
+                        task.title = updates.title.trim();
+                    }
+                    if (updates.description !== undefined) {
+                        task.description = updates.description.trim() || '';
+                    }
+                    task.updatedAt = new Date().toISOString();
+
+                    this.saveData();
+                    return task;
+                }
+
+                /**
+                 * Obtiene estadísticas
+                 */
+                getStats() {
+                    const total = this.tasks.length;
+                    const completed = this.tasks.filter(t => t.completed).length;
+                    const pending = total - completed;
+                    return { total, completed, pending };
+                }
+
+                /**
+                 * Obtiene el conteo por filtro
+                 */
+                getFilterCounts() {
+                    return {
+                        all: this.tasks.length,
+                        pending: this.tasks.filter(t => !t.completed).length,
+                        completed: this.tasks.filter(t => t.completed).length
+                    };
+                }
+
+                /**
+                 * Exporta los datos
+                 */
+                exportData() {
+                    return JSON.stringify(this.tasks, null, 2);
+                }
+
+                /**
+                 * Importa datos (reemplaza los existentes)
+                 */
+                importData(jsonData) {
+                    try {
+                        const tasks = JSON.parse(jsonData);
+                        if (!Array.isArray(tasks)) {
+                            throw new Error('Formato inválido');
+                        }
+                        this.tasks = tasks;
+                        this.nextId = tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
+                        this.saveData();
+                        return true;
+                    } catch (error) {
+                        throw new Error('Error al importar datos: ' + error.message);
+                    }
+                }
+
+                /**
+                 * Muestra notificaciones (callback)
+                 */
+                showToast(message, type = 'info') {
+                    if (this.onToast) {
+                        this.onToast(message, type);
+                    }
+                }
+            }
+
+            /**
+             * ========================================================
+             * VISTA - Renderizado y manipulación del DOM
+             * ========================================================
+             */
+            class TaskView {
+                constructor() {
+                    // Elementos DOM
+                    this.elements = {
+                        taskList: document.getElementById('taskList'),
+                        emptyState: document.getElementById('emptyState'),
+                        taskForm: document.getElementById('taskForm'),
+                        taskInput: document.getElementById('taskInput'),
+                        taskDescription: document.getElementById('taskDescription'),
+                        addBtn: document.getElementById('addTaskBtn'),
+                        filterBtns: document.querySelectorAll('.filter-btn'),
+                        totalCount: document.getElementById('totalCount'),
+                        pendingCount: document.getElementById('pendingCount'),
+                        completedCount: document.getElementById('completedCount'),
+                        filterAllCount: document.getElementById('filterAllCount'),
+                        filterPendingCount: document.getElementById('filterPendingCount'),
+                        filterCompletedCount: document.getElementById('filterCompletedCount'),
+                        statsContainer: document.getElementById('statsContainer')
+                    };
+
+                    // Estado interno
+                    this.currentFilter = 'all';
+                    this.tasks = [];
+
+                    // Bind de eventos
+                    this.bindEvents();
+                }
+
+                /**
+                 * Vincula los eventos de la vista
+                 */
+                bindEvents() {
+                    // Submit del formulario
+                    this.elements.taskForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.onAddTask?.();
+                    });
+
+                    // Click en botón agregar
+                    this.elements.addBtn.addEventListener('click', () => {
+                        this.onAddTask?.();
+                    });
+
+                    // Filtros
+                    this.elements.filterBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            this.onFilterChange?.(btn.dataset.filter);
+                        });
+                    });
+
+                    // Delegación de eventos en la lista de tareas
+                    this.elements.taskList.addEventListener('click', (e) => {
+                        const taskItem = e.target.closest('[data-task-id]');
+                        if (!taskItem) return;
+
+                        const id = parseInt(taskItem.dataset.taskId);
+
+                        // Checkbox
+                        if (e.target.classList.contains('task-checkbox')) {
+                            this.onToggleTask?.(id);
+                            return;
+                        }
+
+                        // Botón eliminar
+                        if (e.target.closest('.btn-delete')) {
+                            this.onDeleteTask?.(id);
+                            return;
+                        }
+
+                        // Botón editar
+                        if (e.target.closest('.btn-edit')) {
+                            this.onEditTask?.(id);
+                            return;
+                        }
+                    });
+
+                    // Tecla Escape para limpiar
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') {
+                            this.elements.taskInput.blur();
+                            this.elements.taskDescription.blur();
+                        }
+                    });
+
+                    // Shortcut: Ctrl+Enter para agregar desde el textarea
+                    this.elements.taskDescription.addEventListener('keydown', (e) => {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                            e.preventDefault();
+                            this.onAddTask?.();
+                        }
+                    });
+                }
+
+                /**
+                 * Renderiza la lista de tareas
+                 */
+                renderTasks(tasks) {
+                    this.tasks = tasks;
+
+                    if (tasks.length === 0) {
+                        this.elements.taskList.innerHTML = '';
+                        this.elements.emptyState.style.display = 'block';
+                        return;
+                    }
+
+                    this.elements.emptyState.style.display = 'none';
+
+                    this.elements.taskList.innerHTML = tasks.map(task => `
+                        <div class="task-item ${task.completed ? 'completed' : ''}" 
+                             data-task-id="${task.id}" 
+                             role="listitem">
+                            <div class="task-content">
+                                <div class="task-header">
+                                    <input type="checkbox" 
+                                           class="task-checkbox" 
+                                           ${task.completed ? 'checked' : ''} 
+                                           aria-label="${task.completed ? 'Marcar como pendiente' : 'Marcar como completada'}" />
+                                    <span class="task-title">${this.escapeHtml(task.title)}</span>
+                                </div>
+                                ${task.description ? `<p class="task-description">${this.escapeHtml(task.description)}</p>` : ''}
+                                <div class="task-meta">
+                                    <span class="tag">
+                                        ${task.completed ? '✅ Completada' : '⏳ Pendiente'}
+                                    </span>
+                                    <span>${this.formatDate(task.createdAt)}</span>
+                                    ${task.updatedAt !== task.createdAt ? `<span>✏️ Editada</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="btn-edit" title="Editar tarea" aria-label="Editar tarea">
+                                    ✏️
+                                </button>
+                                <button class="btn-delete" title="Eliminar tarea" aria-label="Eliminar tarea">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                /**
+                 * Actualiza las estadísticas
+                 */
+                updateStats(stats) {
+                    this.elements.totalCount.textContent = stats.total;
+                    this.elements.pendingCount.textContent = stats.pending;
+                    this.elements.completedCount.textContent = stats.completed;
+                }
+
+                /**
+                 * Actualiza los contadores de filtros
+                 */
+                updateFilterCounts(counts) {
+                    this.elements.filterAllCount.textContent = `(${counts.all})`;
+                    this.elements.filterPendingCount.textContent = `(${counts.pending})`;
+                    this.elements.filterCompletedCount.textContent = `(${counts.completed})`;
+                }
+
+                /**
+                 * Actualiza el filtro activo
+                 */
+                updateActiveFilter(filter) {
+                    this.currentFilter = filter;
+                    this.elements.filterBtns.forEach(btn => {
+                        const isActive = btn.dataset.filter === filter;
+                        btn.classList.toggle('active', isActive);
+                        btn.setAttribute('aria-pressed', isActive);
+                    });
+                }
+
+                /**
+                 * Obtiene los datos del formulario
+                 */
+                getFormData() {
+                    return {
+                        title: this.elements.taskInput.value,
+                        description: this.elements.taskDescription.value
+                    };
+                }
+
+                /**
+                 * Limpia el formulario
+                 */
+                clearForm() {
+                    this.elements.taskInput.value = '';
+                    this.elements.taskDescription.value = '';
+                    this.elements.taskInput.focus();
+                }
+
+                /**
+                 * Muestra un error en el formulario
+                 */
+                showFormError(message) {
+                    const existing = document.querySelector('.form-error');
+                    if (existing) existing.remove();
+
+                    const error = document.createElement('div');
+                    error.className = 'form-error';
+                    error.style.cssText = `
+                        color: var(--danger);
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-top: 8px;
+                        padding: 8px 12px;
+                        background: #FEE2E2;
+                        border-radius: 6px;
+                        border-left: 3px solid var(--danger);
+                    `;
+                    error.textContent = '⚠️ ' + message;
+
+                    const form = this.elements.taskForm;
+                    form.insertBefore(error, form.querySelector('.form-actions'));
+
+                    setTimeout(() => {
+                        if (error.parentNode) {
+                            error.remove();
+                        }
+                    }, 4000);
+                }
+
+                /**
+                 * Escapa HTML para prevenir XSS
+                 */
+                escapeHtml(text) {
+                    if (!text) return '';
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    return div.innerHTML;
+                }
+
+                /**
+                 * Formatea fecha
+                 */
+                formatDate(dateString) {
+                    try {
+                        const date = new Date(dateString);
+                        return new Intl.DateTimeFormat('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }).format(date);
+                    } catch {
+                        return dateString;
+                    }
+                }
+
+                /**
+                 * Callbacks para el controlador
+                 */
+                onAddTask = null;
+                onDeleteTask = null;
+                onToggleTask = null;
+                onEditTask = null;
+                onFilterChange = null;
+            }
+
+            /**
+             * ========================================================
+             * CONTROLADOR - Orquesta la aplicación
+             * ========================================================
+             */
+            class TaskController {
+                constructor() {
+                    this.model = new TaskModel();
+                    this.view = new TaskView();
+
+                    // Configurar callbacks
+                    this.view.onAddTask = this.handleAddTask.bind(this);
+                    this.view.onDeleteTask = this.handleDeleteTask.bind(this);
+                    this.view.onToggleTask = this.handleToggleTask.bind(this);
+                    this.view.onEditTask = this.handleEditTask.bind(this);
+                    this.view.onFilterChange = this.handleFilterChange.bind(this);
+
+                    // Configurar notificaciones
+                    this.model.onToast = this.showToast.bind(this);
+
+                    // Inicializar vista
+                    this.refreshView();
+
+                    // Autofocus
+                    setTimeout(() => {
+                        this.view.elements.taskInput.focus();
+                    }, 100);
+                }
+
+                /**
+                 * Refresca toda la vista
+                 */
+                refreshView() {
+                    const filter = this.view.currentFilter;
+                    const tasks = this.model.getTasksByFilter(filter);
+                    const stats = this.model.getStats();
+                    const counts = this.model.getFilterCounts();
+
+                    this.view.renderTasks(tasks);
+                    this.view.updateStats(stats);
+                    this.view.updateFilterCounts(counts);
+                    this.view.updateActiveFilter(filter);
+                }
+
+                /**
+                 * Maneja la adición de una tarea
+                 */
+                handleAddTask() {
+                    const { title, description } = this.view.getFormData();
+
+                    if (!title || title.trim() === '') {
+                        this.view.showFormError('Por favor, escribe un título para la tarea.');
+                        this.view.elements.taskInput.focus();
+                        return;
+                    }
+
+                    try {
+                        this.model.addTask(title, description);
+                        this.view.clearForm();
+                        this.refreshView();
+                        this.showToast('✅ Tarea agregada exitosamente', 'success');
+                    } catch (error) {
+                        this.view.showFormError(error.message);
+                    }
+                }
+
+                /**
+                 * Maneja la eliminación de una tarea
+                 */
+                handleDeleteTask(id) {
+                    const task = this.model.getTasks().find(t => t.id === id);
+                    if (!task) return;
+
+                    if (confirm(`¿Estás seguro de eliminar la tarea "${task.title}"?`)) {
+                        try {
+                            this.model.deleteTask(id);
+                            this.refreshView();
+                            this.showToast('🗑️ Tarea eliminada', 'success');
+                        } catch (error) {
+                            this.showToast(error.message, 'error');
+                        }
+                    }
+                }
+
+                /**
+                 * Maneja el toggle de completado
+                 */
+                handleToggleTask(id) {
+                    try {
+                        const task = this.model.toggleTask(id);
+                        this.refreshView();
+                        const status = task.completed ? 'completada' : 'pendiente';
+                        this.showToast(`📌 Tarea marcada como ${status}`, 'success');
+                    } catch (error) {
+                        this.showToast(error.message, 'error');
+                    }
+                }
+
+                /**
+                 * Maneja la edición de una tarea
+                 */
+                handleEditTask(id) {
+                    const task = this.model.getTasks().find(t => t.id === id);
+                    if (!task) return;
+
+                    // Crear diálogo de edición avanzado
+                    const dialog = document.createElement('div');
+                    dialog.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0,0,0,0.5);
+                        backdrop-filter: blur(8px);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 9999;
+                        padding: 20px;
+                        animation: fadeIn 0.3s ease-out;
+                    `;
+
+                    dialog.innerHTML = `
+                        <div style="
+                            background: white;
+                            border-radius: var(--radius-lg);
+                            padding: 32px;
+                            max-width: 500px;
+                            width: 100%;
+                            box-shadow: var(--shadow-xl);
+                            animation: slideIn 0.3s ease-out;
+                        ">
+                            <h3 style="margin-bottom: 20px; color: var(--gray-800);">✏️ Editar Tarea</h3>
+                            <form id="editForm">
+                                <div style="margin-bottom: 16px;">
+                                    <label for="editTitle" style="display: block; font-weight: 600; margin-bottom: 6px; color: var(--gray-700);">Título *</label>
+                                    <input type="text" id="editTitle" value="${this.view.escapeHtml(task.title)}" 
+                                           style="width: 100%; padding: 12px; border: 2px solid var(--gray-200); border-radius: 8px; font-size: 16px;" />
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label for="editDescription" style="display: block; font-weight: 600; margin-bottom: 6px; color: var(--gray-700);">Descripción</label>
+                                    <textarea id="editDescription" rows="3" 
+                                              style="width: 100%; padding: 12px; border: 2px solid var(--gray-200); border-radius: 8px; font-size: 16px; font-family: inherit; resize: vertical;">${this.view.escapeHtml(task.description)}</textarea>
+                                </div>
+                                <div style="display: flex; gap: 12px;">
+                                    <button type="submit" style="flex: 1; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">
+                                        💾 Guardar
+                                    </button>
+                                    <button type="button" id="cancelEdit" style="flex: 1; padding: 12px; background: var(--gray-200); color: var(--gray-700); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+
+                    document.body.appendChild(dialog);
+
+                    // Enfocar input
+                    const titleInput = dialog.querySelector('#editTitle');
+                    titleInput.focus();
+                    titleInput.select();
+
+                    // Eventos del diálogo
+                    const form = dialog.querySelector('#editForm');
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        const newTitle = dialog.querySelector('#editTitle').value;
+                        const newDescription = dialog.querySelector('#editDescription').value;
+
+                        if (!newTitle || newTitle.trim() === '') {
+                            this.showToast('El título no puede estar vacío', 'error');
+                            return;
+                        }
+
+                        try {
+                            this.model.updateTask(id, {
+                                title: newTitle.trim(),
+                                description: newDescription.trim()
+                            });
+                            this.refreshView();
+                            this.showToast('✏️ Tarea actualizada', 'success');
+                            dialog.remove();
+                        } catch (error) {
+                            this.showToast(error.message, 'error');
+                        }
+                    });
+
+                    dialog.querySelector('#cancelEdit').addEventListener('click', () => {
+                        dialog.remove();
+                    });
+
+                    // Cerrar con Escape
+                    dialog.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') {
+                            dialog.remove();
+                        }
+                    });
+
+                    // Cerrar al hacer clic fuera
+                    dialog.addEventListener('click', (e) => {
+                        if (e.target === dialog) {
+                            dialog.remove();
+                        }
+                    });
+                }
+
+                /**
+                 * Maneja el cambio de filtro
+                 */
+                handleFilterChange(filter) {
+                    if (this.view.currentFilter === filter) return;
+                    this.view.currentFilter = filter;
+                    this.refreshView();
+                }
+
+                /**
+                 * Muestra notificaciones toast
+                 */
+                showToast(message, type = 'info') {
+                    const existing = document.querySelector('.toast');
+                    if (existing) existing.remove();
+
+                    const toast = document.createElement('div');
+                    toast.className = `toast ${type}`;
+                    toast.textContent = message;
+
+                    // Icono según tipo
+                    const icons = {
+                        success: '✅',
+                        error: '❌',
+                        info: 'ℹ️'
+                    };
+                    if (icons[type]) {
+                        toast.textContent = `${icons[type]} ${message}`;
+                    }
+
+                    document.body.appendChild(toast);
+
+                    // Auto-remover después de 3 segundos
+                    const timeout = setTimeout(() => {
+                        toast.classList.add('fade-out');
+                        setTimeout(() => {
+                            if (toast.parentNode) {
+                                toast.remove();
+                            }
+                        }, 300);
+                    }, 3000);
+
+                    // Clic para cerrar
+                    toast.addEventListener('click', () => {
+                        clearTimeout(timeout);
+                        toast.remove();
+                    });
+                }
+            }
+
+            /**
+             * ========================================================
+             * INICIALIZACIÓN - Punto de entrada
+             * ========================================================
+             */
+            // Esperar a que el DOM esté listo
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    new TaskController();
+                });
+            } else {
+                new TaskController();
+            }
+
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+﻿11TH GRADE · UPDATED CLASS SEQUENCES
+URL: /guides/grade-11/updated-class-sequences.html
+
+Agregar ARRIBA / ANTES de las secuencias existentes de Grade 11:
+Title: Updated Class Sequences
+Subtitle: Current engineering projects and previous classroom evidence.
+Link: /guides/grade-11/updated-class-sequences.html
+
+IMPORTANTE:
+- No borrar ni reescribir las secuencias actuales.
+- Los proyectos recientes del 21 de agosto aparecen primero.
+- La evidencia del 5 de agosto queda separada como Research / Previous Evidence.
+- Los DOCX de investigacion no se presentan falsamente como aplicaciones web.
+- La entrega externa por acceso GitHub no se inventa ni se transforma.

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ración Justa · Comedor sin desperdicio</title>
+    <style>
+        /* ================================================================
+           ESTILOS CSS (integrados)
+           ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f7ee 0%, #dae8d5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            max-width: 720px;
+            width: 100%;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0, 40, 20, 0.2);
+            padding: 30px 35px;
+            transition: all 0.2s ease;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #1e4a2b;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitulo {
+            color: #3d6b4b;
+            font-size: 1rem;
+            margin-top: 5px;
+            border-top: 2px dashed #b6d7b0;
+            padding-top: 10px;
+        }
+
+        /* Formulario */
+        .formulario {
+            background: #f6fbf5;
+            padding: 25px;
+            border-radius: 28px;
+            border: 1px solid #cde0c8;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            font-weight: 600;
+            color: #1f3d28;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+
+        .campo select,
+        .campo input {
+            padding: 12px 15px;
+            border: 2px solid #c0dbb8;
+            border-radius: 16px;
+            font-size: 1rem;
+            background: white;
+            transition: border 0.2s;
+            outline: none;
+        }
+
+        .campo select:focus,
+        .campo input:focus {
+            border-color: #2b6e3b;
+            box-shadow: 0 0 0 3px rgba(43, 110, 59, 0.2);
+        }
+
+        .botones {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 10px;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: #2b6e3b;
+            color: white;
+            box-shadow: 0 4px 0 #1a4525;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #1a4525;
+            background: #347f46;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #1a4525;
+        }
+
+        button.secundario {
+            background: #e0e9dd;
+            color: #1f3d28;
+            box-shadow: 0 4px 0 #b1c4ac;
+        }
+
+        button.secundario:hover {
+            background: #d0ddd0;
+            box-shadow: 0 6px 0 #b1c4ac;
+        }
+
+        /* Resultados */
+        .resultados {
+            margin-top: 30px;
+            background: #edf7ea;
+            border-radius: 28px;
+            padding: 20px 25px 25px;
+            border-left: 8px solid #2b6e3b;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        .resultados h2 {
+            color: #1a3d23;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        #contenidoResultados p {
+            font-size: 1.1rem;
+            padding: 6px 0;
+            border-bottom: 1px solid #d0e6ca;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #contenidoResultados .total-final {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #0d4b1f;
+            border-bottom: 3px solid #2b6e3b;
+            padding-bottom: 12px;
+            margin-top: 8px;
+        }
+
+        .ahorro {
+            margin-top: 18px;
+            background: #d9ebd3;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #0f4020;
+        }
+
+        .ahorro span {
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        footer {
+            margin-top: 35px;
+            text-align: center;
+            color: #4f7359;
+            font-size: 0.9rem;
+            border-top: 1px solid #cde0c8;
+            padding-top: 15px;
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .botones {
+                flex-direction: column;
+            }
+            button {
+                flex: none;
+                width: 100%;
+            }
+            .resultados {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ Ración Justa</h1>
+            <p class="subtitulo">Calcula la cantidad exacta de comida para tu comedor escolar y reduce el desperdicio (ODS 12)</p>
+        </header>
+
+        <main>
+            <!-- Sección de entrada de datos -->
+            <section class="formulario">
+                <div class="campo">
+                    <label for="menu">📋 Tipo de menú:</label>
+                    <select id="menu">
+                        <option value="desayuno">Desayuno</option>
+                        <option value="almuerzo" selected>Almuerzo</option>
+                        <option value="cena">Cena</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="edad">🧒 Rango de edad:</label>
+                    <select id="edad">
+                        <option value="primaria">Primaria (6-11 años)</option>
+                        <option value="secundaria" selected>Secundaria (12-17 años)</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="cantidad">👥 Número de estudiantes:</label>
+                    <input type="number" id="cantidad" min="1" max="500" value="50">
+                </div>
+
+                <div class="botones">
+                    <button id="btnCalcular">🔢 Calcular raciones</button>
+                    <button id="btnLimpiar" class="secundario">🗑️ Limpiar</button>
+                </div>
+            </section>
+
+            <!-- Sección de resultados (oculta inicialmente) -->
+            <section id="resultados" class="resultados oculto">
+                <h2>📊 Recomendación del día</h2>
+                <div id="contenidoResultados"></div>
+                <div id="ahorro" class="ahorro"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Proyecto STEM · ODS 12 · Comedor sostenible</p>
+        </footer>
+    </div>
+
+    <!-- ================================================================
+         JAVASCRIPT (integrado)
+         ================================================================ -->
+    <script>
+        // ============================================================
+        //  BASE DE DATOS INTERNA (ARRAY DE OBJETOS)
+        //  Contiene la cantidad en gramos por persona para cada alimento
+        //  según el menú y el rango de edad.
+        // ============================================================
+        const baseDeDatos = [{
+            alimento: "Arroz",
+            desayuno: { primaria: 40, secundaria: 60 },
+            almuerzo: { primaria: 80, secundaria: 120 },
+            cena: { primaria: 50, secundaria: 75 }
+        }, {
+            alimento: "Proteína (pollo/carne)",
+            desayuno: { primaria: 0, secundaria: 0 }, // No se sirve en desayuno
+            almuerzo: { primaria: 70, secundaria: 100 },
+            cena: { primaria: 60, secundaria: 85 }
+        }, {
+            alimento: "Ensalada / Verduras",
+            desayuno: { primaria: 10, secundaria: 15 },
+            almuerzo: { primaria: 50, secundaria: 70 },
+            cena: { primaria: 40, secundaria: 55 }
+        }, {
+            alimento: "Pan / Tortilla",
+            desayuno: { primaria: 30, secundaria: 45 },
+            almuerzo: { primaria: 20, secundaria: 30 },
+            cena: { primaria: 25, secundaria: 35 }
+        }];
+
+        // Factor de seguridad del 5% para imprevistos (siempre se añade un poco más)
+        const FACTOR_SEGURIDAD = 1.05;
+
+        // ============================================================
+        //  FUNCIONES PRINCIPALES
+        // ============================================================
+
+        // Función que calcula las raciones totales
+        function calcularRacion() {
+            // 1. RECOGER LOS DATOS DE ENTRADA DEL USUARIO (DOM)
+            const menu = document.getElementById('menu').value; // "desayuno", "almuerzo", "cena"
+            const edad = document.getElementById('edad').value; // "primaria" o "secundaria"
+            const cantidad = parseInt(document.getElementById('cantidad').value);
+
+            // Validación: si no es un número válido o es menor a 1
+            if (isNaN(cantidad) || cantidad < 1) {
+                alert("⚠️ Por favor, ingresa un número válido de estudiantes (mínimo 1).");
+                return; // Sale de la función sin hacer más cálculos
+            }
+
+            // 2. VARIABLE para acumular el total de gramos por alimento
+            let resultadoHTML = "";
+            let totalGramosGlobal = 0;
+
+            // 3. BUCLE (for) para recorrer TODOS los alimentos del array
+            for (let i = 0; i < baseDeDatos.length; i++) {
+                const item = baseDeDatos[i]; // alimento actual
+
+                // --- CONDICIONALES para extraer el gramaje correcto según menú y edad ---
+                let gramosPorPersona = 0;
+
+                // Si el menú es desayuno
+                if (menu === 'desayuno') {
+                    if (edad === 'primaria') {
+                        gramosPorPersona = item.desayuno.primaria;
+                    } else {
+                        gramosPorPersona = item.desayuno.secundaria;
+                    }
+                }
+                // Si el menú es almuerzo
+                else if (menu === 'almuerzo') {
+                    if (edad === 'primaria') {
+                        gramosPorPersona = item.almuerzo.primaria;
+                    } else {
+                        gramosPorPersona = item.almuerzo.secundaria;
+                    }
+                }
+                // Si el menú es cena
+                else if (menu === 'cena') {
+                    if (edad === 'primaria') {
+                        gramosPorPersona = item.cena.primaria;
+                    } else {
+                        gramosPorPersona = item.cena.secundaria;
+                    }
+                }
+
+                // 4. Calcular total en gramos para ese alimento (gramos * cantidad de estudiantes)
+                let totalGramosAlimento = gramosPorPersona * cantidad;
+
+                // Aplicar factor de seguridad (sumar el 5%)
+                totalGramosAlimento = totalGramosAlimento * FACTOR_SEGURIDAD;
+
+                // Redondear a 1 decimal para que se vea bonito
+                totalGramosAlimento = Math.round(totalGramosAlimento * 10) / 10;
+
+                // Solo mostramos el alimento si tiene gramos > 0 (ej: proteína en desayuno da 0, no lo mostramos)
+                if (totalGramosAlimento > 0) {
+                    // Convertir a kilogramos para que sea más legible
+                    let totalKg = totalGramosAlimento / 1000;
+                    resultadoHTML +=
+                        `<p><span>${item.alimento}</span> <span><strong>${totalKg.toFixed(2)} kg</strong></span></p>`;
+
+                    // Acumulamos para el total global (en gramos)
+                    totalGramosGlobal += totalGramosAlimento;
+                }
+            }
+
+            // 5. Calcular total global en kg
+            let totalKgGlobal = totalGramosGlobal / 1000;
+            totalKgGlobal = Math.round(totalKgGlobal * 100) / 100; // redondear a 2 decimales
+
+            // Agregar el total final al HTML
+            resultadoHTML +=
+                `<p class="total-final"><span>🥘 TOTAL (con 5% extra)</span> <span>${totalKgGlobal.toFixed(2)} kg</span></p>`;
+
+            // 6. Mostrar los resultados en el DOM
+            const contenedor = document.getElementById('contenidoResultados');
+            contenedor.innerHTML = resultadoHTML;
+
+            // 7. Calcular y mostrar el ahorro estimado (ODS 12)
+            const ahorro = calcularAhorro(totalKgGlobal, cantidad, menu);
+            document.getElementById('ahorro').innerHTML = ahorro;
+
+            // 8. Hacer visible la sección de resultados
+            document.getElementById('resultados').classList.remove('oculto');
+        }
+
+        // ============================================================
+        //  FUNCIÓN PARA CALCULAR EL AHORRO ESTIMADO
+        // ============================================================
+        function calcularAhorro(totalKg, numEstudiantes, tipoMenu) {
+            // Simulamos que antes (sin la app) se preparaba un 35% más de comida por seguridad.
+            // Con nuestra app, reducimos ese exceso a solo el 5% (factor de seguridad).
+            const desperdicioAntes = totalKg * 0.30; // 30% de lo que se tiraba
+            const desperdicioAhora = totalKg * 0.05; // Solo el 5% de margen
+
+            const ahorroKg = desperdicioAntes - desperdicioAhora;
+            const ahorroMes = ahorroKg * 20; // Suponiendo 20 días de comedor al mes
+
+            return `
+                🌱 <strong>Ahorro estimado:</strong> 
+                Con esta porción justa, evitas desperdiciar <strong>${ahorroKg.toFixed(1)} kg</strong> por día.
+                ¡Al mes son <strong>${ahorroMes.toFixed(1)} kg</strong> de comida que no se pierde!
+                <br><span style="font-size:0.9rem; font-weight:400;">(ODS 12 · Consumo responsable)</span>
+            `;
+        }
+
+        // ============================================================
+        //  FUNCIÓN PARA LIMPIAR / RESETEAR
+        // ============================================================
+        function limpiarTodo() {
+            document.getElementById('cantidad').value = 50;
+            document.getElementById('menu').value = 'almuerzo';
+            document.getElementById('edad').value = 'secundaria';
+            document.getElementById('resultados').classList.add('oculto');
+            document.getElementById('contenidoResultados').innerHTML = '';
+            document.getElementById('ahorro').innerHTML = '';
+        }
+
+        // ============================================================
+        //  EVENTOS DEL DOM (CUANDO EL USUARIO HACE CLIC)
+        // ============================================================
+        document.getElementById('btnCalcular').addEventListener('click', calcularRacion);
+        document.getElementById('btnLimpiar').addEventListener('click', limpiarTodo);
+
+        // ============================================================
+        //  (OPCIONAL) Permitir calcular con la tecla "Enter" en el input
+        // ============================================================
+        document.getElementById('cantidad').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calcularRacion();
+            }
+        });
+
+        // ============================================================
+        //  MENSAJE DE BIENVENIDA EN CONSOLA (para evidenciar desarrollo)
+        // ============================================================
+        console.log("🍽️ Ración Justa - App cargada correctamente.");
+        console.log("📦 Base de datos de alimentos:", baseDeDatos);
+        console.log("💡 ODS 12 - Producción y consumo responsables.");
+    </script>
+</body>
+</html>

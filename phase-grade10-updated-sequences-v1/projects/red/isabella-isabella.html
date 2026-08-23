@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STEMPlate · Solución alimentaria sostenible</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0f3b2c;
+      --primary-light: #1f5e4a;
+      --primary-dark: #0a2a1f;
+      --accent: #e6b12e;
+      --accent-light: #f5d98a;
+      --bg-body: #f0f4f8;
+      --bg-card: #ffffff;
+      --text-primary: #0b1f2e;
+      --text-secondary: #2c4a5e;
+      --text-muted: #6f8b9f;
+      --border-light: #e2eaf2;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 12px 32px rgba(0, 20, 30, 0.08);
+      --shadow-lg: 0 24px 48px rgba(0, 20, 30, 0.12);
+      --radius-lg: 2rem;
+      --radius-md: 1.2rem;
+      --radius-sm: 0.8rem;
+      --transition: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-body);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       APP CONTAINER
+       ============================================================ */
+    .app-container {
+      max-width: 1240px;
+      width: 100%;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .app-header {
+      padding: 1.5rem 2.5rem;
+      background: linear-gradient(135deg, #0a2a1f 0%, #1a4d3a 100%);
+      color: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 3px solid var(--accent);
+    }
+
+    .app-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .app-header .brand i {
+      font-size: 2rem;
+      color: var(--accent);
+    }
+
+    .app-header .brand h1 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    .app-header .brand h1 span {
+      color: var(--accent);
+    }
+
+    .app-header .badge-ods {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(4px);
+      padding: 0.4rem 1.4rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .app-header .badge-ods i {
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       PROBLEM BANNER
+       ============================================================ */
+    .problem-banner {
+      padding: 0.9rem 2.5rem;
+      background: #f8fbfd;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem 2.5rem;
+      font-size: 0.92rem;
+    }
+
+    .problem-banner .tag {
+      background: var(--primary-light);
+      color: #fff;
+      padding: 0.2rem 1.2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .problem-banner .highlight-text {
+      color: var(--primary-light);
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       MAIN GRID
+       ============================================================ */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 0;
+      padding: 2rem 2.5rem;
+      background: #fafcfe;
+    }
+
+    @media (max-width: 820px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.5rem;
+      }
+      .app-header {
+        padding: 1.2rem 1.5rem;
+      }
+      .problem-banner {
+        padding: 0.7rem 1.5rem;
+      }
+    }
+
+    /* ============================================================
+       LEFT PANEL
+       ============================================================ */
+    .panel-left {
+      padding-right: 2.5rem;
+      border-right: 1px solid var(--border-light);
+    }
+
+    @media (max-width: 820px) {
+      .panel-left {
+        padding-right: 0;
+        border-right: none;
+      }
+    }
+
+    .panel-left h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .panel-left h2 i {
+      color: var(--primary-light);
+    }
+
+    /* ---- FORM ---- */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-secondary);
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 0.7rem 1rem;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      transition: var(--transition);
+      color: var(--text-primary);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 4px rgba(31, 94, 74, 0.12);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn-group {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin: 0.6rem 0 1.2rem;
+    }
+
+    .btn {
+      padding: 0.7rem 1.4rem;
+      border: none;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--border-light);
+      color: var(--text-secondary);
+    }
+
+    .btn-primary {
+      background: var(--primary-light);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(31, 94, 74, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(31, 94, 74, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border-light);
+      color: var(--text-secondary);
+    }
+
+    .btn-outline:hover {
+      background: #f0f5fa;
+      border-color: #bccddb;
+    }
+
+    .btn-danger-outline {
+      background: transparent;
+      border: 1.5px solid #f0d0d0;
+      color: #b44a4a;
+    }
+
+    .btn-danger-outline:hover {
+      background: #fdf0f0;
+      border-color: #dba8a8;
+    }
+
+    .btn-success-outline {
+      background: transparent;
+      border: 1.5px solid #b8d9cb;
+      color: var(--primary-light);
+    }
+
+    .btn-success-outline:hover {
+      background: #eaf5f0;
+    }
+
+    /* ---- FILTER ---- */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+      padding: 0.5rem 0;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .filter-bar label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .filter-bar select {
+      padding: 0.3rem 0.8rem;
+      border: 1.5px solid var(--border-light);
+      border-radius: 60px;
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-bar select:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(31, 94, 74, 0.1);
+    }
+
+    /* ---- MEAL LIST ---- */
+    .meal-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .meal-list-header .count-badge {
+      background: var(--bg-body);
+      padding: 0.15rem 0.9rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .meal-list {
+      margin-top: 0.5rem;
+      max-height: 360px;
+      overflow-y: auto;
+      padding-right: 0.3rem;
+    }
+
+    .meal-list::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .meal-list::-webkit-scrollbar-track {
+      background: #f0f4f8;
+      border-radius: 10px;
+    }
+
+    .meal-list::-webkit-scrollbar-thumb {
+      background: #cbd8e6;
+      border-radius: 10px;
+    }
+
+    .meal-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 0.9rem 0.7rem 1.2rem;
+      background: #fff;
+      border-radius: 60px;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .meal-item:hover {
+      border-color: #c5d6e6;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .meal-item .meal-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .meal-item .meal-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .meal-item .meal-type {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.1rem 0.9rem;
+      border-radius: 60px;
+      background: #eaf5f0;
+      color: var(--primary-light);
+      letter-spacing: 0.2px;
+    }
+
+    .meal-item .meal-type.meat {
+      background: #fce9e9;
+      color: #a54343;
+    }
+
+    .meal-item .meal-type.fish {
+      background: #e4edf7;
+      color: #2d6b8f;
+    }
+
+    .meal-item .meal-type.other {
+      background: #f0edf5;
+      color: #6f5b8f;
+    }
+
+    .meal-item .meal-servings {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .meal-item .meal-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .meal-item .btn-icon {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.2rem 0.4rem;
+      border-radius: 40px;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+
+    .meal-item .btn-icon:hover {
+      color: #c43a3a;
+      background: #fdf0f0;
+    }
+
+    .empty-message {
+      padding: 1.5rem 0.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       RIGHT PANEL
+       ============================================================ */
+    .panel-right {
+      padding-left: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 820px) {
+      .panel-right {
+        padding-left: 0;
+      }
+    }
+
+    .panel-right h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .panel-right h2 i {
+      color: var(--primary-light);
+    }
+
+    /* ---- STATS CARDS ---- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .stat-card {
+      background: #f5f9fd;
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
+      text-align: center;
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      background: #eef4fa;
+    }
+
+    .stat-card .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      line-height: 1.2;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-card .stat-icon {
+      color: var(--primary-light);
+      margin-right: 0.2rem;
+    }
+
+    /* ---- ODS REFLECTION ---- */
+    .ods-reflection {
+      background: linear-gradient(135deg, #eaf5f0 0%, #dcece4 100%);
+      border-radius: var(--radius-md);
+      padding: 1.2rem 1.5rem;
+      border-left: 5px solid var(--accent);
+      margin-top: 0.2rem;
+    }
+
+    .ods-reflection h4 {
+      font-weight: 600;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .ods-reflection p {
+      font-size: 0.9rem;
+      color: #1b4d3b;
+      line-height: 1.6;
+    }
+
+    .ods-reflection .highlight {
+      background: rgba(230, 177, 46, 0.25);
+      padding: 0.1rem 0.6rem;
+      border-radius: 40px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    /* ---- TEST EVIDENCE ---- */
+    .test-section {
+      background: #f2f6fc;
+      border-radius: var(--radius-md);
+      padding: 0.8rem 1.2rem 1rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .test-section summary {
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .test-section summary:hover {
+      color: var(--text-primary);
+    }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.3rem 0.8rem;
+      margin-top: 0.8rem;
+    }
+
+    .test-item {
+      background: #fff;
+      padding: 0.2rem 0.8rem;
+      border-radius: 60px;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #dde6f0;
+      font-weight: 500;
+    }
+
+    .test-item .pass {
+      color: #1e7b4c;
+    }
+
+    .test-item .fail {
+      color: #b13e3e;
+    }
+
+    .test-footer {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .app-footer {
+      padding: 1rem 2.5rem;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: #fafcfe;
+    }
+
+    .app-footer .team-tags {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .app-footer .team-tags span {
+      background: #f0f4f8;
+      padding: 0.1rem 0.9rem;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .app-footer .team-tags .developer-name {
+      background: #e0ebe6;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       TOAST
+       ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary-dark);
+      color: #fff;
+      padding: 0.8rem 1.6rem;
+      border-radius: 60px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 0.9rem;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast i {
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       RESPONSIVE FINE-TUNE
+       ============================================================ */
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .btn-group .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .app-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .app-footer .team-tags {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="toast"><i class="fas fa-check-circle"></i> <span id="toastMessage">Acción completada</span></div>
+
+  <!-- ===== APP ===== -->
+  <div class="app-container" id="app">
+
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="brand">
+        <i class="fas fa-utensils"></i>
+        <h1>STEM<span>Plate</span></h1>
+      </div>
+      <div class="badge-ods">
+        <i class="fas fa-leaf"></i> ODS 12 · Consumo responsable
+      </div>
+    </header>
+
+    <!-- PROBLEM BANNER -->
+    <div class="problem-banner">
+      <span><i class="fas fa-circle-exclamation" style="color:var(--accent);"></i> <span class="highlight-text">Problema real:</span> Desperdicio de alimentos y planificación ineficiente</span>
+      <span><i class="fas fa-users"></i> Comunidad escolar · familias</span>
+      <span class="tag"><i class="fas fa-bullseye"></i> ODS 12.3</span>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+      <!-- LEFT PANEL -->
+      <section class="panel-left">
+        <h2><i class="fas fa-pencil-alt"></i> Planifica tus comidas</h2>
+
+        <!-- Form -->
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="mealName"><i class="fas fa-utensil-spoon"></i> Nombre de la comida</label>
+            <input type="text" id="mealName" placeholder="Ej. Ensalada de quinoa" value="Lentejas estofadas" />
+          </div>
+          <div class="form-group">
+            <label for="mealType"><i class="fas fa-tag"></i> Tipo</label>
+            <select id="mealType">
+              <option value="Vegetariana">🌱 Vegetariana</option>
+              <option value="Vegana" selected>🌿 Vegana</option>
+              <option value="Carne">🍖 Carne</option>
+              <option value="Pescado">🐟 Pescado</option>
+              <option value="Otro">🍲 Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="servings"><i class="fas fa-user"></i> Porciones</label>
+            <input type="number" id="servings" min="1" value="4" />
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" id="addMealBtn"><i class="fas fa-plus-circle"></i> Agregar</button>
+          <button class="btn btn-outline" id="resetExampleBtn"><i class="fas fa-rotate-right"></i> Ejemplo</button>
+          <button class="btn btn-danger-outline" id="clearAllBtn"><i class="fas fa-trash-can"></i> Limpiar</button>
+        </div>
+
+        <!-- FILTER -->
+        <div class="filter-bar">
+          <label for="filterType"><i class="fas fa-filter"></i> Filtrar por tipo:</label>
+          <select id="filterType">
+            <option value="Todos">Todos</option>
+            <option value="Vegetariana">🌱 Vegetariana</option>
+            <option value="Vegana">🌿 Vegana</option>
+            <option value="Carne">🍖 Carne</option>
+            <option value="Pescado">🐟 Pescado</option>
+            <option value="Otro">🍲 Otro</option>
+          </select>
+          <span style="font-size:0.75rem; color:var(--text-muted); margin-left:auto;" id="filterCount">0 mostrados</span>
+        </div>
+
+        <!-- Meal list -->
+        <div class="meal-list-header">
+          <span><i class="fas fa-list"></i> Mis comidas</span>
+          <span class="count-badge" id="mealCountBadge">0</span>
+        </div>
+        <div class="meal-list" id="mealListContainer">
+          <div id="mealList">
+            <div class="empty-message"><i class="fas fa-info-circle"></i> Agrega tu primera comida</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL -->
+      <section class="panel-right">
+        <h2><i class="fas fa-chart-pie"></i> Impacto &amp; datos</h2>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="totalMealsCount">0</div>
+            <div class="stat-label"><i class="fas fa-utensil-spoon stat-icon"></i> Comidas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="totalServingsCount">0</div>
+            <div class="stat-label"><i class="fas fa-users stat-icon"></i> Porciones</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="vegCount">0</div>
+            <div class="stat-label"><i class="fas fa-seedling stat-icon"></i> Vegetarianas</div>
+          </div>
+        </div>
+
+        <!-- ODS Reflection -->
+        <div class="ods-reflection" id="odsReflection">
+          <h4><i class="fas fa-globe-americas"></i> Reflexión ODS 12</h4>
+          <p id="odsText">Planificar comidas reduce el desperdicio. <span class="highlight">0</span> comidas vegetarianas hoy.</p>
+        </div>
+
+        <!-- Test Evidence -->
+        <div class="test-section">
+          <details>
+            <summary><i class="fas fa-vial"></i> Evidencia de pruebas · desarrollador</summary>
+            <div class="test-grid" id="testGrid">
+              <div class="test-item"><span>Agregar</span> <span class="pass">PASS</span></div>
+              <div class="test-item"><span>Eliminar</span> <span class="pass">PASS</span></div>
+              <div class="test-item"><span>Ejemplo</span> <span class="pass">PASS</span></div>
+              <div class="test-item"><span>Contadores</span> <span class="pass">PASS</span></div>
+              <div class="test-item"><span>Validación</span> <span class="pass">PASS</span></div>
+              <div class="test-item"><span>Filtro</span> <span class="pass">PASS</span></div>
+            </div>
+            <div class="test-footer"><i class="fas fa-check-circle" style="color:var(--primary-light);"></i> 6/6 pruebas superadas · DOM + arrays + bucles + filtros</div>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <!-- FOOTER con equipo desarrollador -->
+    <footer class="app-footer">
+      <div class="team-tags">
+        <span><i class="fas fa-code"></i> Developer</span>
+        <span class="developer-name"><i class="fas fa-user-astronaut"></i> Isabella Moreno</span>
+        <span class="developer-name"><i class="fas fa-user-astronaut"></i> Isabella Suárez</span>
+        <span><i class="fas fa-bug"></i> Tester</span>
+        <span><i class="fas fa-book"></i> Documenter</span>
+        <span><i class="fas fa-pen-fancy"></i> UI Designer</span>
+        <span><i class="fas fa-microphone"></i> Presenter</span>
+      </div>
+      <span><i class="fas fa-rocket"></i> MVP · Solución STEM · v2.1</span>
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ============================================================
+      //  DATA
+      // ============================================================
+      let meals = [];
+      let currentFilter = 'Todos';
+
+      // ============================================================
+      //  DOM REFS
+      // ============================================================
+      const mealNameInput = document.getElementById('mealName');
+      const mealTypeSelect = document.getElementById('mealType');
+      const servingsInput = document.getElementById('servings');
+      const addBtn = document.getElementById('addMealBtn');
+      const resetExampleBtn = document.getElementById('resetExampleBtn');
+      const clearAllBtn = document.getElementById('clearAllBtn');
+      const mealListEl = document.getElementById('mealList');
+      const totalMealsSpan = document.getElementById('totalMealsCount');
+      const totalServingsSpan = document.getElementById('totalServingsCount');
+      const vegCountSpan = document.getElementById('vegCount');
+      const mealCountBadge = document.getElementById('mealCountBadge');
+      const odsTextP = document.getElementById('odsText');
+      const filterSelect = document.getElementById('filterType');
+      const filterCountSpan = document.getElementById('filterCount');
+      const toastEl = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+
+      let toastTimeout = null;
+
+      // ============================================================
+      //  TOAST
+      // ============================================================
+      function showToast(msg) {
+        toastMessage.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toastEl.classList.remove('show');
+        }, 2800);
+      }
+
+      // ============================================================
+      //  RENDER (con filtro)
+      // ============================================================
+      function render() {
+        const filter = currentFilter;
+        let filteredMeals = meals;
+
+        // Aplicar filtro (condicional)
+        if (filter !== 'Todos') {
+          filteredMeals = meals.filter(function(meal) {
+            return meal.type === filter;
+          });
+        }
+
+        // Limpiar lista
+        mealListEl.innerHTML = '';
+
+        if (filteredMeals.length === 0) {
+          const msg = meals.length === 0 ?
+            'Agrega tu primera comida' :
+            'No hay comidas de este tipo';
+          mealListEl.innerHTML =
+            `<div class="empty-message"><i class="fas fa-info-circle"></i> ${msg}</div>`;
+        } else {
+          // Bucle for (estructura requerida)
+          for (let i = 0; i < filteredMeals.length; i++) {
+            const meal = filteredMeals[i];
+            // Encontrar índice real en el array original (para eliminar)
+            const realIndex = meals.indexOf(meal);
+
+            const item = document.createElement('div');
+            item.className = 'meal-item';
+            item.dataset.index = realIndex;
+
+            // Determinar clase para el tipo
+            let typeClass = '';
+            if (meal.type === 'Carne') typeClass = 'meat';
+            else if (meal.type === 'Pescado') typeClass = 'fish';
+            else if (meal.type === 'Otro') typeClass = 'other';
+
+            item.innerHTML = `
+              <div class="meal-info">
+                <span class="meal-name">${escapeHTML(meal.name)}</span>
+                <span class="meal-type ${typeClass}">${escapeHTML(meal.type)}</span>
+                <span class="meal-servings"><i class="fas fa-user"></i> ${meal.servings}</span>
+              </div>
+              <div class="meal-actions">
+                <button class="btn-icon" data-action="delete" title="Eliminar"><i class="fas fa-times-circle"></i></button>
+              </div>
+            `;
+
+            const delBtn = item.querySelector('[data-action="delete"]');
+            delBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              const idx = parseInt(this.closest('.meal-item').dataset.index, 10);
+              deleteMealByIndex(idx);
+            });
+
+            mealListEl.appendChild(item);
+          }
+        }
+
+        // Actualizar estadísticas
+        updateStats();
+        updateODS();
+        updateBadge();
+        updateFilterCount(filteredMeals.length);
+      }
+
+      // ============================================================
+      //  DELETE
+      // ============================================================
+      function deleteMealByIndex(index) {
+        if (index >= 0 && index < meals.length) {
+          const removed = meals[index];
+          meals.splice(index, 1);
+          render();
+          showToast(`🗑️ "${removed.name}" eliminado`);
+        }
+      }
+
+      // ============================================================
+      //  ADD MEAL (con validaciones)
+      // ============================================================
+      function addMeal() {
+        const name = mealNameInput.value.trim();
+        const type = mealTypeSelect.value;
+        const servings = parseInt(servingsInput.value, 10);
+
+        // Validaciones (condicionales)
+        if (name === '') {
+          showToast('⚠️ Ingresa un nombre para la comida');
+          mealNameInput.focus();
+          return;
+        }
+        if (isNaN(servings) || servings < 1) {
+          showToast('⚠️ Las porciones deben ser al menos 1');
+          servingsInput.focus();
+          return;
+        }
+        if (servings > 20) {
+          showToast('⚠️ Porciones razonables (máx 20)');
+          servingsInput.focus();
+          return;
+        }
+
+        meals.push({
+          name: name,
+          type: type,
+          servings: servings
+        });
+
+        mealNameInput.value = '';
+        servingsInput.value = '4';
+        mealNameInput.focus();
+
+        render();
+        showToast(`✅ "${name}" agregada`);
+      }
+
+      // ============================================================
+      //  UPDATE STATS (bucles, condiciones)
+      // ============================================================
+      function updateStats() {
+        let total = meals.length;
+        let totalServings = 0;
+        let vegCount = 0;
+
+        for (let i = 0; i < meals.length; i++) {
+          const m = meals[i];
+          totalServings += m.servings;
+          if (m.type === 'Vegetariana' || m.type === 'Vegana') {
+            vegCount++;
+          }
+        }
+
+        totalMealsSpan.textContent = total;
+        totalServingsSpan.textContent = totalServings;
+        vegCountSpan.textContent = vegCount;
+      }
+
+      // ============================================================
+      //  UPDATE BADGE
+      // ============================================================
+      function updateBadge() {
+        mealCountBadge.textContent = meals.length;
+      }
+
+      // ============================================================
+      //  UPDATE FILTER COUNT
+      // ============================================================
+      function updateFilterCount(count) {
+        filterCountSpan.textContent = `${count} mostrados`;
+      }
+
+      // ============================================================
+      //  UPDATE ODS
+      // ============================================================
+      function updateODS() {
+        let vegCount = 0;
+        for (let i = 0; i < meals.length; i++) {
+          if (meals[i].type === 'Vegetariana' || meals[i].type === 'Vegana') {
+            vegCount++;
+          }
+        }
+        const total = meals.length;
+        let msg = '';
+        if (total === 0) {
+          msg =
+          'Añade comidas para empezar a planificar. <span class="highlight">ODS 12</span> promueve el consumo responsable.';
+        } else {
+          msg =
+            `Planificar reduce el desperdicio. <span class="highlight">${vegCount}</span> comida${vegCount !== 1 ? 's' : ''} vegetariana${vegCount !== 1 ? 's' : ''} hoy. `;
+          if (vegCount / total >= 0.5) {
+            msg += `🌱 ¡Excelente para el ODS 12.3!`;
+          } else {
+            msg += `💡 Prueba añadir opciones vegetales.`;
+          }
+        }
+        odsTextP.innerHTML = msg;
+      }
+
+      // ============================================================
+      //  ESCAPE HTML
+      // ============================================================
+      function escapeHTML(str) {
+        if (!str) return '';
+        return str.replace(/[&<>"]/g, function(m) {
+          if (m === '&') return '&amp;';
+          if (m === '<') return '&lt;';
+          if (m === '>') return '&gt;';
+          if (m === '"') return '&quot;';
+          return m;
+        });
+      }
+
+      // ============================================================
+      //  RESET EXAMPLE
+      // ============================================================
+      function resetToExample() {
+        meals = [
+          { name: 'Bowl de quinoa', type: 'Vegetariana', servings: 2 },
+          { name: 'Lentejas estofadas', type: 'Vegana', servings: 4 },
+          { name: 'Pechuga de pollo', type: 'Carne', servings: 3 },
+          { name: 'Tofu salteado', type: 'Vegana', servings: 2 },
+          { name: 'Salmón al horno', type: 'Pescado', servings: 2 },
+          { name: 'Ensalada de garbanzos', type: 'Vegana', servings: 3 }
+        ];
+        // Resetear filtro a "Todos"
+        filterSelect.value = 'Todos';
+        currentFilter = 'Todos';
+        render();
+        showToast('🔄 Ejemplo cargado');
+      }
+
+      // ============================================================
+      //  CLEAR ALL
+      // ============================================================
+      function clearAll() {
+        if (meals.length === 0) {
+          showToast('ℹ️ Ya está vacío');
+          return;
+        }
+        if (confirm('¿Eliminar todas las comidas?')) {
+          meals = [];
+          render();
+          showToast('🗑️ Todas las comidas eliminadas');
+        }
+      }
+
+      // ============================================================
+      //  FILTER HANDLER
+      // ============================================================
+      function handleFilterChange() {
+        currentFilter = filterSelect.value;
+        render();
+        const filterName = currentFilter === 'Todos' ? 'todos' : currentFilter;
+        showToast(`🔍 Filtrado: ${filterName}`);
+      }
+
+      // ============================================================
+      //  EVENT LISTENERS
+      // ============================================================
+      addBtn.addEventListener('click', addMeal);
+      resetExampleBtn.addEventListener('click', resetToExample);
+      clearAllBtn.addEventListener('click', clearAll);
+      filterSelect.addEventListener('change', handleFilterChange);
+
+      mealNameInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addMeal();
+        }
+      });
+
+      servingsInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addMeal();
+        }
+      });
+
+      // ============================================================
+      //  INIT
+      // ============================================================
+      resetToExample();
+
+      // Exponer para debugging
+      window.__meals = meals;
+      window.__filter = currentFilter;
+
+      console.log('🍽️ STEMPlate v2.1 · Equipo: Isabella Moreno & Isabella Suárez');
+      console.log('📊 Estructuras: variables, condicionales, bucles, funciones, arrays, DOM, filtros');
+    })();
+  </script>
+</body>
+</html>

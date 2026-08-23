@@ -1,0 +1,936 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoTareas - STEM MVC</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#dff7e5,#e8f1ff);
+    min-height:100vh;
+    color:#263238;
+}
+
+header{
+    background:#176b4d;
+    color:white;
+    padding:25px;
+    text-align:center;
+}
+
+header h1{
+    font-size:32px;
+}
+
+header p{
+    margin-top:8px;
+}
+
+.container{
+    max-width:1100px;
+    margin:25px auto;
+    padding:15px;
+}
+
+.ods{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.ods-card{
+    flex:1;
+    background:white;
+    padding:18px;
+    border-radius:15px;
+    box-shadow:0 4px 12px #0002;
+}
+
+.ods-card h2{
+    color:#176b4d;
+    margin-bottom:8px;
+}
+
+.panel{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+    box-shadow:0 4px 12px #0002;
+}
+
+form{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr auto;
+    gap:10px;
+}
+
+input,select,button{
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #bbb;
+    font-size:15px;
+}
+
+button{
+    border:none;
+    background:#176b4d;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#0e4e38;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat{
+    background:white;
+    padding:18px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 4px 12px #0002;
+}
+
+.stat strong{
+    display:block;
+    font-size:28px;
+    color:#176b4d;
+    margin-top:5px;
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.task{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#f5f8f6;
+    padding:15px;
+    margin:10px 0;
+    border-radius:10px;
+    border-left:6px solid #176b4d;
+}
+
+.task.done{
+    opacity:.65;
+    border-left-color:#777;
+}
+
+.task.done .task-name{
+    text-decoration:line-through;
+}
+
+.task-info{
+    flex:1;
+}
+
+.task-name{
+    font-weight:bold;
+    font-size:17px;
+}
+
+.category{
+    display:inline-block;
+    margin-top:5px;
+    padding:4px 8px;
+    border-radius:10px;
+    background:#d8f1e3;
+    color:#176b4d;
+    font-size:12px;
+}
+
+.actions{
+    display:flex;
+    gap:5px;
+}
+
+.btn-delete{
+    background:#c62828;
+}
+
+.btn-delete:hover{
+    background:#8e1b1b;
+}
+
+.btn-complete{
+    background:#3478b5;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#555;
+}
+
+@media(max-width:800px){
+    form{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .ods{
+        flex-direction:column;
+    }
+
+    .filters{
+        flex-direction:column;
+    }
+
+    .task{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌱 EcoTareas</h1>
+    <p>Organiza tus tareas y aprende a cuidar nuestro planeta</p>
+</header>
+
+<div class="container">
+
+    <div class="ods">
+
+        <div class="ods-card">
+            <h2>📚 ODS 4</h2>
+            <p>
+                Educación de calidad. La aplicación ayuda a organizar
+                actividades escolares y mejorar los hábitos de estudio.
+            </p>
+        </div>
+
+        <div class="ods-card">
+            <h2>♻️ ODS 12</h2>
+            <p>
+                Producción y consumo responsables. Permite crear tareas
+                relacionadas con reciclaje, ahorro de agua y energía.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>👤 Usuario</h2>
+
+        <p id="usuarioActual">
+            Estudiante: Invitado
+        </p>
+
+        <br>
+
+        <form id="taskForm">
+
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="Ej: Separar los residuos"
+                required
+            >
+
+            <select id="categoryInput">
+                <option value="Educación">📚 Educación</option>
+                <option value="Reciclaje">♻️ Reciclaje</option>
+                <option value="Agua">💧 Cuidado del agua</option>
+                <option value="Energía">⚡ Energía</option>
+                <option value="Comunidad">🤝 Comunidad</option>
+            </select>
+
+            <select id="priorityInput">
+                <option value="Alta">🔴 Alta</option>
+                <option value="Media" selected>🟡 Media</option>
+                <option value="Baja">🟢 Baja</option>
+            </select>
+
+            <button type="submit">
+                + Agregar
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            📋
+            <strong id="totalTasks">0</strong>
+            Tareas
+        </div>
+
+        <div class="stat">
+            ✅
+            <strong id="completedTasks">0</strong>
+            Completadas
+        </div>
+
+        <div class="stat">
+            ⏳
+            <strong id="pendingTasks">0</strong>
+            Pendientes
+        </div>
+
+        <div class="stat">
+            🌱
+            <strong id="ecoTasks">0</strong>
+            Eco-tareas
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>📋 Mis tareas</h2>
+
+        <br>
+
+        <div class="filters">
+
+            <select id="filterCategory">
+                <option value="Todas">Todas las categorías</option>
+                <option value="Educación">Educación</option>
+                <option value="Reciclaje">Reciclaje</option>
+                <option value="Agua">Agua</option>
+                <option value="Energía">Energía</option>
+                <option value="Comunidad">Comunidad</option>
+            </select>
+
+            <select id="filterStatus">
+                <option value="Todas">Todos los estados</option>
+                <option value="Pendiente">Pendientes</option>
+                <option value="Completada">Completadas</option>
+            </select>
+
+            <button id="clearAll">
+                🗑️ Borrar todo
+            </button>
+
+        </div>
+
+        <div id="taskList"></div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>💡 ¿Qué problema solucionamos?</h2>
+
+        <p>
+            Muchos estudiantes tienen dificultades para organizar sus
+            actividades escolares y, al mismo tiempo, recordar acciones
+            relacionadas con el cuidado del medio ambiente.
+        </p>
+
+        <br>
+
+        <p>
+            <strong>EcoTareas</strong> combina organización escolar con
+            actividades ambientales. Así se relacionan el
+            <strong>ODS 4: Educación de calidad</strong> y el
+            <strong>ODS 12: Producción y consumo responsables</strong>.
+        </p>
+
+        <br>
+
+        <p>
+            🎯 <strong>Pregunta orientadora:</strong>
+            ¿Cómo podemos utilizar la tecnología para organizar nuestras
+            tareas escolares y promover hábitos responsables con el planeta?
+        </p>
+
+    </div>
+
+</div>
+
+<footer>
+    🌎 Proyecto STEM · MVC · ODS 4 + ODS 12
+    <br>
+    Creado con HTML, CSS y JavaScript
+</footer>
+
+
+<script>
+
+/* =====================================================
+   MODELO MVC
+   Entidades:
+   Usuario - Tarea - Categoría
+===================================================== */
+
+
+/* =========================
+   MODELO
+========================= */
+
+/**
+ * Representa un usuario del sistema.
+ */
+class Usuario {
+
+    constructor(nombre){
+        this.id = Date.now();
+        this.nombre = nombre;
+    }
+
+}
+
+
+/**
+ * Representa una categoría.
+ */
+class Categoria {
+
+    constructor(nombre){
+        this.id = Date.now() + Math.random();
+        this.nombre = nombre;
+    }
+
+}
+
+
+/**
+ * Representa una tarea.
+ */
+class Tarea {
+
+    constructor(nombre,categoria,prioridad){
+
+        this.id = Date.now() + Math.random();
+
+        this.nombre = nombre;
+
+        this.categoria = categoria;
+
+        this.prioridad = prioridad;
+
+        this.completada = false;
+
+    }
+
+}
+
+
+/* =========================
+   MODELO PRINCIPAL
+========================= */
+
+class Modelo {
+
+    constructor(){
+
+        this.usuario =
+            new Usuario("Estudiante");
+
+        this.categorias = [
+
+            new Categoria("Educación"),
+
+            new Categoria("Reciclaje"),
+
+            new Categoria("Agua"),
+
+            new Categoria("Energía"),
+
+            new Categoria("Comunidad")
+
+        ];
+
+        this.tareas =
+            JSON.parse(
+                localStorage.getItem("ecoTareas")
+            ) || [];
+
+    }
+
+
+    guardar(){
+
+        localStorage.setItem(
+            "ecoTareas",
+            JSON.stringify(this.tareas)
+        );
+
+    }
+
+
+    agregarTarea(tarea){
+
+        this.tareas.push(tarea);
+
+        this.guardar();
+
+    }
+
+
+    eliminarTarea(id){
+
+        this.tareas =
+            this.tareas.filter(
+                tarea => tarea.id != id
+            );
+
+        this.guardar();
+
+    }
+
+
+    cambiarEstado(id){
+
+        const tarea =
+            this.tareas.find(
+                tarea => tarea.id == id
+            );
+
+        if(tarea){
+
+            tarea.completada =
+                !tarea.completada;
+
+        }
+
+        this.guardar();
+
+    }
+
+}
+
+
+/* =========================
+   VISTA
+========================= */
+
+class Vista {
+
+    constructor(){
+
+        this.lista =
+            document.getElementById("taskList");
+
+        this.total =
+            document.getElementById("totalTasks");
+
+        this.completadas =
+            document.getElementById("completedTasks");
+
+        this.pendientes =
+            document.getElementById("pendingTasks");
+
+        this.eco =
+            document.getElementById("ecoTasks");
+
+    }
+
+
+    mostrarTareas(tareas){
+
+        this.lista.innerHTML = "";
+
+        if(tareas.length === 0){
+
+            this.lista.innerHTML =
+                `<div class="empty">
+                    🌱 No hay tareas para mostrar.
+                 </div>`;
+
+            return;
+
+        }
+
+
+        tareas.forEach(tarea => {
+
+            const elemento =
+                document.createElement("div");
+
+            elemento.className =
+                "task " +
+                (tarea.completada ? "done" : "");
+
+
+            elemento.innerHTML = `
+
+                <div class="task-info">
+
+                    <div class="task-name">
+                        ${tarea.nombre}
+                    </div>
+
+                    <span class="category">
+                        ${this.iconoCategoria(tarea.categoria)}
+                        ${tarea.categoria}
+                    </span>
+
+                    <span class="category">
+                        ${tarea.prioridad}
+                    </span>
+
+                </div>
+
+                <div class="actions">
+
+                    <button
+                        class="btn-complete"
+                        onclick="app.completar(${tarea.id})">
+
+                        ${tarea.completada
+                            ? "↩️ Pendiente"
+                            : "✅ Completar"}
+
+                    </button>
+
+                    <button
+                        class="btn-delete"
+                        onclick="app.eliminar(${tarea.id})">
+
+                        🗑️
+
+                    </button>
+
+                </div>
+            `;
+
+
+            this.lista.appendChild(elemento);
+
+        });
+
+    }
+
+
+    iconoCategoria(categoria){
+
+        const iconos = {
+
+            "Educación":"📚",
+
+            "Reciclaje":"♻️",
+
+            "Agua":"💧",
+
+            "Energía":"⚡",
+
+            "Comunidad":"🤝"
+
+        };
+
+        return iconos[categoria] || "🌱";
+
+    }
+
+
+    actualizarEstadisticas(tareas){
+
+        const total =
+            tareas.length;
+
+        const completadas =
+            tareas.filter(
+                tarea => tarea.completada
+            ).length;
+
+        const pendientes =
+            total - completadas;
+
+        const eco =
+            tareas.filter(
+                tarea =>
+                    tarea.categoria !== "Educación"
+            ).length;
+
+
+        this.total.textContent =
+            total;
+
+        this.completadas.textContent =
+            completadas;
+
+        this.pendientes.textContent =
+            pendientes;
+
+        this.eco.textContent =
+            eco;
+
+    }
+
+}
+
+
+/* =========================
+   CONTROLADOR
+========================= */
+
+class Controlador {
+
+    constructor(modelo,vista){
+
+        this.modelo = modelo;
+
+        this.vista = vista;
+
+        this.form =
+            document.getElementById("taskForm");
+
+        this.input =
+            document.getElementById("taskInput");
+
+        this.categoria =
+            document.getElementById("categoryInput");
+
+        this.prioridad =
+            document.getElementById("priorityInput");
+
+        this.filtroCategoria =
+            document.getElementById("filterCategory");
+
+        this.filtroEstado =
+            document.getElementById("filterStatus");
+
+        this.configurarEventos();
+
+        this.actualizarVista();
+
+    }
+
+
+    configurarEventos(){
+
+        this.form.addEventListener(
+            "submit",
+            e => {
+
+                e.preventDefault();
+
+                this.agregar();
+
+            }
+        );
+
+
+        this.filtroCategoria.addEventListener(
+            "change",
+            () => this.actualizarVista()
+        );
+
+
+        this.filtroEstado.addEventListener(
+            "change",
+            () => this.actualizarVista()
+        );
+
+
+        document
+            .getElementById("clearAll")
+            .addEventListener(
+                "click",
+                () => this.borrarTodo()
+            );
+
+    }
+
+
+    agregar(){
+
+        const nombre =
+            this.input.value.trim();
+
+        if(!nombre){
+
+            alert(
+                "Escribe una tarea primero."
+            );
+
+            return;
+
+        }
+
+
+        const tarea =
+            new Tarea(
+                nombre,
+                this.categoria.value,
+                this.prioridad.value
+            );
+
+
+        this.modelo.agregarTarea(
+            tarea
+        );
+
+
+        this.input.value = "";
+
+        this.actualizarVista();
+
+    }
+
+
+    completar(id){
+
+        this.modelo.cambiarEstado(id);
+
+        this.actualizarVista();
+
+    }
+
+
+    eliminar(id){
+
+        if(
+            confirm(
+                "¿Quieres eliminar esta tarea?"
+            )
+        ){
+
+            this.modelo.eliminarTarea(id);
+
+            this.actualizarVista();
+
+        }
+
+    }
+
+
+    borrarTodo(){
+
+        if(
+            this.modelo.tareas.length === 0
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            confirm(
+                "¿Seguro que quieres borrar todas las tareas?"
+            )
+        ){
+
+            this.modelo.tareas = [];
+
+            this.modelo.guardar();
+
+            this.actualizarVista();
+
+        }
+
+    }
+
+
+    actualizarVista(){
+
+        let tareas =
+            this.modelo.tareas;
+
+
+        const categoria =
+            this.filtroCategoria.value;
+
+        const estado =
+            this.filtroEstado.value;
+
+
+        if(categoria !== "Todas"){
+
+            tareas =
+                tareas.filter(
+                    tarea =>
+                        tarea.categoria === categoria
+                );
+
+        }
+
+
+        if(estado === "Pendiente"){
+
+            tareas =
+                tareas.filter(
+                    tarea =>
+                        !tarea.completada
+                );
+
+        }
+
+
+        if(estado === "Completada"){
+
+            tareas =
+                tareas.filter(
+                    tarea =>
+                        tarea.completada
+                );
+
+        }
+
+
+        this.vista.mostrarTareas(
+            tareas
+        );
+
+
+        this.vista.actualizarEstadisticas(
+            this.modelo.tareas
+        );
+
+    }
+
+}
+
+
+/* =========================
+   INICIAR APLICACIÓN
+========================= */
+
+const modelo =
+    new Modelo();
+
+const vista =
+    new Vista();
+
+const app =
+    new Controlador(
+        modelo,
+        vista
+    );
+
+</script>
+
+</body>
+</html>
+```

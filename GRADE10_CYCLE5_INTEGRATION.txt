@@ -1,0 +1,8 @@
+﻿10TH GRADE · CYCLE 5
+Title: Cycle 5 · Interactive Application Engineering
+Topic: From Prototype to Complete Game or Simulator
+Official objective: Create a complete interactive application (game or simulator) integrating all structures.
+Guide: /guides/grade-10/cycle-5-interactive-application-engineering.html
+
+Integrar en las lecciones/secuencias de Grade 10 SIN reemplazar contenido existente.
+Mantener Updated Class Sequences disponible para que los equipos abran su proyecto actual.

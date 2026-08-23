@@ -1,0 +1,16 @@
+﻿10TH GRADE · UPDATED CLASS SEQUENCES
+URL: /guides/grade-10/updated-class-sequences.html
+
+Agregar ANTES de las secuencias existentes de Grade 10, sin reemplazar contenido:
+Title: Updated Class Sequences
+Subtitle: Recent classroom projects and development evidence.
+Link: /guides/grade-10/updated-class-sequences.html
+
+Actualmente:
+- 10th White
+- 10th Red
+- La seccion adicional de 10th se incorporara despues.
+
+IMPORTANTE:
+- No borrar ni reescribir las secuencias actuales.
+- No presentar archivos de apoyo del docente como proyectos estudiantiles.

@@ -1,0 +1,8 @@
+﻿9TH GRADE · CYCLE 5
+Title: Cycle 5 · MVC Connection Lab
+Objective: Complete MVC implementation: Connect Controller with Model and View. Add functionality.
+Guide: /guides/grade-09/cycle-5-mvc-connection.html
+
+Integrar en las lecciones/secuencias de Grade 9 SIN reemplazar contenido existente.
+Mantener Updated Class Sequences disponible antes de las secuencias.
+Cycle 5 debe apuntar a la URL anterior.

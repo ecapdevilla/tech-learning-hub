@@ -1,0 +1,3161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EcoTareas - Gestor escolar de tareas basado en MVC y ODS 4 y 12">
+  <title>EcoTareas | STEM · MVC · ODS</title>
+
+  <style>
+    /* =========================================================
+       ECOTAREAS
+       CSS - Vista de la aplicación
+       ========================================================= */
+
+    :root {
+      --primary: #166534;
+      --primary-light: #22c55e;
+      --primary-dark: #14532d;
+      --secondary: #0369a1;
+      --accent: #f59e0b;
+
+      --background: #f1f5f9;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #172033;
+      --text-soft: #64748b;
+      --border: #e2e8f0;
+
+      --danger: #dc2626;
+      --success: #16a34a;
+      --warning: #d97706;
+
+      --shadow: 0 10px 30px rgba(15, 23, 42, .08);
+      --radius: 16px;
+    }
+
+    body.dark {
+      --background: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #172033;
+      --text: #f8fafc;
+      --text-soft: #94a3b8;
+      --border: #334155;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.5;
+      transition: background .25s, color .25s;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    /* ================= HEADER ================= */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: auto;
+      min-height: 72px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 23px;
+    }
+
+    .brand h1 {
+      font-size: 20px;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--text-soft);
+      font-size: 12px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ================= BUTTONS ================= */
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-weight: 700;
+      transition: .2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .btn-small {
+      padding: 7px 10px;
+      font-size: 13px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+    /* ================= LAYOUT ================= */
+
+    .layout {
+      max-width: 1400px;
+      margin: auto;
+      padding: 25px 24px 50px;
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 25px;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px;
+      height: fit-content;
+      position: sticky;
+      top: 97px;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-title {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: 10px;
+    }
+
+    .nav-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text-soft);
+      padding: 11px 12px;
+      border-radius: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      text-align: left;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: #dcfce7;
+      color: var(--primary-dark);
+    }
+
+    body.dark .nav-item:hover,
+    body.dark .nav-item.active {
+      background: #14532d;
+      color: #dcfce7;
+    }
+
+    /* ================= MAIN ================= */
+
+    main {
+      min-width: 0;
+    }
+
+    .view {
+      display: none;
+      animation: fade .25s ease;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .page-heading h2 {
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+
+    .page-heading p {
+      color: var(--text-soft);
+    }
+
+    /* ================= STATS ================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #dcfce7;
+      font-size: 20px;
+    }
+
+    body.dark .stat-icon {
+      background: #14532d;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      color: var(--text-soft);
+      font-size: 13px;
+    }
+
+    /* ================= CARDS ================= */
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 17px;
+    }
+
+    .card-title h3 {
+      font-size: 18px;
+    }
+
+    /* ================= FILTERS ================= */
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .input,
+    .select,
+    textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .input:focus,
+    .select:focus,
+    textarea:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(34,197,94,.12);
+    }
+
+    /* ================= TASKS ================= */
+
+    .tasks-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .task {
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--primary-light);
+      border-radius: 13px;
+      padding: 16px;
+      background: var(--surface);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 13px;
+      align-items: start;
+      transition: .2s;
+    }
+
+    .task:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .task.completed {
+      opacity: .68;
+      border-left-color: var(--success);
+    }
+
+    .task.completed .task-title {
+      text-decoration: line-through;
+    }
+
+    .task-check {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #94a3b8;
+      border-radius: 7px;
+      cursor: pointer;
+      position: relative;
+      margin-top: 2px;
+    }
+
+    .task-check:checked {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .task-check:checked::after {
+      content: "✓";
+      color: white;
+      font-size: 15px;
+      position: absolute;
+      left: 3px;
+      top: -1px;
+    }
+
+    .task-title {
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .task-description {
+      color: var(--text-soft);
+      font-size: 13px;
+      margin-bottom: 9px;
+    }
+
+    .task-meta {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 99px;
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--surface-2);
+      color: var(--text-soft);
+      border: 1px solid var(--border);
+    }
+
+    .priority-high {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+
+    .priority-medium {
+      background: #fef3c7;
+      color: #92400e;
+      border-color: #fde68a;
+    }
+
+    .priority-low {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+      color: var(--text-soft);
+    }
+
+    .empty-icon {
+      font-size: 45px;
+      margin-bottom: 8px;
+    }
+
+    /* ================= ODS ================= */
+
+    .ods-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .ods-card {
+      padding: 22px;
+      border-radius: var(--radius);
+      color: white;
+      min-height: 230px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ods-card::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      right: -50px;
+      bottom: -60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+    }
+
+    .ods-4 {
+      background: linear-gradient(135deg, #c5192d, #e83d51);
+    }
+
+    .ods-12 {
+      background: linear-gradient(135deg, #bf8b2e, #d9a441);
+    }
+
+    .ods-number {
+      font-size: 42px;
+      font-weight: 900;
+      opacity: .9;
+    }
+
+    .ods-card h3 {
+      margin-bottom: 8px;
+    }
+
+    .ods-card p {
+      max-width: 600px;
+      opacity: .95;
+      font-size: 14px;
+    }
+
+    .ods-progress {
+      height: 9px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.3);
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .ods-progress-bar {
+      height: 100%;
+      background: white;
+      border-radius: inherit;
+      width: 0;
+      transition: width .5s;
+    }
+
+    .reflection {
+      line-height: 1.8;
+      color: var(--text-soft);
+    }
+
+    /* ================= CATEGORIES ================= */
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .category {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+    }
+
+    .category-info {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .category-color {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+
+    /* ================= MODAL ================= */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      color: var(--text);
+      width: min(580px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 25px 70px rgba(0,0,0,.25);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: grid;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--success);
+      border-radius: 10px;
+      padding: 13px 17px;
+      box-shadow: var(--shadow);
+      animation: toastIn .25s ease;
+      max-width: 330px;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ================= USER ================= */
+
+    .user-profile {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 1000px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        display: flex;
+        gap: 5px;
+        overflow-x: auto;
+      }
+
+      .nav-title {
+        display: none;
+      }
+
+      .nav-item {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .header-inner {
+        padding: 10px 15px;
+      }
+
+      .brand span {
+        display: none;
+      }
+
+      .layout {
+        padding: 18px 14px 40px;
+      }
+
+      .page-heading {
+        flex-direction: column;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 14px;
+      }
+
+      .stat-value {
+        font-size: 24px;
+      }
+
+      .task {
+        grid-template-columns: auto 1fr;
+      }
+
+      .task-actions {
+        grid-column: 2;
+      }
+
+      .ods-grid,
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .header-actions .btn span {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- ======================================================
+         HEADER / VISTA
+         ====================================================== -->
+
+    <header>
+      <div class="header-inner">
+
+        <div class="brand">
+          <div class="brand-icon">🌱</div>
+          <div>
+            <h1>EcoTareas</h1>
+            <span>STEM · MVC · ODS 4 + ODS 12</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button
+            class="icon-btn"
+            id="themeBtn"
+            aria-label="Cambiar tema"
+            title="Cambiar tema">
+            🌙
+          </button>
+
+          <button class="btn btn-primary" id="headerAddTask">
+            <span>＋</span> Nueva tarea
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="layout">
+
+      <!-- ====================================================
+           SIDEBAR / VISTA
+           ==================================================== -->
+
+      <aside class="sidebar" aria-label="Navegación principal">
+
+        <div class="nav-title">Menú principal</div>
+
+        <button class="nav-item active" data-view="dashboard">
+          📊 Dashboard
+        </button>
+
+        <button class="nav-item" data-view="tasks">
+          📚 Mis tareas
+        </button>
+
+        <button class="nav-item" data-view="categories">
+          🗂️ Categorías
+        </button>
+
+        <button class="nav-item" data-view="ods">
+          🌍 ODS
+        </button>
+
+        <button class="nav-item" data-view="profile">
+          👤 Mi perfil
+        </button>
+
+      </aside>
+
+      <!-- ====================================================
+           CONTENIDO PRINCIPAL
+           ==================================================== -->
+
+      <main>
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section id="dashboardView" class="view active">
+
+          <div class="page-heading">
+            <div>
+              <h2>¡Hola, <span id="dashboardUser">Estudiante</span>! 👋</h2>
+              <p>Organiza tu aprendizaje y conviértelo en acciones sostenibles.</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Total de tareas</span>
+                <div class="stat-icon">📚</div>
+              </div>
+              <div class="stat-value" id="totalTasks">0</div>
+              <div class="stat-label">Actividades registradas</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Completadas</span>
+                <div class="stat-icon">✅</div>
+              </div>
+              <div class="stat-value" id="completedTasks">0</div>
+              <div class="stat-label">Tareas terminadas</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Pendientes</span>
+                <div class="stat-icon">⏳</div>
+              </div>
+              <div class="stat-value" id="pendingTasks">0</div>
+              <div class="stat-label">Por realizar</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Progreso</span>
+                <div class="stat-icon">🌱</div>
+              </div>
+              <div class="stat-value" id="progressValue">0%</div>
+              <div class="stat-label">Cumplimiento académico</div>
+            </article>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-title">
+              <h3>📌 Próximas tareas</h3>
+              <button class="btn btn-secondary btn-small" data-view-btn="tasks">
+                Ver todas
+              </button>
+            </div>
+
+            <div id="dashboardTasks" class="tasks-list"></div>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-title">
+              <h3>🌍 Impacto ODS</h3>
+            </div>
+
+            <div class="ods-grid">
+
+              <div class="ods-card ods-4">
+                <div class="ods-number">04</div>
+                <h3>Educación de calidad</h3>
+                <p>
+                  Organizar, priorizar y completar tareas fortalece
+                  los hábitos de estudio y el aprendizaje autónomo.
+                </p>
+
+                <div class="ods-progress">
+                  <div id="ods4Progress" class="ods-progress-bar"></div>
+                </div>
+              </div>
+
+              <div class="ods-card ods-12">
+                <div class="ods-number">12</div>
+                <h3>Producción y consumo responsables</h3>
+                <p>
+                  Las actividades sostenibles permiten convertir el
+                  aprendizaje en acciones responsables con los recursos.
+                </p>
+
+                <div class="ods-progress">
+                  <div id="ods12Progress" class="ods-progress-bar"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ================= TAREAS ================= -->
+
+        <section id="tasksView" class="view">
+
+          <div class="page-heading">
+            <div>
+              <h2>Mis tareas 📚</h2>
+              <p>Gestiona tus actividades académicas y sostenibles.</p>
+            </div>
+
+            <button class="btn btn-primary" id="addTaskBtn">
+              ＋ Nueva tarea
+            </button>
+          </div>
+
+          <div class="card">
+
+            <div class="filters">
+
+              <input
+                id="searchInput"
+                class="input"
+                type="search"
+                placeholder="🔎 Buscar tarea..."
+                aria-label="Buscar tarea">
+
+              <select id="categoryFilter" class="select">
+                <option value="all">Todas las categorías</option>
+              </select>
+
+              <select id="statusFilter" class="select">
+                <option value="all">Todos los estados</option>
+                <option value="pending">Pendientes</option>
+                <option value="completed">Completadas</option>
+              </select>
+
+              <select id="priorityFilter" class="select">
+                <option value="all">Todas las prioridades</option>
+                <option value="high">Alta</option>
+                <option value="medium">Media</option>
+                <option value="low">Baja</option>
+              </select>
+
+            </div>
+
+            <div id="tasksList" class="tasks-list"></div>
+
+          </div>
+
+        </section>
+
+        <!-- ================= CATEGORÍAS ================= -->
+
+        <section id="categoriesView" class="view">
+
+          <div class="page-heading">
+            <div>
+              <h2>Categorías 🗂️</h2>
+              <p>Clasifica tus tareas para organizar mejor tu tiempo.</p>
+            </div>
+
+            <button class="btn btn-primary" id="addCategoryBtn">
+              ＋ Nueva categoría
+            </button>
+          </div>
+
+          <div class="card">
+            <div id="categoriesList" class="categories-grid"></div>
+          </div>
+
+        </section>
+
+        <!-- ================= ODS ================= -->
+
+        <section id="odsView" class="view">
+
+          <div class="page-heading">
+            <div>
+              <h2>ODS y sostenibilidad 🌍</h2>
+              <p>
+                La aplicación conecta la organización escolar
+                con los Objetivos de Desarrollo Sostenible.
+              </p>
+            </div>
+          </div>
+
+          <div class="ods-grid">
+
+            <article class="ods-card ods-4">
+              <div class="ods-number">04</div>
+              <h3>ODS 4 · Educación de calidad</h3>
+              <p>
+                Garantizar una educación inclusiva, equitativa y de calidad
+                implica también desarrollar autonomía, responsabilidad y
+                hábitos efectivos de aprendizaje.
+              </p>
+
+              <div class="ods-progress">
+                <div id="ods4ProgressPage" class="ods-progress-bar"></div>
+              </div>
+            </article>
+
+            <article class="ods-card ods-12">
+              <div class="ods-number">12</div>
+              <h3>ODS 12 · Producción y consumo responsables</h3>
+              <p>
+                Promueve hábitos que reduzcan desperdicios y fomenten
+                el uso responsable de materiales, energía y recursos.
+              </p>
+
+              <div class="ods-progress">
+                <div id="ods12ProgressPage" class="ods-progress-bar"></div>
+              </div>
+            </article>
+
+          </div>
+
+          <div class="card" style="margin-top:20px;">
+            <div class="card-title">
+              <h3>💡 Reflexión del proyecto</h3>
+            </div>
+
+            <div class="reflection">
+              <p>
+                <strong>¿Cómo contribuye EcoTareas a los ODS?</strong>
+              </p>
+
+              <br>
+
+              <p>
+                EcoTareas utiliza la tecnología para resolver una necesidad
+                cotidiana de la comunidad educativa: organizar las tareas
+                y mejorar el seguimiento del aprendizaje.
+              </p>
+
+              <br>
+
+              <p>
+                Desde el <strong>ODS 4</strong>, la aplicación fomenta
+                autonomía, planificación, responsabilidad y hábitos de estudio.
+              </p>
+
+              <br>
+
+              <p>
+                Desde el <strong>ODS 12</strong>, permite incorporar
+                actividades relacionadas con reciclaje, reutilización,
+                ahorro de papel, ahorro energético y consumo responsable.
+              </p>
+
+              <br>
+
+              <p>
+                De esta manera, la solución no solo organiza tareas:
+                busca transformar pequeñas acciones escolares en hábitos
+                que generen un impacto positivo en la comunidad.
+              </p>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ================= PERFIL ================= -->
+
+        <section id="profileView" class="view">
+
+          <div class="page-heading">
+            <div>
+              <h2>Mi perfil 👤</h2>
+              <p>Información del usuario y progreso personal.</p>
+            </div>
+          </div>
+
+          <div class="card">
+
+            <div class="user-profile">
+
+              <div id="avatar" class="avatar">E</div>
+
+              <div>
+                <h2 id="profileName">Estudiante</h2>
+                <p id="profileEmail" style="color:var(--text-soft);">
+                  estudiante@escuela.edu
+                </p>
+
+                <br>
+
+                <span class="badge">
+                  🎓 Estudiante
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-title">
+              <h3>⚙️ Datos del usuario</h3>
+            </div>
+
+            <form id="profileForm">
+
+              <div class="form-group">
+                <label class="form-label" for="profileNameInput">
+                  Nombre
+                </label>
+
+                <input
+                  id="profileNameInput"
+                  class="input"
+                  type="text"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profileEmailInput">
+                  Correo
+                </label>
+
+                <input
+                  id="profileEmailInput"
+                  class="input"
+                  type="email"
+                  required>
+              </div>
+
+              <button class="btn btn-primary" type="submit">
+                Guardar perfil
+              </button>
+
+            </form>
+
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL TAREA
+       ======================================================== -->
+
+  <div
+    id="taskModal"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="taskModalTitle">
+
+    <div class="modal">
+
+      <div class="modal-header">
+        <h2 id="taskModalTitle">Nueva tarea</h2>
+
+        <button
+          class="icon-btn"
+          id="closeTaskModal"
+          aria-label="Cerrar">
+          ×
+        </button>
+      </div>
+
+      <form id="taskForm">
+
+        <input type="hidden" id="taskId">
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label class="form-label" for="taskTitle">
+              Título *
+            </label>
+
+            <input
+              id="taskTitle"
+              class="input"
+              type="text"
+              placeholder="Ej. Investigar cambio climático"
+              required>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label" for="taskDescription">
+              Descripción
+            </label>
+
+            <textarea
+              id="taskDescription"
+              rows="3"
+              placeholder="Describe brevemente la actividad..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskCategory">
+              Categoría *
+            </label>
+
+            <select id="taskCategory" class="select" required></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskPriority">
+              Prioridad
+            </label>
+
+            <select id="taskPriority" class="select">
+              <option value="high">🔴 Alta</option>
+              <option value="medium" selected>🟡 Media</option>
+              <option value="low">🟢 Baja</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDate">
+              Fecha límite
+            </label>
+
+            <input
+              id="taskDate"
+              class="input"
+              type="date">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskOds">
+              ODS relacionado
+            </label>
+
+            <select id="taskOds" class="select">
+              <option value="none">Sin ODS específico</option>
+              <option value="4">ODS 4 · Educación</option>
+              <option value="12">ODS 12 · Consumo responsable</option>
+              <option value="4,12">ODS 4 + ODS 12</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="cancelTaskBtn">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary">
+            Guardar tarea
+          </button>
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL CATEGORÍA
+       ======================================================== -->
+
+  <div
+    id="categoryModal"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="categoryModalTitle">
+
+    <div class="modal">
+
+      <div class="modal-header">
+        <h2 id="categoryModalTitle">Nueva categoría</h2>
+
+        <button
+          class="icon-btn"
+          id="closeCategoryModal"
+          aria-label="Cerrar">
+          ×
+        </button>
+      </div>
+
+      <form id="categoryForm">
+
+        <input type="hidden" id="categoryId">
+
+        <div class="form-group">
+          <label class="form-label" for="categoryName">
+            Nombre *
+          </label>
+
+          <input
+            id="categoryName"
+            class="input"
+            type="text"
+            placeholder="Ej. Ciencias"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="categoryIcon">
+            Emoji
+          </label>
+
+          <input
+            id="categoryIcon"
+            class="input"
+            type="text"
+            maxlength="2"
+            value="📚"
+            placeholder="📚">
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="cancelCategoryBtn">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary">
+            Guardar categoría
+          </button>
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script>
+    /* =========================================================
+       ECOTAREAS
+       JavaScript Vanilla
+       Arquitectura MVC
+       ========================================================= */
+
+
+    /* =========================================================
+       MODELO
+       ========================================================= */
+
+    /**
+     * Entidad Usuario.
+     */
+    class Usuario {
+      constructor(id, nombre, email) {
+        this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+      }
+    }
+
+
+    /**
+     * Entidad Categoría.
+     */
+    class Categoria {
+      constructor(id, nombre, icono = "📚") {
+        this.id = id;
+        this.nombre = nombre;
+        this.icono = icono;
+      }
+    }
+
+
+    /**
+     * Entidad Tarea.
+     */
+    class Tarea {
+      constructor(
+        id,
+        titulo,
+        descripcion,
+        categoriaId,
+        prioridad,
+        fecha,
+        ods = "none",
+        completada = false
+      ) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.categoriaId = categoriaId;
+        this.prioridad = prioridad;
+        this.fecha = fecha;
+        this.ods = ods;
+        this.completada = completada;
+      }
+    }
+
+
+    /**
+     * Modelo principal.
+     *
+     * Gestiona los datos y la persistencia.
+     */
+    class AppModel {
+
+      constructor() {
+        this.storageKey = "ecoTareasMVC";
+
+        this.usuario = null;
+        this.categorias = [];
+        this.tareas = [];
+
+        this.cargar();
+      }
+
+
+      /**
+       * Carga los datos desde localStorage.
+       */
+      cargar() {
+
+        const saved = localStorage.getItem(this.storageKey);
+
+        if (saved) {
+          try {
+            const data = JSON.parse(saved);
+
+            this.usuario = new Usuario(
+              data.usuario.id,
+              data.usuario.nombre,
+              data.usuario.email
+            );
+
+            this.categorias = data.categorias.map(
+              c => new Categoria(c.id, c.nombre, c.icono)
+            );
+
+            this.tareas = data.tareas.map(
+              t => new Tarea(
+                t.id,
+                t.titulo,
+                t.descripcion,
+                t.categoriaId,
+                t.prioridad,
+                t.fecha,
+                t.ods,
+                t.completada
+              )
+            );
+
+            return;
+
+          } catch (error) {
+            console.error("Error al cargar datos:", error);
+          }
+        }
+
+        this.crearDatosIniciales();
+      }
+
+
+      /**
+       * Genera datos de demostración.
+       */
+      crearDatosIniciales() {
+
+        this.usuario = new Usuario(
+          this.generarId(),
+          "Estudiante",
+          "estudiante@escuela.edu"
+        );
+
+        this.categorias = [
+          new Categoria("cat-ciencias", "Ciencias", "🔬"),
+          new Categoria("cat-matematicas", "Matemáticas", "📐"),
+          new Categoria("cat-sostenibilidad", "Sostenibilidad", "🌱"),
+          new Categoria("cat-lengua", "Lengua", "📖")
+        ];
+
+        this.tareas = [
+          new Tarea(
+            this.generarId(),
+            "Investigar sobre cambio climático",
+            "Preparar una investigación sobre causas y posibles soluciones.",
+            "cat-ciencias",
+            "high",
+            this.fechaFutura(2),
+            "4,12",
+            false
+          ),
+
+          new Tarea(
+            this.generarId(),
+            "Resolver ejercicios de álgebra",
+            "Completar los ejercicios de la guía 5.",
+            "cat-matematicas",
+            "medium",
+            this.fechaFutura(4),
+            "4",
+            false
+          ),
+
+          new Tarea(
+            this.generarId(),
+            "Campaña de reciclaje escolar",
+            "Diseñar una propuesta para reducir residuos en la escuela.",
+            "cat-sostenibilidad",
+            "high",
+            this.fechaFutura(6),
+            "12",
+            false
+          ),
+
+          new Tarea(
+            this.generarId(),
+            "Leer capítulo de literatura",
+            "Realizar lectura y escribir una breve reflexión.",
+            "cat-lengua",
+            "low",
+            this.fechaFutura(8),
+            "4",
+            true
+          )
+        ];
+
+        this.guardar();
+      }
+
+
+      /**
+       * Guarda el estado completo.
+       */
+      guardar() {
+
+        localStorage.setItem(
+          this.storageKey,
+          JSON.stringify({
+            usuario: this.usuario,
+            categorias: this.categorias,
+            tareas: this.tareas
+          })
+        );
+      }
+
+
+      /**
+       * Genera identificadores únicos.
+       */
+      generarId() {
+        return Date.now().toString(36) +
+          Math.random().toString(36).substring(2);
+      }
+
+
+      /**
+       * Genera una fecha futura.
+       */
+      fechaFutura(dias) {
+
+        const date = new Date();
+        date.setDate(date.getDate() + dias);
+
+        return date.toISOString().split("T")[0];
+      }
+
+
+      /**
+       * Agrega una tarea.
+       */
+      agregarTarea(datos) {
+
+        const tarea = new Tarea(
+          this.generarId(),
+          datos.titulo,
+          datos.descripcion,
+          datos.categoriaId,
+          datos.prioridad,
+          datos.fecha,
+          datos.ods,
+          false
+        );
+
+        this.tareas.push(tarea);
+        this.guardar();
+
+        return tarea;
+      }
+
+
+      /**
+       * Actualiza una tarea.
+       */
+      actualizarTarea(id, datos) {
+
+        const tarea = this.tareas.find(t => t.id === id);
+
+        if (!tarea) {
+          throw new Error("Tarea no encontrada.");
+        }
+
+        Object.assign(tarea, datos);
+
+        this.guardar();
+
+        return tarea;
+      }
+
+
+      /**
+       * Elimina una tarea.
+       */
+      eliminarTarea(id) {
+
+        const existe = this.tareas.some(t => t.id === id);
+
+        if (!existe) {
+          throw new Error("Tarea no encontrada.");
+        }
+
+        this.tareas = this.tareas.filter(t => t.id !== id);
+
+        this.guardar();
+      }
+
+
+      /**
+       * Cambia el estado de una tarea.
+       */
+      alternarTarea(id) {
+
+        const tarea = this.tareas.find(t => t.id === id);
+
+        if (tarea) {
+          tarea.completada = !tarea.completada;
+          this.guardar();
+        }
+      }
+
+
+      /**
+       * Agrega categoría.
+       */
+      agregarCategoria(nombre, icono) {
+
+        const categoria = new Categoria(
+          this.generarId(),
+          nombre,
+          icono || "📚"
+        );
+
+        this.categorias.push(categoria);
+        this.guardar();
+
+        return categoria;
+      }
+
+
+      /**
+       * Actualiza categoría.
+       */
+      actualizarCategoria(id, nombre, icono) {
+
+        const categoria = this.categorias.find(c => c.id === id);
+
+        if (!categoria) {
+          throw new Error("Categoría no encontrada.");
+        }
+
+        categoria.nombre = nombre;
+        categoria.icono = icono;
+
+        this.guardar();
+      }
+
+
+      /**
+       * Elimina categoría.
+       *
+       * Solo se permite eliminar categorías sin tareas.
+       */
+      eliminarCategoria(id) {
+
+        const tieneTareas = this.tareas.some(
+          tarea => tarea.categoriaId === id
+        );
+
+        if (tieneTareas) {
+          throw new Error(
+            "No puedes eliminar una categoría que tiene tareas."
+          );
+        }
+
+        this.categorias = this.categorias.filter(
+          categoria => categoria.id !== id
+        );
+
+        this.guardar();
+      }
+
+
+      /**
+       * Actualiza datos del usuario.
+       */
+      actualizarUsuario(nombre, email) {
+
+        this.usuario.nombre = nombre;
+        this.usuario.email = email;
+
+        this.guardar();
+      }
+
+
+      /**
+       * Devuelve estadísticas.
+       */
+      obtenerEstadisticas() {
+
+        const total = this.tareas.length;
+
+        const completadas = this.tareas.filter(
+          tarea => tarea.completada
+        ).length;
+
+        const pendientes = total - completadas;
+
+        const progreso = total === 0
+          ? 0
+          : Math.round((completadas / total) * 100);
+
+        const tareasOds4 = this.tareas.filter(
+          tarea => tarea.ods.includes("4")
+        ).length;
+
+        const tareasOds12 = this.tareas.filter(
+          tarea => tarea.ods.includes("12")
+        ).length;
+
+        const completadasOds4 = this.tareas.filter(
+          tarea => tarea.ods.includes("4") && tarea.completada
+        ).length;
+
+        const completadasOds12 = this.tareas.filter(
+          tarea => tarea.ods.includes("12") && tarea.completada
+        ).length;
+
+        return {
+          total,
+          completadas,
+          pendientes,
+          progreso,
+          tareasOds4,
+          tareasOds12,
+          completadasOds4,
+          completadasOds12
+        };
+      }
+    }
+
+
+    /* =========================================================
+       VISTA
+       ========================================================= */
+
+    class AppView {
+
+      constructor() {
+
+        this.cacheDOM();
+
+        this.renderCategoriasSelect();
+      }
+
+
+      /**
+       * Guarda referencias del DOM.
+       */
+      cacheDOM() {
+
+        this.totalTasks = document.getElementById("totalTasks");
+        this.completedTasks = document.getElementById("completedTasks");
+        this.pendingTasks = document.getElementById("pendingTasks");
+        this.progressValue = document.getElementById("progressValue");
+
+        this.dashboardTasks =
+          document.getElementById("dashboardTasks");
+
+        this.tasksList =
+          document.getElementById("tasksList");
+
+        this.categoriesList =
+          document.getElementById("categoriesList");
+
+        this.categoryFilter =
+          document.getElementById("categoryFilter");
+
+        this.taskCategory =
+          document.getElementById("taskCategory");
+
+        this.searchInput =
+          document.getElementById("searchInput");
+
+        this.statusFilter =
+          document.getElementById("statusFilter");
+
+        this.priorityFilter =
+          document.getElementById("priorityFilter");
+
+        this.taskModal =
+          document.getElementById("taskModal");
+
+        this.categoryModal =
+          document.getElementById("categoryModal");
+
+        this.taskForm =
+          document.getElementById("taskForm");
+
+        this.categoryForm =
+          document.getElementById("categoryForm");
+
+        this.profileForm =
+          document.getElementById("profileForm");
+      }
+
+
+      /**
+       * Cambia de vista.
+       */
+      mostrarVista(nombre) {
+
+        document.querySelectorAll(".view").forEach(view => {
+          view.classList.remove("active");
+        });
+
+        const target =
+          document.getElementById(`${nombre}View`);
+
+        if (target) {
+          target.classList.add("active");
+        }
+
+        document.querySelectorAll(".nav-item").forEach(item => {
+          item.classList.toggle(
+            "active",
+            item.dataset.view === nombre
+          );
+        });
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+
+
+      /**
+       * Renderiza estadísticas.
+       */
+      renderEstadisticas(stats) {
+
+        this.totalTasks.textContent = stats.total;
+        this.completedTasks.textContent = stats.completadas;
+        this.pendingTasks.textContent = stats.pendientes;
+        this.progressValue.textContent = `${stats.progreso}%`;
+
+        const ods4 = stats.tareasOds4 === 0
+          ? 0
+          : Math.round(
+              (stats.completadasOds4 / stats.tareasOds4) * 100
+            );
+
+        const ods12 = stats.tareasOds12 === 0
+          ? 0
+          : Math.round(
+              (stats.completadasOds12 / stats.tareasOds12) * 100
+            );
+
+        document.getElementById("ods4Progress").style.width =
+          `${ods4}%`;
+
+        document.getElementById("ods12Progress").style.width =
+          `${ods12}%`;
+
+        document.getElementById("ods4ProgressPage").style.width =
+          `${ods4}%`;
+
+        document.getElementById("ods12ProgressPage").style.width =
+          `${ods12}%`;
+      }
+
+
+      /**
+       * Renderiza las tareas.
+       */
+      renderTareas(tareas, categorias) {
+
+        if (!tareas.length) {
+
+          this.tasksList.innerHTML = `
+            <div class="empty">
+              <div class="empty-icon">🌱</div>
+              <h3>No hay tareas</h3>
+              <p>Prueba cambiando los filtros o crea una nueva tarea.</p>
+            </div>
+          `;
+
+          return;
+        }
+
+        this.tasksList.innerHTML = tareas
+          .map(tarea => this.tareaHTML(tarea, categorias))
+          .join("");
+      }
+
+
+      /**
+       * Renderiza tareas del dashboard.
+       */
+      renderDashboardTareas(tareas, categorias) {
+
+        const proximas = [...tareas]
+          .filter(t => !t.completada)
+          .sort((a, b) =>
+            (a.fecha || "9999").localeCompare(b.fecha || "9999")
+          )
+          .slice(0, 3);
+
+        if (!proximas.length) {
+
+          this.dashboardTasks.innerHTML = `
+            <div class="empty">
+              🎉 ¡No tienes tareas pendientes!
+            </div>
+          `;
+
+          return;
+        }
+
+        this.dashboardTasks.innerHTML =
+          proximas
+            .map(tarea => this.tareaHTML(tarea, categorias))
+            .join("");
+      }
+
+
+      /**
+       * Construye HTML de una tarea.
+       */
+      tareaHTML(tarea, categorias) {
+
+        const categoria = categorias.find(
+          c => c.id === tarea.categoriaId
+        );
+
+        const categoriaNombre =
+          categoria ? categoria.nombre : "Sin categoría";
+
+        const categoriaIcono =
+          categoria ? categoria.icono : "📚";
+
+        const prioridadTexto = {
+          high: "Alta",
+          medium: "Media",
+          low: "Baja"
+        };
+
+        const fecha = tarea.fecha
+          ? this.formatearFecha(tarea.fecha)
+          : "Sin fecha";
+
+        const odsText = tarea.ods === "none"
+          ? ""
+          : `🌍 ODS ${tarea.ods}`;
+
+        return `
+          <article
+            class="task ${tarea.completada ? "completed" : ""}"
+            data-task-id="${tarea.id}">
+
+            <input
+              class="task-check"
+              type="checkbox"
+              ${tarea.completada ? "checked" : ""}
+              data-action="toggle"
+              data-id="${tarea.id}"
+              aria-label="Marcar tarea como completada">
+
+            <div>
+
+              <div class="task-title">
+                ${this.escapeHTML(tarea.titulo)}
+              </div>
+
+              <div class="task-description">
+                ${this.escapeHTML(
+                  tarea.descripcion || "Sin descripción"
+                )}
+              </div>
+
+              <div class="task-meta">
+
+                <span class="badge">
+                  ${categoriaIcono} ${this.escapeHTML(categoriaNombre)}
+                </span>
+
+                <span class="badge priority-${tarea.prioridad}">
+                  ${prioridadTexto[tarea.prioridad]}
+                </span>
+
+                <span class="badge">
+                  📅 ${fecha}
+                </span>
+
+                ${odsText
+                  ? `<span class="badge">${odsText}</span>`
+                  : ""
+                }
+
+              </div>
+            </div>
+
+            <div class="task-actions">
+
+              <button
+                class="btn btn-secondary btn-small"
+                data-action="edit"
+                data-id="${tarea.id}"
+                aria-label="Editar tarea">
+                ✏️
+              </button>
+
+              <button
+                class="btn btn-danger btn-small"
+                data-action="delete"
+                data-id="${tarea.id}"
+                aria-label="Eliminar tarea">
+                🗑️
+              </button>
+
+            </div>
+
+          </article>
+        `;
+      }
+
+
+      /**
+       * Renderiza categorías.
+       */
+      renderCategorias(categorias, tareas) {
+
+        if (!categorias.length) {
+
+          this.categoriesList.innerHTML = `
+            <div class="empty">
+              No existen categorías.
+            </div>
+          `;
+
+          return;
+        }
+
+        this.categoriesList.innerHTML = categorias
+          .map(categoria => {
+
+            const cantidad = tareas.filter(
+              t => t.categoriaId === categoria.id
+            ).length;
+
+            return `
+              <article class="category">
+
+                <div class="category-info">
+
+                  <div
+                    class="category-color"
+                    style="background:#dcfce7;">
+                    ${categoria.icono}
+                  </div>
+
+                  <div>
+                    <strong>
+                      ${this.escapeHTML(categoria.nombre)}
+                    </strong>
+
+                    <div style="font-size:12px;color:var(--text-soft)">
+                      ${cantidad} tarea${cantidad === 1 ? "" : "s"}
+                    </div>
+                  </div>
+
+                </div>
+
+                <div style="display:flex;gap:5px;">
+
+                  <button
+                    class="btn btn-secondary btn-small"
+                    data-category-action="edit"
+                    data-id="${categoria.id}">
+                    ✏️
+                  </button>
+
+                  <button
+                    class="btn btn-danger btn-small"
+                    data-category-action="delete"
+                    data-id="${categoria.id}">
+                    🗑️
+                  </button>
+
+                </div>
+
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+
+      /**
+       * Actualiza los selects de categorías.
+       */
+      renderCategoriasSelect(categorias = []) {
+
+        if (!categorias.length) {
+          return;
+        }
+
+        const options = categorias
+          .map(c =>
+            `<option value="${c.id}">
+              ${c.icono} ${this.escapeHTML(c.nombre)}
+            </option>`
+          )
+          .join("");
+
+        this.taskCategory.innerHTML = options;
+
+        this.categoryFilter.innerHTML = `
+          <option value="all">Todas las categorías</option>
+          ${options}
+        `;
+      }
+
+
+      /**
+       * Abre modal de tarea.
+       */
+      abrirModalTarea(tarea = null) {
+
+        this.taskForm.reset();
+
+        document.getElementById("taskId").value =
+          tarea ? tarea.id : "";
+
+        document.getElementById("taskModalTitle").textContent =
+          tarea ? "Editar tarea" : "Nueva tarea";
+
+        if (tarea) {
+
+          document.getElementById("taskTitle").value =
+            tarea.titulo;
+
+          document.getElementById("taskDescription").value =
+            tarea.descripcion;
+
+          document.getElementById("taskCategory").value =
+            tarea.categoriaId;
+
+          document.getElementById("taskPriority").value =
+            tarea.prioridad;
+
+          document.getElementById("taskDate").value =
+            tarea.fecha;
+
+          document.getElementById("taskOds").value =
+            tarea.ods;
+        }
+
+        this.taskModal.classList.add("open");
+
+        setTimeout(() =>
+          document.getElementById("taskTitle").focus()
+        );
+      }
+
+
+      /**
+       * Cierra modal de tarea.
+       */
+      cerrarModalTarea() {
+        this.taskModal.classList.remove("open");
+      }
+
+
+      /**
+       * Abre modal de categoría.
+       */
+      abrirModalCategoria(categoria = null) {
+
+        this.categoryForm.reset();
+
+        document.getElementById("categoryId").value =
+          categoria ? categoria.id : "";
+
+        document.getElementById("categoryModalTitle").textContent =
+          categoria ? "Editar categoría" : "Nueva categoría";
+
+        if (categoria) {
+
+          document.getElementById("categoryName").value =
+            categoria.nombre;
+
+          document.getElementById("categoryIcon").value =
+            categoria.icono;
+        }
+
+        this.categoryModal.classList.add("open");
+
+        setTimeout(() =>
+          document.getElementById("categoryName").focus()
+        );
+      }
+
+
+      /**
+       * Cierra modal de categoría.
+       */
+      cerrarModalCategoria() {
+        this.categoryModal.classList.remove("open");
+      }
+
+
+      /**
+       * Carga datos del perfil.
+       */
+      renderUsuario(usuario) {
+
+        document.getElementById("dashboardUser").textContent =
+          usuario.nombre;
+
+        document.getElementById("profileName").textContent =
+          usuario.nombre;
+
+        document.getElementById("profileEmail").textContent =
+          usuario.email;
+
+        document.getElementById("profileNameInput").value =
+          usuario.nombre;
+
+        document.getElementById("profileEmailInput").value =
+          usuario.email;
+
+        const inicial =
+          usuario.nombre.trim().charAt(0).toUpperCase() || "E";
+
+        document.getElementById("avatar").textContent = inicial;
+      }
+
+
+      /**
+       * Formatea fechas.
+       */
+      formatearFecha(fecha) {
+
+        if (!fecha) return "Sin fecha";
+
+        const [year, month, day] =
+          fecha.split("-");
+
+        return `${day}/${month}/${year}`;
+      }
+
+
+      /**
+       * Evita insertar HTML arbitrario.
+       */
+      escapeHTML(texto) {
+
+        const div = document.createElement("div");
+        div.textContent = texto ?? "";
+
+        return div.innerHTML;
+      }
+
+
+      /**
+       * Muestra notificación.
+       */
+      toast(mensaje, tipo = "success") {
+
+        const toast = document.createElement("div");
+
+        toast.className = "toast";
+
+        if (tipo === "error") {
+          toast.style.borderLeftColor = "var(--danger)";
+        }
+
+        toast.textContent = mensaje;
+
+        document
+          .getElementById("toastContainer")
+          .appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+    }
+
+
+    /* =========================================================
+       CONTROLADOR
+       ========================================================= */
+
+    class AppController {
+
+      constructor(modelo, vista) {
+
+        this.modelo = modelo;
+        this.vista = vista;
+
+        this.init();
+      }
+
+
+      /**
+       * Inicializa la aplicación.
+       */
+      init() {
+
+        this.configurarEventos();
+
+        this.render();
+
+        this.vista.renderUsuario(
+          this.modelo.usuario
+        );
+      }
+
+
+      /**
+       * Configura todos los eventos.
+       */
+      configurarEventos() {
+
+        /* Navegación */
+
+        document.querySelectorAll(".nav-item").forEach(btn => {
+
+          btn.addEventListener("click", () => {
+
+            this.vista.mostrarVista(
+              btn.dataset.view
+            );
+
+            this.render();
+          });
+
+        });
+
+
+        document.querySelectorAll("[data-view-btn]").forEach(btn => {
+
+          btn.addEventListener("click", () => {
+
+            this.vista.mostrarVista(
+              btn.dataset.viewBtn
+            );
+
+            this.render();
+          });
+
+        });
+
+
+        /* Nueva tarea */
+
+        document
+          .getElementById("addTaskBtn")
+          .addEventListener("click", () =>
+            this.vista.abrirModalTarea()
+          );
+
+        document
+          .getElementById("headerAddTask")
+          .addEventListener("click", () =>
+            this.vista.abrirModalTarea()
+          );
+
+
+        /* Cerrar tarea */
+
+        document
+          .getElementById("closeTaskModal")
+          .addEventListener("click", () =>
+            this.vista.cerrarModalTarea()
+          );
+
+        document
+          .getElementById("cancelTaskBtn")
+          .addEventListener("click", () =>
+            this.vista.cerrarModalTarea()
+          );
+
+
+        /* Formulario tarea */
+
+        this.vista.taskForm.addEventListener(
+          "submit",
+          event => this.guardarTarea(event)
+        );
+
+
+        /* Eventos de tareas */
+
+        this.vista.tasksList.addEventListener(
+          "click",
+          event => this.manejarAccionTarea(event)
+        );
+
+
+        this.vista.tasksList.addEventListener(
+          "change",
+          event => {
+
+            if (
+              event.target.dataset.action === "toggle"
+            ) {
+              this.toggleTarea(
+                event.target.dataset.id
+              );
+            }
+          }
+        );
+
+
+        /* Filtros */
+
+        this.vista.searchInput.addEventListener(
+          "input",
+          () => this.renderTareasFiltradas()
+        );
+
+        this.vista.categoryFilter.addEventListener(
+          "change",
+          () => this.renderTareasFiltradas()
+        );
+
+        this.vista.statusFilter.addEventListener(
+          "change",
+          () => this.renderTareasFiltradas()
+        );
+
+        this.vista.priorityFilter.addEventListener(
+          "change",
+          () => this.renderTareasFiltradas()
+        );
+
+
+        /* Categorías */
+
+        document
+          .getElementById("addCategoryBtn")
+          .addEventListener("click", () =>
+            this.vista.abrirModalCategoria()
+          );
+
+        document
+          .getElementById("closeCategoryModal")
+          .addEventListener("click", () =>
+            this.vista.cerrarModalCategoria()
+          );
+
+        document
+          .getElementById("cancelCategoryBtn")
+          .addEventListener("click", () =>
+            this.vista.cerrarModalCategoria()
+          );
+
+        this.vista.categoryForm.addEventListener(
+          "submit",
+          event => this.guardarCategoria(event)
+        );
+
+        this.vista.categoriesList.addEventListener(
+          "click",
+          event => this.manejarAccionCategoria(event)
+        );
+
+
+        /* Perfil */
+
+        this.vista.profileForm.addEventListener(
+          "submit",
+          event => {
+
+            event.preventDefault();
+
+            const nombre =
+              document.getElementById(
+                "profileNameInput"
+              ).value.trim();
+
+            const email =
+              document.getElementById(
+                "profileEmailInput"
+              ).value.trim();
+
+            if (!nombre || !email) {
+              this.vista.toast(
+                "Completa todos los campos.",
+                "error"
+              );
+
+              return;
+            }
+
+            this.modelo.actualizarUsuario(
+              nombre,
+              email
+            );
+
+            this.vista.renderUsuario(
+              this.modelo.usuario
+            );
+
+            this.vista.toast(
+              "Perfil actualizado correctamente."
+            );
+          }
+        );
+
+
+        /* Tema */
+
+        document
+          .getElementById("themeBtn")
+          .addEventListener(
+            "click",
+            () => this.cambiarTema()
+          );
+
+
+        /* Cerrar modales haciendo clic fuera */
+
+        this.vista.taskModal.addEventListener(
+          "click",
+          event => {
+
+            if (event.target === this.vista.taskModal) {
+              this.vista.cerrarModalTarea();
+            }
+          }
+        );
+
+        this.vista.categoryModal.addEventListener(
+          "click",
+          event => {
+
+            if (event.target === this.vista.categoryModal) {
+              this.vista.cerrarModalCategoria();
+            }
+          }
+        );
+
+
+        /* Escape */
+
+        document.addEventListener(
+          "keydown",
+          event => {
+
+            if (event.key === "Escape") {
+              this.vista.cerrarModalTarea();
+              this.vista.cerrarModalCategoria();
+            }
+          }
+        );
+      }
+
+
+      /**
+       * Render general.
+       */
+      render() {
+
+        this.vista.renderCategoriasSelect(
+          this.modelo.categorias
+        );
+
+        this.vista.renderEstadisticas(
+          this.modelo.obtenerEstadisticas()
+        );
+
+        this.vista.renderDashboardTareas(
+          this.modelo.tareas,
+          this.modelo.categorias
+        );
+
+        this.renderTareasFiltradas();
+
+        this.vista.renderCategorias(
+          this.modelo.categorias,
+          this.modelo.tareas
+        );
+
+        this.vista.renderUsuario(
+          this.modelo.usuario
+        );
+      }
+
+
+      /**
+       * Aplica filtros.
+       */
+      renderTareasFiltradas() {
+
+        const search =
+          this.vista.searchInput.value
+            .toLowerCase()
+            .trim();
+
+        const categoria =
+          this.vista.categoryFilter.value;
+
+        const estado =
+          this.vista.statusFilter.value;
+
+        const prioridad =
+          this.vista.priorityFilter.value;
+
+        let tareas = this.modelo.tareas.filter(tarea => {
+
+          const coincideBusqueda =
+            !search ||
+            tarea.titulo.toLowerCase().includes(search) ||
+            tarea.descripcion.toLowerCase().includes(search);
+
+          const coincideCategoria =
+            categoria === "all" ||
+            tarea.categoriaId === categoria;
+
+          const coincideEstado =
+            estado === "all" ||
+            (estado === "completed" && tarea.completada) ||
+            (estado === "pending" && !tarea.completada);
+
+          const coincidePrioridad =
+            prioridad === "all" ||
+            tarea.prioridad === prioridad;
+
+          return (
+            coincideBusqueda &&
+            coincideCategoria &&
+            coincideEstado &&
+            coincidePrioridad
+          );
+        });
+
+        this.vista.renderTareas(
+          tareas,
+          this.modelo.categorias
+        );
+      }
+
+
+      /**
+       * Guarda una tarea nueva o actualiza una existente.
+       */
+      guardarTarea(event) {
+
+        event.preventDefault();
+
+        const id =
+          document.getElementById("taskId").value;
+
+        const titulo =
+          document.getElementById("taskTitle")
+            .value.trim();
+
+        const descripcion =
+          document.getElementById("taskDescription")
+            .value.trim();
+
+        const categoriaId =
+          document.getElementById("taskCategory")
+            .value;
+
+        const prioridad =
+          document.getElementById("taskPriority")
+            .value;
+
+        const fecha =
+          document.getElementById("taskDate")
+            .value;
+
+        const ods =
+          document.getElementById("taskOds")
+            .value;
+
+        if (!titulo) {
+
+          this.vista.toast(
+            "El título es obligatorio.",
+            "error"
+          );
+
+          return;
+        }
+
+        try {
+
+          if (id) {
+
+            this.modelo.actualizarTarea(id, {
+              titulo,
+              descripcion,
+              categoriaId,
+              prioridad,
+              fecha,
+              ods
+            });
+
+            this.vista.toast(
+              "Tarea actualizada correctamente."
+            );
+
+          } else {
+
+            this.modelo.agregarTarea({
+              titulo,
+              descripcion,
+              categoriaId,
+              prioridad,
+              fecha,
+              ods
+            });
+
+            this.vista.toast(
+              "Tarea creada correctamente."
+            );
+          }
+
+          this.vista.cerrarModalTarea();
+
+          this.render();
+
+        } catch (error) {
+
+          console.error(error);
+
+          this.vista.toast(
+            error.message,
+            "error"
+          );
+        }
+      }
+
+
+      /**
+       * Maneja acciones de una tarea.
+       */
+      manejarAccionTarea(event) {
+
+        const button =
+          event.target.closest("[data-action]");
+
+        if (!button) return;
+
+        const id = button.dataset.id;
+
+        const action = button.dataset.action;
+
+        if (action === "edit") {
+          this.editarTarea(id);
+        }
+
+        if (action === "delete") {
+          this.eliminarTarea(id);
+        }
+      }
+
+
+      /**
+       * Edita una tarea.
+       */
+      editarTarea(id) {
+
+        const tarea =
+          this.modelo.tareas.find(
+            t => t.id === id
+          );
+
+        if (!tarea) return;
+
+        this.vista.abrirModalTarea(tarea);
+      }
+
+
+      /**
+       * Elimina una tarea.
+       */
+      eliminarTarea(id) {
+
+        const tarea =
+          this.modelo.tareas.find(
+            t => t.id === id
+          );
+
+        if (!tarea) return;
+
+        const confirmar = confirm(
+          `¿Eliminar la tarea "${tarea.titulo}"?`
+        );
+
+        if (!confirmar) return;
+
+        this.modelo.eliminarTarea(id);
+
+        this.vista.toast(
+          "Tarea eliminada."
+        );
+
+        this.render();
+      }
+
+
+      /**
+       * Cambia estado de una tarea.
+       */
+      toggleTarea(id) {
+
+        this.modelo.alternarTarea(id);
+
+        const tarea =
+          this.modelo.tareas.find(
+            t => t.id === id
+          );
+
+        this.vista.toast(
+          tarea.completada
+            ? "¡Tarea completada! 🎉"
+            : "Tarea marcada como pendiente."
+        );
+
+        this.render();
+      }
+
+
+      /**
+       * Guarda una categoría.
+       */
+      guardarCategoria(event) {
+
+        event.preventDefault();
+
+        const id =
+          document.getElementById("categoryId").value;
+
+        const nombre =
+          document.getElementById("categoryName")
+            .value.trim();
+
+        const icono =
+          document.getElementById("categoryIcon")
+            .value.trim() || "📚";
+
+        if (!nombre) {
+
+          this.vista.toast(
+            "El nombre es obligatorio.",
+            "error"
+          );
+
+          return;
+        }
+
+        try {
+
+          if (id) {
+
+            this.modelo.actualizarCategoria(
+              id,
+              nombre,
+              icono
+            );
+
+            this.vista.toast(
+              "Categoría actualizada."
+            );
+
+          } else {
+
+            this.modelo.agregarCategoria(
+              nombre,
+              icono
+            );
+
+            this.vista.toast(
+              "Categoría creada."
+            );
+          }
+
+          this.vista.cerrarModalCategoria();
+
+          this.render();
+
+        } catch (error) {
+
+          this.vista.toast(
+            error.message,
+            "error"
+          );
+        }
+      }
+
+
+      /**
+       * Maneja acciones de categoría.
+       */
+      manejarAccionCategoria(event) {
+
+        const button =
+          event.target.closest(
+            "[data-category-action]"
+          );
+
+        if (!button) return;
+
+        const id = button.dataset.id;
+
+        const action =
+          button.dataset.categoryAction;
+
+        if (action === "edit") {
+          this.editarCategoria(id);
+        }
+
+        if (action === "delete") {
+          this.eliminarCategoria(id);
+        }
+      }
+
+
+      /**
+       * Edita categoría.
+       */
+      editarCategoria(id) {
+
+        const categoria =
+          this.modelo.categorias.find(
+            c => c.id === id
+          );
+
+        if (categoria) {
+          this.vista.abrirModalCategoria(
+            categoria
+          );
+        }
+      }
+
+
+      /**
+       * Elimina categoría.
+       */
+      eliminarCategoria(id) {
+
+        const categoria =
+          this.modelo.categorias.find(
+            c => c.id === id
+          );
+
+        if (!categoria) return;
+
+        const confirmar = confirm(
+          `¿Eliminar la categoría "${categoria.nombre}"?`
+        );
+
+        if (!confirmar) return;
+
+        try {
+
+          this.modelo.eliminarCategoria(id);
+
+          this.vista.toast(
+            "Categoría eliminada."
+          );
+
+          this.render();
+
+        } catch (error) {
+
+          this.vista.toast(
+            error.message,
+            "error"
+          );
+        }
+      }
+
+
+      /**
+       * Cambia entre modo claro y oscuro.
+       */
+      cambiarTema() {
+
+        document.body.classList.toggle("dark");
+
+        const dark =
+          document.body.classList.contains("dark");
+
+        document.getElementById("themeBtn").textContent =
+          dark ? "☀️" : "🌙";
+
+        localStorage.setItem(
+          "ecoTareasTheme",
+          dark ? "dark" : "light"
+        );
+      }
+    }
+
+
+    /* =========================================================
+       INICIALIZACIÓN
+       ========================================================= */
+
+    const modelo = new AppModel();
+
+    const vista = new AppView();
+
+    const controlador =
+      new AppController(modelo, vista);
+
+
+    /* Restaurar tema */
+
+    const savedTheme =
+      localStorage.getItem("ecoTareasTheme");
+
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+      document.getElementById("themeBtn").textContent = "☀️";
+    }
+
+
+    /* =========================================================
+       FIN DE LA APLICACIÓN
+       ========================================================= */
+  </script>
+
+</body>
+</html>

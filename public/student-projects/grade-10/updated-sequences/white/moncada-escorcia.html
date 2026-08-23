@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoDecide Pro · Simulador Comunitario</title>
+  <style>
+    /* ===== RESET Y VARIABLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    :root {
+      --bg-primary: #0a1f16;
+      --bg-card: rgba(16, 40, 30, 0.85);
+      --border-glow: rgba(80, 220, 140, 0.25);
+      --accent: #4cdb8a;
+      --accent-dark: #2aaa6a;
+      --text-light: #e2f3ea;
+      --text-muted: #8abfaa;
+      --shadow-heavy: 0 30px 60px rgba(0,0,0,0.8);
+      --radius-xl: 2.8rem;
+      --radius-lg: 1.8rem;
+      --transition: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    body {
+      background: var(--bg-primary);
+      background-image: radial-gradient(ellipse at 20% 50%, #0d3324 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, #0d3324 0%, transparent 50%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* ===== CARD PRINCIPAL ===== */
+    .app-container {
+      max-width: 960px;
+      width: 100%;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px) saturate(1.2);
+      -webkit-backdrop-filter: blur(16px) saturate(1.2);
+      border-radius: var(--radius-xl);
+      padding: 2.4rem 2.6rem 2rem;
+      box-shadow: var(--shadow-heavy), inset 0 0 0 1px rgba(80, 220, 140, 0.08);
+      border: 1px solid rgba(80, 220, 140, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .header-left h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #c8f0d6 0%, #6bc98a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .header-left .version {
+      font-size: 0.7rem;
+      background: rgba(80, 220, 140, 0.12);
+      color: var(--accent);
+      padding: 0.15rem 0.8rem;
+      border-radius: 40px;
+      border: 1px solid rgba(80, 220, 140, 0.15);
+      font-weight: 500;
+      -webkit-text-fill-color: var(--accent);
+    }
+    .dev-badge {
+      background: rgba(40, 80, 60, 0.5);
+      backdrop-filter: blur(4px);
+      padding: 0.35rem 1.6rem;
+      border-radius: 60px;
+      border: 1px solid rgba(80, 220, 140, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: #b8e0cc;
+      font-weight: 500;
+    }
+    .dev-badge .icon {
+      font-size: 1.1rem;
+    }
+
+    /* ===== SUBHEAD ===== */
+    .subhead {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.2rem;
+      margin: 0.5rem 0 1.6rem 0;
+      padding-left: 0.3rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-left: 3px solid var(--accent);
+      padding-left: 1rem;
+    }
+    .subhead .tag {
+      background: rgba(80, 220, 140, 0.08);
+      padding: 0.15rem 1.2rem;
+      border-radius: 40px;
+      border: 1px solid rgba(80, 220, 140, 0.06);
+      font-size: 0.75rem;
+      color: #9ad0b4;
+      letter-spacing: 0.3px;
+    }
+
+    /* ===== SIMULADOR ===== */
+    .sim-box {
+      background: rgba(6, 25, 18, 0.6);
+      backdrop-filter: blur(6px);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 2rem;
+      border: 1px solid rgba(80, 220, 140, 0.06);
+      box-shadow: inset 0 4px 30px rgba(0,0,0,0.6);
+    }
+
+    /* ===== ESCENA ===== */
+    .scene {
+      background: linear-gradient(145deg, #0b1f16, #0d2a1e);
+      border-radius: 1.6rem;
+      padding: 2rem 2.2rem;
+      min-height: 190px;
+      border-left: 5px solid var(--accent);
+      box-shadow: inset 0 2px 20px rgba(0,0,0,0.7), 0 8px 24px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .scene::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(80,220,140,0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    #scene-text {
+      color: var(--text-light);
+      font-size: 1.2rem;
+      line-height: 1.8;
+      font-weight: 400;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 1;
+    }
+    #scene-text .emoji-big {
+      font-size: 1.6rem;
+      margin-right: 0.2rem;
+    }
+    .scene-footer {
+      margin-top: 0.8rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+    .scene-footer .badge {
+      background: rgba(80, 220, 140, 0.06);
+      padding: 0.1rem 1rem;
+      border-radius: 30px;
+      border: 1px solid rgba(80, 220, 140, 0.04);
+    }
+
+    /* ===== OPCIONES ===== */
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 1.8rem 0 1rem;
+      justify-content: center;
+    }
+    .opt-btn {
+      background: linear-gradient(145deg, #1a3d2c, #143225);
+      border: none;
+      border-radius: 60px;
+      padding: 0.85rem 2.2rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e5f5ec;
+      box-shadow: 0 6px 0 #0a1f14, 0 8px 24px rgba(0,0,0,0.5);
+      cursor: pointer;
+      transition: all 0.1s ease;
+      flex: 1 0 auto;
+      max-width: 250px;
+      border: 1px solid rgba(80, 220, 140, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: 0.2px;
+      position: relative;
+      overflow: hidden;
+    }
+    .opt-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(80,220,140,0.05), transparent);
+      pointer-events: none;
+    }
+    .opt-btn:hover {
+      background: linear-gradient(145deg, #265a40, #1d4a32);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #0a1f14, 0 14px 28px rgba(0,0,0,0.6);
+      border-color: rgba(80, 220, 140, 0.2);
+    }
+    .opt-btn:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #0a1f14;
+    }
+    .opt-btn:disabled {
+      opacity: 0.3;
+      transform: translateY(4px);
+      box-shadow: 0 3px 0 #0a1f14;
+      pointer-events: none;
+      filter: grayscale(0.6);
+    }
+    .opt-btn .shortcut {
+      font-size: 0.65rem;
+      background: rgba(80,220,140,0.08);
+      padding: 0.05rem 0.6rem;
+      border-radius: 20px;
+      color: var(--accent);
+    }
+
+    /* ===== ACCIONES ===== */
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+    }
+    #reset-btn {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(80, 220, 140, 0.08);
+      color: var(--text-muted);
+      padding: 0.45rem 2rem;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    #reset-btn:hover {
+      background: rgba(80, 220, 140, 0.06);
+      border-color: var(--accent);
+      color: #d5f5de;
+      box-shadow: 0 0 24px rgba(80, 220, 140, 0.04);
+    }
+
+    /* ===== STATS ===== */
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(80, 220, 140, 0.04);
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+    }
+    .stats .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .stats .stat-item .num {
+      color: var(--text-light);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .ods-badge {
+      background: rgba(80, 220, 140, 0.04);
+      border-radius: 60px;
+      padding: 0.15rem 1.4rem;
+      font-size: 0.7rem;
+      border: 1px solid rgba(80, 220, 140, 0.04);
+      color: #8fc9a5;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      letter-spacing: 0.3px;
+    }
+    .progress-ring {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(80, 220, 140, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent);
+      position: relative;
+    }
+    .progress-ring .fill {
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: var(--accent);
+      border-right-color: var(--accent);
+      opacity: 0.3;
+    }
+
+    /* ===== LOGROS ===== */
+    .achievements {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.8rem;
+      justify-content: center;
+    }
+    .achievement {
+      background: rgba(80, 220, 140, 0.04);
+      border: 1px solid rgba(80, 220, 140, 0.04);
+      border-radius: 40px;
+      padding: 0.15rem 0.8rem;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      opacity: 0.5;
+      transition: var(--transition);
+    }
+    .achievement.unlocked {
+      opacity: 1;
+      border-color: rgba(80, 220, 140, 0.15);
+      background: rgba(80, 220, 140, 0.06);
+      color: var(--text-light);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 1.8rem;
+      font-size: 0.7rem;
+      color: #3a6a54;
+      text-align: center;
+      border-top: 1px solid rgba(80, 220, 140, 0.02);
+      padding-top: 1.2rem;
+      letter-spacing: 0.3px;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .footer strong {
+      color: #6aa582;
+      font-weight: 500;
+    }
+    .footer .dot {
+      color: var(--accent-dark);
+      opacity: 0.3;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 680px) {
+      .app-container { padding: 1.2rem; }
+      .sim-box { padding: 1rem; }
+      .scene { padding: 1.2rem; }
+      .header-left h1 { font-size: 1.6rem; }
+      .dev-badge { font-size: 0.7rem; padding: 0.2rem 1rem; }
+      .opt-btn { max-width: 100%; font-size: 0.85rem; padding: 0.7rem 1.2rem; }
+      .stats { font-size: 0.75rem; }
+    }
+    @media (max-width: 430px) {
+      .header { flex-direction: column; align-items: stretch; }
+      .dev-badge { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container" id="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>🌱 EcoDecide</h1>
+      <span class="version">v2.0 · Pro</span>
+    </div>
+    <div class="dev-badge">
+      <span class="icon">⚡</span>
+      Santiago Escorcia · Jeronimo Moncada
+    </div>
+  </div>
+
+  <!-- SUBHEAD -->
+  <div class="subhead">
+    <span class="tag">🧭 Simulador de decisiones comunitarias</span>
+    <span class="tag">🌍 ODS 4 · 9 · 11 · 13</span>
+    <span class="tag">📊 Gestión de datos + lógica avanzada</span>
+    <span class="tag">🏆 Sistema de logros</span>
+  </div>
+
+  <!-- SIMULADOR -->
+  <div class="sim-box">
+    <div class="scene">
+      <div id="scene-text">Cargando simulación...</div>
+      <div class="scene-footer">
+        <span class="badge">🔹 Nodo <span id="node-id-display">inicio</span></span>
+        <span class="badge">📌 <span id="branch-display">principal</span></span>
+      </div>
+    </div>
+
+    <!-- OPCIONES -->
+    <div class="options" id="options-container"></div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <button id="reset-btn">⟲ Reiniciar simulación</button>
+      <div style="display:flex; gap:0.6rem; align-items:center;">
+        <span style="font-size:0.7rem; color:var(--text-muted);">logros</span>
+        <div id="achievement-badge" style="font-size:0.9rem;">🏅</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-item">
+        <span>📌</span>
+        <span>Paso <span class="num" id="step-counter">0</span></span>
+      </div>
+      <div class="stat-item">
+        <span>⚡</span>
+        <span>Decisiones <span class="num" id="decision-count">0</span></span>
+      </div>
+      <div class="stat-item">
+        <span>🏆</span>
+        <span>Puntuación <span class="num" id="score-display">0</span></span>
+      </div>
+      <div class="ods-badge">
+        <span>🎯</span> ODS · Sostenibilidad
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="achievements" id="achievements-container">
+      <span class="achievement">🌱 Primer paso</span>
+      <span class="achievement">💡 5 decisiones</span>
+      <span class="achievement">🌟 10 decisiones</span>
+      <span class="achievement">🏅 Completista</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span><strong>Code for Change</strong> · Ingeniería de soluciones interactivas</span>
+    <span class="dot">•</span>
+    <span>Tercer Periodo 2026</span>
+    <span class="dot">•</span>
+    <span>Feria STEM · Innovación</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    'use strict';
+
+    // ================================================================
+    //  🌱  ESCENARIOS  (Base de datos con objetos y arrays)
+    // ================================================================
+    const ESCENARIOS = {
+      inicio: {
+        id: 'inicio',
+        texto: '🌿 Eres líder comunitario en un barrio con problemas de residuos y falta de áreas verdes. ¿Qué priorizas?',
+        rama: 'principal',
+        opciones: [
+          { texto: '♻️ Campaña de reciclaje', siguiente: 'reciclaje', puntos: 5 },
+          { texto: '🌳 Huerto urbano comunitario', siguiente: 'huerto', puntos: 8 },
+          { texto: '📚 Taller de educación ambiental', siguiente: 'taller', puntos: 6 }
+        ]
+      },
+      reciclaje: {
+        id: 'reciclaje',
+        texto: '♻️ La campaña de reciclaje recolectó 500 kg de materiales. ¿Cómo usas los fondos obtenidos?',
+        rama: 'reciclaje',
+        opciones: [
+          { texto: '🛠️ Comprar contenedores', siguiente: 'contenedores', puntos: 7 },
+          { texto: '🎨 Arte con residuos', siguiente: 'arte', puntos: 9 }
+        ]
+      },
+      huerto: {
+        id: 'huerto',
+        texto: '🌱 El huerto produce verduras para 30 familias. Necesitan riego eficiente. ¿Qué haces?',
+        rama: 'huerto',
+        opciones: [
+          { texto: '💧 Sistema de captación de lluvia', siguiente: 'lluvia', puntos: 10 },
+          { texto: '🌿 Compostaje y abono', siguiente: 'compost', puntos: 8 }
+        ]
+      },
+      taller: {
+        id: 'taller',
+        texto: '📚 80 personas asistieron al taller. Quieren replicarlo en otros barrios. ¿Cómo lo escalas?',
+        rama: 'taller',
+        opciones: [
+          { texto: '📱 App de guías educativas', siguiente: 'app', puntos: 12 },
+          { texto: '👥 Formar promotores ambientales', siguiente: 'promotores', puntos: 10 }
+        ]
+      },
+      contenedores: {
+        id: 'contenedores',
+        texto: '🛠️ Instalaste 15 contenedores. La comunidad separa mejor los residuos. ¿Siguiente paso?',
+        rama: 'reciclaje',
+        opciones: [
+          { texto: '🏆 Concurso de barrios limpios', siguiente: 'concurso', puntos: 10 },
+          { texto: '♻️ Alianza con recicladores', siguiente: 'alianza', puntos: 12 }
+        ]
+      },
+      arte: {
+        id: 'arte',
+        texto: '🎨 Crearon esculturas con residuos. Atrajo turismo y conciencia. ¿Cómo capitalizas?',
+        rama: 'reciclaje',
+        opciones: [
+          { texto: '🎭 Exposición itinerante', siguiente: 'expo', puntos: 11 },
+          { texto: '📖 Libro de arte reciclado', siguiente: 'libro', puntos: 9 }
+        ]
+      },
+      lluvia: {
+        id: 'lluvia',
+        texto: '💧 El sistema de lluvia ahorra 40% de agua. El huerto crece. ¿Nuevo proyecto?',
+        rama: 'huerto',
+        opciones: [
+          { texto: '🌻 Vivero de plantas nativas', siguiente: 'vivero', puntos: 12 },
+          { texto: '🍲 Comedor comunitario', siguiente: 'comedor', puntos: 10 }
+        ]
+      },
+      compost: {
+        id: 'compost',
+        texto: '🌿 El compostaje reduce residuos orgánicos. Generas abono para el barrio. ¿Qué sigue?',
+        rama: 'huerto',
+        opciones: [
+          { texto: '🧑‍🌾 Escuela de compostaje', siguiente: 'escuela', puntos: 11 },
+          { texto: '🌳 Reforestación urbana', siguiente: 'reforestacion', puntos: 13 }
+        ]
+      },
+      app: {
+        id: 'app',
+        texto: '📱 La app tiene 200 descargas. Contiene guías y rutas de reciclaje. ¿Mejora?',
+        rama: 'taller',
+        opciones: [
+          { texto: '📊 Panel de impacto ambiental', siguiente: 'panel', puntos: 14 },
+          { texto: '🎮 Juego de reciclaje', siguiente: 'juego', puntos: 12 }
+        ]
+      },
+      promotores: {
+        id: 'promotores',
+        texto: '👥 Formaste 10 promotores. Dan talleres en 3 barrios. ¿Siguiente paso?',
+        rama: 'taller',
+        opciones: [
+          { texto: '📹 Videos educativos', siguiente: 'videos', puntos: 11 },
+          { texto: '🤝 Red de promotores', siguiente: 'red', puntos: 13 }
+        ]
+      },
+      // ===== NODOS FINALES (sin opciones) =====
+      concurso: { id: 'concurso', texto: '🏆 El concurso de barrios limpios movilizó a 500 personas. ¡El barrio es un ejemplo de sostenibilidad! 🌟', rama: 'final', opciones: [], puntos: 15 },
+      alianza: { id: 'alianza', texto: '♻️ La alianza con recicladores generó empleos y redujo residuos un 60%. ¡Impacto real! 💚', rama: 'final', opciones: [], puntos: 16 },
+      expo: { id: 'expo', texto: '🎭 La exposición itinerante recorrió 5 ciudades. Conciencia ambiental masiva. 🎨', rama: 'final', opciones: [], puntos: 14 },
+      libro: { id: 'libro', texto: '📖 El libro de arte reciclado se vende en ferias. Los fondos se reinvierten en educación. 📚', rama: 'final', opciones: [], puntos: 12 },
+      vivero: { id: 'vivero', texto: '🌻 El vivero produce 500 plantas al mes. Reforestan zonas urbanas. ¡Pulmón verde! 🌳', rama: 'final', opciones: [], puntos: 16 },
+      comedor: { id: 'comedor', texto: '🍲 El comedor comunitario alimenta a 60 niños. Usa productos del huerto. ¡Nutrición y comunidad! ❤️', rama: 'final', opciones: [], puntos: 14 },
+      escuela: { id: 'escuela', texto: '🧑‍🌾 La escuela de compostaje tiene 30 estudiantes. El barrio reduce residuos orgánicos un 70%. 🌱', rama: 'final', opciones: [], puntos: 15 },
+      reforestacion: { id: 'reforestacion', texto: '🌳 Plantaron 200 árboles en espacios públicos. Mejora el aire y la calidad de vida. ¡Bosque urbano! 🌿', rama: 'final', opciones: [], puntos: 17 },
+      panel: { id: 'panel', texto: '📊 El panel de impacto muestra datos en tiempo real. La comunidad se involucra más. ¡Transparencia! 📈', rama: 'final', opciones: [], puntos: 15 },
+      juego: { id: 'juego', texto: '🎮 El juego de reciclaje es usado en 10 escuelas. Aprender jugando. ¡Educación divertida! 🧠', rama: 'final', opciones: [], puntos: 13 },
+      videos: { id: 'videos', texto: '📹 Los videos educativos tienen 10k vistas. Llegan a más personas. ¡Escala digital! 📱', rama: 'final', opciones: [], puntos: 14 },
+      red: { id: 'red', texto: '🤝 La red de promotores conecta 8 barrios. Intercambian experiencias. ¡Fortalecimiento comunitario! 💪', rama: 'final', opciones: [], puntos: 15 }
+    };
+
+    // ================================================================
+    //  🧠  ESTADO DE LA APLICACIÓN
+    // ================================================================
+    let state = {
+      nodoActual: 'inicio',
+      decisiones: 0,
+      pasos: 0,
+      puntuacion: 0,
+      historial: [],
+      logros: {
+        primerPaso: false,
+        cincoDecisiones: false,
+        diezDecisiones: false,
+        completista: false
+      },
+      nodosVisitados: new Set()
+    };
+
+    // ================================================================
+    //  🎯  DOM REFS
+    // ================================================================
+    const sceneText = document.getElementById('scene-text');
+    const optionsContainer = document.getElementById('options-container');
+    const stepCounter = document.getElementById('step-counter');
+    const decisionSpan = document.getElementById('decision-count');
+    const scoreDisplay = document.getElementById('score-display');
+    const resetBtn = document.getElementById('reset-btn');
+    const nodeIdDisplay = document.getElementById('node-id-display');
+    const branchDisplay = document.getElementById('branch-display');
+    const achievementsContainer = document.getElementById('achievements-container');
+
+    // ================================================================
+    //  🏆  SISTEMA DE LOGROS
+    // ================================================================
+    function actualizarLogros() {
+      const logrosElements = achievementsContainer.querySelectorAll('.achievement');
+      // Primer paso
+      if (state.pasos >= 1) state.logros.primerPaso = true;
+      if (state.decisiones >= 5) state.logros.cincoDecisiones = true;
+      if (state.decisiones >= 10) state.logros.diezDecisiones = true;
+      // Completista: visitar al menos 8 nodos distintos
+      if (state.nodosVisitados.size >= 8) state.logros.completista = true;
+
+      // Aplicar clases
+      const logroKeys = ['primerPaso', 'cincoDecisiones', 'diezDecisiones', 'completista'];
+      logrosElements.forEach((el, idx) => {
+        const key = logroKeys[idx];
+        if (state.logros[key]) {
+          el.classList.add('unlocked');
+        } else {
+          el.classList.remove('unlocked');
+        }
+      });
+
+      // Actualizar badge de logros
+      const unlockedCount = logroKeys.filter(k => state.logros[k]).length;
+      const badge = document.getElementById('achievement-badge');
+      if (unlockedCount === 4) badge.textContent = '🏅🌟';
+      else if (unlockedCount >= 2) badge.textContent = '🏅';
+      else badge.textContent = '🏅';
+    }
+
+    // ================================================================
+    //  💾  LOCAL STORAGE (persistencia)
+    // ================================================================
+    function guardarEstado() {
+      try {
+        const data = {
+          nodoActual: state.nodoActual,
+          decisiones: state.decisiones,
+          pasos: state.pasos,
+          puntuacion: state.puntuacion,
+          logros: state.logros,
+          nodosVisitados: Array.from(state.nodosVisitados)
+        };
+        localStorage.setItem('ecodecide_state', JSON.stringify(data));
+      } catch (e) { /* ignore */ }
+    }
+
+    function cargarEstado() {
+      try {
+        const raw = localStorage.getItem('ecodecide_state');
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        state.nodoActual = data.nodoActual || 'inicio';
+        state.decisiones = data.decisiones || 0;
+        state.pasos = data.pasos || 0;
+        state.puntuacion = data.puntuacion || 0;
+        state.logros = data.logros || { primerPaso: false, cincoDecisiones: false, diezDecisiones: false, completista: false };
+        if (data.nodosVisitados) state.nodosVisitados = new Set(data.nodosVisitados);
+        return true;
+      } catch (e) { return false; }
+    }
+
+    // ================================================================
+    //  🖥️  RENDERIZADO PRINCIPAL
+    // ================================================================
+    function renderizar(nodoId) {
+      const nodo = ESCENARIOS[nodoId];
+      if (!nodo) {
+        sceneText.textContent = '⚠️ Escenario no encontrado. Reinicia la simulación.';
+        optionsContainer.innerHTML = '';
+        return;
+      }
+
+      // Actualizar texto con animación suave (cambio de contenido)
+      sceneText.style.opacity = '0';
+      setTimeout(() => {
+        sceneText.innerHTML = nodo.texto;
+        sceneText.style.opacity = '1';
+      }, 80);
+
+      // Metadata
+      nodeIdDisplay.textContent = nodo.id;
+      branchDisplay.textContent = nodo.rama || 'principal';
+
+      // Contadores
+      stepCounter.textContent = state.pasos;
+      decisionSpan.textContent = state.decisiones;
+      scoreDisplay.textContent = state.puntuacion;
+
+      // Registrar nodo visitado
+      state.nodosVisitados.add(nodoId);
+
+      // Generar opciones
+      optionsContainer.innerHTML = '';
+      if (nodo.opciones && nodo.opciones.length > 0) {
+        nodo.opciones.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerHTML = `${opt.texto} <span class="shortcut">+${opt.puntos || 0}</span>`;
+          btn.addEventListener('click', function() {
+            // Actualizar estado
+            state.decisiones++;
+            state.pasos++;
+            state.puntuacion += (opt.puntos || 0);
+            state.historial.push({
+              desde: nodoId,
+              elegido: opt.texto,
+              hacia: opt.siguiente,
+              puntos: opt.puntos || 0
+            });
+            // Guardar antes de cambiar nodo
+            guardarEstado();
+            // Navegar
+            state.nodoActual = opt.siguiente;
+            renderizar(state.nodoActual);
+            actualizarLogros();
+            guardarEstado();
+          });
+          optionsContainer.appendChild(btn);
+        });
+      } else {
+        // Nodo final: mostrar mensaje especial
+        const msg = document.createElement('p');
+        msg.style.color = '#6bc98a';
+        msg.style.fontWeight = '500';
+        msg.style.padding = '0.6rem 0';
+        msg.style.textAlign = 'center';
+        msg.textContent = '🏁 Simulación completada. Reinicia para explorar otros caminos.';
+        optionsContainer.appendChild(msg);
+
+        // Bonus por completar
+        if (!state.logros.completista && state.nodosVisitados.size >= 8) {
+          state.logros.completista = true;
+          actualizarLogros();
+          guardarEstado();
+        }
+      }
+
+      // Actualizar logros
+      actualizarLogros();
+      guardarEstado();
+    }
+
+    // ================================================================
+    //  🔄  REINICIO
+    // ================================================================
+    function reiniciar() {
+      state.nodoActual = 'inicio';
+      state.decisiones = 0;
+      state.pasos = 0;
+      state.puntuacion = 0;
+      state.historial = [];
+      state.nodosVisitados = new Set();
+      state.logros = { primerPaso: false, cincoDecisiones: false, diezDecisiones: false, completista: false };
+      localStorage.removeItem('ecodecide_state');
+      renderizar('inicio');
+      actualizarLogros();
+      // Animación de reset
+      sceneText.style.transition = 'opacity 0.2s';
+      sceneText.style.opacity = '0';
+      setTimeout(() => {
+        sceneText.innerHTML = '🔄 Simulación reiniciada.';
+        sceneText.style.opacity = '1';
+        setTimeout(() => {
+          renderizar('inicio');
+        }, 300);
+      }, 200);
+    }
+
+    // ================================================================
+    //  🚀  INICIALIZACIÓN
+    // ================================================================
+    function init() {
+      // Cargar estado guardado
+      const hasSaved = cargarEstado();
+      if (hasSaved && ESCENARIOS[state.nodoActual]) {
+        renderizar(state.nodoActual);
+        actualizarLogros();
+      } else {
+        reiniciar();
+      }
+
+      // Event listeners
+      resetBtn.addEventListener('click', reiniciar);
+
+      // Documentación en consola (estilo profesional)
+      console.log('%c🌱 EcoDecide Pro v2.0', 'font-size:24px; font-weight:700; color:#4cdb8a;');
+      console.log('%c👨‍💻 Desarrolladores: Santiago Escorcia & Jeronimo Moncada', 'font-size:14px; color:#8abfaa;');
+      console.log('%c📦 Estructura: ESCENARIOS (objetos) con opciones (arrays)', 'color:#8abfaa;');
+      console.log('%c🔀 Condicionales: renderizado dinámico con if/else', 'color:#8abfaa;');
+      console.log('%c🔄 Ciclos: forEach para generar botones y logros', 'color:#8abfaa;');
+      console.log('%c🧩 Funciones: renderizar, reiniciar, actualizarLogros, guardarEstado', 'color:#8abfaa;');
+      console.log('%c💾 Persistencia: localStorage para guardar progreso', 'color:#8abfaa;');
+      console.log('%c🏆 Logros: 4 objetivos desbloqueables', 'color:#8abfaa;');
+      console.log('%c🌍 ODS: 4 (Educación), 9 (Innovación), 11 (Comunidades), 13 (Acción Climática)', 'color:#8abfaa;');
+      console.log('%c✅ Proyecto: Herramienta educativa interactiva con sistema de puntuación', 'color:#8abfaa;');
+    }
+
+    // Ejecutar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+</body>
+</html>

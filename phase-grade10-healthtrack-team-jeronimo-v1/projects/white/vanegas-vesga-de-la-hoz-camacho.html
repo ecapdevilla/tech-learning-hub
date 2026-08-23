@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPuntos Pro · Code for Change</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: #0b1a0b;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      background-image: radial-gradient(circle at 20% 30%, #1a3a1a, #091409);
+    }
+
+    .app-wrapper {
+      max-width: 1300px;
+      width: 100%;
+      background: rgba(18, 38, 18, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 48px;
+      padding: 32px 36px 28px;
+      border: 1px solid rgba(100, 180, 100, 0.15);
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    /* HEADER PRO */
+    .header-pro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(80, 160, 80, 0.15);
+      padding-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #b8e6b8;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 10px rgba(0, 80, 0, 0.3);
+    }
+    .brand h1 small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      background: rgba(60, 140, 60, 0.3);
+      color: #b0d8b0;
+      padding: 4px 18px;
+      border-radius: 40px;
+      margin-left: 12px;
+      border: 1px solid rgba(80, 180, 80, 0.15);
+    }
+
+    .team-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(40, 80, 40, 0.25);
+      padding: 6px 18px 6px 22px;
+      border-radius: 60px;
+      border: 1px solid rgba(80, 180, 80, 0.1);
+      backdrop-filter: blur(4px);
+      flex-wrap: wrap;
+    }
+    .team-badge .icon {
+      color: #b0d8b0;
+      font-weight: 400;
+      font-size: 0.85rem;
+      margin-right: 4px;
+    }
+    .team-badge .name {
+      background: rgba(80, 200, 80, 0.12);
+      color: #d0f0d0;
+      padding: 2px 14px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.8rem;
+      border: 1px solid rgba(80, 200, 80, 0.08);
+      transition: 0.15s;
+    }
+    .team-badge .name:hover {
+      background: rgba(80, 200, 80, 0.2);
+      border-color: rgba(80, 200, 80, 0.2);
+    }
+    .team-badge .exp {
+      color: #8aba8a;
+      font-size: 0.7rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 2px 12px;
+      border-radius: 40px;
+      margin-left: 4px;
+    }
+    .team-badge .separator {
+      color: #4a7a4a;
+      font-size: 0.6rem;
+      margin: 0 2px;
+    }
+
+    /* GRID PRINCIPAL */
+    .grid-pro {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 28px;
+      margin: 8px 0 24px;
+    }
+    @media (max-width: 920px) {
+      .grid-pro { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: rgba(20, 45, 20, 0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 32px;
+      padding: 24px 26px 28px;
+      border: 1px solid rgba(80, 160, 80, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .panel h2 {
+      color: #c8e8c8;
+      font-weight: 500;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(80, 160, 80, 0.1);
+      padding-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ESTADÍSTICAS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: rgba(30, 70, 30, 0.25);
+      border-radius: 20px;
+      padding: 16px 18px;
+      border: 1px solid rgba(80, 160, 80, 0.06);
+      transition: 0.2s;
+    }
+    .stat-card:hover {
+      background: rgba(40, 90, 40, 0.2);
+    }
+    .stat-card .label {
+      color: #8aba8a;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-card .value {
+      color: #d8f0d8;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 4px;
+      letter-spacing: -0.5px;
+    }
+    .stat-card .value small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #8aba8a;
+      margin-left: 6px;
+    }
+
+    /* LISTA DE MATERIALES */
+    .list-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .list-controls input, .list-controls select {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px 16px;
+      border-radius: 40px;
+      border: 1px solid rgba(80, 160, 80, 0.15);
+      background: rgba(0, 0, 0, 0.3);
+      color: #d0e8d0;
+      font-size: 0.85rem;
+      outline: none;
+      transition: 0.2s;
+    }
+    .list-controls input::placeholder { color: #6a8a6a; }
+    .list-controls input:focus, .list-controls select:focus {
+      border-color: #4a9a4a;
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 3px rgba(60, 180, 60, 0.05);
+    }
+    .list-controls select option { background: #1a2a1a; }
+
+    .material-list {
+      list-style: none;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .material-list::-webkit-scrollbar { width: 4px; background: #1a2a1a; border-radius: 10px; }
+    .material-list::-webkit-scrollbar-thumb { background: #3a7a3a; border-radius: 10px; }
+
+    .material-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px 12px 22px;
+      margin-bottom: 8px;
+      background: rgba(30, 60, 30, 0.3);
+      border-radius: 60px;
+      border: 1px solid rgba(80, 160, 80, 0.05);
+      transition: 0.15s;
+      color: #d0e8d0;
+    }
+    .material-list li:hover {
+      background: rgba(40, 90, 40, 0.25);
+      border-color: rgba(80, 180, 80, 0.1);
+      transform: translateX(4px);
+    }
+    .material-list .mat-name { font-weight: 500; font-size: 0.95rem; }
+    .material-list .mat-points {
+      background: rgba(60, 140, 60, 0.2);
+      padding: 2px 16px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #b0e0b0;
+    }
+    .mat-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .mat-actions button {
+      background: rgba(50, 100, 50, 0.15);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 40px;
+      color: #b0d8b0;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mat-actions button:hover { background: rgba(80, 180, 80, 0.2); transform: scale(0.92); }
+    .mat-actions .btn-del { color: #d08080; }
+    .mat-actions .btn-del:hover { background: rgba(180, 60, 60, 0.2); }
+
+    /* INPUT GROUP */
+    .input-group-pro {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 18px 0 14px;
+    }
+    .input-group-pro input, .input-group-pro select {
+      flex: 1 1 120px;
+      padding: 12px 18px;
+      border-radius: 60px;
+      border: 1px solid rgba(80, 160, 80, 0.15);
+      background: rgba(0, 0, 0, 0.3);
+      color: #d0e8d0;
+      font-size: 0.9rem;
+      outline: none;
+      transition: 0.2s;
+    }
+    .input-group-pro input:focus, .input-group-pro select:focus {
+      border-color: #4a9a4a;
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 3px rgba(60, 180, 60, 0.05);
+    }
+    .input-group-pro select option { background: #1a2a1a; }
+
+    .btn-primary {
+      background: linear-gradient(145deg, #2a7a2a, #1a5a1a);
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 60px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.15s;
+      box-shadow: 0 4px 16px rgba(30, 100, 30, 0.2);
+      border: 1px solid rgba(80, 180, 80, 0.1);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(145deg, #3a9a3a, #2a7a2a);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30, 100, 30, 0.3);
+    }
+    .btn-secondary {
+      background: rgba(40, 80, 40, 0.2);
+      border: 1px solid rgba(80, 160, 80, 0.08);
+      color: #b0d8b0;
+      font-weight: 500;
+      padding: 10px 22px;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: 0.1s;
+      backdrop-filter: blur(4px);
+    }
+    .btn-secondary:hover {
+      background: rgba(60, 120, 60, 0.2);
+      border-color: rgba(80, 180, 80, 0.15);
+    }
+    .btn-danger {
+      background: rgba(120, 40, 40, 0.2);
+      border: 1px solid rgba(180, 80, 80, 0.1);
+      color: #d0a0a0;
+    }
+    .btn-danger:hover {
+      background: rgba(160, 50, 50, 0.2);
+    }
+
+    .flex-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    /* PANEL DERECHO - HISTORIA Y GRÁFICO */
+    .story-box {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 24px;
+      padding: 18px 22px;
+      min-height: 120px;
+      border: 1px solid rgba(80, 160, 80, 0.05);
+      color: #c8e0c8;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .chart-container {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 24px;
+      padding: 16px 18px;
+      margin: 16px 0;
+      border: 1px solid rgba(80, 160, 80, 0.05);
+    }
+    .chart-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .chart-bar .bar-label {
+      width: 80px;
+      font-size: 0.75rem;
+      color: #8aba8a;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .chart-bar .bar-track {
+      flex: 1;
+      height: 8px;
+      background: rgba(60, 120, 60, 0.15);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .chart-bar .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3a8a3a, #6aba6a);
+      border-radius: 20px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    .chart-bar .bar-value {
+      width: 40px;
+      text-align: right;
+      font-size: 0.75rem;
+      color: #b0d8b0;
+      font-weight: 600;
+    }
+
+    .message-box {
+      background: rgba(30, 70, 30, 0.2);
+      border-radius: 60px;
+      padding: 14px 22px;
+      margin: 14px 0 8px;
+      text-align: center;
+      color: #b8e0b8;
+      border-left: 4px solid #4a9a4a;
+      border: 1px solid rgba(80, 160, 80, 0.05);
+      font-size: 0.9rem;
+    }
+
+    .ods-footer {
+      background: rgba(20, 50, 20, 0.3);
+      border-radius: 60px;
+      padding: 12px 24px;
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      border: 1px solid rgba(80, 160, 80, 0.05);
+      color: #90b890;
+      font-size: 0.8rem;
+    }
+    .ods-footer strong { color: #b8e0b8; }
+
+    .footer-pro {
+      margin-top: 24px;
+      border-top: 1px solid rgba(80, 160, 80, 0.06);
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: #6a8a6a;
+      font-size: 0.75rem;
+    }
+    .footer-pro code {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px 16px;
+      border-radius: 40px;
+      color: #8aba8a;
+    }
+    .footer-pro .signature {
+      color: #7a9a7a;
+    }
+
+    @media (max-width: 480px) {
+      .app-wrapper { padding: 16px; }
+      .brand h1 { font-size: 1.6rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .team-badge { gap: 4px; padding: 6px 12px; }
+      .team-badge .name { font-size: 0.7rem; padding: 2px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-wrapper">
+  <!-- HEADER -->
+  <div class="header-pro">
+    <div class="brand">
+      <h1>♻️ EcoPuntos <small>Pro</small></h1>
+    </div>
+    <div class="team-badge">
+      <span class="icon">👨‍💻</span>
+      <span class="name">Vesga</span>
+      <span class="separator">·</span>
+      <span class="name">Camacho</span>
+      <span class="separator">·</span>
+      <span class="name">Vanegas</span>
+      <span class="separator">·</span>
+      <span class="name" style="background: rgba(80, 200, 200, 0.12); border-color: rgba(80, 200, 200, 0.15);">Freddy</span>
+      <span class="exp">⚡ 25yr</span>
+    </div>
+  </div>
+
+  <div class="grid-pro">
+    <!-- PANEL IZQUIERDO -->
+    <div class="panel">
+      <h2>📊 Panel de control</h2>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="label">Total materiales</div><div class="value" id="totalItems">0</div></div>
+        <div class="stat-card"><div class="label">Puntos acumulados</div><div class="value" id="totalPoints">0</div></div>
+        <div class="stat-card"><div class="label">Promedio pts</div><div class="value" id="avgPoints">0 <small>pts</small></div></div>
+        <div class="stat-card"><div class="label">Categorías</div><div class="value" id="uniqueCategories">0</div></div>
+      </div>
+
+      <h2 style="margin-top: 4px;">📦 Materiales</h2>
+      <div class="list-controls">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar material..." style="flex:2;">
+        <select id="filterSort"><option value="default">Ordenar por</option><option value="points-desc">Más puntos</option><option value="points-asc">Menos puntos</option><option value="az">A → Z</option></select>
+      </div>
+      <ul class="material-list" id="materialList"></ul>
+
+      <div class="input-group-pro">
+        <input type="text" id="materialName" placeholder="Nombre del material" value="Envase vidrio">
+        <select id="materialPoints"><option value="5">5 pts</option><option value="10" selected>10 pts</option><option value="20">20 pts</option><option value="50">50 pts</option><option value="100">100 pts</option></select>
+        <button class="btn-primary" id="addMaterialBtn">➕ Agregar</button>
+      </div>
+
+      <div class="flex-actions">
+        <button class="btn-secondary" id="sortByPointsBtn">📊 Ordenar</button>
+        <button class="btn-secondary" id="resetDataBtn">🔄 Reset</button>
+        <button class="btn-secondary btn-danger" id="clearAllBtn">🗑️ Vaciar</button>
+      </div>
+    </div>
+
+    <!-- PANEL DERECHO -->
+    <div class="panel">
+      <h2>🌍 Comunidad · ODS</h2>
+      <div class="story-box" id="storyText">🔄 ¡Cada material reciclado suma! Agrega tu primer residuo y ayuda a tu comunidad.</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+        <button class="btn-secondary" id="storyNextBtn">📖 Siguiente consejo</button>
+        <button class="btn-secondary" id="storyResetBtn">🔄 Reiniciar</button>
+      </div>
+
+      <!-- GRÁFICO DE BARRAS -->
+      <div class="chart-container" id="chartContainer">
+        <div style="color:#8aba8a; font-size:0.8rem; margin-bottom:12px;">📊 Top materiales por puntos</div>
+        <div id="chartBars"></div>
+      </div>
+
+      <div class="message-box" id="feedbackMessage">✨ Bienvenido a EcoPuntos Pro</div>
+      <div class="ods-footer">
+        <strong>📌 ODS 11 · 4 · 9</strong>
+        <span>Innovación · Educación · Comunidades sostenibles</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-pro">
+    <span><code>⚡ JavaScript · HTML · CSS</code>  <span style="margin-left:12px;">variables · funciones · arrays · condicionales · ciclos</span></span>
+    <span class="signature">🧑‍💻 Vesga · Camacho · Vanegas · Freddy  ·  <span id="itemCounterDisplay">0</span> items</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ---- DATA ----
+    let materials = [
+      { id: 1, name: 'Botella plástico', points: 10 },
+      { id: 2, name: 'Lata aluminio', points: 20 },
+      { id: 3, name: 'Periódico', points: 5 },
+      { id: 4, name: 'Vidrio', points: 15 }
+    ];
+    let nextId = 5;
+    let totalPoints = 0;
+    let filteredMaterials = [...materials];
+
+    // ---- STORY ----
+    const storyMessages = [
+      '🌱 ¡Bien hecho! Cada botella reciclada ahorra energía.',
+      '📦 El vidrio es 100% reciclable. ¡Sigue así!',
+      '🧃 Los envases Tetrapak se convierten en nuevos productos.',
+      '♻️ El aluminio se recicla infinitamente, ¡aprovecha!',
+      '📄 El papel reciclado salva árboles. ¡Comparte!',
+      '🏆 Tu comunidad está más limpia gracias a tus acciones.',
+      '💡 Reciclar 1 tonelada de papel salva 17 árboles.',
+      '🌍 Pequeñas acciones generan grandes cambios.'
+    ];
+    let storyIndex = 0;
+
+    // ---- FUNCIONES CORE ----
+    function calculateTotals() {
+      let sum = 0;
+      for (let i = 0; i < materials.length; i++) sum += materials[i].points;
+      totalPoints = sum;
+      return totalPoints;
+    }
+
+    function getUniqueCategories() {
+      const names = materials.map(m => m.name.toLowerCase());
+      return new Set(names).size;
+    }
+
+    function getAvgPoints() {
+      if (materials.length === 0) return 0;
+      return Math.round(totalPoints / materials.length);
+    }
+
+    // ---- RENDER ----
+    function renderUI() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      const sortMode = document.getElementById('filterSort').value;
+
+      // filtro
+      filteredMaterials = materials.filter(m => m.name.toLowerCase().includes(searchTerm));
+
+      // orden
+      if (sortMode === 'points-desc') filteredMaterials.sort((a,b) => b.points - a.points);
+      else if (sortMode === 'points-asc') filteredMaterials.sort((a,b) => a.points - b.points);
+      else if (sortMode === 'az') filteredMaterials.sort((a,b) => a.name.localeCompare(b.name));
+      else filteredMaterials = [...filteredMaterials]; // default
+
+      const listEl = document.getElementById('materialList');
+      listEl.innerHTML = '';
+      for (let i = 0; i < filteredMaterials.length; i++) {
+        const item = filteredMaterials[i];
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="mat-name">${item.name}</span>
+          <span class="mat-points">${item.points} pts</span>
+          <div class="mat-actions">
+            <button class="btn-add" data-id="${item.id}" title="+5 pts">➕</button>
+            <button class="btn-del" data-id="${item.id}" title="eliminar">✕</button>
+          </div>
+        `;
+        listEl.appendChild(li);
+      }
+
+      // stats
+      document.getElementById('totalItems').textContent = materials.length;
+      document.getElementById('totalPoints').textContent = totalPoints;
+      document.getElementById('avgPoints').innerHTML = `${getAvgPoints()} <small>pts</small>`;
+      document.getElementById('uniqueCategories').textContent = getUniqueCategories();
+      document.getElementById('itemCounterDisplay').textContent = materials.length;
+
+      // chart
+      renderChart();
+
+      // eventos dinámicos
+      document.querySelectorAll('.btn-add').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = parseInt(this.dataset.id);
+          addPointsToMaterial(id, 5);
+        });
+      });
+      document.querySelectorAll('.btn-del').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = parseInt(this.dataset.id);
+          removeMaterialById(id);
+        });
+      });
+    }
+
+    // ---- CHART ----
+    function renderChart() {
+      const container = document.getElementById('chartBars');
+      container.innerHTML = '';
+      const sorted = [...materials].sort((a,b) => b.points - a.points).slice(0, 5);
+      const maxPoints = sorted.length > 0 ? sorted[0].points : 1;
+      for (let item of sorted) {
+        const pct = Math.round((item.points / maxPoints) * 100);
+        const div = document.createElement('div');
+        div.className = 'chart-bar';
+        div.innerHTML = `
+          <span class="bar-label">${item.name}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;"></div></div>
+          <span class="bar-value">${item.points}</span>
+        `;
+        container.appendChild(div);
+      }
+      if (sorted.length === 0) {
+        container.innerHTML = '<div style="color:#6a8a6a; font-size:0.85rem; padding:12px 0;">Agrega materiales para ver el gráfico</div>';
+      }
+    }
+
+    // ---- CRUD ----
+    function addMaterial(name, points) {
+      if (!name || name.trim() === '') { setFeedback('⚠️ Escribe un nombre', '#3a2a2a'); return false; }
+      if (typeof points !== 'number' || points <= 0) { setFeedback('⚠️ Puntos inválidos', '#3a2a2a'); return false; }
+      const newMaterial = { id: nextId++, name: name.trim(), points };
+      materials.push(newMaterial);
+      calculateTotals();
+      renderUI();
+      setFeedback(`✅ "${name}" agregado (${points} pts)`, '#1a3a1a');
+      updateStory(`➕ Agregaste "${name}" · +${points} puntos`);
+      return true;
+    }
+
+    function removeMaterialById(id) {
+      const index = materials.findIndex(m => m.id === id);
+      if (index === -1) { setFeedback('⚠️ No encontrado', '#3a2a2a'); return false; }
+      const removed = materials[index];
+      materials.splice(index, 1);
+      calculateTotals();
+      renderUI();
+      setFeedback(`🗑️ "${removed.name}" eliminado`, '#2a1a1a');
+      updateStory(`❌ Eliminaste "${removed.name}"`);
+      return true;
+    }
+
+    function addPointsToMaterial(id, extra) {
+      const material = materials.find(m => m.id === id);
+      if (!material) { setFeedback('⚠️ No encontrado', '#3a2a2a'); return false; }
+      material.points += extra;
+      calculateTotals();
+      renderUI();
+      setFeedback(`⭐ "${material.name}" +${extra} pts (${material.points} total)`, '#1a3a1a');
+      updateStory(`⭐ Sumaste ${extra} pts a "${material.name}"`);
+      return true;
+    }
+
+    function clearAll() {
+      if (materials.length === 0) { setFeedback('📭 Ya está vacío', '#2a2a1a'); return; }
+      materials = [];
+      calculateTotals();
+      renderUI();
+      setFeedback('🗑️ Todos los materiales eliminados', '#2a1a1a');
+      updateStory('🗑️ Vaciaste la lista de materiales');
+    }
+
+    function resetDemo() {
+      materials = [
+        { id: 1, name: 'Botella plástico', points: 10 },
+        { id: 2, name: 'Lata aluminio', points: 20 },
+        { id: 3, name: 'Periódico', points: 5 },
+        { id: 4, name: 'Vidrio', points: 15 }
+      ];
+      nextId = 5;
+      calculateTotals();
+      renderUI();
+      setFeedback('🔄 Demo reiniciada', '#1a2a1a');
+      storyIndex = 0;
+      document.getElementById('storyText').innerHTML = '🔄 ¡Cada material reciclado suma! Agrega tu primer residuo y ayuda a tu comunidad.';
+    }
+
+    function sortByPoints() {
+      document.getElementById('filterSort').value = 'points-desc';
+      renderUI();
+      setFeedback('📊 Ordenado por puntos (mayor a menor)', '#1a2a1a');
+    }
+
+    // ---- STORY ----
+    function updateStory(msg) { if (msg) document.getElementById('storyText').innerHTML = `📖 ${msg}`; }
+    function nextStory() {
+      if (storyMessages.length === 0) return;
+      const msg = storyMessages[storyIndex % storyMessages.length];
+      storyIndex = (storyIndex + 1) % storyMessages.length;
+      document.getElementById('storyText').innerHTML = `📖 ${msg}`;
+      setFeedback(`📖 Consejo: ${msg.slice(0, 40)}...`, '#1a2a1a');
+    }
+    function resetStory() {
+      storyIndex = 0;
+      document.getElementById('storyText').innerHTML = '🔄 ¡Cada material reciclado suma! Agrega tu primer residuo y ayuda a tu comunidad.';
+      setFeedback('🔄 Historia reiniciada', '#1a2a1a');
+    }
+
+    // ---- FEEDBACK ----
+    function setFeedback(msg, bg = '#1a2a1a') {
+      const el = document.getElementById('feedbackMessage');
+      el.textContent = msg;
+      el.style.background = bg || '#1a2a1a';
+    }
+
+    // ---- EVENTOS ----
+    document.addEventListener('DOMContentLoaded', function() {
+      calculateTotals();
+      renderUI();
+      setFeedback('♻️ EcoPuntos Pro · listo', '#1a2a1a');
+
+      document.getElementById('addMaterialBtn').addEventListener('click', function() {
+        const name = document.getElementById('materialName').value.trim();
+        const points = parseInt(document.getElementById('materialPoints').value, 10);
+        addMaterial(name, points);
+      });
+
+      document.getElementById('sortByPointsBtn').addEventListener('click', sortByPoints);
+      document.getElementById('resetDataBtn').addEventListener('click', resetDemo);
+      document.getElementById('clearAllBtn').addEventListener('click', clearAll);
+      document.getElementById('storyNextBtn').addEventListener('click', nextStory);
+      document.getElementById('storyResetBtn').addEventListener('click', resetStory);
+
+      document.getElementById('searchInput').addEventListener('input', renderUI);
+      document.getElementById('filterSort').addEventListener('change', renderUI);
+    });
+  })();
+</script>
+</body>
+</html>

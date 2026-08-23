@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoHuella · Futurista · Code for Change</title>
+    <style>
+        /* ===== RESET Y BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            background: radial-gradient(circle at 20% 20%, #0f0620, #06020e);
+            background-attachment: fixed;
+        }
+
+        /* ===== TARJETA PRINCIPAL ===== */
+        .card {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(30, 12, 50, 0.65);
+            backdrop-filter: blur(18px) saturate(200%);
+            -webkit-backdrop-filter: blur(18px) saturate(200%);
+            border-radius: 3.5rem 3.5rem 2.8rem 2.8rem;
+            padding: 2.8rem 3rem 3rem;
+            border: 1px solid rgba(180, 80, 255, 0.2);
+            box-shadow: 0 40px 80px -20px rgba(120, 0, 255, 0.5), 0 0 0 1px rgba(200, 120, 255, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(150, 50, 255, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .card * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem 1.5rem;
+            border-bottom: 2px solid rgba(180, 80, 255, 0.25);
+            padding-bottom: 0.9rem;
+            margin-bottom: 1.6rem;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #e8d0ff;
+            text-shadow: 0 0 20px rgba(180, 80, 255, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .header h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            background: rgba(130, 30, 200, 0.4);
+            padding: 0.1rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(180, 100, 255, 0.2);
+            color: #c7afff;
+            letter-spacing: 0.3px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .badge-ods {
+            background: rgba(80, 30, 140, 0.4);
+            border: 1px solid rgba(180, 100, 255, 0.2);
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            color: #d4bcff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+        .badge-ods span {
+            color: #b68aff;
+        }
+
+        /* ===== EQUIPO ===== */
+        .team-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem 1.4rem;
+            background: rgba(50, 18, 90, 0.3);
+            backdrop-filter: blur(6px);
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            margin-bottom: 1.8rem;
+            border: 1px solid rgba(170, 100, 255, 0.15);
+            font-size: 0.9rem;
+            color: #c9b3f0;
+        }
+        .team-bar .label {
+            opacity: 0.7;
+            font-weight: 300;
+        }
+        .team-bar .name {
+            color: #f0e3ff;
+            font-weight: 500;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            background: rgba(130, 50, 200, 0.2);
+            border: 1px solid rgba(180, 100, 255, 0.1);
+        }
+        .team-bar .name:hover {
+            background: rgba(150, 60, 220, 0.3);
+            box-shadow: 0 0 20px rgba(150, 60, 255, 0.15);
+        }
+
+        /* ===== GRID PRINCIPAL ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+        @media (max-width: 820px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+        }
+
+        /* ===== PANEL INPUTS ===== */
+        .panel {
+            background: rgba(20, 6, 40, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 2.4rem;
+            padding: 1.6rem 1.8rem;
+            border: 1px solid rgba(170, 90, 255, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(200, 120, 255, 0.05) inset;
+        }
+        .panel-title {
+            color: #d4bcff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.2rem;
+            opacity: 0.7;
+            border-bottom: 1px solid rgba(170, 100, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem 0.8rem;
+            margin-bottom: 0.9rem;
+        }
+        .input-row label {
+            font-weight: 400;
+            color: #c7afff;
+            min-width: 130px;
+            font-size: 0.9rem;
+            letter-spacing: 0.2px;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .input-row input,
+        .input-row select {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+            border: 1px solid rgba(180, 100, 255, 0.2);
+            background: rgba(10, 2, 20, 0.6);
+            backdrop-filter: blur(4px);
+            color: #f0e6ff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .input-row input:focus,
+        .input-row select:focus {
+            border-color: #b27aff;
+            box-shadow: 0 0 0 3px rgba(150, 70, 255, 0.3);
+            background: rgba(20, 6, 40, 0.7);
+        }
+        .input-row input::placeholder {
+            color: #5a4a70;
+        }
+        .input-row select option {
+            background: #1a0a2a;
+            color: #eee5ff;
+        }
+        .input-hint {
+            font-size: 0.7rem;
+            color: #7b609b;
+            margin-left: auto;
+            padding-right: 0.3rem;
+        }
+
+        /* ===== BOTONES ===== */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1.2rem;
+        }
+        .btn {
+            background: rgba(40, 12, 70, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(170, 100, 255, 0.2);
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #ddccff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: #7a3bcb;
+            border: 1px solid #b27aff;
+            color: white;
+            box-shadow: 0 6px 20px rgba(120, 40, 200, 0.4);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary:hover {
+            background: #8f4ee0;
+            transform: scale(1.02);
+            border-color: #c79aff;
+            box-shadow: 0 8px 30px rgba(140, 60, 220, 0.6);
+        }
+        .btn-secondary {
+            background: rgba(60, 20, 100, 0.3);
+        }
+        .btn-secondary:hover {
+            background: rgba(80, 30, 130, 0.5);
+            border-color: #b07aff;
+        }
+        .btn-success {
+            background: #3b7a4b;
+            border-color: #5a9a6a;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #4a8f5a;
+        }
+        .btn-danger {
+            background: #7a2a3a;
+            border-color: #aa4a5a;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #8f3a4a;
+        }
+        .btn-info {
+            background: #2a5a7a;
+            border-color: #4a8aaa;
+            color: white;
+        }
+        .btn-info:hover {
+            background: #3a6a8a;
+        }
+
+        /* ===== PANEL RESULTADO ===== */
+        .result-box {
+            background: rgba(20, 6, 40, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 2.4rem;
+            padding: 1.6rem 1.8rem;
+            border: 1px solid rgba(170, 90, 255, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+        .result-box .value-main {
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+            margin-bottom: 0.2rem;
+            flex-wrap: wrap;
+        }
+        .result-box .value-main .number {
+            font-size: 3.6rem;
+            font-weight: 700;
+            color: #f0e3ff;
+            text-shadow: 0 0 30px rgba(170, 80, 255, 0.3);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+        .result-box .value-main .unit {
+            font-size: 1.1rem;
+            color: #b69bdf;
+            font-weight: 400;
+        }
+        .result-box .value-main .level {
+            margin-left: auto;
+            font-size: 0.8rem;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            background: rgba(130, 50, 200, 0.2);
+            border: 1px solid rgba(180, 100, 255, 0.15);
+            color: #d4bcff;
+        }
+        .detail-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0 0.6rem;
+        }
+        @media (max-width: 600px) {
+            .detail-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .stat-item {
+            background: rgba(10, 2, 20, 0.4);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 0.6rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #ccb9f5;
+            border: 1px solid rgba(150, 70, 220, 0.1);
+            text-align: center;
+        }
+        .stat-item strong {
+            color: #e6d6ff;
+            font-weight: 600;
+            display: block;
+            font-size: 1rem;
+        }
+
+        /* ===== CONSEJOS ===== */
+        .tips-box {
+            background: rgba(30, 10, 60, 0.3);
+            backdrop-filter: blur(6px);
+            border-radius: 1.6rem;
+            padding: 1rem 1.4rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(170, 100, 255, 0.08);
+        }
+        .tips-box .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #c9b3f0;
+            font-size: 0.8rem;
+            padding: 0.2rem 0;
+            border-bottom: 1px solid rgba(170, 100, 255, 0.05);
+        }
+        .tips-box .tip-item:last-child {
+            border-bottom: none;
+        }
+        .tips-box .tip-item .icon {
+            font-size: 1.1rem;
+        }
+
+        /* ===== SECCIÓN COMPARATIVA ===== */
+        .compare-section {
+            margin-top: 1.8rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+        }
+        @media (max-width: 700px) {
+            .compare-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        .compare-box {
+            background: rgba(20, 6, 40, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1.4rem 1.8rem;
+            border: 1px solid rgba(170, 90, 255, 0.1);
+        }
+        .compare-box .compare-title {
+            color: #b69bdf;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 0.8rem;
+        }
+        .compare-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(170, 100, 255, 0.05);
+            color: #c9b3f0;
+            font-size: 0.85rem;
+        }
+        .compare-item:last-child {
+            border-bottom: none;
+        }
+        .compare-item .value {
+            color: #e6d6ff;
+            font-weight: 500;
+        }
+        .compare-item .bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(50, 20, 80, 0.4);
+            border-radius: 10px;
+            margin-top: 0.2rem;
+            overflow: hidden;
+        }
+        .compare-item .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #7a3bcb, #b27aff);
+            transition: width 0.5s ease;
+        }
+
+        /* ===== HISTORIAL ===== */
+        .history-panel {
+            margin-top: 1.4rem;
+            background: rgba(20, 6, 40, 0.3);
+            backdrop-filter: blur(6px);
+            border-radius: 2rem;
+            padding: 1.2rem 1.6rem;
+            border: 1px solid rgba(170, 100, 255, 0.08);
+        }
+        .history-panel .h-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .history-panel .h-header h4 {
+            color: #b69bdf;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .history-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        .history-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: #7a3bcb;
+            border-radius: 10px;
+        }
+        .history-item {
+            background: rgba(40, 12, 70, 0.3);
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #b69bdf;
+            border: 1px solid rgba(170, 100, 255, 0.05);
+            white-space: nowrap;
+        }
+        .history-item .h-val {
+            color: #e6d6ff;
+            font-weight: 600;
+        }
+
+        /* ===== ODS Y FOOTER ===== */
+        .ods-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 1.2rem;
+            background: rgba(50, 18, 90, 0.25);
+            backdrop-filter: blur(6px);
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #c9b3f0;
+            border: 1px solid rgba(170, 100, 255, 0.08);
+            margin-top: 1.4rem;
+        }
+        .ods-bar span {
+            background: rgba(120, 40, 200, 0.2);
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            border: 1px solid rgba(180, 100, 255, 0.1);
+        }
+        .footer {
+            margin-top: 1.6rem;
+            font-size: 0.7rem;
+            color: #6a5080;
+            text-align: center;
+            border-top: 1px solid rgba(150, 80, 210, 0.08);
+            padding-top: 1rem;
+            letter-spacing: 0.4px;
+        }
+        .footer strong {
+            color: #a88ac0;
+            font-weight: 400;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7a3bcb;
+            border-radius: 10px;
+        }
+
+        /* ===== ANIMACIONES ===== */
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        .pulsing {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* ===== ESTADÍSTICAS AVANZADAS ===== */
+        .stats-extra {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+        @media (max-width: 500px) {
+            .stats-extra {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .stat-extra-item {
+            background: rgba(10, 2, 20, 0.3);
+            padding: 0.3rem 0.6rem;
+            border-radius: 30px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #8f78b5;
+        }
+        .stat-extra-item strong {
+            color: #d4bcff;
+            display: block;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>
+                ⚡ EcoHuella
+                <small>v3.0</small>
+            </h1>
+            <div class="header-right">
+                <span class="badge-ods">🌍 <span>ODS 9</span> · <span>ODS 11</span> · <span>ODS 13</span></span>
+            </div>
+        </div>
+
+        <!-- EQUIPO -->
+        <div class="team-bar">
+            <span class="label">🧑‍💻 equipo desarrollo</span>
+            <span class="name">Loren Linero</span>
+            <span class="name">Maria Cuello</span>
+            <span class="name">Gabriela Cuentas</span>
+            <span style="opacity:0.4; margin-left:0.2rem;">|</span>
+            <span style="opacity:0.6; font-size:0.8rem;">Code for Change · 2026</span>
+        </div>
+
+        <!-- GRID PRINCIPAL -->
+        <div class="main-grid">
+            <!-- COLUMNA IZQUIERDA: INPUTS -->
+            <div class="panel">
+                <div class="panel-title">📊 datos de consumo</div>
+
+                <div class="input-row">
+                    <label for="transporte">🚗 transporte</label>
+                    <input type="number" id="transporte" value="12" min="0" step="1">
+                    <span class="input-hint">km/día</span>
+                </div>
+                <div class="input-row">
+                    <label for="energia">💡 electricidad</label>
+                    <input type="number" id="energia" value="4.5" min="0" step="0.5">
+                    <span class="input-hint">kWh/día</span>
+                </div>
+                <div class="input-row">
+                    <label for="dieta">🍽️ dieta</label>
+                    <select id="dieta">
+                        <option value="0.8">Alta (carne diaria)</option>
+                        <option value="0.5" selected>Media (3-4/sem)</option>
+                        <option value="0.2">Baja (vegetariana)</option>
+                        <option value="0.05">Vegana</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label for="vuelos">✈️ vuelos anuales</label>
+                    <input type="number" id="vuelos" value="0" min="0" step="1">
+                    <span class="input-hint">tramos</span>
+                </div>
+                <div class="input-row">
+                    <label for="consumo">🛍️ consumo bienes</label>
+                    <select id="consumo">
+                        <option value="0.3">Bajo</option>
+                        <option value="0.6" selected>Medio</option>
+                        <option value="1.0">Alto</option>
+                    </select>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="calcularBtn">🌿 calcular huella</button>
+                    <button class="btn btn-secondary" id="resetBtn">⟳ reset</button>
+                    <button class="btn btn-success" id="guardarBtn">💾 guardar</button>
+                    <button class="btn btn-info" id="compararBtn">📊 comparar</button>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: RESULTADO -->
+            <div class="result-box" id="resultadoBox">
+                <div class="panel-title" style="margin-bottom:0.4rem;">📈 huella de carbono</div>
+                <div class="value-main">
+                    <span class="number" id="totalDisplay">6.55</span>
+                    <span class="unit">kg CO₂e / día</span>
+                    <span class="level" id="nivelDisplay">🌱 bajo</span>
+                </div>
+
+                <div class="detail-stats">
+                    <div class="stat-item">🚗 <strong id="transporteStat">1.2</strong> kg</div>
+                    <div class="stat-item">💡 <strong id="energiaStat">2.25</strong> kg</div>
+                    <div class="stat-item">🍽️ <strong id="dietaStat">3.1</strong> kg</div>
+                    <div class="stat-item">✈️ <strong id="vuelosStat">0.0</strong> kg</div>
+                </div>
+
+                <!-- Estadísticas extra -->
+                <div class="stats-extra">
+                    <div class="stat-extra-item">🌍 <strong id="anualDisplay">2390</strong> kg/año</div>
+                    <div class="stat-extra-item">🌳 <strong id="arbolesDisplay">0.4</strong> árboles/año</div>
+                    <div class="stat-extra-item">💧 <strong id="aguaDisplay">1200</strong> L/día</div>
+                </div>
+
+                <!-- CONSEJOS -->
+                <div class="tips-box" id="tipsBox">
+                    <div class="tip-item"><span class="icon">💡</span> <span id="tip1">Reduce el consumo eléctrico apagando dispositivos</span></div>
+                    <div class="tip-item"><span class="icon">🚲</span> <span id="tip2">Opta por transporte sostenible</span></div>
+                    <div class="tip-item"><span class="icon">🥗</span> <span id="tip3">Disminuye el consumo de carne roja</span></div>
+                    <div class="tip-item"><span class="icon">✈️</span> <span id="tip4">Considera alternativas a los vuelos</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN COMPARATIVA -->
+        <div class="compare-section" id="compareSection">
+            <div class="compare-box">
+                <div class="compare-title">📊 comparativa con promedios</div>
+                <div class="compare-item">
+                    <span>Tu huella</span>
+                    <span class="value" id="compTu">6.55 kg</span>
+                </div>
+                <div class="compare-item">
+                    <span>Promedio local</span>
+                    <span class="value" id="compLocal">8.2 kg</span>
+                    <div class="bar-bg"><div class="bar-fill" id="barLocal" style="width:80%;"></div></div>
+                </div>
+                <div class="compare-item">
+                    <span>Promedio global</span>
+                    <span class="value" id="compGlobal">6.0 kg</span>
+                    <div class="bar-bg"><div class="bar-fill" id="barGlobal" style="width:60%;"></div></div>
+                </div>
+                <div class="compare-item">
+                    <span>Meta ODS 2030</span>
+                    <span class="value" id="compMeta">3.0 kg</span>
+                    <div class="bar-bg"><div class="bar-fill" id="barMeta" style="width:30%;"></div></div>
+                </div>
+            </div>
+            <div class="compare-box">
+                <div class="compare-title">🎯 recomendaciones personalizadas</div>
+                <div id="recomendacionesContainer">
+                    <div class="compare-item" style="border-bottom:none; flex-direction:column; align-items:flex-start; gap:0.3rem;">
+                        <span style="color:#b69bdf;">🔹 <span id="reco1">Optimiza tu consumo energético</span></span>
+                        <span style="color:#b69bdf;">🔹 <span id="reco2">Reduce el uso del automóvil</span></span>
+                        <span style="color:#b69bdf;">🔹 <span id="reco3">Adopta una dieta más sostenible</span></span>
+                        <span style="color:#b69bdf;">🔹 <span id="reco4">Compensa tu huella con árboles</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HISTORIAL -->
+        <div class="history-panel">
+            <div class="h-header">
+                <h4>📋 historial de cálculos</h4>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn btn-danger" id="clearHistoryBtn" style="padding:0.2rem 1rem; font-size:0.7rem; flex:0;">🗑️ limpiar</button>
+                    <button class="btn btn-secondary" id="exportHistoryBtn" style="padding:0.2rem 1rem; font-size:0.7rem; flex:0;">📤 exportar</button>
+                </div>
+            </div>
+            <div class="history-list" id="historyList">
+                <span style="color:#5a4a70; font-size:0.75rem;">sin registros</span>
+            </div>
+        </div>
+
+        <!-- ODS + FOOTER -->
+        <div class="ods-bar">
+            🌱 <span>ODS 9</span> innovación · <span>ODS 11</span> comunidades sostenibles · <span>ODS 13</span> acción climática
+            <span style="background:#7a3bcb; border-color:#b27aff;">⚡ +</span> tecnología para el cambio
+        </div>
+        <div class="footer">
+            <strong>Loren Linero · Maria Cuello · Gabriela Cuentas</strong> · proyecto CODE FOR CHANGE · Tecnología 10° · 2026
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ===== DOM =====
+            const transporteInput = document.getElementById('transporte');
+            const energiaInput = document.getElementById('energia');
+            const dietaSelect = document.getElementById('dieta');
+            const vuelosInput = document.getElementById('vuelos');
+            const consumoSelect = document.getElementById('consumo');
+            const calcularBtn = document.getElementById('calcularBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const guardarBtn = document.getElementById('guardarBtn');
+            const compararBtn = document.getElementById('compararBtn');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+            const exportHistoryBtn = document.getElementById('exportHistoryBtn');
+
+            const totalDisplay = document.getElementById('totalDisplay');
+            const nivelDisplay = document.getElementById('nivelDisplay');
+            const transporteStat = document.getElementById('transporteStat');
+            const energiaStat = document.getElementById('energiaStat');
+            const dietaStat = document.getElementById('dietaStat');
+            const vuelosStat = document.getElementById('vuelosStat');
+            const anualDisplay = document.getElementById('anualDisplay');
+            const arbolesDisplay = document.getElementById('arbolesDisplay');
+            const aguaDisplay = document.getElementById('aguaDisplay');
+            const tip1 = document.getElementById('tip1');
+            const tip2 = document.getElementById('tip2');
+            const tip3 = document.getElementById('tip3');
+            const tip4 = document.getElementById('tip4');
+            const reco1 = document.getElementById('reco1');
+            const reco2 = document.getElementById('reco2');
+            const reco3 = document.getElementById('reco3');
+            const reco4 = document.getElementById('reco4');
+            const compTu = document.getElementById('compTu');
+            const compLocal = document.getElementById('compLocal');
+            const compGlobal = document.getElementById('compGlobal');
+            const compMeta = document.getElementById('compMeta');
+            const barLocal = document.getElementById('barLocal');
+            const barGlobal = document.getElementById('barGlobal');
+            const barMeta = document.getElementById('barMeta');
+            const historyList = document.getElementById('historyList');
+
+            // ===== FACTORES =====
+            const FACTOR_TRANSPORTE = 0.10;
+            const FACTOR_ENERGIA = 0.50;
+            const BASE_DIETA = 4.0;
+            const FACTOR_VUELO = 0.15;
+            const FACTOR_CONSUMO = 0.2;
+
+            // ===== HISTORIAL =====
+            let historial = [];
+
+            function cargarHistorial() {
+                try {
+                    const data = localStorage.getItem('ecohuella_historial_v3');
+                    if (data) {
+                        historial = JSON.parse(data);
+                        if (!Array.isArray(historial)) historial = [];
+                    }
+                } catch (_) { historial = []; }
+                renderHistorial();
+            }
+
+            function guardarHistorial() {
+                try {
+                    localStorage.setItem('ecohuella_historial_v3', JSON.stringify(historial.slice(-30)));
+                } catch (_) {}
+                renderHistorial();
+            }
+
+            function agregarHistorial(total, detalle) {
+                const entry = {
+                    fecha: new Date().toLocaleString(),
+                    total: parseFloat(total).toFixed(2),
+                    detalle: detalle || ''
+                };
+                historial.push(entry);
+                if (historial.length > 30) historial.shift();
+                guardarHistorial();
+            }
+
+            function renderHistorial() {
+                if (!historyList) return;
+                if (

@@ -1,0 +1,133 @@
+RoboticaSTEM-ODS/
+│
+├── README.md
+├── LICENSE
+├── .gitignore
+│
+├── docs/                           # Documentación del proyecto
+│   ├── 01_PlanteamientoProblema.md
+│   ├── 02_ODS.md
+│   ├── 03_Requerimientos.md
+│   ├── 04_CasosUso.md
+│   ├── 05_DiagramaArquitectura.md
+│   ├── 06_DiagramaMVC.md
+│   ├── 07_DiagramaFlujo.md
+│   ├── 08_DiagramaCircuito.md
+│   ├── 09_PlanPruebas.md
+│   ├── 10_ManualUsuario.md
+│   └── evidencias/
+│
+├── hardware/
+│   │
+│   ├── wokwi/
+│   │      ├── diagram.json
+│   │      ├── wokwi.toml
+│   │      ├── libraries.txt
+│   │      ├── sketch.ino
+│   │      └── README.md
+│   │
+│   ├── sensores/
+│   │      ├── temperatura.md
+│   │      ├── humedad.md
+│   │      ├── ultrasonico.md
+│   │      ├── ldr.md
+│   │      └── movimiento.md
+│   │
+│   └── actuadores/
+│          ├── servo.md
+│          ├── relay.md
+│          ├── buzzer.md
+│          ├── led.md
+│          └── bombaAgua.md
+│
+├── software/
+│   │
+│   ├── frontend/
+│   │      │
+│   │      ├── index.html
+│   │      ├── dashboard.html
+│   │      ├── monitoreo.html
+│   │      ├── configuracion.html
+│   │      │
+│   │      ├── css/
+│   │      │      ├── style.css
+│   │      │      ├── dashboard.css
+│   │      │      ├── components.css
+│   │      │      └── responsive.css
+│   │      │
+│   │      ├── js/
+│   │      │
+│   │      │      ├── app.js
+│   │      │      ├── router.js
+│   │      │      │
+│   │      │      ├── controllers/
+│   │      │      │      ├── DashboardController.js
+│   │      │      │      ├── SensorController.js
+│   │      │      │      ├── ActuatorController.js
+│   │      │      │      └── WifiController.js
+│   │      │      │
+│   │      │      ├── models/
+│   │      │      │      ├── Sensor.js
+│   │      │      │      ├── Actuator.js
+│   │      │      │      ├── Robot.js
+│   │      │      │      └── Configuracion.js
+│   │      │      │
+│   │      │      ├── views/
+│   │      │      │      ├── DashboardView.js
+│   │      │      │      ├── SensorView.js
+│   │      │      │      ├── ActuatorView.js
+│   │      │      │      └── NotificationView.js
+│   │      │      │
+│   │      │      ├── services/
+│   │      │      │      ├── ApiService.js
+│   │      │      │      ├── WifiService.js
+│   │      │      │      ├── StorageService.js
+│   │      │      │      └── ChartService.js
+│   │      │      │
+│   │      │      ├── utils/
+│   │      │      │      ├── constants.js
+│   │      │      │      ├── helpers.js
+│   │      │      │      └── validator.js
+│   │      │      │
+│   │      │      └── components/
+│   │      │             ├── navbar.js
+│   │      │             ├── footer.js
+│   │      │             ├── cardSensor.js
+│   │      │             ├── modal.js
+│   │      │             └── chart.js
+│   │      │
+│   │      └── assets/
+│   │             ├── img/
+│   │             ├── icons/
+│   │             └── videos/
+│   │
+│   └── backend/
+│          ├── server.js
+│          ├── package.json
+│          ├── routes/
+│          ├── controllers/
+│          ├── models/
+│          ├── services/
+│          ├── middleware/
+│          └── config/
+│
+├── data/
+│      ├── sensores.json
+│      ├── historial.json
+│      └── configuracion.json
+│
+├── test/
+│      ├── frontend/
+│      ├── backend/
+│      └── hardware/
+│
+├── presentacion/
+│      ├── diapositivas.pptx
+│      ├── poster.pdf
+│      └── videoDemo.mp4
+│
+└── recursos/
+       ├── bibliografia.md
+       ├── enlaces.md
+       ├── ODS.pdf
+       └── normasAPA.md

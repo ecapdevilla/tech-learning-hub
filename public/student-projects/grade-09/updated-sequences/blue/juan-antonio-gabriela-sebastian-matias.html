@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Print Store - Impresiones 3D</title>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        /* ===== ENCABEZADO ===== */
+        header {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        header h1 {
+            color: white;
+            font-size: 26px;
+            letter-spacing: 2px;
+        }
+
+        header h1 span {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            padding: 0 12px;
+            border-radius: 5px;
+            color: #1a1a2e;
+        }
+
+        nav a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            color: #ffd200;
+            background: rgba(255, 210, 0, 0.15);
+        }
+
+        /* ===== BOTÓN WHATSAPP FLOTANTE ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: 0.3s;
+            border: 3px solid white;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(180deg, #e8edf2 0%, #ffffff 100%);
+        }
+
+        .hero h2 {
+            font-size: 44px;
+            color: #0f0c29;
+            margin-bottom: 15px;
+        }
+
+        .hero h2 .destacado {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            padding: 0 15px;
+            border-radius: 10px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #555;
+            max-width: 650px;
+            margin: 0 auto 25px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+            padding: 16px 45px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(247, 151, 30, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(247, 151, 30, 0.6);
+        }
+
+        .btn-secundario {
+            background: #0f0c29;
+            color: white;
+            box-shadow: 0 4px 15px rgba(15, 12, 41, 0.3);
+        }
+
+        .btn-secundario:hover {
+            background: #302b63;
+            box-shadow: 0 8px 25px rgba(15, 12, 41, 0.5);
+        }
+
+        /* ===== SERVICIOS ===== */
+        .servicios {
+            padding: 70px 40px;
+            text-align: center;
+            background: white;
+        }
+
+        .servicios h3 {
+            font-size: 34px;
+            color: #0f0c29;
+            margin-bottom: 15px;
+        }
+
+        .servicios .subtitulo {
+            color: #777;
+            font-size: 17px;
+            margin-bottom: 40px;
+        }
+
+        .contenedor-tarjetas {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .tarjeta {
+            background: #f8f9fc;
+            padding: 35px 25px;
+            border-radius: 18px;
+            width: 270px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            transition: 0.4s;
+            border-bottom: 5px solid #ffd200;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tarjeta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .tarjeta .icono {
+            font-size: 45px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .tarjeta h4 {
+            color: #0f0c29;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .tarjeta p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .tarjeta .precio {
+            display: block;
+            margin-top: 15px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #f7971e;
+        }
+
+        /* ===== GALERÍA DE PROYECTOS ===== */
+        .galeria {
+            padding: 70px 40px;
+            background: #f0f2f5;
+            text-align: center;
+        }
+
+        .galeria h3 {
+            font-size: 34px;
+            color: #0f0c29;
+            margin-bottom: 15px;
+        }
+
+        .galeria .subtitulo {
+            color: #777;
+            font-size: 17px;
+            margin-bottom: 40px;
+        }
+
+        .grid-galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .item-galeria {
+            background: white;
+            border-radius: 16px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            transition: 0.3s;
+        }
+
+        .item-galeria:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .item-galeria .emoji {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .item-galeria h5 {
+            color: #0f0c29;
+            font-size: 16px;
+        }
+
+        .item-galeria p {
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* ===== COTIZADOR ===== */
+        .cotizador {
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            padding: 70px 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .cotizador h3 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .cotizador .subtitulo {
+            font-size: 17px;
+            opacity: 0.85;
+            margin-bottom: 30px;
+        }
+
+        .form-cotizador {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            max-width: 580px;
+            margin: 0 auto;
+            color: #333;
+            text-align: left;
+        }
+
+        .form-cotizador label {
+            display: block;
+            font-weight: 700;
+            margin: 18px 0 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .form-cotizador input,
+        .form-cotizador select {
+            width: 100%;
+            padding: 13px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+            background: #fafafa;
+        }
+
+        .form-cotizador input:focus,
+        .form-cotizador select:focus {
+            border-color: #f7971e;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(247, 151, 30, 0.15);
+        }
+
+        /* Zona de carga */
+        .zona-carga {
+            border: 3px dashed #302b63;
+            border-radius: 14px;
+            padding: 35px 20px;
+            text-align: center;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+            position: relative;
+        }
+
+        .zona-carga:hover {
+            background: #eef1ff;
+            border-color: #f7971e;
+        }
+
+        .zona-carga.dragover {
+            background: #dde3ff;
+            border-color: #ffd200;
+        }
+
+        .zona-carga input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .zona-carga .icono {
+            font-size: 50px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .zona-carga p {
+            color: #555;
+            font-size: 15px;
+        }
+
+        .zona-carga .formatos {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .archivo-cargado {
+            display: none;
+            background: #e8f5e9;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-top: 12px;
+            border: 2px solid #4caf50;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .archivo-cargado .nombre {
+            font-weight: bold;
+            color: #0f0c29;
+            flex: 1;
+            word-break: break-all;
+            font-size: 14px;
+        }
+
+        .archivo-cargado .tamaño {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .archivo-cargado .check {
+            color: #4caf50;
+            font-size: 22px;
+        }
+
+        /* Resumen del pedido */
+        .resumen-pedido {
+            background: #f8f9fc;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-top: 20px;
+            border-left: 4px solid #f7971e;
+            display: none;
+        }
+
+        .resumen-pedido h4 {
+            color: #0f0c29;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .resumen-pedido p {
+            font-size: 14px;
+            color: #555;
+            margin: 4px 0;
+        }
+
+        .resumen-pedido .total {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f7971e;
+            margin-top: 8px;
+        }
+
+        .btn-cotizar {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #0f0c29;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            width: 100%;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-cotizar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(247, 151, 30, 0.4);
+        }
+
+        /* Barra de progreso */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        #resultado-precio {
+            margin-top: 18px;
+            padding: 18px;
+            background: #e8f5e9;
+            border-radius: 12px;
+            color: #0f0c29;
+            font-weight: bold;
+            font-size: 20px;
+            text-align: center;
+            display: none;
+            border: 2px solid #4caf50;
+        }
+
+        /* ===== TESTIMONIOS ===== */
+        .testimonios {
+            padding: 70px 40px;
+            background: white;
+            text-align: center;
+        }
+
+        .testimonios h3 {
+            font-size: 34px;
+            color: #0f0c29;
+            margin-bottom: 15px;
+        }
+
+        .grid-testimonios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            margin: 30px auto 0;
+        }
+
+        .testimonio {
+            background: #f8f9fc;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border-top: 4px solid #ffd200;
+            text-align: left;
+        }
+
+        .testimonio .stars {
+            color: #ffd200;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .testimonio .texto {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .testimonio .autor {
+            font-weight: 700;
+            color: #0f0c29;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .testimonio .rol {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* ===== FAQ ===== */
+        .faq {
+            padding: 70px 40px;
+            background: #f0f2f5;
+            text-align: center;
+        }
+
+        .faq h3 {
+            font-size: 34px;
+            color: #0f0c29;
+            margin-bottom: 15px;
+        }
+
+        .faq .subtitulo {
+            color: #777;
+            font-size: 17px;
+            margin-bottom: 35px;
+        }
+
+        .contenedor-faq {
+            max-width: 750px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .pregunta {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: 0.3s;
+            border-left: 4px solid #f7971e;
+        }
+
+        .pregunta:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .pregunta .q {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: #0f0c29;
+            font-size: 16px;
+        }
+
+        .pregunta .q .icono-faq {
+            font-size: 20px;
+            transition: 0.3s;
+        }
+
+        .pregunta .respuesta {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .pregunta.abierta .respuesta {
+            max-height: 300px;
+            padding-top: 12px;
+        }
+
+        .pregunta.abierta .q .icono-faq {
+            transform: rotate(180deg);
+        }
+
+        /* ===== SOBRE NOSOTROS ===== */
+        .sobre-nosotros {
+            padding: 70px 40px;
+            text-align: center;
+            background: white;
+        }
+
+        .sobre-nosotros h3 {
+            font-size: 34px;
+            color: #0f0c29;
+            margin-bottom: 20px;
+        }
+
+        .sobre-nosotros p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 17px;
+            color: #555;
+            line-height: 1.9;
+        }
+
+        .sobre-nosotros .impresoras {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sobre-nosotros .impresoras span {
+            background: #f0f2f5;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: #0f0c29;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            font-size: 14px;
+        }
+
+        /* ===== PIE DE PÁGINA ===== */
+        footer {
+            background: #0f0c29;
+            color: #aaa;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: #ffd200;
+        }
+
+        footer .sociales {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        footer .sociales a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 20px;
+            transition: 0.3s;
+        }
+
+        footer .sociales a:hover {
+            color: #ffd200;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+            header h1 {
+                font-size: 20px;
+            }
+            nav a {
+                margin: 0 5px;
+                font-size: 12px;
+                padding: 5px 8px;
+            }
+            .hero h2 {
+                font-size: 28px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .servicios, .galeria, .cotizador, .testimonios, .faq, .sobre-nosotros {
+                padding: 40px 15px;
+            }
+            .tarjeta {
+                width: 100%;
+                max-width: 280px;
+            }
+            .form-cotizador {
+                padding: 20px;
+            }
+            .grid-galeria {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .grid-testimonios {
+                grid-template-columns: 1fr;
+            }
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .contenedor-faq {
+                padding: 0 5px;
+            }
+            .pregunta {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== BOTÓN WHATSAPP FLOTANTE ===== -->
+    <a href="#" class="whatsapp-float" title="Contáctanos por WhatsApp">💬</a>
+
+    <!-- ==================== ENCABEZADO ==================== -->
+    <header>
+        <h1>🖨️ <span>3D</span> Print Store</h1>
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#galeria">Galería</a>
+            <a href="#cotizador">Cotizar</a>
+            <a href="#testimonios">Opiniones</a>
+            <a href="#faq">FAQ</a>
+            <a href="#nosotros">Nosotros</a>
+        </nav>
+    </header>
+
+    <!-- ==================== HERO ==================== -->
+    <section id="inicio" class="hero">
+        <h2>Impresiones 3D <span class="destacado">de calidad</span></h2>
+        <p>Sube tu archivo <strong>.3MF</strong> y obtén un precio al instante. Convertimos tus ideas en objetos reales con la mejor tecnología.</p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="#cotizador" class="btn">📐 Cotiza tu pieza</a>
+            <a href="#galeria" class="btn btn-secundario">👀 Ver proyectos</a>
+        </div>
+    </section>
+
+    <!-- ==================== SERVICIOS ==================== -->
+    <section id="servicios" class="servicios">
+        <h3>🔧 Nuestros Servicios</h3>
+        <p class="subtitulo">Ofrecemos soluciones de impresión 3D para todo tipo de necesidades</p>
+        <div class="contenedor-tarjetas">
+            <div class="tarjeta">
+                <span class="icono">📦</span>
+                <h4>Impresión Básica</h4>
+                <p>Piezas simples en PLA. Ideal para figuras, llaveros, adornos y prototipos rápidos.</p>
+                <span class="precio">Desde $5.000</span>
+            </div>
+            <div class="tarjeta">
+                <span class="icono">⚙️</span>
+                <h4>Impresión Avanzada</h4>
+                <p>Materiales resistentes como ABS, PETG o Nylon. Para piezas funcionales y duraderas.</p>
+                <span class="precio">Desde $12.000</span>
+            </div>
+            <div class="tarjeta">
+                <span class="icono">🎨</span>
+                <h4>Diseño + Impresión</h4>
+                <p>¿No tienes diseño? Nuestros diseñadores crean tu modelo desde cero con tus especificaciones.</p>
+                <span class="precio">Desde $25.000</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== GALERÍA ==================== -->
+    <section id="galeria" class="galeria">
+        <h3>🖼️ Proyectos Recientes</h3>
+        <p class="subtitulo">Algunos de los trabajos que hemos realizado para nuestros clientes</p>
+        <div class="grid-galeria">
+            <div class="item-galeria">
+                <span class="emoji">🏠</span>
+                <h5>Maqueo Arquitectónico</h5>
+                <p>Impresión en PLA</p>
+            </div>
+            <div class="item-galeria">
+                <span class="emoji">🤖</span>
+                <h5>Figura de Robot</h5>
+                <p>Impresión en Resina</p>
+            </div>
+            <div class="item-galeria">
+                <span class="emoji">🔧</span>
+                <h5>Prototipo Industrial</h5>
+                <p>Impresión en ABS</p>
+            </div>
+            <div class="item-galeria">
+                <span class="emoji">🎭</span>
+                <h5>Máscara Personalizada</h5>
+                <p>Impresión en PETG</p>
+            </div>
+            <div class="item-galeria">
+                <span class="emoji">🦖</span>
+                <h5>Figura de Dinosaurio</h5>
+                <p>Impresión en PLA</p>
+            </div>
+            <div class="item-galeria">
+                <span class="emoji">💍</span>
+                <h5>Joyas y Accesorios</h5>
+                <p>Impresión en Resina</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== COTIZADOR ==================== -->
+    <section id="cotizador" class="cotizador">
+        <h3>📐 Cotiza tu impresión 3D</h3>
+        <p class="subtitulo">Sube tu archivo, elige opciones y obtén un precio instantáneo</p>
+
+        <div class="form-cotizador">
+            <label for="nombre">👤 Tu nombre</label>
+            <input type="text" id="nombre" placeholder="Ej: Juan Pérez">
+
+            <!-- ZONA DE CARGA -->
+            <label>📤 Sube tu archivo 3D</label>
+            <div class="zona-carga" id="zonaCarga">
+                <span class="icono">📁</span>
+                <p><strong>Haz clic o arrastra</strong> tu archivo aquí</p>
+                <span class="formatos">.3MF · .STL · .OBJ (máx. 50MB)</span>
+                <input type="file" id="archivoInput" accept=".3mf,.stl,.obj">
+            </div>
+
+            <div class="archivo-cargado" id="archivoCargado">
+                <span class="check">✅</span>
+                <span class="nombre" id="nombreArchivo">archivo.3mf</span>
+                <span class="tamaño" id="tamañoArchivo">2.4 MB</span>
+            </div>
+
+            <label for="tamano">📏 Tamaño de la pieza</label>
+            <select id="tamano">
+                <option value="pequeno">Pequeño (hasta 5 cm) - $5.000</option>
+                <option value="mediano" selected>Mediano (5 a 15 cm) - $12.000</option>
+                <option value="grande">Grande (15 a 30 cm) - $25.000</option>
+                <option value="extra">Extra grande (+30 cm) - $45.000</option>
+            </select>
+
+            <label for="material">🧪 Material</label>
+            <select id="material">
+                <option value="pla">PLA (básico) - Incluido</option>
+                <option value="abs">ABS (resistente) + $5.000</option>
+                <option value="petg">PETG (flexible) + $7.000</option>
+                <option value="resina">Resina (alta calidad) + $10.000</option>
+            </select>
+
+            <label for="color">🎨 Color</label>
+            <input type="text" id="color" placeholder="Ej: Blanco, Rojo, Personalizado...">
+
+            <label for="tiempo">⏱️ ¿Necesitas urgencia?</label>
+            <select id="tiempo">
+                <option value="normal">Normal (3-5 días) - Incluido</option>
+                <option value="express">Express (1-2 días) + $8.000</option>
+                <option value="urgente">Urgente (24 horas) + $15.000</option>
+            </select>
+
+            <!-- Resumen del pedido -->
+            <div class="resumen-pedido" id="resumenPedido">
+                <h4>📋 Resumen de tu pedido</h4>
+                <p id="resumenTexto">Selecciona opciones para ver el resumen</p>
+                <p class="total" id="resumenTotal">$0</p>
+            </div>
+
+            <button class="btn-cotizar" onclick="calcularPrecio()">💰 Calcular precio</button>
+
+            <!-- Barra de progreso -->
+            <div class="progress-bar" id="progressBar">
+                <div class="fill" id="progressFill"></div>
+            </div>
+
+            <div id="resultado-precio">
+                ✅ <span id="precio-final">$0</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TESTIMONIOS ==================== -->
+    <section id="testimonios" class="testimonios">
+        <h3>⭐ Opiniones de clientes</h3>
+        <p class="subtitulo">Lo que dicen quienes ya confiaron en nosotros</p>
+        <div class="grid-testimonios">
+            <div class="testimonio">
+                <div class="stars">★★★★★</div>
+                <p class="texto">"Excelente calidad y atención. Imprimieron un prototipo para mi proyecto y quedó perfecto. Lo recomiendo 100%."</p>
+                <span class="autor">Carlos M.</span>
+                <span class="rol">Ingeniero Mecánico</span>
+            </div>
+            <div class="testimonio">
+                <div class="stars">★★★★★</div>
+                <p class="texto">"Hice mi pedido con urgencia y lo tuvieron listo en menos de 24 horas. El detalle de la impresión es increíble."</p>
+                <span class="autor">Laura G.</span>
+                <span class="rol">Diseñadora Industrial</span>
+            </div>
+            <div class="testimonio">
+                <div class="stars">★★★★☆</div>
+                <p class="texto">"Muy buen servicio, el cotizador es súper rápido y fácil de usar. Subí mi archivo .3MF y en segundos tuve el precio."</p>
+                <span class="autor">Andrés R.</span>
+                <span class="rol">Estudiante de Arquitectura</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FAQ ==================== -->
+    <section id="faq" class="faq">
+        <h3>❓ Preguntas Frecuentes</h3>
+        <p class="subtitulo">Resolvemos tus dudas sobre el proceso de impresión 3D</p>
+        <div class="contenedor-faq">
+            <div class="pregunta" onclick="toggleFAQ(this)">
+                <div class="q">
+                    <span>¿Qué formatos de archivo aceptan?</span>
+                    <span class="icono-faq">▼</span>
+                </div>
+                <div class="respuesta">Aceptamos archivos en formato <strong>.3MF</strong> (recomendado), .STL y .OBJ. El formato 3MF es el estándar moderno y garantiza la mejor compatibilidad con nuestras impresoras.</div>
+            </div>
+            <div class="pregunta" onclick="toggleFAQ(this)">
+                <div class="q">
+                    <span>¿Cuánto tiempo tarda una impresión?</span>
+                    <span class="icono-faq">▼</span>
+                </div>
+                <div class="respuesta">Depende del tamaño y la complejidad. Una pieza pequeña puede tardar 2-4 horas, mientras que una grande puede tomar 12-24 horas. Ofrecemos opciones <strong>Express (1-2 días)</strong> y <strong>Urgente (24 horas)</strong>.</div>
+            </div>
+            <div class="pregunta" onclick="toggleFAQ(this)">
+                <div class="q">
+                    <span>¿Pueden imprimir cualquier color?</span>
+                    <span class="icono-faq">▼</span>
+                </div>
+                <div class="respuesta">Sí. Trabajamos con una amplia gama de colores en PLA, ABS y PETG. También ofrecemos opciones de <strong>pintura post-impresión</strong> para acabados personalizados.</div>
+            </div>
+            <div class="pregunta" onclick="toggleFAQ(this)">
+                <div class="q">
+                    <span>¿Hacen envíos a toda la ciudad?</span>
+                    <span class="icono-faq">▼</span>
+                </div>
+                <div class="respuesta">Sí, realizamos envíos a toda la ciudad y también ofrecemos <strong>recogida en tienda</strong> si prefieres pasar a buscar tu pieza personalmente.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SOBRE NOSOTROS ==================== -->
+    <section id="nosotros" class="sobre-nosotros">
+        <h3>🏭 Sobre Nosotros</h3>
+        <p>
+            Somos una tienda especializada en <strong>impresión 3D</strong> con más de 5 años de experiencia.
+            Trabajamos con impresoras de última generación para garantizar la mejor calidad
+            en cada pieza. Desde diseños personalizados hasta prototipos industriales,
+            estamos aquí para hacer realidad tus ideas.
+        </p>
+        <div class="impresoras">
+            <span>🖨️ Creality Ender 3</span>
+            <span>🖨️ Prusa MK4</span>
+            <span>🖨️ Resina Anycubic</span>
+            <span>🖨️ Bambu Lab X1</span>
+        </div>
+    </section>
+
+    <!-- ==================== PIE DE PÁGINA ==================== -->
+    <footer>
+        <p>&copy; 2026 <strong>3D Print Store</strong> - Hecho con 💙 para tu proyecto escolar</p>
+        <p style="margin-top:5px; font-size:13px;">📧 contacto@3dprintstore.com | 📞 +57 300 123 4567</p>
+        <div class="sociales">
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="Facebook">👍</a>
+            <a href="#" title="YouTube">▶️</a>
+            <a href="#" title="TikTok">🎵</a>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ===== 1. MANEJAR CARGA DE ARCHIVOS =====
+        const zonaCarga = document.getElementById('zonaCarga');
+        const archivoInput = document.getElementById('archivoInput');
+        const archivoCargado = document.getElementById('archivoCargado');
+        const nombreArchivo = document.getElementById('nombreArchivo');
+        const tamañoArchivo = document.getElementById('tamañoArchivo');
+
+        zonaCarga.addEventListener('click', function(e) {
+            if (e.target.tagName !== 'INPUT') {
+                archivoInput.click();
+            }
+        });
+
+        archivoInput.addEventListener('change', function(e) {
+            const archivo = this.files[0];
+            if (archivo) procesarArchivo(archivo);
+        });
+
+        zonaCarga.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        zonaCarga.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        zonaCarga.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const archivo = e.dataTransfer.files[0];
+            if (archivo) {
+                procesarArchivo(archivo);
+                const dt = new DataTransfer();
+                dt.items.add(archivo);
+                archivoInput.files = dt.files;
+            }
+        });
+
+        function procesarArchivo(archivo) {
+            const extensiones = ['.3mf', '.stl', '.obj'];
+            const nombre = archivo.name;
+            const ext = nombre.substring(nombre.lastIndexOf('.')).toLowerCase();
+
+            if (!extensiones.includes(ext)) {
+                alert('⚠️ Formato no soportado. Por favor sube archivos .3MF, .STL o .OBJ');
+                return;
+            }
+
+            nombreArchivo.textContent = nombre;
+            const tamañoMB = (archivo.size / (1024 * 1024)).toFixed(1);
+            tamañoArchivo.textContent = tamañoMB + ' MB';
+            archivoCargado.style.display = 'flex';
+
+            const icono = document.querySelector('.zona-carga .icono');
+            if (ext === '.3mf') icono.textContent = '🎯';
+            else if (ext === '.stl') icono.textContent = '🔺';
+            else icono.textContent = '📦';
+
+            // Actualizar resumen
+            actualizarResumen();
+        }
+
+        // ===== 2. ACTUALIZAR RESUMEN =====
+        function actualizarResumen() {
+            const nombre = document.getElementById('nombre').value || 'Cliente';
+            const tamanoSelect = document.getElementById('tamano');
+            const materialSelect = document.getElementById('material');
+            const color = document.getElementById('color').value || 'Sin especificar';
+            const tiempoSelect = document.getElementById('tiempo');
+            const archivo = document.getElementById('nombreArchivo').textContent;
+
+            const tamanoTexto = tamanoSelect.options[tamanoSelect.selectedIndex].text;
+            const materialTexto = materialSelect.options[materialSelect.selectedIndex].text;
+            const tiempoTexto = tiempoSelect.options[tiempoSelect.selectedIndex].text;
+
+            const precios = {
+                "pequeno": 5000, "mediano": 12000, "grande": 25000, "extra": 45000
+            };
+            const extras = {
+                "pla": 0, "abs": 5000, "petg": 7000, "resina": 10000
+            };
+            const tiempos = {
+                "normal": 0, "express": 8000, "urgente": 15000
+            };
+
+            const total = precios[document.getElementById('tamano').value] +
+                         extras[document.getElementById('material').value] +
+                         tiempos[document.getElementById('tiempo').value];
+
+            const resumenDiv = document.getElementById('resumenPedido');
+            const resumenTexto = document.getElementById('resumenTexto');
+            const resumenTotal = document.getElementById('resumenTotal');
+
+            resumenTexto.innerHTML = `
+                👤 <strong>${nombre}</strong> | 
+                📄 ${archivo} | 
+                📏 ${tamanoTexto} | 
+                🧪 ${materialTexto} | 
+                🎨 ${color} | 
+                ⏱️ ${tiempoTexto}
+            `;
+            resumenTotal.textContent = '$' + total.toLocaleString('es-CO');
+            resumenDiv.style.display = 'block';
+        }
+
+        // Escuchar cambios en los selects
+        document.querySelectorAll('#tamano, #material, #tiempo, #nombre, #color').forEach(el => {
+            el.addEventListener('change', actualizarResumen);
+            el.addEventListener('input', actualizarResumen);
+        });
+
+        // ===== 3. CALCULAR PRECIO =====
+        function calcularPrecio() {
+            const archivoCargadoDiv = document.getElementById('archivoCargado');
+            const tieneArchivo = archivoCargadoDiv.style.display === 'flex';
+
+            const tamano = document.getElementById("tamano").value;
+            const material = document.getElementById("material").value;
+            const tiempo = document.getElementById("tiempo").value;
+            const nombre = document.getElementById("nombre").value || 'Cliente';
+
+            const precios = {
+                "pequeno": 5000, "mediano": 12000, "grande": 25000, "extra": 45000
+            };
+            const extras = {
+                "pla": 0, "abs": 5000, "petg": 7000, "resina": 10000
+            };
+            const tiempos = {
+                "normal": 0, "express": 8000, "urgente": 15000
+            };
+
+            const total = precios[tamano] + extras[material] + tiempos[tiempo];
+
+            // Mostrar barra de progreso
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            progressBar.style.display = 'block';
+            progressFill.style.width = '0%';
+
+            let progreso = 0;
+            const intervalo = setInterval(() => {
+                progreso += 2;
+                progressFill.style.width = progreso + '%';
+                if (progreso >= 100) {
+                    clearInterval(intervalo);
+                    // Mostrar resultado
+                    const resultadoDiv = document.getElementById("resultado-precio");
+                    const precioFinalSpan = document.getElementById("precio-final");
+
+                    let mensaje = "$" + total.toLocaleString("es-CO");
+                    if (nombre) mensaje += " (Gracias " + nombre + ")";
+                    if (tieneArchivo) {
+                        const nombreArch = document.getElementById('nombreArchivo').textContent;
+                        mensaje += " 📄 " + nombreArch;
+                    } else {
+                        mensaje += " ⚠️ Sin archivo cargado";
+                    }
+
+                    // Calcular tiempo estimado de impresión
+                    const tiemposImp = {
+                        "pequeno": "2-4 horas",
+                        "mediano": "4-8 horas",
+                        "grande": "8-16 horas",
+                        "extra": "16-24 horas"
+                    };
+                    mensaje += " ⏱️ " + tiemposImp[tamano];
+
+                    precioFinalSpan.textContent = mensaje;
+                    resultadoDiv.style.display = "block";
+
+                    resultadoDiv.style.animation = "none";
+                    setTimeout(() => {
+                        resultadoDiv.style.animation = "fadeIn 0.5s ease";
+                    }, 10);
+
+                    // Ocultar barra después de 1.5s
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                    }, 1500);
+                }
+            }, 20);
+        }
+
+        // ===== 4. FAQ (ACORDEÓN) =====
+        function toggleFAQ(element) {
+            element.classList.toggle('abierta');
+        }
+
+        // Abrir la primera pregunta por defecto
+        document.addEventListener('DOMContentLoaded', function() {
+            const primeraPregunta = document.querySelector('.pregunta');
+            if (primeraPregunta) {
+                primeraPregunta.classList.add('abierta');
+            }
+            actualizarResumen();
+        });
+
+        // Animación CSS
+        var style = document.createElement('style');
+        style.textContent = `
+                    @keyframes fadeIn {
+                        0% { opacity: 0; transform: scale(0.95); }
+                        100% { opacity: 1; transform: scale(1); }
+                    }
+                `;
+        document.head.appendChild(style);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAGGY SHOP · Streetwear MVC · Jose, Rodolfo & Astor 67</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <style>
+        /* ============================================================
+           SISTEMA DE DISEÑO · STREETWEAR PREMIUM
+           ============================================================ */
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #141a22;
+            --bg-glass: rgba(20, 26, 34, 0.75);
+            --bg-card: #1a222c;
+            --bg-input: #0f151d;
+
+            --primary-dark: #0a0e14;
+            --primary: #1a2a3a;
+            --primary-light: #3a5a7a;
+            --primary-gradient: linear-gradient(145deg, #0a0e14, #1a2a3a 50%, #2a4a5a 85%);
+            --accent: #8a7a5a;
+            --accent-light: #b8a88a;
+            --gold: #c9a84a;
+            --gold-light: #e8d080;
+            --discount-color: #e84a4a;
+            --discount-bg: #2a1414;
+
+            --text-primary: #e8eef4;
+            --text-secondary: #9aaec0;
+            --text-tertiary: #5a7a8a;
+            --text-light: #3a5a6a;
+
+            --border-color: #2a3a4a;
+            --border-focus: #5a8aaa;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 40px 80px rgba(0, 0, 0, 0.6);
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --radius-xl: 30px;
+            --radius-full: 9999px;
+
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px 20px 60px;
+            display: flex;
+            justify-content: center;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app {
+            max-width: 1320px;
+            width: 100%;
+        }
+
+        /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a5a6a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        /* ============================================================
+           HEADER · HERO STREETWEAR
+           ============================================================ */
+        .hero {
+            background: var(--primary-gradient);
+            border-radius: var(--radius-xl);
+            padding: 40px 44px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(90, 138, 170, 0.10);
+        }
+
+        .hero::before {
+            content: 'BAGGY';
+            position: absolute;
+            top: -20%;
+            right: -5%;
+            font-size: 12rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            letter-spacing: 0.1em;
+            pointer-events: none;
+            transform: rotate(-8deg);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(201, 168, 74, 0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px 30px;
+        }
+
+        .hero-title-group {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.6rem, 7vw, 4.4rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.02;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.30);
+        }
+
+        .hero-title .highlight {
+            color: var(--gold);
+        }
+
+        .hero-title .badge-mvc {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.3em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+            color: var(--gold-light);
+        }
+
+        .hero-subtitle {
+            color: rgba(255, 255, 255, 0.60);
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 8px;
+            max-width: 520px;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            margin-top: 14px;
+        }
+
+        .hero-badges .badge {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.60);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .dev-credit {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 10px 22px;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.50);
+            margin-top: 6px;
+        }
+
+        .dev-credit .dev-name {
+            color: var(--gold-light);
+            font-weight: 700;
+        }
+
+        .dev-credit .divider {
+            opacity: 0.2;
+            font-weight: 300;
+        }
+
+        /* ============================================================
+           CARDS
+           ============================================================ */
+        .card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-base);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(90, 138, 170, 0.10);
+        }
+
+        .card-solid {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            backdrop-filter: none;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .card-title .count-badge {
+            background: var(--bg-secondary);
+            padding: 2px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================================
+           GRID
+           ============================================================ */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .grid-2 .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* ============================================================
+           FORM ELEMENTS
+           ============================================================ */
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 14px;
+            margin-bottom: 12px;
+        }
+
+        .form-row input,
+        .form-row select {
+            flex: 1 0 150px;
+            padding: 13px 18px;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: var(--font);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            transition: var(--transition-fast);
+        }
+
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 4px rgba(90, 138, 170, 0.08);
+            background: #0f151d;
+        }
+
+        .form-row input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* ============================================================
+           BUTTONS
+           ============================================================ */
+        .btn {
+            border: none;
+            padding: 12px 26px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: var(--transition-base);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid transparent;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent 60%);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: #0a0e14;
+            box-shadow: 0 4px 16px rgba(201, 168, 74, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: #d4b050;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(201, 168, 74, 0.25);
+        }
+
+        .btn-success {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(138, 122, 90, 0.15);
+        }
+
+        .btn-success:hover {
+            background: #9a8a6a;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #8a2a2a;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #6a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary-light);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #0a0e14;
+            box-shadow: 0 4px 16px rgba(201, 168, 74, 0.15);
+        }
+
+        .btn-gold:hover {
+            background: #d4b050;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.7rem;
+        }
+
+        .btn-xs {
+            padding: 4px 12px;
+            font-size: 0.65rem;
+            border-radius: var(--radius-sm);
+        }
+
+        /* ============================================================
+           PRODUCTOS · STREETWEAR
+           ============================================================ */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--gold);
+        }
+
+        .product-card .product-icon {
+            font-size: 2.4rem;
+            margin-bottom: 6px;
+        }
+
+        .product-card .product-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        .product-card .product-category {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .product-card .product-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .product-card .product-price .original {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .product-card .product-price .discount-badge {
+            background: var(--discount-color);
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 10px;
+            text-transform: uppercase;
+        }
+
+        .product-card .product-discount {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .product-card .product-discount input {
+            width: 65px;
+            padding: 6px 8px;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+
+        .product-card .product-discount input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+        }
+
+        .product-card .product-discount .discount-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .product-card .product-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .product-card .product-actions .btn {
+            flex: 1;
+            min-width: 70px;
+            font-size: 0.7rem;
+        }
+
+        /* ============================================================
+           ESTADÍSTICAS
+           ============================================================ */
+        .store-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: var(--bg-card);
+            padding: 16px 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-box .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .stat-box .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+           TOOLBAR
+           ============================================================ */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 20px;
+            align-items: center;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 180px;
+            padding: 9px 18px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-input);
+            font-size: 0.9rem;
+            font-family: var(--font);
+            transition: var(--transition-fast);
+            color: var(--text-primary);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 4px rgba(90, 138, 170, 0.06);
+        }
+
+        .search-box::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* ============================================================
+           DIDACTIC SECTION
+           ============================================================ */
+        .didactic-section {
+            margin-top: 28px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 28px 34px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .didactic-section h2 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .didactic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .didactic-item {
+            background: var(--bg-secondary);
+            padding: 16px 18px;
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--gold);
+            transition: var(--transition-fast);
+        }
+
+        .didactic-item:hover {
+            transform: translateX(4px);
+            border-left-color: var(--gold-light);
+        }
+
+        .didactic-item strong {
+            display: block;
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .didactic-item ul {
+            list-style: none;
+            padding: 0;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .didactic-item ul li::before {
+            content: "◆ ";
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.5rem;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer-accelerator {
+            margin-top: 28px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px 28px;
+            border-left: 6px solid var(--gold);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid var(--border-color);
+            border-left-width: 6px;
+        }
+
+        .footer-accelerator .label {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .footer-accelerator .features {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+        }
+
+        .footer-accelerator .features span::before {
+            content: "✓ ";
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .footer-accelerator .credit {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 30px 28px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px 12px 60px;
+            }
+            .hero {
+                padding: 22px 20px;
+                border-radius: var(--radius-lg);
+            }
+            .card {
+                padding: 20px 16px;
+            }
+            .didactic-section {
+                padding: 20px 16px;
+            }
+            .hero-title {
+                font-size: clamp(2rem, 10vw, 2.6rem);
+            }
+            .hero-top {
+                flex-direction: column;
+            }
+            .dev-credit {
+                font-size: 0.75rem;
+                padding: 6px 14px;
+            }
+            .product-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-row input,
+            .form-row select {
+                flex: 1 0 100%;
+            }
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .footer-accelerator {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-accelerator .features {
+                justify-content: center;
+            }
+            .store-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .store-stats {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 16px 14px;
+            }
+            .card {
+                padding: 14px 12px;
+            }
+            .hero-title .badge-mvc {
+                font-size: 0.3em;
+                padding: 0 8px;
+                margin-left: 4px;
+            }
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.75rem;
+            }
+            .didactic-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================================
+           ANIMACIONES
+           ============================================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero {
+            animation: fadeUp 0.6s ease-out;
+        }
+        .card {
+            animation: fadeUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+        .card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .card:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+        .card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .didactic-section {
+            animation: fadeUp 0.6s ease-out;
+            animation-delay: 0.2s;
+            animation-fill-mode: both;
+        }
+        .footer-accelerator {
+            animation: fadeUp 0.5s ease-out;
+            animation-delay: 0.25s;
+            animation-fill-mode: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+
+        <!-- ============================================================
+        HEADER · BAGGY SHOP
+        ============================================================ -->
+        <header class="hero">
+            <div class="hero-content">
+                <div class="hero-top">
+                    <div class="hero-title-group">
+                        <h1 class="hero-title">
+                            🛍️ <span class="highlight">BAGGY</span> SHOP
+                            <span class="badge-mvc">MVC</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Streetwear · Urban Culture · Baggy Style
+                            <br/>Gestiona tu tienda de ropa con descuentos dinámicos
+                        </p>
+                        <div class="hero-badges">
+                            <span class="badge">🧩 localStorage</span>
+                            <span class="badge">💰 Descuentos</span>
+                            <span class="badge">📊 Estadísticas</span>
+                            <span class="badge">🎯 ODS 8 · Trabajo decente</span>
+                        </div>
+                    </div>
+                    <div class="dev-credit">
+                        <span>👨‍💻 Equipo Dev</span>
+                        <span class="dev-name">Jose</span>
+                        <span class="divider">·</span>
+                        <span class="dev-name">Rodolfo</span>
+                        <span class="divider">·</span>
+                        <span class="dev-name">Astor 67</span>
+                        <span class="divider">|</span>
+                        <span style="opacity:0.4; font-weight:400;">v1.0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        PANEL DE CONTROL · NUEVO PRODUCTO
+        ============================================================ -->
+        <div class="card card-solid">
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+                <div class="card-title" style="margin-bottom:0;">➕ Nuevo producto</div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-gold btn-sm" id="applyDiscountAllBtn">🎯 Aplicar descuento a todos</button>
+                    <button class="btn btn-outline btn-sm" id="removeAllDiscountsBtn">❌ Quitar todos</button>
+                </div>
+            </div>
+            <div class="form-row" id="productForm">
+                <input type="text" id="productName" placeholder="Nombre del producto *" style="flex:2;">
+                <select id="productCategory" style="flex:1;">
+                    <option value="Pantalones">Pantalones Baggy</option>
+                    <option value="Camisetas">Camisetas Oversize</option>
+                    <option value="Sudaderas">Sudaderas Hoodie</option>
+                    <option value="Chaquetas">Chaquetas Cargo</option>
+                    <option value="Accesorios">Accesorios</option>
+                    <option value="Calzado">Calzado</option>
+                </select>
+                <input type="number" id="productPrice" placeholder="Precio *" step="0.01" min="0" style="flex:1;">
+                <button class="btn btn-primary" id="addProductBtn">➕ Añadir</button>
+            </div>
+            <div class="toolbar">
+                <input type="text" id="searchInput" class="search-box" placeholder="🔍 Buscar producto...">
+            </div>
+        </div>
+
+        <!-- ============================================================
+        ESTADÍSTICAS
+        ============================================================ -->
+        <div class="store-stats" id="storeStats">
+            <div class="stat-box">
+                <div class="stat-number" id="totalProducts">0</div>
+                <div class="stat-label">📦 Productos</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="totalValue">$0</div>
+                <div class="stat-label">💰 Valor total</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="discountedProducts">0</div>
+                <div class="stat-label">🏷️ Con descuento</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="avgDiscount">0%</div>
+                <div class="stat-label">📉 Descuento promedio</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        LISTA DE PRODUCTOS · STREETWEAR
+        ============================================================ -->
+        <div class="card card-solid">
+            <div class="card-title">
+                👕 Productos · Baggy Style
+                <span class="count-badge" id="productCounter">0</span>
+            </div>
+            <div class="product-grid" id="productListContainer">
+                <div class="empty-state" style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-tertiary);">
+                    <span style="font-size:2.4rem; display:block; margin-bottom:10px;">🛒</span>
+                    No hay productos aún. ¡Agrega el primero!
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SECCIÓN DIDÁCTICA
+        ============================================================ -->
+        <div class="didactic-section">
+            <h2>📚 Componentes de la Secuencia Didáctica · Proyecto STEM</h2>
+            <div class="didactic-grid">
+                <div class="didactic-item">
+                    <strong>🎯 Fase 1 · Presentación</strong>
+                    <ul>
+                        <li>Introducción a MVC</li>
+                        <li>Problemas reales</li>
+                        <li>Formación de equipos</li>
+                        <li>Roles: PO, Dev, Tester, Doc, UI</li>
+                        <li>ODS 8 · Trabajo decente</li>
+                    </ul>
+                </div>
+                <div class="didactic-item">
+                    <strong>🛠️ Fase 2 · Desarrollo</strong>
+                    <ul>
+                        <li>Aprendizaje Basado en Proyectos</li>
+                        <li>Metodología STEM</li>
+                        <li>Programación en pares</li>
+                        <li>Ciclo de Vida del Software</li>
+                        <li>Refactorización y pruebas</li>
+                    </ul>
+                </div>
+                <div class="didactic-item">
+                    <strong>📊 Evaluación</strong>
+                    <ul>
+                        <li>Rúbrica analítica</li>
+                        <li>Autoevaluación</li>
+                        <li>Coevaluación</li>
+                        <li>Portafolio STEM</li>
+                        <li>Presentación oral y pitch</li>
+                    </ul>
+                </div>
+                <div class="didactic-item">
+                    <strong>🌍 ODS · Reflexión</strong>
+                    <ul>
+                        <li>ODS 8: Trabajo decente</li>
+                        <li>Gestión responsable</li>
+                        <li>Consumo sostenible</li>
+                        <li>Impacto comunitario</li>
+                        <li>Tecnología ética</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <div class="footer-accelerator">
+            <span class="label">⚡ Acelerador · Nivel 4</span>
+            <div class="features">
+                <span>Persistencia localStorage</span>
+                <span>Descuentos dinámicos</span>
+                <span>Búsqueda en tiempo real</span>
+                <span>Estadísticas automáticas</span>
+                <span>Diseño responsivo</span>
+                <span>Arquitectura MVC</span>
+            </div>
+            <span class="credit">Desarrollado por Jose, Rodolfo &amp; Astor 67</span>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT · MVC
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            //  MODELO · GESTIÓN DE PRODUCTOS STREETWEAR
+            // ============================================================
+            class Model {
+                constructor() {
+                    this.storageKey = 'baggyShopMVCData';
+                    this.data = this.loadData();
+                }
+
+                loadData() {
+                    const stored = localStorage.getItem(this.storageKey);
+                    if (stored) {
+                        try {
+                            const parsed = JSON.parse(stored);
+                            parsed.products = parsed.products || [];
+                            return parsed;
+                        } catch (e) {
+                            console.warn('Error parsing stored data, resetting.');
+                        }
+                    }
+                    // Datos iniciales · Streetwear Baggy Style
+                    return {
+                        products: [{
+                            id: 'p1',
+                            name: 'Pantalón Cargo Baggy',
+                            category: 'Pantalones',
+                            price: 45.00,
+                            discount: 0,
+                            icon: '👖'
+                        }, {
+                            id: 'p2',
+                            name: 'Camiseta Oversize Grunge',
+                            category: 'Camisetas',
+                            price: 28.00,
+                            discount: 10,
+                            icon: '👕'
+                        }, {
+                            id: 'p3',
+                            name: 'Hoodie Urban Baggy',
+                            category: 'Sudaderas',
+                            price: 55.00,
+                            discount: 0,
+                            icon: '🧥'
+                        }, {
+                            id: 'p4',
+                            name: 'Chaqueta Cargo Militar',
+                            category: 'Chaquetas',
+                            price: 72.00,
+                            discount: 5,
+                            icon: '🧥'
+                        }, {
+                            id: 'p5',
+                            name: 'Gorra Trucker Vintage',
+                            category: 'Accesorios',
+                            price: 22.00,
+                            discount: 0,
+                            icon: '🧢'
+                        }, {
+                            id: 'p6',
+                            name: 'Zapatillas Chunky 90s',
+                            category: 'Calzado',
+                            price: 89.00,
+                            discount: 15,
+                            icon: '👟'
+                        }, {
+                            id: 'p7',
+                            name: 'Jogger Baggy Street',
+                            category: 'Pantalones',
+                            price: 38.00,
+                            discount: 0,
+                            icon: '👖'
+                        }, {
+                            id: 'p8',
+                            name: 'Camiseta Graphic Print',
+                            category: 'Camisetas',
+                            price: 32.00,
+                            discount: 8,
+                            icon: '👕'
+                        }]
+                    };
+                }
+
+                saveData() {
+                    localStorage.setItem(this.storageKey, JSON.stringify(this.data));
+                }
+
+                getProducts() { return this.data.products; }
+
+                addProduct(name, category, price) {
+                    if (!name || name.trim() === '') return false;
+                    if (isNaN(price) || price <= 0) return false;
+                    const icons = {
+                        'Pantalones': '👖',
+                        'Camisetas': '👕',
+                        'Sudaderas': '🧥',
+                        'Chaquetas': '🧥',
+                        'Accesorios': '🧢',
+                        'Calzado': '👟'
+                    };
+                    const newProduct = {
+                        id: 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                        name: name.trim(),
+                        category: category || 'Pantalones',
+                        price: parseFloat(price),
+                        discount: 0,
+                        icon: icons[category] || '👕'
+                    };
+                    this.data.products.push(newProduct);
+                    this.saveData();
+                    return newProduct;
+                }
+
+                removeProduct(id) {
+                    this.data.products = this.data.products.filter(p => p.id !== id);
+                    this.saveData();
+                    return true;
+                }
+
+                updateProduct(id, updates) {
+                    const product = this.data.products.find(p => p.id === id);
+                    if (!product) return false;
+                    if (updates.name !== undefined) product.name = updates.name.trim();
+                    if (updates.price !== undefined) product.price = parseFloat(updates.price);
+                    if (updates.discount !== undefined) {
+                        product.discount = Math.min(100, Math.max(0, parseFloat(updates.discount) || 0));
+                    }
+                    this.saveData();
+                    return product;
+                }
+
+                setDiscount(id, discount) {
+                    return this.updateProduct(id, { discount: discount });
+                }
+
+                applyDiscountToAll(discount) {
+                    const validDiscount = Math.min(100, Math.max(0, parseFloat(discount) || 0));
+                    this.data.products.forEach(p => {
+                        p.discount = validDiscount;
+                    });
+                    this.saveData();
+                    return true;
+                }
+
+                removeAllDiscounts() {
+                    this.data.products.forEach(p => {
+                        p.discount = 0;
+                    });
+                    this.saveData();
+                    return true;
+                }
+
+                getProductsWithSearch(searchTerm = '') {
+                    let products = this.data.products;
+                    if (searchTerm && searchTerm.trim() !== '') {
+                        const term = searchTerm.trim().toLowerCase();
+                        products = products.filter(p =>
+                            p.name.toLowerCase().includes(term) ||
+                            p.category.toLowerCase().includes(term)
+                        );
+                    }
+                    return products;
+                }
+
+                getStats() {
+                    const products = this.data.products;
+                    const total = products.length;
+                    const totalValue = products.reduce((sum, p) => sum + p.price, 0);
+                    const discounted = products.filter(p => p.discount > 0).length;
+                    const avgDiscount = total > 0 ? products.reduce((sum, p) => sum + p.discount, 0) / total : 0;
+                    return { total, totalValue, discounted, avgDiscount };
+                }
+            }
+
+            // ============================================================
+            //  VISTA · RENDERIZADO
+            // ============================================================
+            class View {
+                constructor(model) {
+                    this.model = model;
+                    this.productListContainer = document.getElementById('productListContainer');
+                    this.productCounter = document.getElementById('productCounter');
+                    this.totalProducts = document.getElementById('totalProducts');
+                    this.totalValue = document.getElementById('totalValue');
+                    this.discountedProducts = document.getElementById('discountedProducts');
+                    this.avgDiscount = document.getElementById('avgDiscount');
+                    this.searchInput = document.getElementById('searchInput');
+
+                    this.bindEvents();
+                    this.renderAll();
+                }
+
+                bindEvents() {
+                    // Añadir producto
+                    document.getElementById('addProductBtn').addEventListener('click', () => {
+                        const name = document.getElementById('productName').value;
+                        const category = document.getElementById('productCategory').value;
+                        const price = document.getElementById('productPrice').value;
+                        if (this.controller) this.controller.handleAddProduct(name, category, price);
+                        document.getElementById('productName').value = '';
+                        document.getElementById('productPrice').value = '';
+                    });
+
+                    // Enter en campos
+                    document.getElementById('productName').addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') document.getElementById('addProductBtn').click();
+                    });
+                    document.getElementById('productPrice').addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') document.getElementById('addProductBtn').click();
+                    });
+
+                    // Búsqueda
+                    this.searchInput.addEventListener('input', () => this.renderProducts());
+
+                    // Aplicar descuento a todos
+                    document.getElementById('applyDiscountAllBtn').addEventListener('click', () => {
+                        const discount = prompt('Ingrese el porcentaje de descuento a aplicar a todos los productos (0-100):',
+                            '10');
+                        if (discount !== null) {
+                            const value = parseFloat(discount);
+                            if (!isNaN(value) && value >= 0 && value <= 100) {
+                                if (this.controller) this.controller.handleApplyDiscountToAll(value);
+                            } else {
+                                alert('⚠️ Ingrese un valor válido entre 0 y 100.');
+                            }
+                        }
+                    });
+
+                    // Quitar todos los descuentos
+                    document.getElementById('removeAllDiscountsBtn').addEventListener('click', () => {
+                        if (confirm('¿Estás seguro de que deseas quitar todos los descuentos?')) {
+                            if (this.controller) this.controller.handleRemoveAllDiscounts();
+                        }
+                    });
+
+                    // Delegación para acciones de productos
+                    this.productListContainer.addEventListener('click', (e) => {
+                        const target = e.target.closest('button');
+                        if (!target) return;
+                        const productId = target.dataset.productId;
+                        if (!productId) return;
+
+                        if (target.dataset.action === 'delete') {
+                            if (confirm('¿Eliminar este producto?')) {
+                                if (this.controller) this.controller.handleRemoveProduct(productId);
+                            }
+                        } else if (target.dataset.action === 'applyDiscount') {
+                            const input = document.querySelector(
+                                `[data-discount-input="${productId}"]`);
+                            if (input) {
+                                const value = parseFloat(input.value);
+                                if (!isNaN(value) && value >= 0 && value <= 100) {
+                                    if (this.controller) this.controller.handleSetDiscount(productId,
+                                    value);
+                                } else {
+                                    alert('⚠️ Ingrese un descuento válido entre 0 y 100.');
+                                }
+                            }
+                        } else if (target.dataset.action === 'removeDiscount') {
+                            if (this.controller) this.controller.handleSetDiscount(productId, 0);
+                        }
+                    });
+
+                    // Enter en campos de descuento
+                    this.productListContainer.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            const input = e.target.closest('[data-discount-input]');
+                            if (input) {
+                                const productId = input.dataset.discountInput;
+                                const btn = document.querySelector(
+                                    `[data-action="applyDiscount"][data-product-id="${productId}"]`);
+                                if (btn) btn.click();
+                            }
+                        }
+                    });
+                }
+
+                setController(controller) { this.controller = controller; }
+
+                renderAll() {
+                    this.renderProducts();
+                    this.renderStats();
+                }
+
+                renderProducts() {
+                    const search = this.searchInput.value;
+                    const products = this.model.getProductsWithSearch(search);
+
+                    this.productCounter.textContent = products.length;
+
+                    if (products.length === 0) {
+                        this.productListContainer.innerHTML = `
+                                <div class="empty-state" style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-tertiary);">
+                                    <span style="font-size:2.4rem; display:block; margin-bottom:10px;">🛒</span>
+                                    ${search ? 'No hay productos que coincidan con la búsqueda.' : 'No hay productos aún. ¡Agrega el primero!'}
+                                </div>
+                            `;
+                        return;
+                    }
+
+                    let html = '';
+                    products.forEach(product => {
+                        const hasDiscount = product.discount > 0;
+                        const discountedPrice = hasDiscount ? product.price * (1 - product.discount / 100) :
+                            product.price;
+                        const formattedPrice = discountedPrice.toFixed(2);
+
+                        html += `
+                                <div class="product-card">
+                                    <div class="product-icon">${product.icon || '👕'}</div>
+                                    <div class="product-name">${product.name}</div>
+                                    <div class="product-category">${product.category}</div>
+                                    <div class="product-price">
+                                        $${formattedPrice}
+                                        ${hasDiscount ? `<span class="original">$${product.price.toFixed(2)}</span>` : ''}
+                                        ${hasDiscount ? `<span class="discount-badge">-${product.discount}%</span>` : ''}
+                                    </div>
+                                    <div class="product-discount">
+                                        <span class="discount-label">Descuento</span>
+                                        <input type="number" data-discount-input="${product.id}" value="${product.discount}" min="0" max="100" step="1">
+                                        <span style="font-size:0.65rem; color:var(--text-tertiary);">%</span>
+                                        <button class="btn btn-sm btn-primary" data-action="applyDiscount" data-product-id="${product.id}">Aplicar</button>
+                                        ${hasDiscount ? `<button class="btn btn-sm btn-outline" data-action="removeDiscount" data-product-id="${product.id}">✕</button>` : ''}
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn btn-sm btn-danger" data-action="delete" data-product-id="${product.id}">🗑️ Eliminar</button>
+                                    </div>
+                                </div>
+                            `;
+                    });
+                    this.productListContainer.innerHTML = html;
+                }
+
+                renderStats() {
+                    const stats = this.model.getStats();
+                    this.totalProducts.textContent = stats.total;
+                    this.totalValue.textContent = '$' + stats.totalValue.toFixed(2);
+                    this.discountedProducts.textContent = stats.discounted;
+                    this.avgDiscount.textContent = stats.avgDiscount.toFixed(1) + '%';
+                }
+
+                refresh() {
+                    this.renderProducts();
+                    this.renderStats();
+                }
+            }
+
+            // ============================================================
+            //  CONTROLADOR · LÓGICA DE NEGOCIO
+            // ============================================================
+            class Controller {
+                constructor(model, view) {
+                    this.model = model;
+                    this.view = view;
+                    view.setController(this);
+                }
+
+                handleAddProduct(name, category, price) {
+                    if (!name || name.trim() === '') {
+                        alert('⚠️ El nombre del producto es obligatorio.');
+                        return;
+                    }
+                    const priceNum = parseFloat(price);
+                    if (isNaN(priceNum) || priceNum <= 0) {
+                        alert('⚠️ Ingrese un precio válido mayor a 0.');
+                        return;
+                    }
+                    const result = this.model.addProduct(name, category, priceNum);
+                    if (result) {
+                        this.view.refresh();
+                    } else {
+                        alert('⚠️ Error al crear el producto.');
+                    }
+                }
+
+                handleRemoveProduct(id) {
+                    this.model.removeProduct(id);
+                    this.view.refresh();
+                }
+
+                handleSetDiscount(id, discount) {
+                    const result = this.model.setDiscount(id, discount);
+                    if (result) {
+                        this.view.refresh();
+                    } else {
+                        alert('⚠️ Error al aplicar el descuento.');
+                    }
+                }
+
+                handleApplyDiscountToAll(discount) {
+                    this.model.applyDiscountToAll(discount);
+                    this.view.refresh();
+                }
+
+                handleRemoveAllDiscounts() {
+                    this.model.removeAllDiscounts();
+                    this.view.refresh();
+                }
+            }
+
+            // ============================================================
+            //  INICIALIZACIÓN
+            // ============================================================
+            const model = new Model();
+            const view = new View(model);
+            const controller = new Controller(model, view);
+
+            window.__app = { model, view, controller };
+
+        })();
+    </script>
+</body>
+</html>
