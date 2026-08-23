@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>6th Grade · Cycle 5 · Final Build & Documentation Lab</title>
+<style>
+:root{
+  --ink:#10283f;--navy:#0b1f33;--blue:#176b87;--cyan:#2aa7b8;--green:#2f8f65;
+  --mint:#eaf9f2;--sky:#eef8fc;--gold:#f2b84b;--paper:#ffffff;--line:#d9e8ef;
+  --soft:#f7fbfd;--danger:#b04444;--purple:#7356a8
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#edf7fb 0,#f9fcfd 38%,#fff 100%);color:var(--ink);line-height:1.55}
+a{text-decoration:none;color:inherit}
+.page{max-width:1180px;margin:auto;padding:24px 18px 70px}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.back{font-weight:900;color:var(--blue)}
+.badge{background:#dff5ee;border:1px solid #bde7d7;padding:7px 11px;border-radius:999px;font-weight:900;font-size:.78rem;color:#176246}
+.hero{background:radial-gradient(circle at 90% 10%,rgba(63,199,203,.26),transparent 32%),linear-gradient(135deg,#0b1f33,#123f58 58%,#176b87);color:white;padding:38px;border-radius:28px;box-shadow:0 18px 50px rgba(20,64,87,.18);position:relative;overflow:hidden}
+.hero:after{content:"</>";position:absolute;right:35px;bottom:-26px;font-size:150px;font-weight:1000;color:rgba(255,255,255,.05)}
+.kicker{font-size:.78rem;font-weight:950;letter-spacing:.13em;color:#87e6e4}
+h1{font-size:clamp(2.15rem,5vw,4.15rem);line-height:.98;margin:9px 0 16px;max-width:820px}
+.hero p{font-size:1.06rem;max-width:850px;color:#d9eef5}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:13px;font-weight:950;border:1px solid rgba(255,255,255,.2)}
+.btn.primary{background:#42d5b0;color:#092e31}
+.btn.secondary{background:rgba(255,255,255,.1);color:#fff}
+.goal{display:grid;grid-template-columns:1.3fr .7fr;gap:16px;margin:22px 0}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 8px 26px rgba(23,74,98,.06)}
+.card h2,.card h3{margin-top:0}
+.objective{font-size:1.08rem}
+.objective strong{color:var(--blue)}
+.timebox{display:flex;flex-direction:column;justify-content:center;background:linear-gradient(145deg,#e6f7ff,#e9fbf3)}
+.timebox .big{font-size:3rem;font-weight:1000;color:#155c78;line-height:1}
+.section-title{margin:38px 0 13px;font-size:1.65rem}
+.timeline{display:grid;gap:12px}
+.step{display:grid;grid-template-columns:90px 1fr;gap:16px;background:white;border:1px solid var(--line);padding:17px;border-radius:18px}
+.step .time{font-weight:1000;color:var(--blue);background:var(--sky);border-radius:13px;padding:10px;text-align:center;height:max-content}
+.step h3{margin:0 0 5px}
+.step p{margin:3px 0}
+.platform-grid,.check-grid,.rubric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.platform{padding:18px;border-radius:18px;border:1px solid var(--line);background:#fff}
+.platform .icon{font-size:2rem}
+.platform strong{display:block;margin-top:6px}
+.note{background:#fff8e6;border:1px solid #efd894;border-left:5px solid var(--gold);padding:15px 17px;border-radius:14px;margin:14px 0}
+.mission{background:linear-gradient(145deg,#0f3044,#164e61);color:#fff;border-radius:23px;padding:25px;margin-top:18px}
+.mission h2{margin-top:0}
+.check-grid{margin-top:13px}
+.check{background:white;border:1px solid var(--line);border-radius:17px;padding:17px}
+.check h3{font-size:1rem;margin-bottom:10px;color:#145a72}
+.check ul{list-style:none;padding:0;margin:0}
+.check li{margin:8px 0}
+.check li:before{content:"□";font-weight:1000;margin-right:8px;color:var(--green)}
+.testing{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.testbox{background:var(--soft);border:1px solid var(--line);border-radius:17px;padding:18px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:900;margin-top:10px}
+.flow span{padding:8px 10px;border-radius:999px;background:#eaf6fb;border:1px solid #cce6ef}
+.arrow{color:#6997aa}
+.rubric{overflow:auto}
+table{width:100%;border-collapse:collapse;background:white;border-radius:17px;overflow:hidden}
+th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#123f58;color:#fff}
+tr:last-child td{border-bottom:none}
+.level{font-weight:950;color:#176b87}
+.exit{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.question{background:linear-gradient(145deg,#f1f0fb,#fbfaff);border:1px solid #ded8ef;border-radius:17px;padding:20px}
+.planner{background:#f7fbfd;border:2px dashed #a9ccd9;border-radius:22px;padding:22px}
+.planner blockquote{margin:12px 0;background:white;border-left:4px solid var(--cyan);padding:13px 15px;border-radius:9px}
+.footer{margin-top:35px;text-align:center;color:#527080;font-size:.9rem}
+.small{font-size:.88rem;color:#5f7682}
+@media(max-width:800px){
+ .goal,.testing,.exit{grid-template-columns:1fr}
+ .platform-grid,.check-grid,.rubric-grid{grid-template-columns:1fr}
+ .step{grid-template-columns:1fr}
+ .hero{padding:27px 22px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <a class="back" href="/grades/6">← Back to 6th Grade</a>
+    <span class="badge">CYCLE 5 · AUG 24–31 · 2 HOURS</span>
+  </div>
+
+  <section class="hero">
+    <div class="kicker">6TH GRADE · FINAL BUILD SPRINT</div>
+    <h1>Complete. Test. Debug. Document.</h1>
+    <p><b>Mission / Misión:</b> Complete and refine your interactive project, prove that its computational logic works, test the full user experience, fix bugs and leave clear documentation so another person can understand and use it.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="/gamification/live/host">🎮 Teacher Warm-up · Code Battle Live</a>
+      <a class="btn secondary" href="/guides/grade-06/cycle-4-interactive-project-lab.html">↩ Review Cycle 4 Project Lab</a>
+    </div>
+  </section>
+
+  <section class="goal">
+    <article class="card objective">
+      <h2>🎯 Learning Objective · Objetivo de aprendizaje</h2>
+      <p><strong>EN:</strong> Refine and complete an interactive digital project by applying variables, conditionals, loops and arrays/lists/data collections; then test, debug and document the solution so it can be understood and used by others.</p>
+      <p><strong>ES:</strong> Refinar y completar un proyecto digital interactivo aplicando variables, condicionales, ciclos y arreglos/listas/colecciones de datos; posteriormente probar, depurar y documentar la solución para que pueda ser comprendida y utilizada por otras personas.</p>
+    </article>
+    <article class="card timebox">
+      <span class="small">CLASS MISSION</span>
+      <div class="big">120</div>
+      <strong>minutes</strong>
+      <p class="small">Warm-up → Build → Test → Document → Reflect</p>
+    </article>
+  </section>
+
+  <h2 class="section-title">🧰 Choose your development environment</h2>
+  <p>The learning target is the computational thinking and quality of the project—not one specific application.</p>
+  <section class="platform-grid">
+    <article class="platform"><div class="icon">🌐</div><strong>HTML + CSS + JavaScript</strong><span class="small">Interactive websites, games, simulations and digital experiences.</span></article>
+    <article class="platform"><div class="icon">🐱</div><strong>Scratch</strong><span class="small">Block-based interactive stories, games and simulations.</span></article>
+    <article class="platform"><div class="icon">🛠️</div><strong>Other approved platform</strong><span class="small">A teacher-approved tool that allows the team to demonstrate the same computational concepts.</span></article>
+  </section>
+  <div class="note"><b>Key criterion:</b> the platform may change, but the project must demonstrate computational logic, interaction, testing and documentation. / <b>Criterio clave:</b> la plataforma puede cambiar, pero el proyecto debe demostrar lógica computacional, interacción, pruebas y documentación.</div>
+
+  <h2 class="section-title">⚡ 2-Hour Didactic Sequence</h2>
+  <section class="timeline">
+    <article class="step">
+      <div class="time">0–12 min</div>
+      <div><h3>1. Opening & Motivation · Activación</h3><p>Lasallian greeting. Ask: <b>“How can we make our projects better?”</b></p><p>Run a short <b>6th Grade Code Battle Live</b> as a retrieval warm-up on variables, conditions, loops and debugging.</p></div>
+    </article>
+    <article class="step">
+      <div class="time">12–25 min</div>
+      <div><h3>2. Completion Check · Diagnóstico rápido</h3><p>Each team audits its own project using the checklist below. They identify <b>Done / Needs improvement / Missing</b>.</p></div>
+    </article>
+    <article class="step">
+      <div class="time">25–82 min</div>
+      <div><h3>3. Final Build Sprint · Construcción y refinamiento</h3><p>Teams complete missing functionality, improve interaction and show the teacher the computational concepts in their own code/project.</p><div class="flow"><span>Variable</span><b class="arrow">→</b><span>Decision</span><b class="arrow">→</b><span>Loop</span><b class="arrow">→</b><span>Collection</span><b class="arrow">→</b><span>User interaction</span></div></div>
+    </article>
+    <article class="step">
+      <div class="time">82–103 min</div>
+      <div><h3>4. Test & Debug Sprint · Pruebas y depuración</h3><p>Students test complete user flows, record expected vs. actual behavior, identify bugs and apply fixes. A peer should test the project without receiving step-by-step help from the creators.</p></div>
+    </article>
+    <article class="step">
+      <div class="time">103–114 min</div>
+      <div><h3>5. Documentation Sprint · Documentación</h3><p>Add project title, purpose, team first names, instructions, controls, relevant comments and a short explanation of the computational logic.</p></div>
+    </article>
+    <article class="step">
+      <div class="time">114–120 min</div>
+      <div><h3>6. Closure · Action & Expression</h3><p>Quick progress check: <b>“What have you completed? What’s left?”</b> Reflection: <b>“What was the most difficult part of building your project?”</b> Lasallian prayer.</p></div>
+    </article>
+  </section>
+
+  <section class="mission">
+    <h2>🚀 Final Build Mission</h2>
+    <p>By the end of Cycle 5, your team should be able to demonstrate the project—not only show the screen. Every member should understand what the project does and where the main computational concepts appear.</p>
+  </section>
+
+  <h2 class="section-title">✅ Project Completion Checklist</h2>
+  <section class="check-grid">
+    <article class="check"><h3>1 · Computational Logic</h3><ul><li>At least one meaningful variable</li><li>A condition / decision</li><li>A loop / repeated process</li><li>An array, list or data collection</li><li>User input or interaction</li></ul></article>
+    <article class="check"><h3>2 · Functionality</h3><ul><li>Main experience works from start to finish</li><li>Controls/buttons work</li><li>No known critical bug</li><li>Feedback is visible to the user</li><li>The objective is understandable</li></ul></article>
+    <article class="check"><h3>3 · Testing & Debugging</h3><ul><li>Team tested the full project</li><li>Peer tested the project</li><li>Expected vs. actual result recorded</li><li>At least one bug/fix documented</li><li>Final retest completed</li></ul></article>
+    <article class="check"><h3>4 · Documentation</h3><ul><li>Project title</li><li>Purpose / problem addressed</li><li>First names of team members</li><li>How to use / controls</li><li>Relevant code comments or instructions</li></ul></article>
+    <article class="check"><h3>5 · Communication</h3><ul><li>Every member can explain the project</li><li>Team can point to variables/conditions/loops</li><li>Team can explain one challenge</li><li>Team can explain one improvement</li><li>Team can receive critical feedback</li></ul></article>
+    <article class="check"><h3>6 · Final Evidence</h3><ul><li>Working project file/link</li><li>Testing evidence</li><li>Short documentation</li><li>Reflection completed</li><li>Ready for teacher review</li></ul></article>
+  </section>
+
+  <h2 class="section-title">🧪 Testing Protocol</h2>
+  <section class="testing">
+    <article class="testbox"><h3>Developer Test</h3><p><b>Expected:</b> What should happen?</p><p><b>Actual:</b> What really happened?</p><p><b>Bug:</b> What failed?</p><p><b>Fix:</b> What did you change?</p><p><b>Retest:</b> Did it work after the change?</p></article>
+    <article class="testbox"><h3>Peer Test</h3><p>Give the project to another student/team. Do not explain every step.</p><p>Observe:</p><ul><li>Can they understand how to start?</li><li>Are controls/instructions clear?</li><li>Can they complete the main experience?</li><li>Where do they get confused?</li></ul></article>
+  </section>
+
+  <h2 class="section-title">📋 Teacher Progress Check</h2>
+  <section class="rubric">
+    <table>
+      <thead><tr><th>Criterion</th><th>Ready</th><th>Developing</th><th>Needs action</th></tr></thead>
+      <tbody>
+        <tr><td><b>Computational concepts</b></td><td>Variables, decisions, loops and collection are meaningful and explainable.</td><td>Most concepts appear but need refinement.</td><td>Concepts are missing or cannot be explained.</td></tr>
+        <tr><td><b>Functionality</b></td><td>Main user flow works.</td><td>Minor bugs remain.</td><td>Critical flow is incomplete.</td></tr>
+        <tr><td><b>Testing</b></td><td>Evidence of tests, bugs, fixes and retest.</td><td>Some testing was done.</td><td>No clear testing evidence.</td></tr>
+        <tr><td><b>Documentation</b></td><td>Purpose, instructions, controls and comments are clear.</td><td>Documentation exists but is incomplete.</td><td>User cannot understand how to use the project.</td></tr>
+        <tr><td><b>Team understanding</b></td><td>All members can explain the project.</td><td>Understanding is uneven.</td><td>Only one person can explain the work.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <h2 class="section-title">💬 Exit Ticket</h2>
+  <section class="exit">
+    <article class="question"><h3>1. Progress</h3><p><b>What have you completed? What’s left?</b></p><p>¿Qué han completado? ¿Qué falta?</p></article>
+    <article class="question"><h3>2. Reflection</h3><p><b>What was the most difficult part of building your project?</b></p><p>¿Cuál fue la parte más difícil de construir su proyecto?</p></article>
+  </section>
+
+  <h2 class="section-title">📝 Updated Planner Alignment</h2>
+  <section class="planner">
+    <p><b>Cycle 5 goal remains:</b> Complete and refine the interactive project with documentation.</p>
+    <blockquote><b>Updated Development / Representation:</b><br>
+      1. Review project requirements: variables, conditionals, loops, and arrays/lists/data collections.<br>
+      2. Students complete and refine their interactive projects using HTML/CSS/JavaScript, Scratch, or another teacher-approved development environment.<br>
+      3. Testing and debugging: students test complete user flows, identify errors, and apply corrections.<br>
+      4. Documentation: students add clear instructions, controls, comments, project purpose, and user guidance.<br>
+      5. Teacher circulates to provide technical, design and project-management feedback.
+    </blockquote>
+    <blockquote><b>Updated Resources:</b><br>
+      Computers, web browser, HTML/CSS/JavaScript environment, Scratch or other approved development platform, project rubric, checklist and notebook.
+    </blockquote>
+    <p><b>Socio-emotional competencies:</b> Project management, teamwork, creativity, critical feedback.</p>
+  </section>
+
+  <div class="footer">
+    Tech Learning Hub · 6th Grade · Cycle 5 · Final Build & Documentation Lab
+  </div>
+</div>
+</body>
+</html>
