@@ -2,6 +2,22 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-02-algorithm-adventure",
+    grade: 2,
+    cycle: 5,
+    title: {
+      en: "Algorithm Adventure · Games & Sequences",
+      es: "Aventura de Algoritmos · Juegos y Secuencias",
+    },
+    objective: {
+      en: "Recognize, order and create simple sequences of instructions to solve everyday and digital problems.",
+      es: "Reconocer, ordenar y crear secuencias sencillas de instrucciones para resolver problemas cotidianos y digitales.",
+    },
+    durationMinutes: 60,
+    guidePath: "/guides/grade-02/algorithm-adventure.html",
+    tags: ["Algorithms", "Sequences", "Games", "Debugging", "Computational Thinking", "Cycle 5"],
+  },
+  {
     id: "grade-09-updated-class-sequences",
     grade: 9,
     cycle: 5,

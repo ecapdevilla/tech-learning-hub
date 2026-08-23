@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2nd Grade · Algorithm Adventure</title>
+<style>
+:root{
+  --ink:#23314d;--purple:#6954c7;--blue:#3b82f6;--green:#22a06b;--gold:#f3b63f;
+  --pink:#ee6ea7;--sky:#eef7ff;--lav:#f2efff;--line:#dfe5f0;--paper:#fff
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);
+background:linear-gradient(180deg,#eef7ff 0,#fafbff 48%,#fff 100%);line-height:1.5}
+button{font:inherit}
+main{max-width:1100px;margin:auto;padding:20px 16px 70px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.back{font-weight:900;color:#5644ab;text-decoration:none}
+.lang{border:0;background:#31285c;color:#fff;border-radius:999px;padding:9px 14px;font-weight:900;cursor:pointer}
+.hero{margin-top:16px;border-radius:28px;padding:34px;color:#fff;
+background:radial-gradient(circle at 88% 12%,rgba(255,255,255,.12),transparent 25%),
+linear-gradient(135deg,#6b56cb,#3888d8 60%,#22a6a0);box-shadow:0 18px 45px #35528b22}
+.hero h1{font-size:clamp(2.1rem,6vw,4rem);line-height:1;margin:7px 0 13px}
+.hero p{max-width:850px;color:#f1f7ff;font-size:1.06rem}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.pills span{background:#ffffff18;border:1px solid #ffffff25;border-radius:999px;padding:7px 10px;font-weight:900;font-size:.82rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:18px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px}
+.panel h2{margin-top:0}
+.objective strong{color:#5d49b8}
+.bigword{font-size:1.35rem;font-weight:1000;color:#4d3f9f}
+.note{margin:17px 0;background:#fff8e8;border:1px solid #eed79a;border-left:6px solid var(--gold);border-radius:15px;padding:17px}
+.title{margin:34px 0 13px;font-size:1.6rem}
+.learn{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.card .icon{font-size:2.2rem}.card strong{display:block;color:#5642ad;margin:7px 0}
+.game{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;margin:16px 0;box-shadow:0 8px 22px #29486c0b}
+.game h3{margin-top:0;font-size:1.35rem}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.btn{border:0;border-radius:12px;padding:10px 13px;font-weight:900;cursor:pointer}
+.primary{background:#5745b5;color:#fff}.secondary{background:#eaf2ff;color:#244a83}.good{background:#eaf8f1;color:#176347}
+.sequence{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;min-height:60px}
+.tile{border:2px solid #d9deed;background:#fff;border-radius:14px;padding:11px 13px;font-weight:900;cursor:pointer;box-shadow:0 4px 10px #1c2f4d0d}
+.tile.selected{outline:3px solid #8bb7ff}
+.answer{background:#f7f9fd;border:1px dashed #bdc8dd;border-radius:14px;padding:13px;min-height:54px;margin-top:10px}
+.feedback{font-weight:900;margin-top:10px;min-height:25px}
+.robot-board{display:grid;grid-template-columns:repeat(4,64px);gap:5px;justify-content:start;margin:14px 0}
+.cell{width:64px;height:64px;border-radius:12px;background:#edf4ff;border:1px solid #d6e2f3;display:flex;align-items:center;justify-content:center;font-size:1.65rem}
+.cmds{display:flex;gap:8px;flex-wrap:wrap}.cmd{background:#eef0ff;color:#41368c;border:0;border-radius:12px;padding:10px 13px;font-weight:1000;cursor:pointer}
+.cmdlist{min-height:45px;padding:10px;background:#f8f9fd;border:1px dashed #c5cce0;border-radius:12px;margin-top:10px}
+.pattern{display:flex;gap:9px;align-items:center;flex-wrap:wrap;font-size:2rem;margin:15px 0}
+.choicegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:500px}
+.choice{border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px;cursor:pointer;font-size:1.4rem}
+.progress{position:sticky;top:8px;z-index:4;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 13px;display:flex;align-items:center;gap:10px;margin:16px 0;box-shadow:0 6px 20px #23314d10}
+.bar{height:10px;flex:1;background:#edf0f6;border-radius:999px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#6954c7,#3b82f6,#22a06b);transition:.3s}
+.final{background:linear-gradient(145deg,#f2efff,#edf9f6);border:1px solid #dce3ec;border-radius:22px;padding:22px;text-align:center}
+.stars{font-size:2rem}
+.footer{text-align:center;color:#6d758a;margin-top:34px}
+@media(max-width:760px){.grid2,.learn,.choicegrid{grid-template-columns:1fr}.robot-board{grid-template-columns:repeat(4,54px)}.cell{width:54px;height:54px}}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+<a class="back" href="/grades/2" data-en="← Back to 2nd Grade" data-es="← Volver a 2°">← Back to 2nd Grade</a>
+<button id="langBtn" class="lang">Español</button>
+</div>
+
+<section class="hero">
+<small data-en="2ND GRADE · CLASS GAME" data-es="2° · JUEGO DE CLASE">2ND GRADE · CLASS GAME</small>
+<h1 data-en="Algorithm Adventure" data-es="Aventura de Algoritmos">Algorithm Adventure</h1>
+<p data-en="Learn how algorithms work by putting steps in order, guiding a robot, finding bugs and solving simple sequence challenges." data-es="Aprende cómo funcionan los algoritmos ordenando pasos, guiando un robot, encontrando errores y resolviendo retos sencillos de secuencias.">Learn how algorithms work by putting steps in order, guiding a robot, finding bugs and solving simple sequence challenges.</p>
+<div class="pills"><span>🧩 Sequences</span><span>🤖 Robot</span><span>🐞 Debugging</span><span>🧠 Algorithms</span><span>🏆 Challenges</span></div>
+</section>
+
+<div class="grid2">
+<section class="panel objective"><h2 data-en="🎯 Learning Objective" data-es="🎯 Objetivo de aprendizaje">🎯 Learning Objective</h2><strong data-en="Recognize, order and create simple sequences of instructions to solve everyday and digital problems." data-es="Reconocer, ordenar y crear secuencias sencillas de instrucciones para resolver problemas cotidianos y digitales.">Recognize, order and create simple sequences of instructions to solve everyday and digital problems.</strong></section>
+<section class="panel"><h2 data-en="🧭 Topic" data-es="🧭 Tema">🧭 Topic</h2><div class="bigword" data-en="Algorithms and Sequences" data-es="Algoritmos y Secuencias">Algorithms and Sequences</div><p data-en="An algorithm is a sequence of steps used to complete a task." data-es="Un algoritmo es una secuencia de pasos que usamos para completar una tarea.">An algorithm is a sequence of steps used to complete a task.</p></section>
+</div>
+
+<div class="note" data-en="Teacher tip: project the game on the classroom screen. Students can solve each challenge together, in teams, or take turns at the computer." data-es="Sugerencia docente: proyecta el juego en la pantalla del salón. Los estudiantes pueden resolver cada reto juntos, por equipos o por turnos en el computador.">Teacher tip: project the game on the classroom screen. Students can solve each challenge together, in teams, or take turns at the computer.</div>
+
+<div class="progress"><b data-en="Mission progress" data-es="Progreso de la misión">Mission progress</b><div class="bar"><div id="fill" class="fill"></div></div><span id="score">0/5</span></div>
+
+<h2 class="title" data-en="Learn First" data-es="Aprende primero">Learn First</h2>
+<section class="learn">
+<article class="card"><div class="icon">1️⃣2️⃣3️⃣</div><strong data-en="Sequence" data-es="Secuencia">Sequence</strong><p data-en="Steps must happen in a useful order." data-es="Los pasos deben ocurrir en un orden útil.">Steps must happen in a useful order.</p></article>
+<article class="card"><div class="icon">🤖</div><strong data-en="Algorithm" data-es="Algoritmo">Algorithm</strong><p data-en="A set of instructions that helps us reach a goal." data-es="Un conjunto de instrucciones que nos ayuda a alcanzar una meta.">A set of instructions that helps us reach a goal.</p></article>
+<article class="card"><div class="icon">🐞</div><strong data-en="Bug" data-es="Error">Bug</strong><p data-en="A step or instruction that makes the solution fail." data-es="Un paso o instrucción que hace fallar la solución.">A step or instruction that makes the solution fail.</p></article>
+</section>
+
+<section class="game">
+<h3 data-en="Game 1 · Put It in Order 🧩" data-es="Juego 1 · Ponlo en orden 🧩">Game 1 · Put It in Order 🧩</h3>
+<p data-en="Click the morning steps in the correct order." data-es="Haz clic en los pasos de la mañana en el orden correcto.">Click the morning steps in the correct order.</p>
+<div id="morningTiles" class="sequence"></div>
+<div id="morningAnswer" class="answer"></div>
+<div class="actions"><button class="btn secondary" onclick="resetMorning()" data-en="Reset" data-es="Reiniciar">Reset</button><button class="btn primary" onclick="checkMorning()" data-en="Check answer" data-es="Revisar respuesta">Check answer</button></div>
+<div id="fb1" class="feedback"></div>
+</section>
+
+<section class="game">
+<h3 data-en="Game 2 · Help the Robot 🤖" data-es="Juego 2 · Ayuda al robot 🤖">Game 2 · Help the Robot 🤖</h3>
+<p data-en="Guide the robot from the top-left corner to the star. Build the algorithm, then run it." data-es="Guía al robot desde la esquina superior izquierda hasta la estrella. Construye el algoritmo y luego ejecútalo.">Guide the robot from the top-left corner to the star. Build the algorithm, then run it.</p>
+<div id="board" class="robot-board"></div>
+<div class="cmds"><button class="cmd" onclick="addCmd('R')">➡️</button><button class="cmd" onclick="addCmd('D')">⬇️</button></div>
+<div id="cmdList" class="cmdlist"></div>
+<div class="actions"><button class="btn secondary" onclick="resetRobot()" data-en="Clear" data-es="Borrar">Clear</button><button class="btn primary" onclick="runRobot()" data-en="Run algorithm" data-es="Ejecutar algoritmo">Run algorithm</button></div>
+<div id="fb2" class="feedback"></div>
+</section>
+
+<section class="game">
+<h3 data-en="Game 3 · Find the Bug 🐞" data-es="Juego 3 · Encuentra el error 🐞">Game 3 · Find the Bug 🐞</h3>
+<p data-en="A robot wants to make a sandwich. Which step does not belong?" data-es="Un robot quiere preparar un sándwich. ¿Qué paso no pertenece?">A robot wants to make a sandwich. Which step does not belong?</p>
+<div class="choicegrid">
+<button class="choice" onclick="bugChoice(false)">🍞 <span data-en="Take bread" data-es="Tomar pan">Take bread</span></button>
+<button class="choice" onclick="bugChoice(true)">🧦 <span data-en="Put on socks" data-es="Ponerse medias">Put on socks</span></button>
+<button class="choice" onclick="bugChoice(false)">🧀 <span data-en="Add cheese" data-es="Agregar queso">Add cheese</span></button>
+</div>
+<div id="fb3" class="feedback"></div>
+</section>
+
+<section class="game">
+<h3 data-en="Game 4 · What Comes Next? 🔍" data-es="Juego 4 · ¿Qué sigue? 🔍">Game 4 · What Comes Next? 🔍</h3>
+<p data-en="Look at the pattern and choose what comes next." data-es="Observa el patrón y elige qué sigue.">Look at the pattern and choose what comes next.</p>
+<div class="pattern">🔵 🟡 🔵 🟡 🔵 ❓</div>
+<div class="choicegrid">
+<button class="choice" onclick="patternChoice(false)">🔵</button>
+<button class="choice" onclick="patternChoice(true)">🟡</button>
+<button class="choice" onclick="patternChoice(false)">🟢</button>
+</div>
+<div id="fb4" class="feedback"></div>
+</section>
+
+<section class="game">
+<h3 data-en="Game 5 · Final Algorithm Challenge 🏆" data-es="Juego 5 · Reto final de algoritmo 🏆">Game 5 · Final Algorithm Challenge 🏆</h3>
+<p data-en="Choose the best algorithm for brushing your teeth." data-es="Elige el mejor algoritmo para cepillarte los dientes.">Choose the best algorithm for brushing your teeth.</p>
+<div class="actions">
+<button class="btn secondary" onclick="finalChoice(false)" data-en="Brush → Put toothpaste → Take toothbrush" data-es="Cepillar → Poner crema → Tomar cepillo">Brush → Put toothpaste → Take toothbrush</button>
+<button class="btn secondary" onclick="finalChoice(true)" data-en="Take toothbrush → Put toothpaste → Brush → Rinse" data-es="Tomar cepillo → Poner crema → Cepillar → Enjuagar">Take toothbrush → Put toothpaste → Brush → Rinse</button>
+<button class="btn secondary" onclick="finalChoice(false)" data-en="Rinse → Brush → Find toothbrush" data-es="Enjuagar → Cepillar → Buscar cepillo">Rinse → Brush → Find toothbrush</button>
+</div>
+<div id="fb5" class="feedback"></div>
+</section>
+
+<section class="final">
+<div class="stars">⭐ ⭐ ⭐</div>
+<h2 data-en="Mission Complete!" data-es="¡Misión completada!">Mission Complete!</h2>
+<p data-en="When you finish all five games, explain this sentence to a classmate: An algorithm is a sequence of steps used to complete a task." data-es="Cuando termines los cinco juegos, explica esta frase a un compañero: Un algoritmo es una secuencia de pasos que usamos para completar una tarea.">When you finish all five games, explain this sentence to a classmate: An algorithm is a sequence of steps used to complete a task.</p>
+<button class="btn good" onclick="restartAll()" data-en="Play again" data-es="Jugar otra vez">Play again</button>
+</section>
+
+<div class="footer">Tech Learning Hub · 2nd Grade · Algorithm Adventure</div>
+</main>
+
+<script>
+let lang='en', done=[false,false,false,false,false];
+const translations={
+ correct:{en:'✅ Great job!',es:'✅ ¡Muy bien!'},
+ try:{en:'🔁 Try again.',es:'🔁 Intenta otra vez.'},
+ bug:{en:'✅ You found the bug!',es:'✅ ¡Encontraste el error!'},
+ robot:{en:'✅ The robot reached the star!',es:'✅ ¡El robot llegó a la estrella!'}
+};
+function updateProgress(){
+ const n=done.filter(Boolean).length;
+ document.getElementById('score').textContent=n+'/5';
+ document.getElementById('fill').style.width=(n*20)+'%';
+}
+function mark(i){done[i]=true;updateProgress()}
+function setLang(l){
+ lang=l;document.documentElement.lang=l;
+ document.querySelectorAll('[data-en][data-es]').forEach(e=>e.textContent=e.getAttribute('data-'+l));
+ document.getElementById('langBtn').textContent=l==='en'?'Español':'English';
+ document.title=l==='en'?'2nd Grade · Algorithm Adventure':'2° · Aventura de Algoritmos';
+}
+document.getElementById('langBtn').onclick=()=>setLang(lang==='en'?'es':'en');
+
+const morning=[
+ {id:1,en:'Wake up',es:'Despertarse',icon:'🌞'},
+ {id:2,en:'Get dressed',es:'Vestirse',icon:'👕'},
+ {id:3,en:'Eat breakfast',es:'Desayunar',icon:'🥣'},
+ {id:4,en:'Go to school',es:'Ir al colegio',icon:'🎒'}
+];
+let selected=[];
+function renderMorning(){
+ const box=document.getElementById('morningTiles'); box.innerHTML='';
+ const shuffled=[morning[2],morning[0],morning[3],morning[1]];
+ shuffled.forEach(x=>{
+   const b=document.createElement('button');b.className='tile';
+   b.textContent=x.icon+' '+x[lang];
+   b.onclick=()=>{if(!selected.includes(x.id)){selected.push(x.id);renderAnswer()}};
+   box.appendChild(b);
+ });
+}
+function renderAnswer(){document.getElementById('morningAnswer').textContent=selected.map(id=>morning.find(x=>x.id===id)[lang]).join(' → ')}
+function resetMorning(){selected=[];renderAnswer();document.getElementById('fb1').textContent=''}
+function checkMorning(){const ok=JSON.stringify(selected)==='[1,2,3,4]';document.getElementById('fb1').textContent=ok?translations.correct[lang]:translations.try[lang];if(ok)mark(0)}
+
+let cmds=[],pos=0;
+function drawBoard(){
+ const board=document.getElementById('board');board.innerHTML='';
+ for(let i=0;i<16;i++){const c=document.createElement('div');c.className='cell';c.textContent=i===pos?'🤖':i===15?'⭐':'';board.appendChild(c)}
+}
+function addCmd(c){cmds.push(c);document.getElementById('cmdList').textContent=cmds.map(x=>x==='R'?'➡️':'⬇️').join(' ')}
+function resetRobot(){cmds=[];pos=0;document.getElementById('cmdList').textContent='';document.getElementById('fb2').textContent='';drawBoard()}
+function runRobot(){
+ let r=0,c=0,valid=true;
+ for(const cmd of cmds){if(cmd==='R'){c++;if(c>3){valid=false;break}}else{r++;if(r>3){valid=false;break}}}
+ pos=r*4+c;drawBoard();
+ const ok=valid&&pos===15;
+ document.getElementById('fb2').textContent=ok?translations.robot[lang]:translations.try[lang];
+ if(ok)mark(1);
+}
+function bugChoice(ok){document.getElementById('fb3').textContent=ok?translations.bug[lang]:translations.try[lang];if(ok)mark(2)}
+function patternChoice(ok){document.getElementById('fb4').textContent=ok?translations.correct[lang]:translations.try[lang];if(ok)mark(3)}
+function finalChoice(ok){document.getElementById('fb5').textContent=ok?translations.correct[lang]:translations.try[lang];if(ok)mark(4)}
+function restartAll(){done=[false,false,false,false,false];updateProgress();resetMorning();resetRobot();document.getElementById('fb3').textContent='';document.getElementById('fb4').textContent='';document.getElementById('fb5').textContent='';window.scrollTo({top:0,behavior:'smooth'})}
+setLang('en');renderMorning();drawBoard();updateProgress();
+</script>
+</body></html>
