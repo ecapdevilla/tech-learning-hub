@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌊 ODS 14 · Vida Submarina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b2b3f 0%, #1b4f6e 100%);
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(4px);
+            border-radius: 3.5rem 3.5rem 2.5rem 2.5rem;
+            padding: 2rem 2rem 2.5rem;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* header */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #b3e5fc, #a7d8f0, #8bc9e0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .hero h1 small {
+            font-size: 1.2rem;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            color: #b3d9eb;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(2px);
+        }
+
+        .badge-ods {
+            background: #0d3b4f;
+            padding: 0.5rem 1.4rem;
+            border-radius: 60px;
+            color: #b3e5fc;
+            font-weight: 500;
+            border: 1px solid #2d7a9c;
+            box-shadow: 0 0 12px #1f6f8f55;
+            font-size: 0.95rem;
+        }
+
+        /* grid cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0 2.4rem;
+        }
+
+        .card {
+            background: rgba(12, 38, 51, 0.7);
+            backdrop-filter: blur(2px);
+            border-radius: 2.2rem;
+            padding: 1.8rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: #43b0d9;
+            background: rgba(16, 52, 70, 0.8);
+            box-shadow: 0 18px 28px -12px #0f405a;
+        }
+
+        .card h3 {
+            color: #c3e3f5;
+            font-weight: 600;
+            font-size: 1.4rem;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px dashed #306f8b;
+            padding-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card p, .card li {
+            color: #d9ecf7;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%2345b8da" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>') left center no-repeat;
+            background-size: 1rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .card .highlight {
+            background: rgba(30, 130, 170, 0.25);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 500;
+            color: #b3e5fc;
+            border-left: 3px solid #4fc3f7;
+            margin-top: 0.5rem;
+        }
+
+        .stat-badge {
+            background: #0f405a;
+            border-radius: 30px;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            color: #9acfdf;
+            display: inline-block;
+            border: 1px solid #2c7a9b;
+        }
+
+        .meta-section {
+            background: rgba(7, 32, 44, 0.6);
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin: 2rem 0 1.8rem;
+            border-left: 6px solid #1f8eb0;
+            backdrop-filter: blur(2px);
+        }
+
+        .meta-section h2 {
+            color: #d2ecfc;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            font-size: 1.7rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .meta-section p {
+            color: #c2ddee;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .chip {
+            background: #154c64;
+            padding: 0.3rem 1.2rem;
+            border-radius: 50px;
+            color: #b3def5;
+            font-size: 0.9rem;
+            border: 1px solid #2b789b;
+        }
+
+        .btn {
+            background: #1c6f8f;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #369ac2;
+            box-shadow: 0 4px 10px #0d3d53;
+            font-size: 0.95rem;
+        }
+
+        .btn:hover {
+            background: #2587ad;
+            transform: scale(1.02);
+            box-shadow: 0 8px 18px #0f4d66;
+        }
+
+        .footer-note {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+            color: #85b7cf;
+            border-top: 1px solid #22586f;
+            padding-top: 1.8rem;
+            margin-top: 0.8rem;
+        }
+
+        .footer-note span {
+            background: #113e51;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+        }
+
+        .interactive-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            background: #0f3850;
+            padding: 1.2rem 2rem;
+            border-radius: 3rem;
+            margin: 1.5rem 0 0.5rem;
+            border: 1px solid #287290;
+        }
+
+        .interactive-box p {
+            color: #d6edfb;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .click-counter {
+            background: #134b62;
+            padding: 0.6rem 1.5rem;
+            border-radius: 80px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .click-counter span {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #b0e2fa;
+            min-width: 2.8rem;
+            text-align: center;
+        }
+
+        @media (max-width: 650px) {
+            .hero h1 { font-size: 2rem; flex-wrap: wrap; }
+            .app-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- header -->
+    <div class="hero">
+        <h1>
+            🌊 Vida Submarina
+            <small>ODS 14</small>
+        </h1>
+        <div class="badge-ods">🌍 Conservar océanos · 2026</div>
+    </div>
+
+    <!-- tarjetas principales -->
+    <div class="grid">
+        <div class="card">
+            <h3>⚠️ Problemas</h3>
+            <ul>
+                <li><strong>Contaminación</strong> plásticos y nutrientes</li>
+                <li><strong>Acidificación</strong> por CO₂</li>
+                <li><strong>Sobrepesca</strong> y pesca ilegal</li>
+            </ul>
+            <div class="highlight">+80% de la contaminación marina viene de tierra</div>
+        </div>
+        <div class="card">
+            <h3>🎯 Metas clave</h3>
+            <ul>
+                <li>Reducir contaminación <span class="stat-badge">2025</span></li>
+                <li>Proteger ecosistemas costeros</li>
+                <li>Luchar contra acidificación</li>
+                <li>Detener sobrepesca · eliminar subvenciones</li>
+                <li>Conservar ≥10% zonas marinas</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>📊 Estado actual</h3>
+            <p><span style="color:#f5b87e;">⚠️ Menos financiación</span> · metas 2020 no alcanzadas</p>
+            <p style="margin-top:0.6rem;">Falta de inversión, datos insuficientes y deuda en países en desarrollo.</p>
+            <div class="highlight" style="margin-top:0.8rem;">🌱 Uno de los ODS más lejos de cumplirse</div>
+        </div>
+        <div class="card">
+            <h3>🚀 En marcha</h3>
+            <ul>
+                <li><strong>IA</strong> + análisis de datos</li>
+                <li>Vigilancia por satélite</li>
+                <li>Acuerdo BBNJ</li>
+                <li>Marco Kunming-Montreal</li>
+            </ul>
+            <div style="margin-top:0.7rem; background:#0e3f55; border-radius:30px; padding:0.2rem 1rem; display:inline-block;">
+                🔬 cooperación científica
+            </div>
+        </div>
+    </div>
+
+    <!-- bloque meta ampliado -->
+    <div class="meta-section">
+        <h2>🌐 ¿Por qué es urgente?</h2>
+        <p>Los océanos generan el oxígeno que respiramos, regulan el clima y son fuente vital de alimentos. El ODS 14 busca <strong>conservar y usar sosteniblemente</strong> los recursos marinos. La acidificación, la contaminación y la sobrepesca amenazan este ecosistema.</p>
+        <div class="chip-group">
+            <span class="chip">🌊 3.000 millones de personas dependen del mar</span>
+            <span class="chip">🐠 90% de las poblaciones de peces sobreexplotadas</span>
+        </div>
+    </div>
+
+    <!-- Interacción: contador y dato curioso -->
+    <div class="interactive-box">
+        <p><span style="font-size:1.4rem;">🐚</span> <strong>Acción colectiva</strong> — cada clic representa un pequeño gesto por los océanos</p>
+        <div class="click-counter">
+            <button class="btn" id="clickBtn" style="padding:0.5rem 1.2rem; background:#1d7a9e;">🌊 Apoyar</button>
+            <span id="counterDisplay">0</span>
+        </div>
+    </div>
+
+    <!-- pie con info extra + botón dato -->
+    <div class="footer-note">
+        <div style="display:flex; gap:0.8rem; align-items:center; flex-wrap:wrap;">
+            <span>🏝️ Pequeños estados insulares, los más afectados</span>
+            <button class="btn" id="factBtn" style="background:#13516b; padding:0.3rem 1.3rem;">📘 Dato</button>
+            <span id="factMessage" style="color:#b3def5; font-style:italic; font-size:0.95rem; min-width:140px;"></span>
+        </div>
+        <span>🌍 #ODS14 · Vida Submarina</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // Contador de clics
+        let count = 0;
+        const counterSpan = document.getElementById('counterDisplay');
+        const clickBtn = document.getElementById('clickBtn');
+
+        // Actualiza contador y guarda en localStorage
+        function updateCounter() {
+            counterSpan.textContent = count;
+            try {
+                localStorage.setItem('ods14Clicks', count);
+            } catch (_) {}
+        }
+
+        // Cargar contador guardado
+        try {
+            const stored = localStorage.getItem('ods14Clicks');
+            if (stored !== null) {
+                const parsed = parseInt(stored, 10);
+                if (!isNaN(parsed)) {
+                    count = parsed;
+                }
+            }
+        } catch (_) {}
+        updateCounter();
+
+        clickBtn.addEventListener('click', function() {
+            count++;
+            updateCounter();
+            // pequeña animación visual
+            clickBtn.style.transform = 'scale(0.94)';
+            setTimeout(() => { clickBtn.style.transform = ''; }, 120);
+        });
+
+        // Botón de dato curioso (frase aleatoria)
+        const factBtn = document.getElementById('factBtn');
+        const factMessage = document.getElementById('factMessage');
+
+        const facts = [
+            '🌱 El océano absorbe ~30% del CO₂ emitido por humanos.',
+            '🐋 Más del 50% del oxígeno mundial proviene del océano.',
+            '♻️ Cada año llegan 8 millones de toneladas de plástico al mar.',
+            '🧪 La acidificación del océano ha aumentado un 26% desde la revolución industrial.',
+            '🦈 Los arrecifes de coral albergan el 25% de la vida marina.',
+            '⚓ La pesca ilegal representa hasta 26 millones de toneladas al año.',
+            '📉 Solo el 7,9% de los océanos están protegidos (2023).',
+        ];
+
+        factBtn.addEventListener('click', function() {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            factMessage.textContent = facts[randomIndex];
+            // Efecto sutil
+            factMessage.style.opacity = '0.7';
+            setTimeout(() => { factMessage.style.opacity = '1'; }, 100);
+        });
+
+        // Mostrar un dato inicial al cargar
+        factMessage.textContent = facts[0];
+
+        // Pequeño efecto extra: hover en cards
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transition = '0.25s';
+            });
+        });
+
+        // mensaje de consola amigable
+        console.log('🌊 ODS 14 · Vida Submarina — app interactiva cargada.');
+        console.log('💡 Haz clic en "Apoyar" para sumar tu compromiso simbólico.');
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌍 Calentamiento Global · Noli Edition</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(145deg, #0b2a35 0%, #1a4a5a 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .game-container {
+      max-width: 760px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 56px;
+      padding: 28px 24px 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
+      transition: 0.2s;
+    }
+    h1 {
+      text-align: center;
+      font-weight: 600;
+      font-size: 2.2rem;
+      color: #f3f9ff;
+      text-shadow: 0 4px 12px rgba(0,20,30,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    h1 span {
+      background: #ffd966;
+      color: #0a2c38;
+      font-size: 1.8rem;
+      padding: 0 18px;
+      border-radius: 60px;
+      line-height: 1.4;
+    }
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.3);
+      border-radius: 60px;
+      padding: 12px 22px;
+      margin: 6px 0 20px 0;
+      color: #dcecf5;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.05);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .score-box {
+      background: #ffd966;
+      color: #0b2a35;
+      padding: 4px 20px;
+      border-radius: 40px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      box-shadow: 0 2px 0 #b38f40;
+    }
+    .question-number {
+      background: #1f5b6b;
+      padding: 4px 20px;
+      border-radius: 40px;
+      font-size: 1rem;
+      color: white;
+      border: 1px solid #398194;
+    }
+    .question-box {
+      background: rgba(255,255,255,0.06);
+      border-radius: 40px;
+      padding: 22px 18px 16px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .question-text {
+      font-size: 1.6rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: #f2faff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      text-align: center;
+      word-break: break-word;
+    }
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 20px 0 16px;
+    }
+    .option-btn {
+      background: rgba(10,35,45,0.7);
+      backdrop-filter: blur(4px);
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 60px;
+      padding: 16px 22px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #ecf9ff;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      letter-spacing: 0.2px;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: #2e6d81;
+      border-color: #b4e2f0;
+      transform: scale(1.01);
+      box-shadow: 0 6px 0 #0e2e3a;
+    }
+    .option-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #0e2e3a;
+    }
+    .option-btn .letter {
+      background: #1a4f60;
+      border-radius: 40px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: white;
+      flex-shrink: 0;
+      border: 1px solid #5f9bb0;
+    }
+    .option-btn.correct {
+      background: #2a8e5c;
+      border-color: #7ae0b0;
+      box-shadow: 0 0 16px #3ab37a;
+    }
+    .option-btn.wrong {
+      background: #b13e4b;
+      border-color: #faaab5;
+      box-shadow: 0 0 16px #d45a6a;
+    }
+    .option-btn:disabled {
+      opacity: 0.8;
+      cursor: default;
+      filter: grayscale(0.2);
+    }
+    .feedback-area {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 6px 0 16px;
+      padding: 12px 16px;
+      border-radius: 60px;
+      background: rgba(0,0,0,0.25);
+      border-left: 6px solid #ffd966;
+      transition: 0.2s;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .feedback-message {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #f0faff;
+      text-align: center;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+    .feedback-message .badge {
+      background: #1f5b6b;
+      padding: 4px 18px;
+      border-radius: 40px;
+    }
+    .action-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .btn-primary {
+      background: #ffd966;
+      border: none;
+      border-radius: 60px;
+      padding: 16px 38px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #0a2c38;
+      box-shadow: 0 8px 0 #b38f40;
+      transition: all 0.07s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #b38f40;
+    }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      transform: translateY(4px);
+      box-shadow: 0 4px 0 #856f30;
+      pointer-events: none;
+    }
+    .restart-btn {
+      background: #4d7e8f;
+      box-shadow: 0 8px 0 #1d4452;
+      color: white;
+    }
+    .restart-btn:active {
+      box-shadow: 0 2px 0 #1d4452;
+    }
+    .footer-credit {
+      text-align: center;
+      color: #a3c6d4;
+      margin-top: 22px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    .footer-credit .creators {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #ffd966;
+      opacity: 0.9;
+      letter-spacing: 1px;
+    }
+    .footer-credit .creators span {
+      display: inline-block;
+      margin: 0 6px;
+      background: rgba(255, 217, 102, 0.15);
+      padding: 2px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 217, 102, 0.2);
+    }
+
+    /* ===== OVERLAY (pantalla completa) ===== */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: overlayFade 0.5s ease;
+    }
+    .overlay.active {
+      display: flex;
+    }
+    @keyframes overlayFade {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .overlay .meme-container {
+      background: #1a1a2e;
+      border-radius: 60px;
+      padding: 40px 50px 50px;
+      text-align: center;
+      max-width: 550px;
+      width: 90%;
+      animation: memeBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .overlay .meme-container.idiot {
+      border: 6px solid #ff1744;
+      box-shadow: 0 0 80px rgba(255, 23, 68, 0.5);
+    }
+    .overlay .meme-container.goodboy {
+      border: 6px solid #4caf50;
+      box-shadow: 0 0 80px rgba(76, 175, 80, 0.5);
+    }
+    @keyframes memeBounce {
+      0% { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .overlay .meme-avatar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .overlay .meme-avatar svg {
+      width: 120px;
+      height: 120px;
+    }
+    .overlay .meme-avatar.idiot svg {
+      filter: drop-shadow(0 0 30px rgba(255, 23, 68, 0.4));
+    }
+    .overlay .meme-avatar.goodboy svg {
+      filter: drop-shadow(0 0 30px rgba(76, 175, 80, 0.4));
+    }
+    .overlay .meme-title {
+      font-size: 3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin: 10px 0 5px;
+    }
+    .overlay .meme-title.idiot {
+      background: linear-gradient(135deg, #ff1744, #ff6b8a, #ff1744);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textShine 1.5s ease-in-out infinite;
+    }
+    .overlay .meme-title.goodboy {
+      background: linear-gradient(135deg, #4caf50, #8bc34a, #4caf50);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textShine 1.5s ease-in-out infinite;
+    }
+    @keyframes textShine {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .overlay .meme-sub {
+      color: #b39ddb;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+    }
+    .overlay .meme-badge {
+      display: inline-block;
+      padding: 4px 20px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+    .overlay .meme-badge.idiot {
+      background: #ff1744;
+      color: white;
+    }
+    .overlay .meme-badge.goodboy {
+      background: #4caf50;
+      color: white;
+    }
+    .overlay .btn-continuar {
+      background: #ffd966;
+      border: none;
+      border-radius: 60px;
+      padding: 16px 50px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #0a2c38;
+      box-shadow: 0 8px 0 #b38f40;
+      cursor: pointer;
+      transition: all 0.07s ease;
+      margin-top: 10px;
+    }
+    .overlay .btn-continuar:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #b38f40;
+    }
+    .overlay .btn-continuar:hover {
+      background: #ffe082;
+    }
+    .overlay .overlay-creators {
+      margin-top: 15px;
+      font-size: 0.75rem;
+      color: #8888aa;
+      letter-spacing: 1px;
+    }
+    .overlay .overlay-creators span {
+      color: #ffd966;
+    }
+
+    @media (max-width: 550px) {
+      .game-container { padding: 18px 12px; }
+      .question-text { font-size: 1.3rem; }
+      .option-btn { font-size: 1rem; padding: 14px 16px; }
+      .option-btn .letter { width: 32px; height: 32px; font-size: 1rem; }
+      .status-bar { flex-wrap: wrap; justify-content: center; }
+      .btn-primary { padding: 14px 24px; font-size: 1.1rem; }
+      .overlay .meme-container { padding: 30px 20px 35px; }
+      .overlay .meme-title { font-size: 2.2rem; }
+      .overlay .meme-avatar svg { width: 80px; height: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== OVERLAY (IDIOTA) ===== -->
+<div class="overlay" id="idiotOverlay">
+  <div class="meme-container idiot">
+    <div class="meme-avatar idiot">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="30" fill="#1a1a2e" stroke="#ff6b8a" stroke-width="2.5"/>
+        <ellipse cx="20" cy="26" rx="9" ry="10" fill="#ff1744" />
+        <ellipse cx="44" cy="26" rx="9" ry="10" fill="#ff1744" />
+        <circle cx="22" cy="24" r="4" fill="#0d0d1a" />
+        <circle cx="46" cy="24" r="4" fill="#0d0d1a" />
+        <circle cx="20" cy="21" r="2" fill="white" opacity="0.9" />
+        <circle cx="44" cy="21" r="2" fill="white" opacity="0.9" />
+        <path d="M10 16 Q20 4 32 16" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round" />
+        <path d="M32 16 Q44 4 54 16" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round" />
+        <path d="M14 42 Q32 58 50 42" stroke="#ff6b8a" stroke-width="5" stroke-linecap="round" />
+        <path d="M22 47 L24 42 L26 47 L28 42 L30 47 L32 42 L34 47 L36 42 L38 47 L40 42 L42 47" stroke="#ffb3b3" stroke-width="2.5" stroke-linecap="round" />
+        <text x="14" y="17" font-size="11" fill="#b39ddb" font-weight="bold" opacity="0.5">NOLI</text>
+        <path d="M8 34 Q4 38 6 42" stroke="#4fc3f7" stroke-width="2" stroke-linecap="round" opacity="0.6" />
+      </svg>
+    </div>
+    <div class="meme-title idiot">you are an idiot</div>
+    <div class="meme-badge idiot">👹 FORSAKEN · NOLI</div>
+    <div class="meme-sub">#NoSabesNada #CalentamientoGlobal</div>
+    <button class="btn-continuar" id="btnContinuarIdiot">➜ Continuar</button>
+    <div class="overlay-creators">👨‍💻 Creado por: <span>Santiago R</span> · <span>Jeronimo D</span> · <span>Carlos B</span> · <span>Maria Jose P</span></div>
+  </div>
+</div>
+
+<!-- ===== OVERLAY (GOOD BOY) ===== -->
+<div class="overlay" id="goodboyOverlay">
+  <div class="meme-container goodboy">
+    <div class="meme-avatar goodboy">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="30" fill="#1a2e1a" stroke="#8bc34a" stroke-width="2.5"/>
+        <ellipse cx="20" cy="26" rx="9" ry="10" fill="#4caf50" />
+        <ellipse cx="44" cy="26" rx="9" ry="10" fill="#4caf50" />
+        <circle cx="22" cy="24" r="4" fill="#0d1a0d" />
+        <circle cx="46" cy="24" r="4" fill="#0d1a0d" />
+        <circle cx="20" cy="21" r="2" fill="white" opacity="0.9" />
+        <circle cx="44" cy="21" r="2" fill="white" opacity="0.9" />
+        <path d="M10 16 Q20 4 32 16" stroke="#8bc34a" stroke-width="4" stroke-linecap="round" />
+        <path d="M32 16 Q44 4 54 16" stroke="#8bc34a" stroke-width="4" stroke-linecap="round" />
+        <path d="M14 42 Q32 58 50 42" stroke="#8bc34a" stroke-width="5" stroke-linecap="round" />
+        <path d="M22 47 L24 42 L26 47 L28 42 L30 47 L32 42 L34 47 L36 42 L38 47 L40 42 L42 47" stroke="#a5d6a7" stroke-width="2.5" stroke-linecap="round" />
+        <text x="14" y="17" font-size="11" fill="#81c784" font-weight="bold" opacity="0.5">NOLI</text>
+        <path d="M6 38 Q8 42 12 40" stroke="#81c784" stroke-width="2" stroke-linecap="round" opacity="0.6" />
+      </svg>
+    </div>
+    <div class="meme-title goodboy">good boy!</div>
+    <div class="meme-badge goodboy">🐶 NOLI · APPROVED</div>
+    <div class="meme-sub">#EresUnGenio #SigueAsi</div>
+    <button class="btn-continuar" id="btnContinuarGoodboy">➜ Continuar</button>
+    <div class="overlay-creators">👨‍💻 Creado por: <span>Santiago R</span> · <span>Jeronimo D</span> · <span>Carlos B</span> · <span>Maria Jose P</span></div>
+  </div>
+</div>
+
+<!-- ===== JUEGO PRINCIPAL ===== -->
+<div class="game-container" id="app">
+  <h1>🌱 Calentamiento <span>Global</span></h1>
+  <div class="status-bar">
+    <div class="question-number" id="questionCounter">Pregunta 1 / 20</div>
+    <div class="score-box">🏆 <span id="scoreDisplay">0</span></div>
+  </div>
+  <div class="question-box">
+    <div class="question-text" id="questionText">Cargando...</div>
+  </div>
+  <div class="options-grid" id="optionsContainer"></div>
+  <div class="feedback-area" id="feedbackArea">
+    <div class="feedback-message" id="feedbackMessage">💡 Elige una opción</div>
+  </div>
+  <div class="action-row">
+    <button class="btn-primary" id="nextButton">▶ Siguiente</button>
+    <button class="btn-primary restart-btn" id="restartButton">⟳ Reiniciar</button>
+  </div>
+  <div class="footer-credit">
+    🌎 20 preguntas · falla = idiot · acierta = good boy 👹🐶
+    <div class="creators">
+      👨‍💻 <span>Santiago R</span> · <span>Jeronimo D</span> · <span>Carlos B</span> · <span>Maria Jose P</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ----- 20 PREGUNTAS -----
+    const questions = [
+      { question: "¿Cuál es el principal gas de efecto invernadero emitido por humanos?", options: ["Dióxido de carbono (CO₂)", "Metano (CH₄)", "Óxido nitroso (N₂O)"], correct: 0 },
+      { question: "¿Qué actividad aporta más CO₂ a la atmósfera?", options: ["Agricultura", "Quema de combustibles fósiles", "Deforestación"], correct: 1 },
+      { question: "El aumento del nivel del mar es consecuencia directa de:", options: ["Deshielo de polos", "Contaminación de ríos", "Lluvia ácida"], correct: 0 },
+      { question: "¿Qué porcentaje del calentamiento global se atribuye a combustibles fósiles?", options: ["65%", "75%", "85%"], correct: 1 },
+      { question: "¿Cuál NO es un gas de efecto invernadero?", options: ["Vapor de agua", "Oxígeno (O₂)", "Metano"], correct: 1 },
+      { question: "El Acuerdo de París (2015) busca:", options: ["Reducir plásticos", "Mantener temperatura < 2°C", "Proteger océanos"], correct: 1 },
+      { question: "Derretimiento de glaciares provoca:", options: ["Aumento del nivel del mar", "Desaparición de especies", "Ambas"], correct: 2 },
+      { question: "Energía renovable con menores emisiones:", options: ["Solar", "Eólica", "Ambas"], correct: 2 },
+      { question: "El efecto albedo está relacionado con:", options: ["Reflexión de luz solar", "Absorción de CO₂", "Formación de nubes"], correct: 0 },
+      { question: "Práctica que ayuda a mitigar el calentamiento:", options: ["Reforestación", "Transporte público", "Todas"], correct: 2 },
+      { question: "¿Qué océano absorbe más CO₂?", options: ["Atlántico", "Pacífico", "Antártico"], correct: 1 },
+      { question: "La temperatura global ha aumentado aproximadamente:", options: ["0.5°C", "1.2°C", "2.5°C"], correct: 1 },
+      { question: "¿Cuál es el mayor sumidero de carbono?", options: ["Bosques", "Océanos", "Suelo"], correct: 1 },
+      { question: "El metano es más potente que el CO₂ en:", options: ["20 veces", "80 veces", "150 veces"], correct: 1 },
+      { question: "La deforestación en el Amazonas afecta:", options: ["Biodiversidad", "Clima global", "Ambas"], correct: 2 },
+      { question: "¿Qué sector emite más gases de efecto invernadero?", options: ["Transporte", "Industria energética", "Agricultura"], correct: 1 },
+      { question: "El permafrost al descongelarse libera:", options: ["Metano", "CO₂", "Ambos"], correct: 2 },
+      { question: "La energía nuclear emite:", options: ["Mucho CO₂", "Poco CO₂", "Ningún CO₂"], correct: 1 },
+      { question: "El 'día de la sobretierra' se refiere a:", options: ["Agotamiento de recursos anual", "Día más caluroso", "Ninguna"], correct: 0 },
+      { question: "¿Qué acción individual reduce más la huella de carbono?", options: ["Reciclar", "Usar bicicleta", "Reducir consumo de carne"], correct: 2 }
+    ];
+
+    // ----- Estado -----
+    let currentIndex = 0;
+    let score = 0;
+    let isAnswered = false;
+    let isWaitingForOverlay = false;
+    const totalQuestions = questions.length;
+    let optionButtons = [];
+
+    // DOM
+    const questionText = document.getElementById('questionText');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const feedbackMessage = document.getElementById('feedbackMessage');
+    const nextButton = document.getElementById('nextButton');
+    const restartButton = document.getElementById('restartButton');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const questionCounter = document.getElementById('questionCounter');
+    const idiotOverlay = document.getElementById('idiotOverlay');
+    const goodboyOverlay = document.getElementById('goodboyOverlay');
+    const btnContinuarIdiot = document.getElementById('btnContinuarIdiot');
+    const btnContinuarGoodboy = document.getElementById('btnContinuarGoodboy');
+
+    // ----- Mostrar overlays -----
+    function showOverlay(type) {
+      if (type === 'idiot') {
+        idiotOverlay.classList.add('active');
+        goodboyOverlay.classList.remove('active');
+      } else if (type === 'goodboy') {
+        goodboyOverlay.classList.add('active');
+        idiotOverlay.classList.remove('active');
+      }
+      isWaitingForOverlay = true;
+    }
+
+    // ----- Ocultar overlay y continuar -----
+    function hideOverlayAndContinue() {
+      idiotOverlay.classList.remove('active');
+      goodboyOverlay.classList.remove('active');
+      isWaitingForOverlay = false;
+      goToNext();
+    }
+
+    // ----- Renderizar pregunta -----
+    function renderQuestion() {
+      clearOptions();
+      const q = questions[currentIndex];
+      questionText.textContent = q.question;
+
+      const letters = ['A', 'B', 'C'];
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.dataset.index = idx;
+        btn.innerHTML = `<span class="letter">${letters[idx]}</span> ${opt}`;
+        btn.addEventListener('click', () => handleOptionClick(idx));
+        optionsContainer.appendChild(btn);
+        optionButtons.push(btn);
+      });
+
+      feedbackMessage.innerHTML = '💡 Elige una respuesta';
+      optionButtons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('correct', 'wrong');
+      });
+
+      isAnswered = false;
+      nextButton.disabled = true;
+
+      if (currentIndex === totalQuestions - 1) {
+        nextButton.textContent = '🏁 Ver resultado';
+      } else {
+        nextButton.textContent = '▶ Siguiente';
+      }
+      updateScoreAndCounter();
+    }
+
+    function clearOptions() {
+      optionsContainer.innerHTML = '';
+      optionButtons = [];
+    }
+
+    function updateScoreAndCounter() {
+      scoreDisplay.textContent = score;
+      questionCounter.textContent = `Pregunta ${currentIndex + 1} / ${totalQuestions}`;
+    }
+
+    // ----- Manejo de click -----
+    function handleOptionClick(index) {
+      if (isAnswered || isWaitingForOverlay) return;
+
+      const q = questions[currentIndex];
+      const isCorrect = (index === q.correct);
+      const buttons = optionButtons;
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      buttons.forEach((btn, i) => {
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === index && !isCorrect) btn.classList.add('wrong');
+      });
+
+      if (isCorrect) {
+        score += 1;
+        feedbackMessage.innerHTML = `✅ ¡Correcto! +1 punto 🎉`;
+        isAnswered = true;
+        nextButton.disabled = true;
+        showOverlay('goodboy');
+      } else {
+        const correctText = q.options[q.correct];
+        feedbackMessage.innerHTML = `❌ Incorrecto. Respuesta: <span class="badge">${correctText}</span>`;
+        isAnswered = true;
+        nextButton.disabled = true;
+        showOverlay('idiot');
+      }
+
+      updateScoreAndCounter();
+    }
+
+    // ----- Siguiente o final -----
+    function goToNext() {
+      if (isWaitingForOverlay) return;
+      if (!isAnswered && currentIndex < totalQuestions - 1) return;
+
+      if (currentIndex === totalQuestions - 1 && isAnswered) {
+        showFinalResult();
+        return;
+      }
+
+      if (currentIndex < totalQuestions - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        showFinalResult();
+      }
+    }
+
+    // ----- Resultado final -----
+    function showFinalResult() {
+      nextButton.disabled = true;
+      optionsContainer.innerHTML = '';
+      questionText.textContent = `🏁 ¡Has completado las 20 preguntas!`;
+
+      let emoji = '';
+      let mensaje = '';
+      const total = totalQuestions;
+      if (score === total) { emoji = '🏆'; mensaje = '¡Perfecto! Eres un genio del clima.'; }
+      else if (score >= total * 0.7) { emoji = '🌟'; mensaje = '¡Muy bien! Tienes buen conocimiento.'; }
+      else if (score >= total * 0.4) { emoji = '📘'; mensaje = 'Sigue aprendiendo, cada acción cuenta.'; }
+      else { emoji = '🌱'; mensaje = '¡Esto es grave! Infórmate más sobre el clima.'; }
+
+      feedbackMessage.innerHTML = `${emoji}  ${mensaje}  (${score}/${total})`;
+      questionCounter.textContent = `¡Finalizado!`;
+      scoreDisplay.textContent = score;
+
+      const newNext = document.createElement('button');
+      newNext.className = 'btn-primary';
+      newNext.id = 'nextButton';
+      newNext.textContent = '🔁 Jugar de nuevo';
+      newNext.disabled = false;
+      const oldNext = document.getElementById('nextButton');
+      if (oldNext) oldNext.parentNode.replaceChild(newNext, oldNext);
+      newNext.addEventListener('click', resetGame);
+      window.nextButton = newNext;
+    }
+
+    // ----- Reiniciar juego -----
+    function resetGame() {
+      idiotOverlay.classList.remove('active');
+      goodboyOverlay.classList.remove('active');
+      isWaitingForOverlay = false;
+
+      currentIndex = 0;
+      score = 0;
+      isAnswered = false;
+
+      const actionRow = document.querySelector('.action-row');
+      let currentNext = document.getElementById('nextButton');
+      if (!currentNext || currentNext.textContent.includes('Jugar')) {
+        const newBtn = document.createElement('button');
+        newBtn.className = 'btn-primary';
+        newBtn.id = 'nextButton';
+        newBtn.textContent = '▶ Siguiente';
+        const restartBtn = document.querySelector('.restart-btn');
+        if (restartBtn) actionRow.insertBefore(newBtn, restartBtn);
+        else actionRow.appendChild(newBtn);
+        currentNext = newBtn;
+      }
+      currentNext.textContent = '▶ Siguiente';
+      currentNext.disabled = true;
+      const freshNext = currentNext.cloneNode(true);
+      currentNext.parentNode.replaceChild(freshNext, currentNext);
+      freshNext.addEventListener('click', goToNext);
+      window.nextButton = freshNext;
+
+      feedbackMessage.innerHTML = '💡 Elige una opción';
+      renderQuestion();
+      updateScoreAndCounter();
+    }
+
+    // ----- Eventos de los botones Continuar -----
+    btnContinuarIdiot.addEventListener('click', hideOverlayAndContinue);
+    btnContinuarGoodboy.addEventListener('click', hideOverlayAndContinue);
+
+    // ----- Inicialización -----
+    function initGame() {
+      renderQuestion();
+      let nextBtn = document.getElementById('nextButton');
+      if (nextBtn) {
+        const newNext = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNext, nextBtn);
+        newNext.addEventListener('click', goToNext);
+        window.nextButton = newNext;
+      }
+
+      const restartBtn = document.getElementById('restartButton');
+      if (restartBtn) {
+        const newRestart = restartBtn.cloneNode(true);
+        restartBtn.parentNode.replaceChild(newRestart, restartBtn);
+        newRestart.addEventListener('click', resetGame);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGame);
+    } else {
+      initGame();
+    }
+  })();
+</script>
+</body>
+</html>

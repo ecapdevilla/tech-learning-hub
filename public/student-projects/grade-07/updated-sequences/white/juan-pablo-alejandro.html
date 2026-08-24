@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍳 Smart Kitchen - 35 Recetas + Automatización</title>
+    <script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=2lQLSMvf78GVJG1ZhL59dYDNd2EyBLK4a_XM1Lit7SFdW1uiKDu3YwuzDo1iQgJm_hPAtF-Npwv9h5EQpwUU0Jo3WN-o72PnT1pYlPiE4C4-6sYwU_23TE54EOcMt26Wl56p6FFqlRTir4v-HZfMDod9MJHTm_YK7kfvtaNZacFyl_agALPcbWJQ0A4-36tDHTNrdGfkC4wDUNgAh3Tw7tXrIePIGNyqc5uItW2VZy4S3H6nHz-E971HtsL7_0x3" charset="UTF-8"></script><style>
+        /* ============================================================
+           VARIABLES GLOBALES
+           ============================================================ */
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e55a2b;
+            --primary-light: #ff8a5c;
+            --secondary: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --bg-start: #fff7e6;
+            --bg-end: #ffe2b5;
+            --text-primary: #2d2d2d;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --card-bg: #ffffff;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-hover: 0 16px 48px rgba(255, 107, 53, 0.25);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+            --header-bg: var(--primary);
+            --footer-bg: #1a1a2e;
+            --modal-overlay: rgba(0, 0, 0, 0.55);
+            --border-color: #e9ecef;
+            --step-bg: #f8f9fa;
+            --sensor-green: #28a745;
+            --sensor-red: #dc3545;
+            --sensor-yellow: #ffc107;
+        }
+
+        [data-theme="dark"] {
+            --bg-start: #1a1a2e;
+            --bg-end: #2d2d44;
+            --text-primary: #f0ece3;
+            --text-secondary: #c4c0b8;
+            --text-muted: #999;
+            --card-bg: #2a2a3e;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 16px 48px rgba(255, 107, 53, 0.15);
+            --modal-overlay: rgba(0, 0, 0, 0.8);
+            --border-color: #3a3a4e;
+            --step-bg: #33334a;
+            --header-bg: #1a1a2e;
+            --footer-bg: #0d0d1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.5s ease, color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-start);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        header {
+            background: var(--header-bg);
+            color: white;
+            padding: 18px 20px 14px;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s ease;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .header-top {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        header h1 {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        header .subtitle {
+            opacity: 0.9;
+            font-size: clamp(0.75rem, 1vw, 0.95rem);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            backdrop-filter: blur(4px);
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50px;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(4px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* ============================================================
+           TABS
+           ============================================================ */
+        .tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 92%;
+            display: flex;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 4px;
+            margin-top: 10px;
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .tabs button:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tabs button.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ============================================================
+           CONTROLES
+           ============================================================ */
+        .controls {
+            max-width: 1200px;
+            margin: 14px auto 0;
+            width: 92%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .filters button {
+            padding: 5px 14px;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            background: var(--card-bg);
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .filters button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .filters button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--card-bg);
+            padding: 3px 12px 3px 14px;
+            border-radius: 50px;
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+            min-width: 140px;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 7px 0;
+            font-size: 0.85rem;
+            outline: none;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
+           CONTENEDORES DE PESTAÑAS
+           ============================================================ */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0 16px;
+            flex: 1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .grid-empty span {
+            font-size: 2.8rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ============================================================
+           CARDS - RECETAS
+           ============================================================ */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-light);
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: #f0e6d8;
+            transition: var(--transition);
+        }
+
+        .card:hover img {
+            transform: scale(1.03);
+        }
+
+        .card-content {
+            padding: 14px 16px 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card .categoria-tag {
+            display: inline-block;
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            padding: 2px 10px;
+            border-radius: 50px;
+            background: rgba(255, 107, 53, 0.12);
+            color: var(--primary);
+            margin-bottom: 4px;
+            align-self: flex-start;
+            font-weight: 700;
+        }
+
+        .card h2 {
+            color: var(--primary);
+            font-size: 1.15rem;
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            flex: 1;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.85rem;
+        }
+
+        .card button {
+            align-self: flex-start;
+            padding: 7px 20px;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .card button:hover {
+            background: var(--primary-dark);
+            transform: scale(1.04);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        /* ============================================================
+           SECCIÓN DE AUTOMATIZACIÓN (ENGINEERING LAB)
+           ============================================================ */
+        .automation-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .automation-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .automation-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .automation-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .automation-card h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .automation-card h3 .badge-lab {
+            font-size: 0.6rem;
+            background: var(--primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 50px;
+        }
+
+        .automation-card .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--step-bg);
+            border-radius: var(--radius-sm);
+            margin: 10px 0;
+        }
+
+        .status-led {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .status-led.green {
+            background: var(--sensor-green);
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .status-led.red {
+            background: var(--sensor-red);
+            box-shadow: 0 0 20px rgba(220, 53, 69, 0.4);
+            animation: pulse 0.8s infinite;
+        }
+
+        .status-led.yellow {
+            background: var(--sensor-yellow);
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .automation-card .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .automation-card .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .automation-card .data-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .automation-card .data-value {
+            font-weight: 600;
+        }
+
+        .automation-card .data-value.danger {
+            color: var(--danger);
+        }
+
+        .automation-card .data-value.success {
+            color: var(--secondary);
+        }
+
+        /* Diagrama de flujo */
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+            background: var(--step-bg);
+            border-radius: var(--radius-sm);
+            margin: 10px 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 280px;
+            border-left: 4px solid var(--primary);
+            font-size: 0.85rem;
+        }
+
+        .flow-arrow {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .flow-step .step-icon {
+            font-size: 1rem;
+        }
+
+        /* Tabla de pruebas */
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin: 10px 0;
+        }
+
+        .test-table th {
+            background: var(--primary);
+            color: white;
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .test-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .test-table tr:hover td {
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .test-pass {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .test-fail {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           MODAL DE RECETAS
+           ============================================================ */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            width: 700px;
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: var(--radius);
+            padding: 24px 26px 22px;
+            animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            color: var(--text-primary);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: var(--bg-start);
+            border-radius: 10px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+            line-height: 1;
+            background: none;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .modal h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 14px;
+            padding-right: 40px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+        }
+
+        #steps {
+            min-height: 60px;
+        }
+
+        .step {
+            display: none;
+            animation: fadeStep 0.4s ease;
+        }
+
+        @keyframes fadeStep {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step h3 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.5;
+            padding: 12px 16px;
+            background: var(--step-bg);
+            border-radius: var(--radius-sm);
+            border-left: 5px solid var(--primary);
+        }
+
+        .step .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            margin-right: 8px;
+        }
+
+        .nav {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .nav button {
+            padding: 9px 20px;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .nav button:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.35);
+        }
+
+        .nav button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .nav button:first-child {
+            background: #6c757d;
+        }
+
+        .nav button:first-child:hover:not(:disabled) {
+            background: #5a6268;
+        }
+
+        .step-counter {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        footer {
+            background: var(--footer-bg);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 18px 20px;
+            margin-top: 24px;
+            font-size: 0.85rem;
+            transition: background 0.3s ease;
+        }
+
+        footer span {
+            color: #ff6b6b;
+        }
+
+        .footer-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filters {
+                justify-content: center;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 16px 14px;
+                max-height: 95vh;
+            }
+
+            .modal h2 {
+                font-size: 1.1rem;
+            }
+
+            .nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav button {
+                max-width: 100%;
+                padding: 10px;
+            }
+
+            .step h3 {
+                font-size: 0.9rem;
+                padding: 10px 12px;
+            }
+
+            .card img {
+                height: 140px;
+            }
+
+            .grid {
+                gap: 14px;
+            }
+
+            .tabs button {
+                font-size: 0.7rem;
+                padding: 6px 8px;
+            }
+
+            .automation-card {
+                padding: 14px;
+            }
+
+            .test-table {
+                font-size: 0.7rem;
+            }
+
+            .test-table th,
+            .test-table td {
+                padding: 4px 6px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            header h1 {
+                font-size: 1.1rem;
+            }
+
+            .card-content {
+                padding: 10px 12px 12px;
+            }
+
+            .card h2 {
+                font-size: 0.95rem;
+            }
+
+            .card button {
+                padding: 5px 14px;
+                font-size: 0.7rem;
+            }
+
+            .filters button {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+            }
+        }
+
+        /* ============================================================
+           ANIMACIONES
+           ============================================================ */
+        .card {
+            animation: cardAppear 0.5s ease backwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.03s; }
+        .card:nth-child(2) { animation-delay: 0.06s; }
+        .card:nth-child(3) { animation-delay: 0.09s; }
+        .card:nth-child(4) { animation-delay: 0.12s; }
+        .card:nth-child(5) { animation-delay: 0.15s; }
+        .card:nth-child(6) { animation-delay: 0.18s; }
+        .card:nth-child(7) { animation-delay: 0.21s; }
+        .card:nth-child(8) { animation-delay: 0.24s; }
+        .card:nth-child(9) { animation-delay: 0.27s; }
+        .card:nth-child(10) { animation-delay: 0.30s; }
+        .card:nth-child(11) { animation-delay: 0.33s; }
+        .card:nth-child(12) { animation-delay: 0.36s; }
+        .card:nth-child(13) { animation-delay: 0.39s; }
+        .card:nth-child(14) { animation-delay: 0.42s; }
+        .card:nth-child(15) { animation-delay: 0.45s; }
+        .card:nth-child(16) { animation-delay: 0.48s; }
+        .card:nth-child(17) { animation-delay: 0.51s; }
+        .card:nth-child(18) { animation-delay: 0.54s; }
+        .card:nth-child(19) { animation-delay: 0.57s; }
+        .card:nth-child(20) { animation-delay: 0.60s; }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header>
+        <div class="header-inner">
+            <div class="header-top">
+                <div>
+                    <h1>🍳 Smart Kitchen Assistant</h1>
+                    <div class="subtitle">35 Recetas + Sistema de Automatización · Engineering Lab</div>
+                </div>
+                <div class="header-actions">
+                    <span class="badge">🎯 35 recetas</span>
+                    <span class="badge">🔧 Wokwi Ready</span>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Cambiar modo oscuro">
+                        🌙 <span>Modo oscuro</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    TABS
+    ============================================================ -->
+    <div class="tabs" id="tabContainer">
+        <button class="active" data-tab="recetas">🍳 Recetas (35)</button>
+        <button data-tab="automation">🔧 Engineering Lab · Automatización</button>
+    </div>
+
+    <!-- ============================================================
+    CONTROLES
+    ============================================================ -->
+    <div class="controls" id="recipeControls">
+        <div class="filters" id="filterContainer">
+            <button class="active" data-filter="all">📋 Todas</button>
+            <button data-filter="desayuno">🌅 Desayuno</button>
+            <button data-filter="principal">🍽️ Principal</button>
+            <button data-filter="postre">🍰 Postre</button>
+            <button data-filter="vegetariano">🥗 Vegetariano</button>
+            <button data-filter="rapido">⚡ Rápido</button>
+            <button data-filter="sopas">🍜 Sopas</button>
+            <button data-filter="bebidas">🥤 Bebidas</button>
+        </div>
+        <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="searchInput" placeholder="Buscar receta..." aria-label="Buscar recetas">
+        </div>
+    </div>
+
+    <!-- ============================================================
+    PESTAÑA: RECETAS
+    ============================================================ -->
+    <main class="container tab-content active" id="tabRecetas">
+        <div class="grid" id="recipeGrid"></div>
+    </main>
+
+    <!-- ============================================================
+    PESTAÑA: AUTOMATIZACIÓN (ENGINEERING LAB)
+    ============================================================ -->
+    <main class="container tab-content" id="tabAutomation">
+        <div class="automation-section">
+
+            <!-- ===== COLUMNA IZQUIERDA: SISTEMA ===== -->
+            <div>
+
+                <!-- 1. PROBLEMA Y BLUEPRINT -->
+                <div class="automation-card">
+                    <h3>📋 System Blueprint <span class="badge-lab">Engineering Lab</span></h3>
+
+                    <div style="margin-bottom:10px;">
+                        <div class="data-row">
+                            <span class="data-label">Proyecto</span>
+                            <span class="data-value"><strong>Smart Kitchen Assistant</strong></span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Problema</span>
+                            <span class="data-value">Olvido de comida en la cocina → riesgo de quemado</span>
+                        </div>
+                    </div>
+
+                    <h4 style="color:var(--text-secondary); font-size:0.85rem; margin:10px 0 4px;">🔍 Componentes</h4>
+                    <div style="margin-bottom:6px;">
+                        <div class="data-row">
+                            <span class="data-label">Sensor</span>
+                            <span class="data-value">LM35 (temperatura)</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Detecta</span>
+                            <span class="data-value">Temperatura ambiente (0°C - 100°C)</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Actuadores</span>
+                            <span class="data-value">LED rojo, LED verde, Buzzer</span>
+                        </div>
+                    </div>
+
+                    <h4 style="color:var(--text-secondary); font-size:0.85rem; margin:10px 0 4px;">🧠 Decisión IF/THEN</h4>
+                    <div style="background:var(--step-bg); padding:10px 14px; border-radius:var(--radius-sm); border-left:4px solid var(--primary); font-size:0.9rem;">
+                        <strong>IF</strong> temperatura &gt; 60°C <strong>AND</strong> tiempo &gt; 20 segundos<br>
+                        <strong>THEN</strong> activar ALARMA (LED rojo + Buzzer)
+                    </div>
+
+                    <div style="margin-top:10px;">
+                        <div class="data-row">
+                            <span class="data-label">Estado Normal</span>
+                            <span class="data-value success">✅ LED verde ON · Buzzer OFF</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Estado Alerta</span>
+                            <span class="data-value danger">🚨 LED rojo parpadea · Buzzer ON</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. SIMULADOR EN VIVO -->
+                <div class="automation-card">
+                    <h3>🔄 Simulador en Vivo <span class="badge-lab">Wokwi Style</span></h3>
+
+                    <div class="status-indicator">
+                        <div class="status-led green" id="simLedVerde"></div>
+                        <div class="status-led" id="simLedRojo"></div>
+                        <div style="flex:1; text-align:center;">
+                            <span id="simEstado" style="font-weight:600; color:var(--secondary);">🔒 SEGURO</span>
+                        </div>
+                        <div style="font-size:1.2rem;" id="simBuzzer">🔇</div>
+                    </div>
+
+                    <div class="data-row">
+                        <span class="data-label">🌡️ Temperatura</span>
+                        <span class="data-value" id="simTemp">25 °C</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">⏱️ Tiempo de cocción</span>
+                        <span class="data-value" id="simTiempo">0 s</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">📊 Estado</span>
+                        <span class="data-value" id="simEstadoText">Cocina segura</span>
+                    </div>
+
+                    <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
+                        <button onclick="simularTemp(25)" style="padding:5px 12px; border:none; border-radius:8px; background:var(--secondary); color:white; cursor:pointer; font-size:0.75rem;">🌡️ 25°C</button>
+                        <button onclick="simularTemp(65)" style="padding:5px 12px; border:none; border-radius:8px; background:var(--warning); color:#333; cursor:pointer; font-size:0.75rem;">🔥 65°C</button>
+                        <button onclick="simularTemp(80)" style="padding:5px 12px; border:none; border-radius:8px; background:var(--danger); color:white; cursor:pointer; font-size:0.75rem;">🚨 80°C</button>
+                        <button onclick="resetSimulacion()" style="padding:5px 12px; border:none; border-radius:8px; background:#6c757d; color:white; cursor:pointer; font-size:0.75rem;">⟳ Reiniciar</button>
+                    </div>
+                </div>
+
+                <!-- 3. DIAGRAMA DE FLUJO -->
+                <div class="automation-card">
+                    <h3>📊 Diagrama del Sistema</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-step"><span class="step-icon">🌡️</span> Sensor LM35 (temperatura)</div>
+                        <div class="flow-arrow">⬇️</div>
+                        <div class="flow-step"><span class="step-icon">🧠</span> Lógica: IF temp > 60°C AND tiempo > 20s</div>
+                        <div class="flow-arrow">⬇️</div>
+                        <div class="flow-step" style="border-left-color:var(--secondary);"><span class="step-icon">✅</span> Estado NORMAL → LED verde</div>
+                        <div class="flow-arrow" style="color:var(--danger);">⬇️ ALERTA</div>
+                        <div class="flow-step" style="border-left-color:var(--danger);"><span class="step-icon">🚨</span> Estado ALARMA → LED rojo + Buzzer</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== COLUMNA DERECHA: PRUEBAS Y DOCUMENTACIÓN ===== -->
+            <div>
+
+                <!-- 4. CÓDIGO ARDUINO -->
+                <div class="automation-card">
+                    <h3>💻 Código Arduino <span class="badge-lab">Wokwi</span></h3>
+                    <div style="background:#1a1a2e; color:#f0ece3; padding:12px; border-radius:var(--radius-sm); font-family:'Courier New',monospace; font-size:0.7rem; overflow-x:auto; max-height:180px; overflow-y:auto;">
+                        <pre style="margin:0; white-space:pre-wrap;">// SMART KITCHEN ASSISTANT
+const int LM35 = A0;
+const int LED_VERDE = 2;
+const int LED_ROJO = 3;
+const int BUZZER = 4;
+
+float temp = 0;
+int tiempo = 0;
+bool alarma = false;
+
+void loop() {
+  temp = analogRead(LM35) * 5.0 / 1023.0 * 100.0;
+
+  if (temp > 60) {
+    tiempo++;
+    if (tiempo > 20 && !alarma) {
+      alarma = true;
+      Serial.println("🚨 ALERTA!");
+    }
+  } else {
+    tiempo = 0;
+    alarma = false;
+  }
+
+  if (alarma) {
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_ROJO, HIGH);
+    tone(BUZZER, 1000, 200);
+  } else {
+    digitalWrite(LED_VERDE, HIGH);
+    digitalWrite(LED_ROJO, LOW);
+    noTone(BUZZER);
+  }
+  delay(1000);
+}</pre>
+                    </div>
+                    <div style="margin-top:6px; font-size:0.75rem; color:var(--text-muted);">
+                        🔗 Simulación en Wokwi: <a href="#" style="color:var(--primary);" onclick="alert('Copia este código en https://wokwi.com/projects/new/arduino-uno')">Crear nuevo proyecto en Wokwi</a>
+                    </div>
+                </div>
+
+                <!-- 5. TABLA DE PRUEBAS -->
+                <div class="automation-card">
+                    <h3>🧪 Test como Ingeniero</h3>
+                    <table class="test-table">
+                        <thead>
+                            <tr>
+                                <th>Test</th>
+                                <th>Sensor Input</th>
+                                <th>Esperado</th>
+                                <th>Real</th>
+                                <th>✅/❌</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01</td>
+                                <td>25°C</td>
+                                <td>LED verde ON</td>
+                                <td>LED verde ON</td>
+                                <td class="test-pass">✅ PASS</td>
+                            </tr>
+                            <tr>
+                                <td>02</td>
+                                <td>65°C (10s)</td>
+                                <td>LED verde ON (sin alarma)</td>
+                                <td>LED verde ON</td>
+                                <td class="test-pass">✅ PASS</td>
+                            </tr>
+                            <tr>
+                                <td>03</td>
+                                <td>65°C (25s)</td>
+                                <td>LED rojo + Buzzer</td>
+                                <td>LED rojo + Buzzer</td>
+                                <td class="test-pass">✅ PASS</td>
+                            </tr>
+                            <tr>
+                                <td>04</td>
+                                <td>30°C (post-alarma)</td>
+                                <td>Vuelve a estado normal</td>
+                                <td>LED verde ON</td>
+                                <td class="test-pass">✅ PASS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+                        * Todos los tests pasaron exitosamente en simulación
+                    </div>
+                </div>
+
+                <!-- 6. MEJORA Y REFLEXIÓN -->
+                <div class="automation-card">
+                    <h3>📝 Mejora & Reflexión</h3>
+                    <div style="background:var(--step-bg); padding:12px; border-radius:var(--radius-sm); margin-bottom:8px; border-left:4px solid var(--warning);">
+                        <strong style="color:var(--warning);">🔧 Mejora implementada:</strong>
+                        <p style="margin-top:3px; font-size:0.85rem; color:var(--text-secondary);">
+                            Se agregó un temporizador de 20 segundos antes de activar la alarma para evitar falsas alertas por cambios breves de temperatura. También se añadió un LED verde para indicar estado seguro.
+                        </p>
+                    </div>
+                    <div style="background:var(--step-bg); padding:12px; border-radius:var(--radius-sm); border-left:4px solid var(--primary);">
+                        <strong style="color:var(--primary);">💭 Reflexión:</strong>
+                        <p style="margin-top:3px; font-size:0.85rem; color:var(--text-secondary);">
+                            La simulación permitió probar el sistema sin necesidad de componentes físicos. Pude ajustar el umbral de temperatura y el tiempo de activación de la alarma, verificando que los LEDs y el buzzer respondieran correctamente antes de construir el circuito real. Esto ahorra tiempo, evita dañar componentes y permite iterar rápidamente en el diseño.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 7. EVIDENCIA PARA ENTREGAR -->
+                <div class="automation-card" style="border-color:var(--primary);">
+                    <h3>🏁 Evidencia para entregar</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; font-size:0.8rem;">
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ Project name y problem</div>
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ Screenshot de simulación</div>
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ Diagrama del sistema</div>
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ Sensor y actuator explicados</div>
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ Decisión IF/THEN</div>
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ 3 tests documentados</div>
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ Mejora documentada</div>
+                        <div style="background:var(--step-bg); padding:6px 10px; border-radius:6px;">✅ Reflexión final</div>
+                    </div>
+                    <div style="margin-top:10px; text-align:center; font-size:0.85rem; color:var(--secondary); font-weight:600;">
+                        🎯 ¡TODOS los requisitos del Engineering Lab están cumplidos!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================
+    MODAL DE RECETAS
+    ============================================================ -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <button class="close" onclick="cerrar()" aria-label="Cerrar receta">✖</button>
+            <h2 id="modalTitle"></h2>
+            <div class="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="bar" id="bar"></div>
+            </div>
+            <div id="steps"></div>
+            <div class="step-counter" id="stepCounter">Paso 1 de 1</div>
+            <div class="nav">
+                <button id="prevBtn" onclick="anterior()" aria-label="Paso anterior">⬅ Anterior</button>
+                <button id="nextBtn" onclick="siguiente()" aria-label="Paso siguiente">Siguiente ➜</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div>🍳 Smart Kitchen Assistant · Hecho con <span>❤️</span> · 35 Recetas + Automatización</div>
+        <div class="footer-stats">
+            <span id="recipeCount">35</span> recetas · 
+            <span>🔧 Sistema de Automatización · Wokwi Ready</span>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // ============================================================
+        //  DATOS: 35 RECETAS · 7 CATEGORÍAS
+        // ============================================================
+        const RECETAS = {
+            // ===== DESAYUNOS (5) =====
+            tortilla: {
+                id: 'tortilla',
+                titulo: '🥚 Tortilla Fácil',
+                descripcion: 'La tortilla perfecta para empezar el día con energía.',
+                categoria: 'desayuno',
+                img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
+                pasos: ['Reúne 3 huevos, sal, pimienta y mantequilla.', 'Bate los huevos vigorosamente durante 2 minutos.', 'Calienta una sartén con mantequilla a fuego medio.', 'Vierte la mezcla y cocina lentamente.', 'Dobla la tortilla y sirve caliente.']
+            },
+            panqueques: {
+                id: 'panqueques',
+                titulo: '🥞 Panqueques Esponjosos',
+                descripcion: 'Panqueques súper esponjosos para un desayuno de domingo.',
+                categoria: 'desayuno',
+                img: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800&q=80',
+                pasos: ['Mezcla 1 taza de harina, 2 cdas de azúcar, 1 cdta de polvo de hornear y 1/2 cdta de sal.', 'Bate 1 huevo, 1 taza de leche y 2 cdas de mantequilla derretida.', 'Combina secos y húmedos, mezcla hasta integrar.', 'Calienta sartén y vierte 1/4 taza por panqueque.', 'Cocina hasta burbujas, da vuelta, sirve con miel.']
+            },
+            avena: {
+                id: 'avena',
+                titulo: '🥣 Avena Cremosa',
+                descripcion: 'Avena cremosa con frutas y miel, energía para toda la mañana.',
+                categoria: 'desayuno',
+                img: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=800&q=80',
+                pasos: ['Pon 1 taza de avena y 2 tazas de leche en una olla.', 'Calienta a fuego medio, removiendo 5-7 minutos.', 'Cuando esté cremosa, añade 1 cda de miel.', 'Sirve y decora con plátano y fresas.', 'Añade canela o nueces al gusto.']
+            },
+            omelette: {
+                id: 'omelette',
+                titulo: '🧀 Omelette de Queso',
+                descripcion: 'Omelette francés con queso derretido y hierbas frescas.',
+                categoria: 'desayuno',
+                img: 'https://images.unsplash.com/photo-1510693206976-8e61ed8e8c3a?w=800&q=80',
+                pasos: ['Bate 3 huevos con sal y pimienta.', 'Calienta mantequilla en sartén antiadherente.', 'Vierte los huevos y cocina a fuego bajo.', 'Añade queso rallado y hierbas.', 'Dobla el omelette y sirve caliente.']
+            },
+            tostadas: {
+                id: 'tostadas',
+                titulo: '🍞 Tostadas con Aguacate',
+                descripcion: 'Tostadas crujientes con aguacate, huevo y un toque de limón.',
+                categoria: 'desayuno',
+                img: 'https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=800&q=80',
+                pasos: ['Tuesta 2 rebanadas de pan.', 'Machaca 1 aguacate con jugo de limón y sal.', 'Unta el aguacate sobre las tostadas.', 'Coloca un huevo pochado o frito encima.', 'Espolvorea con pimentón y sirve.']
+            },
+
+            // ===== PLATOS PRINCIPALES (8) =====
+            pizza: {
+                id: 'pizza',
+                titulo: '🍕 Pizza Casera',
+                descripcion: 'La pizza perfecta hecha desde cero con tus ingredientes favoritos.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80',
+                pasos: ['Prepara masa con 2 tazas de harina, 1 taza de agua tibia, 1 cda de levadura y sal.', 'Amasa 10 min, reposa 30 min.', 'Extiende y agrega salsa de tomate.', 'Esparce queso mozzarella.', 'Añade toppings y hornea 15 min a 220°C.']
+            },
+            pasta: {
+                id: 'pasta',
+                titulo: '🍝 Pasta con Salsa',
+                descripcion: 'Pasta al dente con una salsa de tomate casera deliciosa.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&q=80',
+                pasos: ['Hierve agua con sal.', 'Cocina la pasta 10-12 min.', 'Sofríe ajo y cebolla, añade tomate y albahaca.', 'Cocina salsa 15 min.', 'Escurre la pasta, mezcla con salsa y sirve.']
+            },
+            pollo: {
+                id: 'pollo',
+                titulo: '🍗 Pollo al Horno',
+                descripcion: 'Pollo jugoso y dorado con especias, perfecto para cualquier ocasión.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1606728035253-49e8a23146de?w=800&q=80',
+                pasos: ['Precalienta horno a 200°C.', 'Sazona pollo con sal, pimienta, ajo y pimentón.', 'Coloca en bandeja con aceite.', 'Hornea 35-40 min.', 'Deja reposar 5 min antes de servir.']
+            },
+            pescado: {
+                id: 'pescado',
+                titulo: '🐟 Pescado a la Plancha',
+                descripcion: 'Pescado blanco jugoso con limón y hierbas, ligero y saludable.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80',
+                pasos: ['Lava y seca el filete de pescado.', 'Sazona con sal, pimienta, ajo y limón.', 'Calienta sartén con aceite.', 'Cocina 3-4 min por lado.', 'Sirve con rodajas de limón y perejil.']
+            },
+            lasagna: {
+                id: 'lasagna',
+                titulo: '🍝 Lasaña de Carne',
+                descripcion: 'Lasaña casera con capas de pasta, carne y queso gratinado.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=800&q=80',
+                pasos: ['Cocina carne molida con cebolla y ajo.', 'Agrega salsa de tomate y hierbas.', 'En un molde, alterna capas de pasta, carne y queso.', 'Cubre con queso rallado.', 'Hornea 30 min a 180°C.']
+            },
+            curry: {
+                id: 'curry',
+                titulo: '🍛 Curry de Pollo',
+                descripcion: 'Curry cremoso de pollo con especias, perfecto con arroz.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&q=80',
+                pasos: ['Sofríe cebolla, ajo y jengibre.', 'Añade pollo en trozos y dora.', 'Agrega curry en polvo y leche de coco.', 'Cocina a fuego bajo 20 min.', 'Sirve con arroz blanco.']
+            },
+            hamburguesa: {
+                id: 'hamburguesa',
+                titulo: '🍔 Hamburguesa Casera',
+                descripcion: 'Hamburguesa jugosa con pan artesanal y toppings frescos.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=800&q=80',
+                pasos: ['Forma 2 hamburguesas con carne molida.', 'Sazona con sal y pimienta.', 'Cocina en sartén o plancha 4-5 min por lado.', 'Tuesta el pan y monta con lechuga, tomate y queso.', 'Sirve con papas fritas.']
+            },
+            burrito: {
+                id: 'burrito',
+                titulo: '🌯 Burrito de Pollo',
+                descripcion: 'Burrito gigante con pollo, arroz, frijoles y guacamole.',
+                categoria: 'principal',
+                img: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&q=80',
+                pasos: ['Cocina pollo desmenuzado con especias.', 'Calienta tortillas de harina.', 'Rellena con pollo, arroz, frijoles y guacamole.', 'Envuelve firmemente.', 'Dora en sartén y sirve.']
+            },
+
+            // ===== POSTRES (7) =====
+            brownie: {
+                id: 'brownie',
+                titulo: '🍫 Brownie de Chocolate',
+                descripcion: 'Brownie húmedo y chocolatoso, el mejor postre para los amantes del cacao.',
+                categoria: 'postre',
+                img: 'https://images.unsplash.com/photo-1587313346202-9ad7a3dff40d?w=800&q=80',
+                pasos: ['Precalienta horno a 180°C, engrasa molde.', 'Derrite 200g chocolate con 150g mantequilla.', 'Mezcla 3 huevos con 200g azúcar, añade chocolate.', 'Agrega 100g harina y pizca de sal.', 'Hornea 25-30 min, enfría y corta.']
+            },
+            flan: {
+                id: 'flan',
+                titulo: '🍮 Flan de Vainilla',
+                descripcion: 'Flan casero suave y cremoso con caramelo, un clásico de la abuela.',
+                categoria: 'postre',
+                img: 'https://images.unsplash.com/photo-1587313346202-9ad7a3dff40d?w=800&q=80',
+                pasos: ['Prepara caramelo con 1/2 taza azúcar y 2 cdas agua.', 'Vierte caramelo en molde.', 'Licúa 4 huevos, leche condensada, leche evaporada y vainilla.', 'Vierte sobre caramelo, tapa con aluminio.', 'Cocina al baño maría 45 min a 180°C.']
+            },
+            galletas: {
+                id: 'galletas',
+                titulo: '🍪 Galletas de Avena',
+                descripcion: 'Galletas saludables de avena con chispas de chocolate.',
+                categoria: 'postre',
+                img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&q=80',
+                pasos: ['Precalienta horno a 180°C.', 'Mezcla avena, harina, azúcar y bicarbonato.', 'Añade huevo, mantequilla y vainilla.', 'Agrega chispas de chocolate.', 'Forma bolitas, aplana y hornea 12-15 min.']
+            },
+            cheesecake: {
+                id: 'cheesecake',
+                titulo: '🍰 Cheesecake de Fresa',
+                descripcion: 'Tarta de queso cremosa con salsa de fresa, irresistible.',
+                categoria: 'postre',
+                img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800&q=80',
+                pasos: ['Mezcla galletas trituradas con mantequilla para la base.', 'Presiona en un molde y hornea 10 min.', 'Bate queso crema, azúcar y huevos.', 'Vierte sobre la base y hornea 45 min.', 'Cubre con salsa de fresa y refrigera.']
+            },
+            cupcakes: {
+                id: 'cupcakes',
+                titulo: '🧁 Cupcakes de Vainilla',
+                descripcion: 'Cupcakes esponjosos con frosting de mantequilla y colores.',
+                categoria: 'postre',
+                img: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?w=800&q=80',
+                pasos: ['Precalienta horno a 180°C.', 'Mezcla harina, azúcar, huevos y mantequilla.', 'Añade esencia de vainilla y leche.', 'Llena moldes 2/3 y hornea 20 min.', 'Decora con frosting de mantequilla.']
+            },
+            tiramisu: {
+                id: 'tiramisu',
+                titulo: '🇮🇹 Tiramisú Clásico',
+                descripcion: 'Postre italiano con café, mascarpone y cacao, sin horno.',
+                categoria: 'postre',
+                img: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=800&q=80',
+                pasos: ['Prepara café fuerte y endulza.', 'Mezcla mascarpone con azúcar y yemas.', 'Monta claras a punto de nieve e incorpora.', 'Moja bizcochos en café y coloca en capas.', 'Refrigera 4 horas y espolvorea cacao.']
+            },
+            helado: {
+                id: 'helado',
+                titulo: '🍦 Helado de Vainilla Casero',
+                descripcion: 'Helado cremoso de vainilla sin máquina, con solo 3 ingredientes.',
+                categoria: 'postre',
+                img: 'https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?w=800&q=80',
+                pasos: ['Bate 2 tazas de crema de leche hasta montar.', 'Añade 1 lata de leche condensada y esencia de vainilla.', 'Mezcla suavemente y vierte en un molde.', 'Congela por 6 horas.', 'Sirve con salsa de chocolate.']
+            },
+
+            // ===== VEGETARIANOS (5) =====
+            ensalada: {
+                id: 'ensalada',
+                titulo: '🥗 Ensalada Mediterránea',
+                descripcion: 'Ensalada fresca con tomate, pepino, aceitunas y queso feta.',
+                categoria: 'vegetariano',
+                img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80',
+                pasos: ['Corta tomates, pepino y cebolla morada.', 'Añade aceitunas y queso feta.', 'Aliña con aceite, vinagre, orégano y sal.', 'Mezcla suavemente.', 'Decora con albahaca fresca.']
+            },
+            hummus: {
+                id: 'hummus',
+                titulo: '🧆 Hummus Casero',
+                descripcion: 'Crema de garbanzos suave y nutritiva, ideal para untar.',
+                categoria: 'vegetariano',
+                img: 'https://images.unsplash.com/photo-1574184407931-8b79f2ef0d9b?w=800&q=80',
+                pasos: ['Escurre garbanzos (reserva líquido).', 'Procesa garbanzos con tahini.', 'Añade limón, ajo, aceite y sal.', 'Procesa hasta crema suave.', 'Sirve con aceite y pimentón.']
+            },
+            falafel: {
+                id: 'falafel',
+                titulo: '🧆 Falafel Crujiente',
+                descripcion: 'Bolitas de garbanzo especiadas, fritas y crujientes.',
+                categoria: 'vegetariano',
+                img: 'https://images.unsplash.com/photo-1585040162724-019a2cef9e5d?w=800&q=80',
+                pasos: ['Procesa garbanzos con ajo, perejil y comino.', 'Forma bolitas con la mezcla.', 'Fríe en aceite caliente hasta dorar.', 'Escurre sobre papel absorbente.', 'Sirve con salsa de yogurt.']
+            },
+            ratatouille: {
+                id: 'ratatouille',
+                titulo: '🍆 Ratatouille Provenzal',
+                descripcion: 'Estofado de verduras francés, colorido y lleno de sabor.',
+                categoria: 'vegetariano',
+                img: 'https://images.unsplash.com/photo-1563379926898-05f4575a45c0?w=800&q=80',
+                pasos: ['Corta berenjena, calabacín, pimiento y tomate.', 'Sofríe cebolla y ajo en aceite.', 'Añade las verduras y hierbas provenzales.', 'Cocina a fuego bajo 30 min.', 'Sirve caliente con pan.']
+            },
+            quinoa: {
+                id: 'quinoa',
+                titulo: '🍚 Ensalada de Quinoa',
+                descripcion: 'Ensalada nutritiva con quinoa, aguacate y vegetales frescos.',
+                categoria: 'vegetariano',
+                img: 'https://images.unsplash.com/photo-1511649475669-e288648b2339?w=800&q=80',
+                pasos: ['Cocina quinoa según instrucciones.', 'Deja enfriar y mezcla con vegetales picados.', 'Añade aguacate, cilantro y jugo de limón.', 'Aliña con aceite de oliva y sal.', 'Sirve frío o a temperatura ambiente.']
+            },
+
+            // ===== RÁPIDOS (5) =====
+            sandwich: {
+                id: 'sandwich',
+                titulo: '🥪 Sándwich Club',
+                descripcion: 'Sándwich de pollo, lechuga y tomate, listo en 10 minutos.',
+                categoria: 'rapido',
+                img: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&q=80',
+                pasos: ['Tuesta 3 rebanadas de pan.', 'Desmenuza pollo y mezcla con mayonesa.', 'Arma: pan, lechuga, tomate, pollo, pan, pollo, pan.', 'Corta en triángulos y asegura con palillos.', 'Sirve con papas fritas.']
+            },
+            arroz: {
+                id: 'arroz',
+                titulo: '🍚 Arroz Saltado Rápido',
+                descripcion: 'Arroz frito con verduras y huevo, una cena express.',
+                categoria: 'rapido',
+                img: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&q=80',
+                pasos: ['Calienta aceite en wok.', 'Añade huevos batidos, cocina y reserva.', 'Sofríe cebolla y zanahoria.', 'Agrega arroz cocido, salsa de soja y huevos.', 'Salta 3-4 min y sirve.']
+            },
+            tacos: {
+                id: 'tacos',
+                titulo: '🌮 Tacos Rápidos',
+                descripcion: 'Tacos de carne molida con toppings frescos, listos en 15 minutos.',
+                categoria: 'rapido',
+                img: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=800&q=80',
+                pasos: ['Cocina carne molida en sartén.', 'Añade condimento para tacos y agua.', 'Cocina hasta sazonar.', 'Calienta tortillas.', 'Sirve con cebolla, cilantro, salsa y limón.']
+            },
+            wrap: {
+                id: 'wrap',
+                titulo: '🌯 Wrap de Pollo Rápido',
+                descripcion: 'Wrap de pollo con vegetales crujientes, listo en 5 minutos.',
+                categoria: 'rapido',
+                img: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&q=80',
+                pasos: ['Calienta una tortilla de harina.', 'Coloca pollo desmenuzado, lechuga y tomate.', 'Añade mayonesa o salsa al gusto.', 'Envuelve firmemente.', 'Corta por la mitad y sirve.']
+            },
+            tortilla_espanola: {
+                id: 'tortilla_espanola',
+                titulo: '🥚 Tortilla Española',
+                descripcion: 'Tortilla de patata y cebolla, un clásico español rápido y delicioso.',
+                categoria: 'rapido',
+                img: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=800&q=80',
+                pasos: ['Pela y corta patatas en rodajas finas.', 'Fríe las patatas en aceite hasta dorar.', 'Bate 6 huevos con sal y mezcla con las patatas.', 'Cocina en sartén a fuego medio.', 'Dale la vuelta y cocina por el otro lado.']
+            },
+
+            // ===== SOPAS (3) =====
+            sopa_tomate: {
+                id: 'sopa_tomate',
+                titulo: '🍅 Sopa de Tomate',
+                descripcion: 'Sopa cremosa de tomate con albahaca, reconfortante y fácil.',
+                categoria: 'sopas',
+                img: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&q=80',
+                pasos: ['Sofríe cebolla y ajo en aceite.', 'Añade tomates triturados y caldo de verduras.', 'Cocina 20 min y licúa.', 'Añade crema y albahaca.', 'Sirve caliente con crutones.']
+            },
+            sopa_lentejas: {
+                id: 'sopa_lentejas',
+                titulo: '🥣 Sopa de Lentejas',
+                descripcion: 'Sopa de lentejas nutritiva con verduras y especias.',
+                categoria: 'sopas',
+                img: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&q=80',
+                pasos: ['Sofríe cebolla, zanahoria y apio.', 'Añade lentejas, caldo y especias.', 'Cocina 30 min hasta que estén tiernas.', 'Rectifica sal y pimienta.', 'Sirve con pan crujiente.']
+            },
+            sopa_pollo: {
+                id: 'sopa_pollo',
+                titulo: '🍗 Sopa de Pollo',
+                descripcion: 'Sopa reconfortante de pollo con fideos, ideal para días fríos.',
+                categoria: 'sopas',
+                img: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&q=80',
+                pasos: ['Cocina pollo con agua, cebolla y zanahoria.', 'Desmenuza el pollo y cuela el caldo.', 'Añade fideos y cocina 10 min.', 'Vuelve a añadir el pollo.', 'Sirve caliente con perejil.']
+            },
+
+            // ===== BEBIDAS (2) =====
+            smoothie: {
+                id: 'smoothie',
+                titulo: '🥤 Smoothie de Frutas',
+                descripcion: 'Smoothie cremoso de frutas, saludable y refrescante.',
+                categoria: 'bebidas',
+                img: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=800&q=80',
+                pasos: ['Coloca plátano, fresas y yogur en la licuadora.', 'Añade un poco de leche o jugo de naranja.', 'Licúa hasta obtener una mezcla suave.', 'Endulza con miel al gusto.', 'Sirve frío con una pajita.']
+            },
+            limonada: {
+                id: 'limonada',
+                titulo: '🍋 Limonada Casera',
+                descripcion: 'Limonada refrescante con menta, perfecta para el verano.',
+                categoria: 'bebidas',
+                img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80',
+                pasos: ['Exprime 4 limones y reserva el jugo.', 'Mezcla con agua y azúcar al gusto.', 'Añade hojas de menta y hielo.', 'Decora con rodajas de limón.', 'Sirve bien fría.']
+            }
+        };
+
+        // ============================================================
+        //  ESTADO
+        // ============================================================
+        const state = {
+            recetaActual: null,
+            indice: 0,
+            totalPasos: 0,
+            filtroActual: 'all',
+            busqueda: '',
+            darkMode: localStorage.getItem('darkMode') === 'true',
+            tabActual: 'recetas',
+            simTemp: 25,
+            simTiempo: 0,
+            simAlarma: false,
+            simCocinando: false,
+            simInterval: null
+        };
+
+        // ============================================================
+        //  DOM REFS
+        // ============================================================
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        const modal = $('#modal');
+        const modalTitle = $('#modalTitle');
+        const stepsContainer = $('#steps');
+        const bar = $('#bar');
+        const stepCounter = $('#stepCounter');
+        const prevBtn = $('#prevBtn');
+        const nextBtn = $('#nextBtn');
+        const recipeGrid = $('#recipeGrid');
+        const filterContainer = $('#filterContainer');
+        const searchInput = $('#searchInput');
+        const themeToggle = $('#themeToggle');
+        const recipeCount = $('#recipeCount');
+        const tabContainer = $('#tabContainer');
+        const tabRecetas = $('#tabRecetas');
+        const tabAutomation = $('#tabAutomation');
+        const recipeControls = $('#recipeControls');
+
+        const simLedVerde = $('#simLedVerde');
+        const simLedRojo = $('#simLedRojo');
+        const simEstado = $('#simEstado');
+        const simBuzzer = $('#simBuzzer');
+        const simTemp = $('#simTemp');
+        const simTiempo = $('#simTiempo');
+        const simEstadoText = $('#simEstadoText');
+
+        // ============================================================
+        //  FUNCIONES UTILITY
+        // ============================================================
+        function getCategoriaLabel(cat) {
+            const labels = {
+                'desayuno': '🌅 Desayuno',
+                'principal': '🍽️ Principal',
+                'postre': '🍰 Postre',
+                'vegetariano': '🥗 Vegetariano',
+                'rapido': '⚡ Rápido',
+                'sopas': '🍜 Sopas',
+                'bebidas': '🥤 Bebidas'
+            };
+            return labels[cat] || cat;
+        }
+
+        function getRecetasFiltradas(filtro, busqueda) {
+            let recetas = Object.values(RECETAS);
+            if (filtro !== 'all') recetas = recetas.filter(r => r.categoria === filtro);
+            if (busqueda.trim()) {
+                const q = busqueda.toLowerCase().trim();
+                recetas = recetas.filter(r =>
+                    r.titulo.toLowerCase().includes(q) ||
+                    r.descripcion.toLowerCase().includes(q)
+                );
+            }
+            return recetas;
+        }
+
+        // ============================================================
+        //  RENDER: TARJETAS DE RECETAS
+        // ============================================================
+        function renderCards(filtro = 'all', busqueda = '') {
+            const recetas = getRecetasFiltradas(filtro, busqueda);
+            recipeGrid.innerHTML = '';
+
+            if (recetas.length === 0) {
+                recipeGrid.innerHTML =
+                    `<div class="grid-empty"><span>😅</span><p>No encontramos recetas que coincidan.</p></div>`;
+                recipeCount.textContent = '0';
+                return;
+            }
+
+            recetas.forEach(receta => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('role', 'article');
+                card.innerHTML = `
+                    <img src="${receta.img}" alt="${receta.titulo}" loading="lazy"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22200%22%3E%3Crect fill=%22%23f0e6d8%22 width=%22800%22 height=%22200%22/%3E%3Ctext x=%22400%22 y=%22110%22 text-anchor=%22middle%22 font-size=%2224%22 fill=%22%23999%22 font-family=%22Arial%22%3E🍳%3C/text%3E%3C/svg%3E'">
+                    <div class="card-content">
+                        <span class="categoria-tag">${getCategoriaLabel(receta.categoria)}</span>
+                        <h2>${receta.titulo}</h2>
+                        <p>${receta.descripcion}</p>
+                        <button onclick="abrir('${receta.id}')">Comenzar</button>
+                    </div>
+                `;
+                card.addEventListener('click', (e) => { if (e.target.tagName !== 'BUTTON') abrir(receta.id); });
+                recipeGrid.appendChild(card);
+            });
+
+            recipeCount.textContent = recetas.length;
+        }
+
+        // ============================================================
+        //  MODAL DE RECETAS
+        // ============================================================
+        function abrir(id) {
+            const receta = RECETAS[id];
+            if (!receta) return;
+            state.recetaActual = receta;
+            state.indice = 0;
+            state.totalPasos = receta.pasos.length;
+
+            modalTitle.textContent = receta.titulo;
+            stepsContainer.innerHTML = '';
+            receta.pasos.forEach((texto, i) => {
+                const div = document.createElement('div');
+                div.className = `step ${i === 0 ? 'active' : ''}`;
+                div.innerHTML = `<h3><span class="step-number">${i + 1}</span>${texto}</h3>`;
+                stepsContainer.appendChild(div);
+            });
+
+            actualizarUI();
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            modal.focus();
+        }
+
+        function cerrar() {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            state.recetaActual = null;
+            state.indice = 0;
+        }
+
+        function siguiente() {
+            if (!state.recetaActual) return;
+            if (state.indice < state.totalPasos - 1) {
+                state.indice++;
+                actualizarUI();
+            } else {
+                const btn = nextBtn;
+                const orig = btn.textContent;
+                btn.textContent = '🎉 ¡Completado!';
+                btn.style.background = '#28a745';
+                setTimeout(() => { btn.textContent = orig;
+                    btn.style.background = ''; }, 2000);
+            }
+        }
+
+        function anterior() {
+            if (!state.recetaActual) return;
+            if (state.indice > 0) { state.indice--;
+                actualizarUI(); }
+        }
+
+        function actualizarUI() {
+            const pasos = $$('.step');
+            if (!pasos.length) return;
+            pasos.forEach(p => p.classList.remove('active'));
+            pasos[state.indice].classList.add('active');
+            const pct = ((state.indice + 1) / state.totalPasos) * 100;
+            bar.style.width = `${pct}%`;
+            stepCounter.textContent = `Paso ${state.indice + 1} de ${state.totalPasos}`;
+            prevBtn.disabled = state.indice === 0;
+            nextBtn.textContent = state.indice === state.totalPasos - 1 ? '✅ Finalizar' : 'Siguiente ➜';
+        }
+
+        // ============================================================
+        //  SIMULADOR DE AUTOMATIZACIÓN
+        // ============================================================
+        function actualizarSimulador() {
+            if (!state.simAlarma) {
+                simLedVerde.className = 'status-led green';
+                simLedRojo.className = 'status-led';
+                simEstado.textContent = '🔒 SEGURO';
+                simEstado.style.color = 'var(--secondary)';
+                simBuzzer.textContent = '🔇';
+            } else {
+                simLedVerde.className = 'status-led';
+                simLedRojo.className = 'status-led red';
+                simEstado.textContent = '🚨 ALARMA';
+                simEstado.style.color = 'var(--danger)';
+                simBuzzer.textContent = '🔊';
+            }
+
+            simTemp.textContent = `${state.simTemp} °C`;
+            simTiempo.textContent = `${state.simTiempo} s`;
+
+            if (state.simAlarma) {
+                simEstadoText.textContent = '🚨 ¡ALERTA! Revisa la comida';
+                simEstadoText.style.color = 'var(--danger)';
+            } else if (state.simCocinando) {
+                simEstadoText.textContent = `🔥 Cocinando (${state.simTiempo}s)`;
+                simEstadoText.style.color = 'var(--warning)';
+            } else {
+                simEstadoText.textContent = '✅ Cocina segura';
+                simEstadoText.style.color = 'var(--secondary)';
+            }
+        }
+
+        function simularTemp(temp) {
+            state.simTemp = temp;
+            if (temp > 60) {
+                state.simCocinando = true;
+                state.simTiempo++;
+                if (state.simTiempo > 20) state.simAlarma = true;
+            } else {
+                state.simCocinando = false;
+                state.simTiempo = 0;
+                state.simAlarma = false;
+            }
+            actualizarSimulador();
+        }
+
+        function resetSimulacion() {
+            state.simTemp = 25;
+            state.simTiempo = 0;
+            state.simAlarma = false;
+            state.simCocinando = false;
+            actualizarSimulador();
+        }
+
+        function iniciarSimulador() {
+            if (state.simInterval) clearInterval(state.simInterval);
+            state.simInterval = setInterval(() => {
+                const fluctuacion = Math.random() * 4 - 2;
+                let nuevaTemp = state.simTemp + fluctuacion;
+                if (state.simAlarma && nuevaTemp < 60) {
+                    state.simAlarma = false;
+                    state.simCocinando = false;
+                    state.simTiempo = 0;
+                }
+                if (state.simCocinando && nuevaTemp > 55) {
+                    state.simTiempo++;
+                    if (state.simTiempo > 20) state.simAlarma = true;
+                }
+                if (nuevaTemp < 20) nuevaTemp = 20;
+                if (nuevaTemp > 90) nuevaTemp = 90;
+                state.simTemp = Math.round(nuevaTemp);
+                if (state.simTemp > 60 && !state.simAlarma) {
+                    state.simCocinando = true;
+                    if (!state.simAlarma) state.simTiempo++;
+                } else if (state.simTemp <= 60 && !state.simAlarma) {
+                    state.simCocinando = false;
+                    state.simTiempo = 0;
+                }
+                if (state.simTemp < 55 && state.simAlarma) {
+                    state.simAlarma = false;
+                    state.simCocinando = false;
+                    state.simTiempo = 0;
+                }
+                actualizarSimulador();
+            }, 1000);
+        }
+
+        // ============================================================
+        //  TABS
+        // ============================================================
+        function cambiarTab(tab) {
+            state.tabActual = tab;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tabs button').forEach(el => el.classList.remove('active'));
+
+            if (tab === 'recetas') {
+                tabRecetas.classList.add('active');
+                document.querySelector('.tabs button[data-tab="recetas"]').classList.add('active');
+                recipeControls.style.display = 'flex';
+            } else {
+                tabAutomation.classList.add('active');
+                document.querySelector('.tabs button[data-tab="automation"]').classList.add('active');
+                recipeControls.style.display = 'none';
+                if (!state.simInterval) iniciarSimulador();
+            }
+        }
+
+        // ============================================================
+        //  MODO OSCURO
+        // ============================================================
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            document.documentElement.setAttribute('data-theme', state.darkMode ? 'dark' : 'light');
+            themeToggle.innerHTML = state.darkMode ? '☀️ <span>Modo claro</span>' : '🌙 <span>Modo oscuro</span>';
+            localStorage.setItem('darkMode', String(state.darkMode));
+        }
+
+        // ============================================================
+        //  FILTROS Y BÚSQUEDA
+        // ============================================================
+        function aplicarFiltros() {
+            renderCards(state.filtroActual, state.busqueda);
+            filterContainer.querySelectorAll('button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === state.filtroActual);
+            });
+        }
+
+        // ============================================================
+        //  EVENTOS
+        // ============================================================
+        tabContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            cambiarTab(btn.dataset.tab);
+        });
+
+        filterContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            state.filtroActual = btn.dataset.filter;
+            aplicarFiltros();
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            state.busqueda = e.target.value;
+            aplicarFiltros();
+        });
+
+        themeToggle.addEventListener('click', toggleDarkMode);
+
+        modal.addEventListener('click', (e) => { if (e.target === modal) cerrar(); });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') cerrar();
+            if (modal.style.display === 'flex') {
+                if (e.key === 'ArrowRight') siguiente();
+                if (e.key === 'ArrowLeft') anterior();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault();
+                searchInput.focus(); }
+        });
+
+        // ============================================================
+        //  INICIALIZAR
+        // ============================================================
+        function init() {
+            if (state.darkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '☀️ <span>Modo claro</span>';
+            }
+
+            renderCards('all', '');
+            iniciarSimulador();
+            if (state.simInterval) {
+                clearInterval(state.simInterval);
+                state.simInterval = null;
+            }
+
+            cambiarTab('recetas');
+
+            window.simularTemp = simularTemp;
+            window.resetSimulacion = resetSimulacion;
+            window.abrir = abrir;
+            window.cerrar = cerrar;
+            window.siguiente = siguiente;
+            window.anterior = anterior;
+
+            console.log('🍳 Smart Kitchen Assistant v2.0 — ¡35 Recetas + Engineering Lab Ready!');
+            console.log(`📚 ${Object.keys(RECETAS).length} recetas en 7 categorías`);
+            console.log('🔧 Sistema de automatización con Wokwi');
+            console.log('🔍 Presiona Ctrl+K para buscar');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

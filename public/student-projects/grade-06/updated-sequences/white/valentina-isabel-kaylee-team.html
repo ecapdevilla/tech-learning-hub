@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CODE CREATORS · ReciclaLab · 6° STEM</title>
+    <style>
+        /* ========== RESET Y ESTILOS GLOBALES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #E3F2FD 0%, #FFF9C4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 30px 35px 40px;
+            box-shadow: 0 30px 60px -20px rgba(0, 40, 80, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.3s;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #64B5F6;
+            padding-bottom: 18px;
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1A237E;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header h1 small {
+            font-size: 1rem;
+            font-weight: 500;
+            background: #FFD54F;
+            color: #1A237E;
+            padding: 4px 18px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-ods {
+            background: #1A237E;
+            color: #FFF9C4;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ========== FILAS Y COLUMNAS ========== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 18px 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 14px 0;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin: 14px 0;
+        }
+
+        @media (max-width: 850px) {
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========== TARJETAS ========== */
+        .card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 22px 24px 26px;
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.08);
+            border: 2px solid #BBDEFB;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            border-color: #64B5F6;
+            box-shadow: 0 8px 20px rgba(26, 35, 126, 0.12);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1A237E;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #BBDEFB;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+        }
+
+        .card h3 .tag {
+            background: #FFD54F;
+            color: #1A237E;
+            font-size: 0.65rem;
+            padding: 2px 14px;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            font-weight: 700;
+        }
+
+        /* ========== BLOQUES DE CÓDIGO (Scratch style) ========== */
+        .scratch-block {
+            background: #1A237E;
+            color: #FFF9C4;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-family: 'Fira Code', 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            margin: 10px 0;
+            border-left: 6px solid #FFD54F;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .scratch-block .highlight {
+            color: #FFD54F;
+        }
+
+        .scratch-block .var {
+            color: #81D4FA;
+        }
+
+        .scratch-block .cond {
+            color: #FFAB91;
+        }
+
+        .scratch-block .loop {
+            color: #CE93D8;
+        }
+
+        .scratch-block .comment {
+            color: #90CAF9;
+            font-style: italic;
+        }
+
+        /* ========== INTERACCIÓN ========== */
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin: 14px 0 6px;
+        }
+
+        .input-row input,
+        .input-row select {
+            padding: 10px 18px;
+            border-radius: 40px;
+            border: 2px solid #BBDEFB;
+            font-size: 0.95rem;
+            flex: 1 1 160px;
+            background: #FFFFFF;
+            transition: 0.2s;
+        }
+
+        .input-row input:focus,
+        .input-row select:focus {
+            border-color: #64B5F6;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(100, 181, 246, 0.2);
+        }
+
+        .btn {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #1A237E;
+            color: #FFF9C4;
+            box-shadow: 0 4px 8px rgba(26, 35, 126, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #0D1642;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(26, 35, 126, 0.3);
+        }
+
+        .btn-secondary {
+            background: #FFF9C4;
+            color: #1A237E;
+            border: 2px solid #FFD54F;
+        }
+
+        .btn-secondary:hover {
+            background: #FFD54F;
+        }
+
+        .btn-success {
+            background: #43A047;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #2E7D32;
+        }
+
+        .btn-danger {
+            background: #E53935;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #C62828;
+        }
+
+        .feedback-box {
+            background: #FFF9C4;
+            border-radius: 20px;
+            padding: 12px 18px;
+            margin: 10px 0;
+            border-left: 6px solid #FFD54F;
+            font-weight: 500;
+            color: #1A237E;
+        }
+
+        .feedback-box.error {
+            background: #FFCDD2;
+            border-left-color: #E53935;
+        }
+
+        .feedback-box.warning {
+            background: #FFF8E1;
+            border-left-color: #F9A825;
+        }
+
+        .feedback-box.success {
+            background: #C8E6C9;
+            border-left-color: #43A047;
+        }
+
+        /* ========== PROGRESS ========== */
+        .progress-track {
+            background: #BBDEFB;
+            border-radius: 40px;
+            height: 10px;
+            width: 100%;
+            margin: 8px 0 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #1A237E, #64B5F6);
+            height: 10px;
+            border-radius: 40px;
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+
+        /* ========== TABLAS ========== */
+        .table-mini {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .table-mini td,
+        .table-mini th {
+            padding: 8px 6px;
+            border-bottom: 1px solid #BBDEFB;
+        }
+
+        .table-mini tr:last-child td {
+            border: none;
+        }
+
+        .table-mini th {
+            text-align: left;
+            font-weight: 600;
+            color: #1A237E;
+        }
+
+        /* ========== RÚBRICA ========== */
+        .rubric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        .rubric-item {
+            background: #E3F2FD;
+            border-radius: 16px;
+            padding: 10px 14px;
+            text-align: center;
+            border: 2px solid #BBDEFB;
+        }
+
+        .rubric-item .score {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1A237E;
+        }
+
+        /* ========== TARJETA DE EQUIPO ========== */
+        .team-member {
+            background: #E3F2FD;
+            border-radius: 16px;
+            padding: 14px 16px;
+            text-align: center;
+            border: 2px solid #BBDEFB;
+            transition: 0.2s;
+        }
+
+        .team-member:hover {
+            background: #FFF9C4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.15);
+            border-color: #FFD54F;
+        }
+
+        .team-member .emoji {
+            font-size: 2rem;
+            display: block;
+        }
+
+        .team-member .name {
+            font-weight: 700;
+            color: #1A237E;
+            margin-top: 4px;
+        }
+
+        .team-member .role {
+            font-size: 0.8rem;
+            color: #1565C0;
+            font-weight: 500;
+        }
+
+        /* ========== EVIDENCIA FINAL ========== */
+        .evidence-box {
+            background: #1A237E;
+            color: #FFF9C4;
+            border-radius: 28px;
+            padding: 22px 28px;
+            margin-top: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .evidence-box .btn {
+            background: #FFF9C4;
+            color: #1A237E;
+        }
+
+        .evidence-box .btn:hover {
+            background: #FFD54F;
+        }
+
+        /* ========== UTILIDADES ========== */
+        .mt-2 {
+            margin-top: 16px;
+        }
+        .mt-3 {
+            margin-top: 26px;
+        }
+        .mb-1 {
+            margin-bottom: 8px;
+        }
+        .text-sm {
+            font-size: 0.85rem;
+            color: #1565C0;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .gap-2 {
+            gap: 12px;
+        }
+        .tag-sm {
+            background: #FFD54F;
+            padding: 2px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1A237E;
+        }
+
+        /* ========== ANIMACIONES ========== */
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeSlide 0.5s ease forwards;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .evidence-box {
+                flex-direction: column;
+                gap: 14px;
+                align-items: stretch;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <h1>
+                ♻️ ReciclaLab
+                <small>CODE CREATORS</small>
+            </h1>
+            <div class="badge-ods">
+                🌍 ODS 11 · 13 · 15
+            </div>
+        </header>
+
+        <!-- ===== EQUIPO ===== -->
+        <div class="card" style="background: #FFF9C4; border-color: #FFD54F;">
+            <div class="flex-between">
+                <h3 style="border: none; padding: 0; margin: 0;">👥 Equipo de Creación Digital</h3>
+                <span class="tag-sm">🌟 6° · Tercer Periodo 2026</span>
+            </div>
+            <div class="grid-4">
+                <div class="team-member">
+                    <span class="emoji">🧩</span>
+                    <div class="name">Valentina Peralta</div>
+                    <div class="role">Programadora</div>
+                </div>
+                <div class="team-member">
+                    <span class="emoji">🎨</span>
+                    <div class="name">Isabel Noguera</div>
+                    <div class="role">Diseñadora de Escenarios</div>
+                </div>
+                <div class="team-member">
+                    <span class="emoji">📊</span>
+                    <div class="name">Kaylee Arrieta</div>
+                    <div class="role">Recolectora de Datos</div>
+                </div>
+                <div class="team-member">
+                    <span class="emoji">📝</span>
+                    <div class="name">Salomé Heredia</div>
+                    <div class="role">Documentadora / Presentadora</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== INTRO / PROBLEMA ===== -->
+        <div class="card mt-3" style="background: #E3F2FD; border-color: #64B5F6;">
+            <div class="flex-between">
+                <h3 style="border: none; padding: 0; margin: 0;">🎯 Problema: ¿Cómo enseñar a reciclar correctamente?</h3>
+                <span class="tag-sm">Educación + Tecnología</span>
+            </div>
+            <p style="font-size: 1.05rem; font-weight: 500; color: #1A237E;">
+                En nuestra escuela, muchos residuos terminan en el contenedor equivocado.
+                <strong>ReciclaLab</strong> es un juego interactivo que enseña a clasificar
+                plástico, papel, vidrio y orgánico, ¡convirtiendo el aprendizaje en una aventura!
+            </p>
+            <div class="input-row">
+                <span class="tag-sm">🧩 Programación en Scratch</span>
+                <span class="tag-sm">🌱 STEM + ODS</span>
+                <span class="tag-sm">♻️ Reciclaje</span>
+            </div>
+        </div>
+
+        <!-- ===== CLASE MAESTRA: 5 BLOQUES ===== -->
+        <div class="card mt-3">
+            <h3>🧠 Clase Maestra · Los 5 Bloques <span class="tag">Scratch</span></h3>
+            <div class="grid-3">
+                <div>
+                    <div class="tag-sm">📦 Variable</div>
+                    <div class="scratch-block">
+                        <span class="var">score</span> = 0<br>
+                        <span class="var">lives</span> = 3<br>
+                        <span class="var">player</span> = "Ana"
+                    </div>
+                </div>
+                <div>
+                    <div class="tag-sm">⌨️ Entrada</div>
+                    <div class="scratch-block">
+                        ask <span class="highlight">"¿Cómo te llamas?"</span><br>
+                        answer → <span class="var">player</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="tag-sm">🔀 Condicional</div>
+                    <div class="scratch-block">
+                        <span class="cond">IF</span> answer = "plástico" <span class="cond">THEN</span><br>
+                        &nbsp;&nbsp;change <span class="var">score</span> by 1
+                    </div>
+                </div>
+                <div>
+                    <div class="tag-sm">🔁 Ciclo</div>
+                    <div class="scratch-block">
+                        <span class="loop">REPEAT</span> 5 TIMES<br>
+                        &nbsp;&nbsp;ask <span class="highlight">"¿Dónde va el vidrio?"</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="tag-sm">📚 Lista ⭐</div>
+                    <div class="scratch-block">
+                        <span class="var">preguntas</span> = ["plástico?", "papel?", "vidrio?"]<br>
+                        <span class="var">respuestas</span> = ["amarillo", "azul", "verde"]
+                    </div>
+                </div>
+                <div>
+                    <div class="tag-sm">✅ Integración</div>
+                    <div class="scratch-block" style="border-left-color: #FFD54F;">
+                        <span class="comment">// Todas las estructuras trabajan juntas</span><br>
+                        <span class="loop">REPEAT</span> <span class="var">len(preguntas)</span><br>
+                        &nbsp;&nbsp;<span class="cond">IF</span> respuesta = correcta <span class="cond">THEN</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;change <span class="var">score</span> by 1
+                    </div>
+                </div>
+            </div>
+            <div class="feedback-box mt-2">
+                <strong>✅ Preguntas rápidas:</strong><br>
+                1. Puntuación → <span class="tag-sm">Variable</span> &nbsp;|&nbsp;
+                2. Decisión → <span class="tag-sm">Condicional</span> &nbsp;|&nbsp;
+                3. Repetir → <span class="tag-sm">Ciclo</span> &nbsp;|&nbsp;
+                4. Muchas preguntas → <span class="tag-sm">Lista</span>
+            </div>
+        </div>
+
+        <!-- ===== ARQUITECTURA DEL PROYECTO ===== -->
+        <div class="card mt-3">
+            <h3>🧭 Arquitectura · Planear antes de programar</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px 18px; background: #FFF9C4; padding: 10px 20px; border-radius: 60px; margin-bottom: 16px; font-weight: 600; color: #1A237E;">
+                <span>🌱 INICIO</span> → <span>⌨️ ENTRADA</span> → <span>⚙️ PROCESO</span> → <span>🔀 DECISIÓN</span> → <span>🔁 REPETICIÓN</span> → <span>🏆 RESULTADO</span>
+            </div>
+            <div class="grid-2">
+                <div>
+                    <p><strong>👤 Estudiante:</strong> <input type="text" value="Valentina Peralta" style="border:2px solid #BBDEFB; border-radius:40px; padding:6px 16px; width:100%;"></p>
+                    <p><strong>📅 Fecha:</strong> <input type="text" value="21/08/2026" style="border:2px solid #BBDEFB; border-radius:40px; padding:6px 16px; width:100%;"></p>
+                    <p><strong>🤝 Equipo:</strong> <input type="text" value="Isabel Noguera, Kaylee Arrieta, Salomé Heredia" style="border:2px solid #BBDEFB; border-radius:40px; padding:6px 16px; width:100%;"></p>
+                </div>
+                <div>
+                    <p><strong>📌 Proyecto:</strong> <span class="tag-sm">ReciclaLab · Quiz Clasificador</span></p>
+                    <p><strong>🎯 Propósito:</strong> Enseñar a clasificar residuos mediante un juego interactivo.</p>
+                    <p><strong>📦 Variable 1:</strong> score / lives / level</p>
+                    <p><strong>📦 Variable 2:</strong> player / attempts / correct</p>
+                    <p><strong>🔀 Condición:</strong> IF score >= 10 → ¡Ganas!</p>
+                    <p><strong>🔁 Repetición:</strong> 5 preguntas por nivel</p>
+                    <p><strong>📚 Lista:</strong> preguntas, respuestas, mensajes de retroalimentación</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== CONSTRUCCIÓN GUIADA + SIMULADOR ===== -->
+        <div class="card mt-3">
+            <h3>👨‍💻 Construcción guiada · Predice y prueba <span class="tag">Simulador</span></h3>
+
+            <!-- Step A -->
+            <div class="flex-between">
+                <span><span class="tag-sm">Step A · Inicio</span></span>
+                <span class="text-sm">score = 0, lives = 3</span>
+            </div>
+            <div class="scratch-block">when green flag clicked<br>set <span class="var">score</span> to <span class="highlight">0</span> &nbsp; set <span class="var">lives</span> to <span class="highlight">3</span></div>
+            <p class="text-sm">🔮 Predicción: score=0, lives=3 al iniciar.</p>
+
+            <!-- Step B -->
+            <div class="flex-between mt-2">
+                <span><span class="tag-sm">Step B · Entrada</span></span>
+            </div>
+            <div class="scratch-block">ask <span class="highlight">"¿Cómo te llamas?"</span> and wait<br>say (join <span class="highlight">"Bienvenido/a "</span> (answer))</div>
+            <div class="input-row">
+                <input type="text" id="playerNameInput" placeholder="Escribe tu nombre" value="Valentina">
+                <button class="btn btn-primary" id="simulateNameBtn">▶️ Simular</button>
+                <span id="nameFeedback" class="tag-sm" style="background: #FFD54F; padding: 6px 18px;">Bienvenido/a Valentina</span>
+            </div>
+
+            <!-- Step C -->
+            <div class="flex-between mt-2">
+                <span><span class="tag-sm">Step C · Decisión</span></span>
+            </div>
+            <div class="scratch-block"><span class="cond">if</span> (answer = <span class="highlight">"plástico"</span>) <span class="cond">then</span><br>&nbsp;&nbsp;change <span class="var">score</span> by <span class="highlight">1</span> &nbsp; say <span class="highlight">"¡Correcto!"</span><br><span class="cond">else</span> say <span class="highlight">"¡Intenta de nuevo!"</span></div>
+            <div class="input-row">
+                <input type="text" id="residuoInput" placeholder="¿plástico, papel, vidrio u orgánico?" value="plástico">
+                <button class="btn btn-primary" id="checkResiduoBtn">✅ Verificar</button>
+                <span id="residuoFeedback" class="tag-sm" style="background: #C8E6C9; padding: 6px 18px;">✅ ¡Correcto! +1 punto</span>
+            </div>
+
+            <!-- Step D -->
+            <div class="flex-between mt-2">
+                <span><span class="tag-sm">Step D · Ciclo</span></span>
+            </div>
+            <div class="scratch-block"><span class="loop">repeat</span> <span class="highlight">5</span> <br>&nbsp;&nbsp;ask <span class="highlight">"¿Dónde va el vidrio?"</span> and wait<br>&nbsp;&nbsp;check answer</div>
+            <p class="text-sm">🔁 Se ejecutan <strong>5 rondas</strong>. Un ciclo evita copiar el mismo bloque 5 veces.</p>
+
+            <!-- Simulador de Juego Rápido -->
+            <div class="feedback-box mt-2" style="background: #FFF9C4; border-left-color: #FFD54F;">
+                <strong>🎮 Simulador rápido: Clasifica el residuo</strong>
+                <div class="input-row">
+                    <span style="font-weight:600; color:#1A237E;">Residuo: 🥤 Botella de plástico</span>
+                    <select id="clasificadorSelect">
+                        <option value="plástico">♻️ Plástico (Amarillo)</option>
+                        <option value="papel">📄 Papel (Azul)</option>
+                        <option value="vidrio">🍾 Vidrio (Verde)</option>
+                        <option value="orgánico">🍌 Orgánico (Marrón)</option>
+                    </select>
+                    <button class="btn btn-primary" id="clasificarBtn">Clasificar</button>
+                </div>
+                <div id="clasificadorResult" style="margin-top:8px; font-weight:600; color:#1A237E;">Esperando tu respuesta...</div>
+                <div class="flex-between mt-2">
+                    <span>🏆 Puntuación: <strong id="scoreDisplay" style="color:#1A237E;">0</strong></span>
+                    <span>❤️ Vidas: <strong id="livesDisplay" style="color:#1A237E;">3</strong></span>
+                    <span>📊 Aciertos: <strong id="hitsDisplay" style="color:#1A237E;">0</strong></span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="progressGame" style="width:0%;"></div></div>
+                <button class="btn btn-secondary" id="resetGameBtn">🔄 Reiniciar juego</button>
+            </div>
+        </div>
+
+        <!-- ===== PROYECTO INDEPENDIENTE ===== -->
+        <div class="card mt-3">
+            <h3>🚀 Proyecto independiente · Reto mínimo</h3>
+            <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:75%;"></div></div>
+            <div class="grid-2">
+                <div>
+                    <p>✅ Proyecto seleccionado: <span class="tag-sm">ReciclaLab</span></p>
+                    <p>✅ Arquitectura planeada</p>
+                    <p>✅ Variable creada (score, lives)</p>
+                    <p>✅ Entrada de usuario</p>
+                    <p>✅ Condicional añadido</p>
+                    <p>✅ Ciclo añadido (5 preguntas)</p>
+                    <p>⭐ Lista/arreglo (preguntas y respuestas)</p>
+                </div>
+                <div>
+                    <p><strong>¿Qué funciona ahora?</strong><br><input type="text" placeholder="Lo que funciona" style="width:100%; border:2px solid #BBDEFB; border-radius:40px; padding:8px 16px;" value="Clasificación, puntuación, vidas, ciclo de preguntas"></p>
+                    <p><strong>¿Qué falta?</strong><br><input type="text" placeholder="Mejoras" style="width:100%; border:2px solid #BBDEFB; border-radius:40px; padding:8px 16px;" value="Agregar sonidos, más niveles, mensaje final con estadísticas"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PRUEBAS Y DEPURACIÓN ===== -->
+        <div class="card mt-3">
+            <h3>🧪 Laboratorio de pruebas y depuración</h3>
+            <p class="text-sm">Depurar no es fallar. Es comparar lo que debería pasar con lo que realmente ocurrió.</p>
+            <table class="table-mini">
+                <tr><th>Prueba</th><th>Esperado</th><th>Observado</th><th>Cambio</th></tr>
+                <tr><td>1</td><td>score = 0 al inicio</td><td>✅ 0</td><td>—</td></tr>
+                <tr><td>2</td><td>Respuesta correcta → +1</td><td>✅ Funciona</td><td>—</td></tr>
+                <tr><td>3</td><td>Vidas disminuyen al fallar</td><td>✅ OK</td><td>—</td></tr>
+                <tr><td>4</td><td>Ciclo de 5 preguntas</td><td>✅ 5 rondas</td><td>—</td></tr>
+            </table>
+        </div>
+
+        <!-- ===== RETROALIMENTACIÓN ENTRE PARES ===== -->
+        <div class="card mt-3">
+            <h3>🤝 Retroalimentación entre pares</h3>
+            <div class="grid-3">
+                <div><strong>👍 Me gusta...</strong><br><input type="text" placeholder="..." style="width:100%; border:2px solid #BBDEFB; border-radius:40px; padding:8px 14px;" value="La temática de reciclaje y los colores"></div>
+                <div><strong>💡 Sugiero...</strong><br><input type="text" placeholder="..." style="width:100%; border:2px solid #BBDEFB; border-radius:40px; padding:8px 14px;" value="Agregar un temporizador para más reto"></div>
+                <div><strong>❓ Pregunta...</strong><br><input type="text" placeholder="..." style="width:100%; border:2px solid #BBDEFB; border-radius:40px; padding:8px 14px;" value="¿Cómo se guardan las estadísticas?"></div>
+            </div>
+        </div>
+
+        <!-- ===== RÚBRICA ===== -->
+        <div class="card mt-3">
+            <h3>📊 Rúbrica de proyecto · CODE CREATORS</h3>
+            <div class="rubric-grid">
+                <div class="rubric-item"><span class="score">4</span><br>Funcionalidad</div>
+                <div class="rubric-item"><span class="score">4</span><br>Variables</div>
+                <div class="rubric-item"><span class="score">4</span><br>Condicionales</div>
+                <div class="rubric-item"><span class="score">4</span><br>Ciclos</div>
+                <div class="rubric-item"><span class="score">4</span><br>Listas ⭐</div>
+                <div class="rubric-item"><span class="score">4</span><br>Creatividad</div>
+                <div class="rubric-item"><span class="score">4</span><br>Trabajo en equipo</div>
+                <div class="rubric-item"><span class="score">4</span><br>ODS</div>
+                <div class="rubric-item"><span class="score">4</span><br>Presentación</div>
+                <div class="rubric-item"><span class="score">4</span><br>Utilidad</div>
+            </div>
+            <div style="background: #FFF9C4; border-radius: 20px; padding: 12px 18px; margin-top:8px; border: 2px solid #FFD54F;">
+                <strong style="color:#1A237E;">📈 Puntuación total: 40/40 · Excelente (10.0)</strong>
+            </div>
+        </div>
+
+        <!-- ===== CIERRE ===== -->
+        <div class="card mt-3">
+            <h3>💭 Cierre · Acción y expresión</h3>
+            <div class="grid-2">
+                <div><strong>✅ ¿Qué completaste?</strong><br><input type="text" style="width:100%; border:2px solid #BBDEFB; border-radius:40px; padding:8px 14px;" value="Juego funcional con variables, condicionales, ciclo y lista"></div>
+                <div><strong>⏳ ¿Qué falta?</strong><br><input type="text" style="width:100%; border:2px solid #BBDEFB; border-radius:40px; padding:8px 14px;" value="Mejorar interfaz y agregar más preguntas"></div>
+                <div><strong>🤔 Concepto más difícil:</strong> <span class="tag-sm">Listas (arreglos)</span></div>
+                <div><strong>🌱 ¿Cómo ayuda a otros?</strong> <span class="tag-sm">Enseña a reciclar y cuidar el planeta</span></div>
+            </div>
+            <div class="feedback-box mt-2" style="background: #1A237E; color: #FFF9C4; border-left-color: #FFD54F;">
+                🙏 <strong>Cierre Lasallista:</strong> Agradecemos la oportunidad de aprender, crear, colaborar y usar la tecnología al servicio de los demás y del planeta.
+            </div>
+        </div>
+
+        <!-- ===== EVIDENCIA FINAL ===== -->
+        <div class="evidence-box">
+            <div>
+                <strong style="font-size:1.2rem;">📄 Registro final de evidencia</strong>
+                <p style="font-size:0.9rem; opacity:0.9;">6th Grade · Cycle 4 · Interactive Project Master Lab</p>
+                <p style="font-size:0.85rem; opacity:0.8; margin-top:4px;">
+                    <strong>Equipo:</strong> Valentina Peralta · Isabel Noguera · Kaylee Arrieta · Salomé Heredia
+                </p>
+                <div style="display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:6px;">
+                    <span class="tag-sm" style="background: #43A047; color: white;">Design 4/4</span>
+                    <span class="tag-sm" style="background: #43A047; color: white;">Structures 4/4</span>
+                    <span class="tag-sm" style="background: #43A047; color: white;">Testing 4/4</span>
+                    <span class="tag-sm" style="background: #43A047; color: white;">Explanation 4/4</span>
+                    <span class="tag-sm" style="background: #43A047; color: white;">Evidence 4/4</span>
+                </div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                <button class="btn">📥 Descargar evidencia</button>
+                <button class="btn">🖨️ Guardar PDF</button>
+                <button class="btn btn-primary" style="background: #FFF9C4; color: #1A237E;">☁️ Subir evidencia</button>
+            </div>
+        </div>
+
+        <p style="text-align:center; margin-top:24px; color:#1A237E; font-weight:500; font-size:0.9rem;">
+            🌱 "Programar es crear, y crear es la mejor manera de ayudar a los demás y cuidar nuestro planeta."<br>
+            <span style="font-weight:400;">CODE CREATORS · Tecnología 6° · Tercer Periodo 2026</span><br>
+            <span style="font-weight:400; font-size:0.8rem; color:#1565C0;">
+                Valentina Peralta · Isabel Noguera · Kaylee Arrieta · Salomé Heredia
+            </span>
+        </p>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== JAVASCRIPT COMPLETO ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ========== VARIABLES GLOBALES ==========
+            let score = 0;
+            let lives = 3;
+            let hits = 0;
+            let totalAttempts = 0;
+            const maxLives = 3;
+
+            // ========== LISTAS (ARREGLOS) ==========
+            const preguntasLista = [
+                { residuo: 'botella de plástico', correcta: 'plástico' },
+                { residuo: 'hoja de papel', correcta: 'papel' },
+                { residuo: 'frasco de vidrio', correcta: 'vidrio' },
+                { residuo: 'cáscara de plátano', correcta: 'orgánico' },
+                { residuo: 'bolsa de plástico', correcta: 'plástico' },
+                { residuo: 'cartón', correcta: 'papel' },
+                { residuo: 'botella de vidrio', correcta: 'vidrio' },
+                { residuo: 'restos de comida', correcta: 'orgánico' }
+            ];
+
+            let currentQuestionIndex = 0;
+            let gameActive = true;
+
+            // ========== DOM REFERENCIAS ==========
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const livesDisplay = document.getElementById('livesDisplay');
+            const hitsDisplay = document.getElementById('hitsDisplay');
+            const progressGame = document.getElementById('progressGame');
+            const clasificadorResult = document.getElementById('clasificadorResult');
+            const clasificadorSelect = document.getElementById('clasificadorSelect');
+            const clasificarBtn = document.getElementById('clasificarBtn');
+            const resetGameBtn = document.getElementById('resetGameBtn');
+
+            // ========== FUNCIONES ACTUALIZAR UI ==========
+            function updateUI() {
+                if (scoreDisplay) scoreDisplay.textContent = score;
+                if (livesDisplay) livesDisplay.textContent = lives;
+                if (hitsDisplay) hitsDisplay.textContent = hits;
+
+                const progressPercent = Math.min((hits / 10) * 100, 100);
+                if (progressGame) progressGame.style.width = progressPercent + '%';
+
+                if (score >= 10) {
+                    clasificadorResult.innerHTML = '🎉 ¡FELICITACIONES! Has alcanzado 10 puntos. ¡Eres un ReciclaMaster!';
+                    clasificadorResult.style.color = '#1A237E';
+                    gameActive = false;
+                } else if (lives <= 0) {
+                    clasificadorResult.innerHTML = '💔 ¡Oh no! Te quedaste sin vidas. ¡Intenta de nuevo!';
+                    clasificadorResult.style.color = '#C62828';
+                    gameActive = false;
+                } else {
+                    gameActive = true;
+                }
+            }
+
+            // ========== RESETEAR JUEGO ==========
+            function resetGame() {
+                score = 0;
+                lives = maxLives;
+                hits = 0;
+                totalAttempts = 0;
+                currentQuestionIndex = 0;
+                gameActive = true;
+                clasificadorResult.innerHTML = '🔄 Juego reiniciado. ¡Clasifica el residuo!';
+                clasificadorResult.style.color = '#1A237E';
+                updateUI();
+            }
+
+            // ========== CLASIFICAR RESIDUO ==========
+            function clasificarResiduo() {
+                if (!gameActive) {
+                    clasificadorResult.innerHTML = '⏳ El juego ha terminado. Presiona "Reiniciar" para jugar de nuevo.';
+                    clasificadorResult.style.color = '#F57F17';
+                    return;
+                }
+
+                const selectedOption = clasificadorSelect.value;
+                const preguntaActual = preguntasLista[currentQuestionIndex % preguntasLista.length];
+                const esCorrecto = (selectedOption === preguntaActual.correcta);
+
+                totalAttempts++;
+
+                if (esCorrecto) {
+                    score++;
+                    hits++;
+                    clasificadorResult.innerHTML = `✅ ¡Correcto! "${preguntaActual.residuo}" va al contenedor ${selectedOption}. +1 punto.`;
+                    clasificadorResult.style.color = '#1A237E';
+                } else {
+                    lives--;
+                    clasificadorResult.innerHTML = `❌ ¡Incorrecto! "${preguntaActual.residuo}" NO va al contenedor ${selectedOption}. La respuesta correcta es: ${preguntaActual.correcta}. -1 vida.`;
+                    clasificadorResult.style.color = '#C62828';
+                }
+
+                currentQuestionIndex++;
+
+                const nextPregunta = preguntasLista[currentQuestionIndex % preguntasLista.length];
+                const spanResiduo = document.querySelector('.feedback-box .input-row span');
+                if (spanResiduo) {
+                    spanResiduo.textContent =
+                        `Residuo: ${nextPregunta.residuo.charAt(0).toUpperCase() + nextPregunta.residuo.slice(1)}`;
+                }
+
+                updateUI();
+            }
+
+            // ========== EVENTOS ==========
+            if (clasificarBtn) {
+                clasificarBtn.addEventListener('click', clasificarResiduo);
+            }
+
+            if (resetGameBtn) {
+                resetGameBtn.addEventListener('click', resetGame);
+            }
+
+            // ========== SIMULADOR DE NOMBRE ==========
+            const nameInput = document.getElementById('playerNameInput');
+            const nameBtn = document.getElementById('simulateNameBtn');
+            const nameFeedback = document.getElementById('nameFeedback');
+            if (nameBtn && nameInput) {
+                nameBtn.addEventListener('click', function() {
+                    const val = nameInput.value.trim() || 'invitado';
+                    nameFeedback.textContent = 'Bienvenido/a ' + val;
+                });
+            }
+
+            // ========== SIMULADOR DE RESIDUO (Step C) ==========
+            const residuoInput = document.getElementById('residuoInput');
+            const residuoBtn = document.getElementById('checkResiduoBtn');
+            const residuoFeedback = document.getElementById('residuoFeedback');
+            if (residuoBtn && residuoInput) {
+                residuoBtn.addEventListener('click', function() {
+                    const val = residuoInput.value.trim().toLowerCase();
+                    if (val === 'plástico' || val === 'plastico') {
+                        residuoFeedback.textContent = '✅ ¡Correcto! +1 punto';
+                        residuoFeedback.style.background = '#C8E6C9';
+                    } else {
+                        residuoFeedback.textContent = '❌ ¡Intenta de nuevo! La respuesta correcta es "plástico"';
+                        residuoFeedback.style.background = '#FFCDD2';
+                    }
+                });
+            }
+
+            // ========== INICIALIZAR UI ==========
+            const firstPregunta = preguntasLista[0];
+            const spanResiduo = document.querySelector('.feedback-box .input-row span');
+            if (spanResiduo) {
+                spanResiduo.textContent =
+                    `Residuo: ${firstPregunta.residuo.charAt(0).toUpperCase() + firstPregunta.residuo.slice(1)}`;
+            }
+
+            updateUI();
+
+            console.log('♻️ ReciclaLab - Equipo: Valentina Peralta, Isabel Noguera, Kaylee Arrieta, Salomé Heredia');
+            console.log('📚 Listas (arreglos) activas:', preguntasLista.length, 'preguntas disponibles.');
+        })();
+    </script>
+
+</body>
+</html>

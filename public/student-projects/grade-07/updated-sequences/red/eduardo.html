@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoAventura - ¡Salvemos el Planeta!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2196F3;
+            --warning: #FF9800;
+            --danger: #F44336;
+            --light: #f0f8f0;
+            --dark: #2c3e50;
+            --earth-blue: #1565C0;
+            --earth-green: #2E7D32;
+            --sun-yellow: #FFD54F;
+            --purple: #9C27B0;
+            --orange: #FF6B35;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #98FB98 50%, #90EE90 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Nubes animadas */
+        .cloud {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: float 20s infinite;
+            z-index: 1;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud1 {
+            width: 120px;
+            height: 40px;
+            top: 50px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .cloud1::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 25px;
+        }
+
+        .cloud1::after {
+            width: 60px;
+            height: 60px;
+            top: -35px;
+            left: 55px;
+        }
+
+        .cloud2 {
+            width: 100px;
+            height: 35px;
+            top: 150px;
+            left: -120px;
+            animation-delay: 5s;
+        }
+
+        .cloud2::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 20px;
+        }
+
+        .cloud2::after {
+            width: 50px;
+            height: 50px;
+            top: -30px;
+            left: 45px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateX(-150px);
+            }
+            100% {
+                transform: translateX(calc(100vw + 150px));
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin: 30px 0;
+            animation: bounceIn 1s;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .planet-emoji {
+            font-size: 4em;
+            animation: spin 10s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .game-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            animation: blink 1s infinite;
+        }
+
+        .status-dot.connected {
+            background: #4CAF50;
+            animation: none;
+        }
+
+        .status-dot.disconnected {
+            background: #F44336;
+            animation: none;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .score-box {
+            background: var(--sun-yellow);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--dark);
+            animation: pulse 2s infinite;
+        }
+
+        .multi-select-badge {
+            background: var(--purple);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            color: var(--dark);
+            margin: 20px 0;
+            text-align: center;
+            min-height: 60px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .option-btn {
+            padding: 20px;
+            border: 4px solid var(--secondary);
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-color: var(--primary);
+            background: #f0fff0;
+        }
+
+        .option-btn:active {
+            transform: scale(0.95);
+        }
+
+        .option-btn.selected {
+            background: #e3f2fd;
+            border-color: var(--purple);
+            box-shadow: 0 0 15px rgba(156, 39, 176, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .option-btn.selected::before {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 1.5em;
+            color: var(--purple);
+            font-weight: bold;
+        }
+
+        .option-btn.correct {
+            background: #4CAF50;
+            color: white;
+            animation: correctAnim 0.5s;
+        }
+
+        .option-btn.wrong {
+            background: var(--danger);
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        .option-btn.correct-selection {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .option-btn.wrong-selection {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        @keyframes correctAnim {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .feedback.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            animation: slideIn 0.5s;
+        }
+
+        .feedback.error {
+            display: block;
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 10px;
+        }
+
+        .ods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 20px;
+        }
+
+        .ods-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .ods-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .ods-item .icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .btn-confirm {
+            background: var(--purple);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            box-shadow: 0 6px 12px rgba(156, 39, 176, 0.3);
+            margin-top: 10px;
+            display: none;
+        }
+
+        .btn-confirm:hover {
+            background: #7B1FA2;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(156, 39, 176, 0.4);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            animation: bounceIn 0.5s;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .modal h2 {
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            animation: confettiFall 3s linear infinite;
+            z-index: 999;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        .tip-box {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .tip-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .error-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 2000;
+            text-align: center;
+            animation: bounceIn 0.5s;
+            display: none;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .error-modal .error-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .error-modal h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .error-modal p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .question-text {
+                font-size: 1.2em;
+            }
+            
+            .question-header {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nubes decorativas -->
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+    <!-- Overlay para modal de error -->
+    <div class="overlay" id="errorOverlay"></div>
+
+    <!-- Modal de error -->
+    <div class="error-modal" id="errorModal">
+        <div class="error-icon">🤔</div>
+        <h3>¡Casi lo logras!</h3>
+        <p>No te preocupes, todos cometemos errores. ¡Lo importante es aprender!</p>
+        <p><strong>La respuesta correcta era:</strong></p>
+        <p id="correctAnswerText" style="background: #f0f8f0; padding: 10px; border-radius: 10px; margin: 10px 0;"></p>
+        <button class="btn-primary" onclick="continueLearning()">
+            💪 ¡Entendido, continuar!
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="planet-emoji">🌍</div>
+            <h1>EcoAventura</h1>
+            <div class="subtitle">¡Aprende a cuidar nuestro planeta con los ODS!</div>
+        </div>
+
+        <div class="game-section">
+            <!-- Estado de conexión -->
+            <div class="connection-status">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="connectionText">Conectando con Arduino...</span>
+                <button onclick="connectArduino()" id="connectBtn" style="padding: 5px 15px; border-radius: 10px; border: none; background: #2196F3; color: white; cursor: pointer; font-family: inherit;">
+                    🔌 Conectar
+                </button>
+            </div>
+
+            <div class="question-header">
+                <div class="score-box">
+                    Puntos: <span id="score">0</span>
+                </div>
+                <div class="score-box">
+                    Pregunta: <span id="questionNumber">1</span>/10
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="question-text" id="questionText">
+                Haz clic en "Comenzar" para iniciar la aventura
+            </div>
+
+            <div id="multiSelectBadge" class="multi-select-badge" style="display: none;">
+                ⚠️ ¡Selecciona TODAS las respuestas correctas!
+            </div>
+
+            <div class="options-grid" id="optionsContainer">
+                <!-- Las opciones se generarán dinámicamente -->
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="btn-container">
+                <button class="btn-primary" id="startBtn" onclick="startGame()">
+                    🚀 ¡Comenzar Aventura!
+                </button>
+                <button class="btn-confirm" id="confirmBtn" onclick="confirmAnswer()">
+                    ✓ Confirmar Respuesta
+                </button>
+            </div>
+
+            <div class="ods-grid">
+                <div class="ods-item">
+                    <div class="icon">💧</div>
+                    <strong>ODS 6</strong>
+                    <small>Agua Limpia</small>
+                </div>
+                <div class="ods-item">
+                    <div class="icon">⚡</div>
+                    <strong>ODS 7</strong>
+                    <small>Energía</small>
+                </div>
+                <div class="ods-item">
+                    <div class="icon">🌱</div>
+                    <strong>ODS 13</strong>
+                    <small>Acción Climática</small>
+                </div>
+                <div class="ods-item">
+                    <div class="icon">🐠</div>
+                    <strong>ODS 14</strong>
+                    <small>Vida Marina</small>
+                </div>
+                <div class="ods-item">
+                    <div class="icon">🌳</div>
+                    <strong>ODS 15</strong>
+                    <small>Vida Terrestre</small>
+                </div>
+                <div class="ods-item">
+                    <div class="icon">♻️</div>
+                    <strong>ODS 12</strong>
+                    <small>Consumo Responsable</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <div>
+                <strong>Dato curioso:</strong> ¿Sabías que cada minuto se vierten al océano el equivalente a un camión de basura lleno de plástico? ¡Tú puedes ayudar a cambiarlo!
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de victoria -->
+    <div class="modal" id="victoryModal">
+        <div class="modal-content">
+            <div style="font-size: 5em;">🏆</div>
+            <h2>¡Felicitaciones!</h2>
+            <p style="font-size: 1.3em; margin: 20px 0;">
+                ¡Eres un verdadero EcoHéroe!<br>
+                Has demostrado que sabes cómo cuidar nuestro planeta.
+            </p>
+            <p style="font-size: 1.1em; color: #666;">
+                Puntuación final: <strong id="finalScore">0</strong> puntos
+            </p>
+            <button class="btn-primary" onclick="resetGame()" style="margin-top: 20px;">
+                🔄 Jugar de nuevo
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ============ CONFIGURACIÓN ARDUINO ============
+        let port;
+        let reader;
+        let writer;
+        let arduinoConnected = false;
+
+        async function connectArduino() {
+            try {
+                // Solicitar puerto serial
+                port = await navigator.serial.requestPort();
+                await port.open({ baudRate: 9600 });
+                
+                // Configurar lector y escritor
+                const textEncoder = new TextEncoderStream();
+                const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+                writer = textEncoder.writable.getWriter();
+                
+                const textDecoder = new TextDecoderStream();
+                const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+                reader = textDecoder.readable.getReader();
+                
+                arduinoConnected = true;
+                updateConnectionStatus(true);
+                
+                // Enviar mensaje de prueba
+                sendToArduino('CONNECTED\n');
+                
+                console.log('✅ Arduino conectado exitosamente');
+                
+                // Leer respuestas del Arduino (opcional)
+                readFromArduino();
+                
+            } catch (error) {
+                console.error('❌ Error al conectar con Arduino:', error);
+                alert('No se pudo conectar con Arduino. Por favor, verifica que esté conectado por USB.');
+                updateConnectionStatus(false);
+            }
+        }
+
+        async function readFromArduino() {
+            try {
+                while (arduinoConnected) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                        reader.releaseLock();
+                        break;
+                    }
+                    if (value) {
+                        console.log('📨 Mensaje de Arduino:', value);
+                        // Aquí puedes procesar los mensajes del Arduino
+                    }
+                }
+            } catch (error) {
+                console.error('Error leyendo de Arduino:', error);
+            }
+        }
+
+        async function sendToArduino(message) {
+            if (arduinoConnected && writer) {
+                try {
+                    await writer.write(message);
+                    console.log('📤 Enviado a Arduino:', message);
+                } catch (error) {
+                    console.error('Error enviando a Arduino:', error);
+                    arduinoConnected = false;
+                    updateConnectionStatus(false);
+                }
+            } else {
+                console.warn('⚠️ Arduino no está conectado');
+            }
+        }
+
+        function updateConnectionStatus(connected) {
+            const statusDot = document.getElementById('statusDot');
+            const connectionText = document.getElementById('connectionText');
+            const connectBtn = document.getElementById('connectBtn');
+            
+            if (connected) {
+                statusDot.className = 'status-dot connected';
+                connectionText.textContent = '✅ Arduino conectado';
+                connectBtn.textContent = '🔌 Reconectar';
+                connectBtn.style.background = '#4CAF50';
+            } else {
+                statusDot.className = 'status-dot disconnected';
+                connectionText.textContent = '❌ Arduino no conectado';
+                connectBtn.textContent = '🔌 Conectar';
+                connectBtn.style.background = '#2196F3';
+            }
+        }
+
+        // Funciones para enviar comandos al Arduino
+        function sendCorrectAnswer() {
+            sendToArduino('CORRECT\n'); // Comando para cara feliz y 2 sonidos
+        }
+
+        function sendWrongAnswer() {
+            sendToArduino('WRONG\n'); // Comando para cara triste y 1 sonido
+        }
+
+        // ============ PREGUNTAS ============
+        const questions = [
+            {
+                question: "¿Qué debes hacer con el agua mientras te cepillas los dientes?",
+                options: [
+                    "Dejarla correr todo el tiempo",
+                    "Cerrar el grifo para no desperdiciarla",
+                    "Usar más agua de la necesaria",
+                    "Jugar con el agua"
+                ],
+                correct: [1],
+                tip: "Cerrar el grifo mientras te cepillas puede ahorrar hasta 12 litros de agua por minuto",
+                multiSelect: false
+            },
+            {
+                question: "¿Cuáles de estas acciones ayudan a cuidar el planeta? (Selecciona todas las correctas)",
+                options: [
+                    "Reciclar papel y plástico",
+                    "Tirar basura en la calle",
+                    "Usar bolsas reutilizables",
+                    "Dejar todas las luces encendidas"
+                ],
+                correct: [0, 2],
+                tip: "Reciclar y usar bolsas reutilizables son excelentes formas de cuidar el planeta",
+                multiSelect: true
+            },
+            {
+                question: "¿Dónde debes tirar una botella de plástico vacía?",
+                options: [
+                    "En el suelo",
+                    "En el río",
+                    "En el contenedor de reciclaje",
+                    "En cualquier lugar"
+                ],
+                correct: [2],
+                tip: "Una botella de plástico puede tardar hasta 500 años en degradarse",
+                multiSelect: false
+            },
+            {
+                question: "¿Qué acciones ahorran energía en casa? (Selecciona todas las correctas)",
+                options: [
+                    "Apagar las luces al salir",
+                    "Dejar la TV encendida toda la noche",
+                    "Usar bombillas LED",
+                    "Desenchufar aparatos que no usas"
+                ],
+                correct: [0, 2, 3],
+                tip: "Apagar luces, usar LED y desenchufar aparatos ahorran mucha energía",
+                multiSelect: true
+            },
+            {
+                question: "Cuando ves basura en la playa, ¿qué haces?",
+                options: [
+                    "La ignoro y sigo caminando",
+                    "La pateo lejos",
+                    "La recojo y la tiro en un basurero",
+                    "La escondo en la arena"
+                ],
+                correct: [2],
+                tip: "La basura en playas mata a miles de animales marinos cada año",
+                multiSelect: false
+            },
+            {
+                question: "¿Cuáles son formas de reducir la contaminación? (Selecciona todas las correctas)",
+                options: [
+                    "Usar transporte público",
+                    "Quemar basura en casa",
+                    "Caminar o ir en bicicleta",
+                    "Usar productos desechables"
+                ],
+                correct: [0, 2],
+                tip: "Usar transporte público y bicicleta reduce la contaminación del aire",
+                multiSelect: true
+            },
+            {
+                question: "¿Qué haces con las pilas o baterías usadas?",
+                options: [
+                    "Las tiro en la basura normal",
+                    "Las entierro en el jardín",
+                    "Las tiro por el desagüe",
+                    "Las llevo a un punto de reciclaje especial"
+                ],
+                correct: [3],
+                tip: "Una sola pila puede contaminar hasta 600,000 litros de agua",
+                multiSelect: false
+            },
+            {
+                question: "¿Qué acciones protegen a los animales? (Selecciona todas las correctas)",
+                options: [
+                    "Proteger sus hábitats naturales",
+                    "Cazarlos por diversión",
+                    "No contaminar ríos y mares",
+                    "Respetar las áreas protegidas"
+                ],
+                correct: [0, 2, 3],
+                tip: "Proteger hábitats, no contaminar y respetar áreas protegidas salvan animales",
+                multiSelect: true
+            },
+            {
+                question: "¿Qué haces con la comida que sobra?",
+                options: [
+                    "La tiro inmediatamente",
+                    "La guardo para comerla después",
+                    "La escondo",
+                    "La dejo pudrirse"
+                ],
+                correct: [1],
+                tip: "Un tercio de toda la comida producida en el mundo se desperdicia",
+                multiSelect: false
+            },
+            {
+                question: "¿Cómo puedes reducir el uso de plástico? (Selecciona todas las correctas)",
+                options: [
+                    "Usar botellas reutilizables",
+                    "Comprar agua embotellada todos los días",
+                    "Llevar tus propias bolsas al supermercado",
+                    "Usar pajillas de metal o bambú"
+                ],
+                correct: [0, 2, 3],
+                tip: "Botellas reutilizables, bolsas propias y pajillas de metal reducen el plástico",
+                multiSelect: true
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let gameStarted = false;
+        let answered = false;
+        let selectedAnswers = new Set();
+        let shuffledQuestions = [];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function shuffleQuestionOptions(question) {
+            const indices = question.options.map((_, index) => index);
+            const shuffledIndices = shuffleArray(indices);
+            
+            const shuffledOptions = shuffledIndices.map(index => question.options[index]);
+            const shuffledCorrect = shuffledIndices
+                .map((originalIndex, newIndex) => {
+                    return question.correct.includes(originalIndex) ? newIndex : -1;
+                })
+                .filter(index => index !== -1);
+            
+            return {
+                ...question,
+                options: shuffledOptions,
+                correct: shuffledCorrect
+            };
+        }
+
+        function startGame() {
+            gameStarted = true;
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            selectedAnswers.clear();
+            
+            shuffledQuestions = shuffleArray(questions).map(question => 
+                shuffleQuestionOptions(question)
+            );
+            
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('score').textContent = '0';
+            document.getElementById('questionNumber').textContent = '1';
+            document.getElementById('progressFill').style.width = '0%';
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= shuffledQuestions.length) {
+                showVictory();
+                return;
+            }
+
+            answered = false;
+            selectedAnswers.clear();
+            const question = shuffledQuestions[currentQuestion];
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const feedback = document.getElementById('feedback');
+            const multiSelectBadge = document.getElementById('multiSelectBadge');
+            const confirmBtn = document.getElementById('confirmBtn');
+            
+            questionText.textContent = question.question;
+            optionsContainer.innerHTML = '';
+            feedback.className = 'feedback';
+            feedback.style.display = 'none';
+            
+            if (question.multiSelect) {
+                multiSelectBadge.style.display = 'block';
+                confirmBtn.style.display = 'inline-block';
+            } else {
+                multiSelectBadge.style.display = 'none';
+                confirmBtn.style.display = 'none';
+            }
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.dataset.index = index;
+                
+                if (question.multiSelect) {
+                    button.onclick = () => toggleMultiSelect(index, button);
+                } else {
+                    button.onclick = () => checkAnswer(index);
+                }
+                
+                optionsContainer.appendChild(button);
+            });
+            
+            document.getElementById('questionNumber').textContent = currentQuestion + 1;
+            document.getElementById('progressFill').style.width = (currentQuestion / shuffledQuestions.length) * 100 + '%';
+        }
+
+        function toggleMultiSelect(index, button) {
+            if (answered) return;
+            
+            const question = shuffledQuestions[currentQuestion];
+            
+            if (selectedAnswers.has(index)) {
+                selectedAnswers.delete(index);
+                button.classList.remove('selected');
+            } else {
+                selectedAnswers.add(index);
+                button.classList.add('selected');
+            }
+        }
+
+        function confirmAnswer() {
+            if (answered || selectedAnswers.size === 0) return;
+            
+            const question = shuffledQuestions[currentQuestion];
+            const options = document.querySelectorAll('.option-btn');
+            const feedback = document.getElementById('feedback');
+            
+            answered = true;
+            
+            options.forEach(btn => {
+                btn.style.pointerEvents = 'none';
+                btn.classList.add('disabled');
+            });
+            
+            const correctSet = new Set(question.correct);
+            const selectedSet = new Set(selectedAnswers);
+            
+            const isCorrect = correctSet.size === selectedSet.size && 
+                            [...correctSet].every(value => selectedSet.has(value));
+            
+            if (isCorrect) {
+                handleCorrectAnswer(question, options, feedback, true);
+            } else {
+                handleWrongAnswer(question, options, feedback, selectedSet);
+            }
+        }
+
+        function checkAnswer(selectedIndex) {
+            if (answered) return;
+            
+            const question = shuffledQuestions[currentQuestion];
+            const options = document.querySelectorAll('.option-btn');
+            const feedback = document.getElementById('feedback');
+            
+            answered = true;
+            
+            options.forEach(btn => {
+                btn.style.pointerEvents = 'none';
+                btn.classList.add('disabled');
+            });
+            
+            if (question.correct.includes(selectedIndex)) {
+                handleCorrectAnswer(question, options, feedback, false);
+            } else {
+                handleWrongAnswer(question, options, feedback, new Set([selectedIndex]));
+            }
+        }
+
+        function handleCorrectAnswer(question, options, feedback, isMultiSelect) {
+            // Enviar comando al Arduino para cara feliz y 2 sonidos
+            sendCorrectAnswer();
+            
+            score += isMultiSelect ? 15 : 10;
+            document.getElementById('score').textContent = score;
+            
+            if (isMultiSelect) {
+                options.forEach((btn, index) => {
+                    if (selectedAnswers.has(index)) {
+                        btn.classList.add('correct-selection');
+                    }
+                    if (question.correct.includes(index)) {
+                        btn.classList.add('correct');
+                    }
+                });
+            } else {
+                question.correct.forEach(correctIndex => {
+                    options[correctIndex].classList.add('correct');
+                });
+            }
+            
+            feedback.className = 'feedback success';
+            feedback.innerHTML = `✅ ¡Excelente! ${question.tip}!`;
+            feedback.style.display = 'block';
+            
+            createConfetti();
+            
+            setTimeout(() => {
+                currentQuestion++;
+                document.getElementById('progressFill').style.width = (currentQuestion / shuffledQuestions.length) * 100 + '%';
+                showQuestion();
+            }, 2500);
+        }
+
+        function handleWrongAnswer(question, options, feedback, selectedSet) {
+            // Enviar comando al Arduino para cara triste y 1 sonido
+            sendWrongAnswer();
+            
+            options.forEach((btn, index) => {
+                if (question.correct.includes(index)) {
+                    btn.classList.add('correct');
+                }
+                if (selectedSet.has(index) && !question.correct.includes(index)) {
+                    btn.classList.add('wrong');
+                }
+            });
+            
+            feedback.className = 'feedback error';
+            feedback.innerHTML = '❌ ¡Ups! Vamos a aprender la respuesta correcta...';
+            feedback.style.display = 'block';
+            
+            showErrorModal(question, selectedSet);
+        }
+
+        function showErrorModal(question, selectedSet) {
+            const errorModal = document.getElementById('errorModal');
+            const errorOverlay = document.getElementById('errorOverlay');
+            const correctAnswerText = document.getElementById('correctAnswerText');
+            
+            const correctOptions = question.correct.map(index => question.options[index]);
+            correctAnswerText.textContent = correctOptions.join(' Y ');
+            
+            errorModal.style.display = 'block';
+            errorOverlay.style.display = 'block';
+        }
+
+        function continueLearning() {
+            const errorModal = document.getElementById('errorModal');
+            const errorOverlay = document.getElementById('errorOverlay');
+            
+            errorModal.style.display = 'none';
+            errorOverlay.style.display = 'none';
+            
+            currentQuestion++;
+            document.getElementById('progressFill').style.width = (currentQuestion / shuffledQuestions.length) * 100 + '%';
+            showQuestion();
+        }
+
+        function createConfetti() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#FF69B4', '#9B59B6'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.width = (Math.random() * 8 + 5) + 'px';
+                confetti.style.height = (Math.random() * 8 + 5) + 'px';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 4000);
+            }
+        }
+
+        function showVictory() {
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('victoryModal').style.display = 'flex';
+            // Enviar comando de victoria al Arduino
+            sendToArduino('VICTORY\n');
+        }
+
+        function resetGame() {
+            document.getElementById('victoryModal').style.display = 'none';
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('questionText').textContent = 'Haz clic en "Comenzar" para iniciar la aventura';
+            document.getElementById('optionsContainer').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('score').textContent = '0';
+            document.getElementById('questionNumber').textContent = '1';
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('multiSelectBadge').style.display = 'none';
+            document.getElementById('confirmBtn').style.display = 'none';
+            gameStarted = false;
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            selectedAnswers.clear();
+            shuffledQuestions = [];
+        }
+
+        // Verificar soporte para Web Serial API
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🌍 EcoAventura cargada exitosamente');
+            console.log('💚 ¡Ayuda a los niños a aprender sobre los ODS!');
+            
+            if ('serial' in navigator) {
+                console.log('✅ Web Serial API soportada');
+            } else {
+                console.warn('❌ Web Serial API no soportada en este navegador');
+                console.log('💡 Usa Chrome o Edge para conectar con Arduino');
+                document.getElementById('connectionText').textContent = '⚠️ Usa Chrome/Edge para conectar Arduino';
+                document.getElementById('connectBtn').disabled = true;
+                document.getElementById('connectBtn').style.opacity = '0.5';
+            }
+        });
+    </script>
+</body>
+</html>

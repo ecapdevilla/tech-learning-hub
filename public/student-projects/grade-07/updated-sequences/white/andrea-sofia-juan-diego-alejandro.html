@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌿 EcoControl · Gestión Ambiental</title>
+    <!-- Google Fonts para un toque más limpio -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+    <style>
+        /* ----- Reset y base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1b3b1f, #2e7d32);
+            min-height: 100vh;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- Barra de navegación / evidencia --- */
+        .tlh7bar {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto 1.2rem auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-weight: 600;
+        }
+        .tlh7bar a,
+        .tlh7bar span {
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(3px);
+            color: #e8f5e9;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: 0.2s;
+        }
+        .tlh7bar a:hover {
+            background: #2e7d32;
+            color: white;
+            border-color: #a5d6a7;
+        }
+        .tlh7bar span {
+            background: #1b3b1f;
+            border-color: #388e3c;
+        }
+
+        /* --- Contenedor principal --- */
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 2.2rem 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        /* --- Encabezado --- */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #1b4d1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .header h1 span {
+            background: #2e7d32;
+            color: white;
+            font-size: 1rem;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .subtitulo {
+            color: #2b5e2e;
+            font-size: 1.05rem;
+            margin-top: 8px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        /* --- Grid de tarjetas --- */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: #f6fcf6;
+            border-radius: 24px;
+            padding: 1.8rem 1.8rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 40, 0, 0.08);
+            border: 1px solid #c8e6c9;
+            transition: 0.2s;
+        }
+        .card:hover {
+            border-color: #81c784;
+            box-shadow: 0 8px 18px rgba(46, 125, 50, 0.12);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            color: #1e4a22;
+            margin-bottom: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #a5d6a7;
+            padding-bottom: 12px;
+        }
+
+        /* --- Formulario --- */
+        .campo {
+            margin-bottom: 1.2rem;
+        }
+        .campo label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #1f4a23;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+        }
+        .campo label i {
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+        .campo input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1.5px solid #c8e6c9;
+            background: white;
+            font-size: 1rem;
+            margin-top: 6px;
+            transition: 0.15s;
+            font-weight: 500;
+            color: #1b3b1f;
+        }
+        .campo input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
+        }
+
+        .btn-analyze {
+            width: 100%;
+            padding: 14px;
+            background: #1f5a23;
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 0 #0f3a12;
+        }
+        .btn-analyze:hover {
+            background: #2e7d32;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #0f3a12;
+        }
+        .btn-analyze:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #0f3a12;
+        }
+
+        /* --- Resultados --- */
+        #salida {
+            background: #ffffff;
+            padding: 1.2rem 1.5rem;
+            border-radius: 18px;
+            border: 1px solid #c8e6c9;
+            line-height: 1.7;
+            min-height: 160px;
+            transition: 0.2s;
+        }
+        #salida h3 {
+            color: #1b4d1f;
+            margin-top: 8px;
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+        }
+        #salida hr {
+            margin: 16px 0;
+            border: 1px dashed #c8e6c9;
+        }
+        #salida .badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            margin: 10px 0 4px;
+        }
+        .badge-excelente {
+            background: #1f5a23;
+            color: white;
+        }
+        .badge-bueno {
+            background: #66bb6a;
+            color: #1b3b1f;
+        }
+        .badge-mejora {
+            background: #ffcdd2;
+            color: #b71c1c;
+        }
+        .recomendacion {
+            background: #e3f2fd;
+            border-left: 6px solid #1e88e5;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+        .ok-message {
+            background: #e8f5e9;
+            border-left: 6px solid #2e7d32;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-weight: 600;
+            color: #1b4d1f;
+        }
+        ul.lista-rec {
+            padding-left: 22px;
+            margin: 8px 0 4px;
+        }
+        ul.lista-rec li {
+            margin-bottom: 6px;
+        }
+
+        /* --- Equipo y footer --- */
+        .equipo-section {
+            margin-top: 2.5rem;
+            padding-top: 1.8rem;
+            border-top: 2px solid #c8e6c9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .equipo-section h3 {
+            color: #1b4d1f;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .equipo-nombres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            font-weight: 500;
+            color: #1f4a23;
+        }
+        .equipo-nombres span {
+            background: #e8f5e9;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            border: 1px solid #a5d6a7;
+        }
+
+        footer {
+            margin-top: 1.2rem;
+            text-align: center;
+            color: #2b5e2e;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        #fecha {
+            background: #e8f5e9;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 780px) {
+            .container {
+                padding: 1.8rem 1.2rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .equipo-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 460px) {
+            body {
+                padding: 0.8rem;
+            }
+            .container {
+                padding: 1.2rem 0.8rem;
+                border-radius: 24px;
+            }
+            .card {
+                padding: 1.2rem;
+            }
+            .equipo-nombres span {
+                font-size: 0.8rem;
+                padding: 2px 12px;
+            }
+        }
+
+        /* ------- Animación sutil ------- */
+        .fade-in {
+            animation: fadeUp 0.4s ease forwards;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0.4;
+                transform: translateY(6px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Barra de evidencia (estilo original) -->
+    <div class="tlh7bar">
+        <a href="../index.html">← Learning Evidence</a>
+        <span>7th Grade · Technical Evidence</span>
+    </div>
+
+    <div class="container">
+
+        <!-- Encabezado con tema ambiental -->
+        <div class="header">
+            <h1>
+                🌱 EcoControl
+                <span>ESG</span>
+            </h1>
+            <p class="subtitulo">
+                Monitoreo inteligente de recursos · Sostenibilidad en tiempo real
+            </p>
+        </div>
+
+        <!-- Grid principal -->
+        <div class="grid">
+
+            <!-- Tarjeta izquierda: ingreso de datos -->
+            <div class="card">
+                <h2>📊 Registro diario</h2>
+
+                <div class="campo">
+                    <label><i>⚡</i> Consumo de Energía (kWh)</label>
+                    <input type="number" id="energia" placeholder="ej. 420" step="0.1" />
+                </div>
+
+                <div class="campo">
+                    <label><i>💧</i> Consumo de Agua (Litros)</label>
+                    <input type="number" id="agua" placeholder="ej. 850" step="0.1" />
+                </div>
+
+                <div class="campo">
+                    <label><i>📄</i> Papel Utilizado (Hojas)</label>
+                    <input type="number" id="papel" placeholder="ej. 200" step="1" />
+                </div>
+
+                <div class="campo">
+                    <label><i>♻️</i> Residuos Reciclados (Kg)</label>
+                    <input type="number" id="reciclaje" placeholder="ej. 65" step="0.1" />
+                </div>
+
+                <button class="btn-analyze" onclick="analizar()">
+                    <span>🔍</span> Analizar impacto
+                </button>
+            </div>
+
+            <!-- Tarjeta derecha: resultados -->
+            <div class="card">
+                <h2>📋 Reporte automático</h2>
+                <div id="salida" class="fade-in">
+                    <span style="color:#3d6b41; font-weight:400;">Ingresa los datos y presiona «Analizar impacto».</span>
+                    <br />
+                    <span style="font-size:0.9rem; color:#558b2f;">🌿 Cada 15 segundos se actualiza si todos los campos están completos.</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sección del equipo de trabajo con los nombres solicitados -->
+        <div class="equipo-section">
+            <h3>👥 Equipo de trabajo</h3>
+            <div class="equipo-nombres">
+                <span>🌟 Sofia Sarmiento</span>
+                <span>🌟 Andrea Guerra</span>
+                <span>🌟 Alejandro Hernandez</span>
+                <span>🌟 Juandiego Ortiz</span>
+            </div>
+        </div>
+
+        <!-- Footer con fecha -->
+        <footer>
+            <span>🌍 Huella ambiental · Estrategia 2030</span>
+            <span>📅 <span id="fecha"></span></span>
+        </footer>
+
+    </div>
+
+    <script>
+        // Fecha dinámica
+        document.getElementById('fecha').innerHTML = new Date().toLocaleDateString('es-ES', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Función principal de análisis (mejorada)
+        function analizar() {
+            // Lectura con validación
+            const energia = parseFloat(document.getElementById('energia').value) || 0;
+            const agua = parseFloat(document.getElementById('agua').value) || 0;
+            const papel = parseFloat(document.getElementById('papel').value) || 0;
+            const reciclaje = parseFloat(document.getElementById('reciclaje').value) || 0;
+
+            // Variables de puntaje y recomendaciones
+            let puntaje = 0;
+            const recomendaciones = [];
+
+            // --- Lógica de sostenibilidad (más matizada) ---
+            // Energía: umbral 500 kWh (bajo = bueno)
+            if (energia < 500) {
+                puntaje += 25;
+            } else if (energia < 800) {
+                puntaje += 12; // parcial
+                recomendaciones.push('⚡ Reduce el consumo eléctrico: apaga equipos en stand-by y usa iluminación LED.');
+            } else {
+                recomendaciones.push('⚡ Alto consumo energético. Revisa equipos ineficientes y optimiza horarios de uso.');
+            }
+
+            // Agua: umbral 1000 L (bajo = bueno)
+            if (agua < 1000) {
+                puntaje += 25;
+            } else if (agua < 1500) {
+                puntaje += 12;
+                recomendaciones.push('💧 Instala aireadores en grifos y repara fugas para reducir el consumo de agua.');
+            } else {
+                recomendaciones.push('💧 Consumo de agua elevado. Considera sistemas de reutilización y sensores de flujo.');
+            }
+
+            // Papel: umbral 300 hojas
+            if (papel < 300) {
+                puntaje += 25;
+            } else if (papel < 500) {
+                puntaje += 12;
+                recomendaciones.push('📄 Digitaliza procesos y usa papel reciclado para disminuir el uso de hojas.');
+            } else {
+                recomendaciones.push('📄 Impresión excesiva. Implementa firmas digitales y comunicación por correo.');
+            }
+
+            // Reciclaje: umbral 50 Kg (alto = bueno)
+            if (reciclaje >= 50) {
+                puntaje += 25;
+            } else if (reciclaje >= 25) {
+                puntaje += 12;
+                recomendaciones.push('♻️ Aumenta el reciclaje: coloca más contenedores y capacita al personal.');
+            } else {
+                recomendaciones.push('♻️ Bajo nivel de reciclaje. Establece un programa de separación en origen.');
+            }
+
+            // Ajuste de puntaje máximo (100%)
+            if (puntaje > 100) puntaje = 100;
+
+            // Determinar nivel y clase CSS
+            let nivel = '';
+            let claseNivel = '';
+            if (puntaje >= 75) {
+                nivel = '🌟 Excelente';
+                claseNivel = 'badge-excelente';
+            } else if (puntaje >= 50) {
+                nivel = '✅ Bueno';
+                claseNivel = 'badge-bueno';
+            } else {
+                nivel = '⚠️ Debe mejorar';
+                claseNivel = 'badge-mejora';
+            }
+
+            // Construir el HTML de salida
+            let salidaHTML = `
+                <h3>📈 Resumen ambiental</h3>
+                <p><strong>⚡ Energía:</strong> ${energia} kWh &nbsp;|&nbsp; <strong>💧 Agua:</strong> ${agua} L</p>
+                <p><strong>📄 Papel:</strong> ${papel} hojas &nbsp;|&nbsp; <strong>♻️ Reciclaje:</strong> ${reciclaje} Kg</p>
+                <hr />
+                <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                    <span style="font-weight:700;">🌱 Puntaje sostenible:</span>
+                    <span style="font-size:1.4rem; font-weight:800; background:#e8f5e9; padding:2px 16px; border-radius:40px;">${puntaje}%</span>
+                </div>
+                <div class="badge ${claseNivel}" style="margin:12px 0 6px;">
+                    ${nivel}
+                </div>
+            `;
+
+            // Sección de recomendaciones
+            if (recomendaciones.length > 0) {
+                salidaHTML += `<h3 style="margin-top:16px;">📌 Recomendaciones</h3><ul class="lista-rec">`;
+                recomendaciones.forEach(r => {
+                    salidaHTML += `<li>${r}</li>`;
+                });
+                salidaHTML += `</ul>`;
+            } else {
+                salidaHTML += `
+                    <div class="ok-message" style="margin-top:14px;">
+                        🎉 ¡Excelente! La empresa aplica prácticas ambientales ejemplares.
+                    </div>
+                `;
+            }
+
+            // Inyectar en el contenedor
+            const salidaDiv = document.getElementById('salida');
+            salidaDiv.innerHTML = salidaHTML;
+            // Re-aplicar animación suave (opcional)
+            salidaDiv.classList.remove('fade-in');
+            void salidaDiv.offsetWidth; // trigger reflow
+            salidaDiv.classList.add('fade-in');
+        }
+
+        // --- Automatización cada 15 segundos si todos los campos tienen valor ---
+        setInterval(() => {
+            const energia = document.getElementById('energia').value.trim();
+            const agua = document.getElementById('agua').value.trim();
+            const papel = document.getElementById('papel').value.trim();
+            const reciclaje = document.getElementById('reciclaje').value.trim();
+
+            if (energia !== '' && agua !== '' && papel !== '' && reciclaje !== '') {
+                analizar();
+            }
+        }, 15000);
+
+        // (Opcional) Ejecutar análisis si al cargar ya hay datos (por si se recarga)
+        window.addEventListener('load', () => {
+            const energia = document.getElementById('energia').value.trim();
+            const agua = document.getElementById('agua').value.trim();
+            const papel = document.getElementById('papel').value.trim();
+            const reciclaje = document.getElementById('reciclaje').value.trim();
+            if (energia && agua && papel && reciclaje) {
+                analizar();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💦 Tanque Inteligente - Proyecto de Automatización</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e1a, #1a2a3a);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1250px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* === HEADER === */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header h1 {
+            color: #e2e8f0;
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-shadow: 0 4px 20px rgba(0, 150, 255, 0.3);
+        }
+
+        .header .subtitle {
+            display: block;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            font-weight: 400;
+            margin-top: 4px;
+        }
+
+        .team-info {
+            margin-top: 10px;
+            color: #60a5fa;
+            font-size: 1rem;
+            font-weight: 600;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 6px 18px;
+            border-radius: 40px;
+            display: inline-block;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .team-info span {
+            color: #fbbf24;
+        }
+
+        /* === LAYOUT PRINCIPAL: TANQUE + CONTROLES LATERALES === */
+        .main-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: stretch;
+            margin: 10px 0 15px 0;
+        }
+
+        .tank-section {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .controls-section {
+            flex: 1;
+            min-width: 220px;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: flex-start;
+        }
+
+        /* === CONTENEDOR DEL TANQUE === */
+        .tank-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 15px 15px 8px 15px;
+            border-radius: 30px;
+            overflow: visible;
+        }
+
+        .tank-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(180deg, #0d2137, #061220);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 4px solid #2a5a7a;
+            box-shadow: inset 0 0 60px rgba(0, 100, 200, 0.1);
+        }
+
+        /* === AGUA DENTRO DEL TANQUE === */
+        .water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #4fc3f7, #0288d1);
+            transition: height 0.8s ease;
+            border-radius: 0 0 21px 21px;
+            box-shadow: inset 0 10px 40px rgba(0, 200, 255, 0.3);
+            z-index: 2;
+        }
+
+        .water::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 24px;
+            background: radial-gradient(ellipse at 20% 50%, rgba(255, 255, 255, 0.5) 0%, transparent 70%),
+                        radial-gradient(ellipse at 80% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+            animation: waterRipple 2.5s infinite ease-in-out;
+        }
+
+        @keyframes waterRipple {
+            0%, 100% { transform: translateX(-10px) scaleX(1); }
+            50% { transform: translateX(10px) scaleX(1.04); }
+        }
+
+        /* === FONDO DEL TANQUE VACÍO === */
+        .empty-tank {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(ellipse at bottom, rgba(30, 58, 95, 0.3), transparent 70%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .empty-tank.active {
+            opacity: 1;
+        }
+
+        /* === BURBUJAS === */
+        .bubble {
+            position: absolute;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.05));
+            border-radius: 50%;
+            animation: bubbleFloat 6s infinite;
+            z-index: 3;
+        }
+
+        @keyframes bubbleFloat {
+            0% { transform: translateY(0) scale(0.3); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-380px) scale(1.3); opacity: 0; }
+        }
+
+        /* === DESBORDE - AGUA QUE SALE DEL TANQUE === */
+        .overflow-container {
+            position: absolute;
+            top: -40px;
+            left: -40px;
+            right: -40px;
+            bottom: -40px;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            overflow: visible;
+        }
+
+        .overflow-container.active {
+            opacity: 1;
+        }
+
+        .overflow-top {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 250px;
+            overflow: visible;
+        }
+
+        .overflow-top .drop-stream {
+            position: absolute;
+            width: 14px;
+            height: 45px;
+            background: linear-gradient(180deg, rgba(79, 195, 247, 0.9), rgba(2, 136, 209, 0.2));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: topStream 1.2s infinite;
+        }
+
+        @keyframes topStream {
+            0% { transform: translateY(0) scale(0.3) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(250px) scale(2.5) rotate(720deg); opacity: 0; }
+        }
+
+        .overflow-side-left {
+            position: absolute;
+            top: 20px;
+            left: -50px;
+            width: 50px;
+            height: 350px;
+            overflow: visible;
+        }
+
+        .overflow-side-right {
+            position: absolute;
+            top: 20px;
+            right: -50px;
+            width: 50px;
+            height: 350px;
+            overflow: visible;
+        }
+
+        .side-stream {
+            position: absolute;
+            width: 18px;
+            height: 35px;
+            background: linear-gradient(180deg, rgba(79, 195, 247, 0.8), rgba(2, 136, 209, 0.15));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: sideStream 1s infinite;
+        }
+
+        @keyframes sideStream {
+            0% { transform: translate(0, 0) scale(0.2); opacity: 1; }
+            100% { transform: translate(var(--sx, 100px), var(--sy, 330px)) scale(3); opacity: 0; }
+        }
+
+        .cascade-left {
+            position: absolute;
+            top: 30px;
+            left: -60px;
+            width: 30px;
+            height: 400px;
+            background: linear-gradient(180deg, rgba(79, 195, 247, 0.5), rgba(2, 136, 209, 0.03));
+            border-radius: 0 0 20px 20px;
+            animation: cascadeFlow 0.8s infinite alternate;
+        }
+
+        .cascade-right {
+            position: absolute;
+            top: 30px;
+            right: -60px;
+            width: 30px;
+            height: 400px;
+            background: linear-gradient(180deg, rgba(79, 195, 247, 0.5), rgba(2, 136, 209, 0.03));
+            border-radius: 0 0 20px 20px;
+            animation: cascadeFlow 0.8s infinite alternate-reverse;
+        }
+
+        @keyframes cascadeFlow {
+            0% { opacity: 0.3; transform: scaleX(1); }
+            100% { opacity: 1; transform: scaleX(1.4); }
+        }
+
+        .cascade-left .cascade-stream,
+        .cascade-right .cascade-stream {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(100, 200, 255, 0.25), rgba(30, 144, 255, 0.02));
+            animation: streamMove 1.5s infinite;
+        }
+
+        @keyframes streamMove {
+            0% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            100% { transform: translateX(-5px); }
+        }
+
+        .splash-big {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: radial-gradient(circle at 40% 40%, rgba(100, 200, 255, 0.9), rgba(30, 144, 255, 0.1));
+            animation: bigSplash 1.5s infinite;
+        }
+
+        @keyframes bigSplash {
+            0% { transform: translate(0, 0) scale(0.1); opacity: 0; }
+            15% { opacity: 1; }
+            100% { transform: translate(var(--sx, 180px), var(--sy, -150px)) scale(4); opacity: 0; }
+        }
+
+        .flying-big-drop {
+            position: absolute;
+            width: 22px;
+            height: 40px;
+            background: linear-gradient(180deg, #4fc3f7, #0288d1);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flyDrop 2s infinite;
+            opacity: 0;
+        }
+
+        .flying-big-drop.active {
+            opacity: 1;
+        }
+
+        @keyframes flyDrop {
+            0% { transform: translate(0, 0) scale(0.2) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translate(var(--fx, 250px), var(--fy, -300px)) scale(3.5) rotate(720deg); opacity: 0; }
+        }
+
+        /* === ESCALA === */
+        .scale {
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            bottom: 20px;
+            width: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            padding: 5px 0;
+            z-index: 5;
+        }
+
+        .scale-mark {
+            width: 14px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 3px 0;
+            position: relative;
+        }
+
+        .scale-mark::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 22px;
+            top: -6px;
+            font-size: 7px;
+            color: rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+        }
+
+        .level-indicator {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            z-index: 5;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .level-indicator span {
+            color: #4fc3f7;
+        }
+
+        .level-indicator.danger span {
+            color: #f87171;
+            animation: alarmBlink 0.5s infinite;
+        }
+
+        .level-indicator.warning span {
+            color: #fbbf24;
+        }
+
+        @keyframes alarmBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* === CONTROLES LATERALES === */
+        .control-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .control-card .card-title {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        /* Slider lateral */
+        .slider-control label {
+            color: #94a3b8;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .slider-control input[type="range"] {
+            width: 100%;
+            accent-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            height: 5px;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .slider-value .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .slider-value .number.danger {
+            color: #f87171;
+            animation: alarmBlink 0.5s infinite;
+        }
+
+        .slider-value .number.warning {
+            color: #fbbf24;
+        }
+
+        .slider-value .unit {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .slider-value .status-label {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        /* Botones laterales */
+        .side-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-test {
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-test:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn-test:active {
+            transform: translateY(0px) scale(0.98);
+        }
+
+        .btn-test.blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+        }
+
+        .btn-test.blue:hover {
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-test.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+            font-size: 1rem;
+        }
+
+        .btn-test.danger:hover {
+            box-shadow: 0 6px 35px rgba(239, 68, 68, 0.6);
+        }
+
+        .btn-test.warning {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            box-shadow: 0 4px 20px rgba(249, 115, 22, 0.35);
+        }
+
+        .btn-test.warning:hover {
+            box-shadow: 0 6px 30px rgba(249, 115, 22, 0.5);
+        }
+
+        .btn-test.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn-test.success:hover {
+            box-shadow: 0 6px 30px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-test .icon {
+            font-size: 1.2rem;
+        }
+
+        /* LEDs laterales */
+        .leds-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .led-mini {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .led-mini .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #1e293b;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .led-mini .dot.green.active {
+            background: #22c55e;
+            box-shadow: 0 0 20px #22c55e66;
+        }
+        .led-mini .dot.yellow.active {
+            background: #eab308;
+            box-shadow: 0 0 20px #eab30866;
+        }
+        .led-mini .dot.orange.active {
+            background: #f97316;
+            box-shadow: 0 0 20px #f9731666;
+        }
+        .led-mini .dot.red.active {
+            background: #ef4444;
+            box-shadow: 0 0 30px #ef444488;
+            animation: alarmPulse 0.4s infinite;
+        }
+
+        @keyframes alarmPulse {
+            0%, 100% { box-shadow: 0 0 30px #ef444488; }
+            50% { box-shadow: 0 0 50px #ef4444cc; }
+        }
+
+        .led-mini .label {
+            color: #94a3b8;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .buzzer-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 6px;
+        }
+
+        .buzzer-mini .icon {
+            font-size: 1.2rem;
+        }
+        .buzzer-mini .text {
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            font-weight: 500;
+            flex: 1;
+        }
+        .buzzer-mini .text.alert {
+            color: #fca5a5;
+            animation: alarmBlink 0.3s infinite;
+            font-weight: 700;
+        }
+        .buzzer-mini .text.warning {
+            color: #fcd34d;
+        }
+        .buzzer-mini .badge {
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+        .buzzer-mini .badge.normal {
+            background: #22c55e33;
+            color: #4ade80;
+        }
+        .buzzer-mini .badge.warning {
+            background: #eab30833;
+            color: #fbbf24;
+        }
+        .buzzer-mini .badge.danger {
+            background: #ef444433;
+            color: #f87171;
+            animation: alarmBlink 0.3s infinite;
+            font-weight: 700;
+        }
+
+        /* === CHECKLIST === */
+        .checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 12px 0;
+            padding: 12px 16px;
+            background: rgba(34, 197, 94, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(34, 197, 94, 0.1);
+        }
+
+        .checklist-item {
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checklist-item .check {
+            color: #4ade80;
+            font-weight: 700;
+        }
+
+        /* === REGLAS === */
+        .rules-section {
+            background: rgba(30, 58, 95, 0.15);
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin: 14px 0;
+            border-left: 4px solid #f97316;
+        }
+
+        .rules-section code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 10px;
+            border-radius: 6px;
+            color: #93c5fd;
+            font-weight: 600;
+        }
+
+        .rules-section .rule-item {
+            color: #e2e8f0;
+            padding: 4px 0;
+            font-size: 0.9rem;
+        }
+
+        .rules-section .rule-icon {
+            font-size: 1.1rem;
+        }
+
+        .rules-section .highlight-desborde {
+            color: #f87171;
+            font-weight: 700;
+        }
+
+        .rules-section .highlight-bajo {
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        /* === TABLA DE PRUEBAS === */
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .test-table th {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .test-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 8px;
+            color: #e2e8f0;
+        }
+
+        .test-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .pass {
+            color: #4ade80;
+            font-weight: 700;
+        }
+
+        .pending {
+            color: #94a3b8;
+        }
+
+        /* === PLANO === */
+        .plano-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .plano-box .title {
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .plano-box .content {
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px 20px;
+        }
+
+        /* === MEJORA Y REFLEXIÓN === */
+        .improvement-box {
+            background: rgba(234, 179, 8, 0.08);
+            padding: 14px 18px;
+            border-radius: 16px;
+            border-left: 4px solid #eab308;
+            margin: 12px 0;
+            color: #fde047;
+            font-size: 0.9rem;
+        }
+
+        .reflection-box {
+            background: rgba(6, 182, 212, 0.08);
+            padding: 14px 18px;
+            border-radius: 16px;
+            border-left: 4px solid #06b6d4;
+            margin: 12px 0;
+            color: #67e8f9;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #64748b;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        /* === DIAGRAMA === */
+        .diagram-box {
+            background: rgba(6, 182, 212, 0.05);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            border: 1px solid rgba(6, 182, 212, 0.1);
+        }
+
+        .diagram-box .title {
+            color: #67e8f9;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .diagram-box .code {
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 14px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        .diagram-box .explicacion {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+            .controls-section {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 100%;
+                width: 100%;
+                gap: 10px;
+            }
+            .controls-section .control-card {
+                flex: 1;
+                min-width: 180px;
+            }
+            .side-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .btn-test {
+                flex: 1;
+                min-width: 130px;
+                max-width: 200px;
+                padding: 10px 14px;
+                font-size: 0.85rem;
+            }
+            .tank-container {
+                max-width: 100%;
+            }
+            .tank-wrapper {
+                height: 340px;
+            }
+            .leds-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 14px; }
+            .tank-wrapper { height: 260px; }
+            .header h1 { font-size: 1.6rem; }
+            .slider-value .number { font-size: 1.6rem; }
+            .controls-section .control-card { min-width: 140px; }
+            .btn-test { min-width: 100px; font-size: 0.75rem; padding: 8px 10px; }
+            .btn-test .icon { font-size: 1rem; }
+            .overflow-top { width: 70px; height: 120px; }
+            .overflow-side-left { left: -25px; width: 25px; }
+            .overflow-side-right { right: -25px; width: 25px; }
+            .cascade-left { left: -30px; width: 15px; }
+            .cascade-right { right: -30px; width: 15px; }
+            .overflow-top .drop-stream { width: 8px; height: 25px; }
+            .side-stream { width: 10px; height: 20px; }
+            .plano-box .content { grid-template-columns: 1fr; }
+            .checklist { grid-template-columns: 1fr; }
+            .leds-grid { grid-template-columns: 1fr 1fr; }
+            .level-indicator { font-size: 0.65rem; padding: 3px 10px; }
+            .scale-mark::after { font-size: 6px; right: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- === HEADER === -->
+    <div class="header">
+        <h1>
+            💧 Control Inteligente de Nivel de Agua
+            <span class="subtitle">🚨 Nivel BAJO + Nivel NORMAL + DESBORDE TOTAL</span>
+        </h1>
+        <div class="team-info">
+            👥 Equipo: <span>Thomas</span> · <span>Alejandro</span> · <span>Mathias</span>
+        </div>
+    </div>
+
+    <!-- === CHECKLIST === -->
+    <div style="background: rgba(34, 197, 94, 0.08); border-radius: 16px; padding: 12px 18px; margin-bottom: 14px; border: 1px solid rgba(34, 197, 94, 0.15);">
+        <div style="color: #4ade80; font-weight: 700; margin-bottom: 6px; font-size: 0.95rem;">✅ TODOS LOS REQUISITOS CUMPLIDOS</div>
+        <div class="checklist">
+            <div class="checklist-item"><span class="check">✅</span> Problema definido</div>
+            <div class="checklist-item"><span class="check">✅</span> Entrada/Sensor</div>
+            <div class="checklist-item"><span class="check">✅</span> Salida/Actuador</div>
+            <div class="checklist-item"><span class="check">✅</span> Regla SI/ENTONCES</div>
+            <div class="checklist-item"><span class="check">✅</span> Simulación funcional</div>
+            <div class="checklist-item"><span class="check">✅</span> 3+ escenarios prueba</div>
+            <div class="checklist-item"><span class="check">✅</span> Diagrama técnico</div>
+            <div class="checklist-item"><span class="check">✅</span> Mejora documentada</div>
+            <div class="checklist-item"><span class="check">✅</span> Reflexión final</div>
+            <div class="checklist-item"><span class="check">✅</span> Nombres del equipo</div>
+        </div>
+    </div>
+
+    <!-- === LAYOUT: TANQUE + CONTROLES LATERALES === -->
+    <div class="main-layout">
+        <!-- TANQUE -->
+        <div class="tank-section">
+            <div class="tank-container">
+                <div class="tank-wrapper" id="tankWrapper">
+                    <div class="empty-tank" id="emptyTank"></div>
+                    <div class="water" id="water" style="height: 60%;"></div>
+
+                    <!-- BURBUJAS -->
+                    <div class="bubble" style="width: 16px; height: 16px; bottom: 15%; left: 8%; animation-delay: 0s;"></div>
+                    <div class="bubble" style="width: 10px; height: 10px; bottom: 30%; left: 22%; animation-delay: 2s;"></div>
+                    <div class="bubble" style="width: 12px; height: 12px; bottom: 5%; left: 60%; animation-delay: 1s;"></div>
+                    <div class="bubble" style="width: 8px; height: 8px; bottom: 50%; left: 75%; animation-delay: 3s;"></div>
+                    <div class="bubble" style="width: 14px; height: 14px; bottom: 20%; left: 40%; animation-delay: 1.5s;"></div>
+                    <div class="bubble" style="width: 9px; height: 9px; bottom: 45%; left: 55%; animation-delay: 2.5s;"></div>
+
+                    <!-- DESBORDE -->
+                    <div class="overflow-container" id="overflowContainer">
+                        <div class="overflow-top">
+                            <div class="drop-stream" style="left: 10%; animation-delay: 0s;"></div>
+                            <div class="drop-stream" style="left: 30%; animation-delay: 0.2s;"></div>
+                            <div class="drop-stream" style="left: 50%; animation-delay: 0.4s;"></div>
+                            <div class="drop-stream" style="left: 70%; animation-delay: 0.1s;"></div>
+                            <div class="drop-stream" style="left: 90%; animation-delay: 0.3s;"></div>
+                        </div>
+                        <div class="overflow-side-left">
+                            <div class="side-stream" style="left: 10%; --sx: 120px; --sy: 320px; animation-delay: 0s;"></div>
+                            <div class="side-stream" style="left: 50%; --sx: 150px; --sy: 340px; animation-delay: 0.3s;"></div>
+                        </div>
+                        <div class="overflow-side-right">
+                            <div class="side-stream" style="left: 10%; --sx: -120px; --sy: 320px; animation-delay: 0.15s;"></div>
+                            <div class="side-stream" style="left: 50%; --sx: -150px; --sy: 340px; animation-delay: 0.45s;"></div>
+                        </div>
+                        <div class="cascade-left"><div class="cascade-stream"></div></div>
+                        <div class="cascade-right"><div class="cascade-stream"></div></div>
+                        <div class="splash-big" style="top: -20px; left: 10%; --sx: -80px; --sy: -120px; animation-delay: 0.2s;"></div>
+                        <div class="splash-big" style="top: -15px; right: 10%; --sx: 100px; --sy: -140px; animation-delay: 0.6s;"></div>
+                        <div class="splash-big" style="top: -25px; left: 40%; --sx: 120px; --sy: -160px; animation-delay: 0.9s;"></div>
+                        <div class="splash-big" style="top: -20px; right: 35%; --sx: -100px; --sy: -130px; animation-delay: 0.4s;"></div>
+                        <div class="flying-big-drop" style="top: -30px; left: 20%; --fx: -180px; --fy: -250px; animation-delay: 0.3s;" id="flyBig1"></div>
+                        <div class="flying-big-drop" style="top: -25px; left: 50%; --fx: 200px; --fy: -280px; animation-delay: 0.7s;" id="flyBig2"></div>
+                        <div class="flying-big-drop" style="top: -30px; left: 75%; --fx: -160px; --fy: -220px; animation-delay: 0.5s;" id="flyBig3"></div>
+                        <div class="flying-big-drop" style="top: -20px; left: 35%; --fx: 220px; --fy: -300px; animation-delay: 0.9s;" id="flyBig4"></div>
+                    </div>
+
+                    <div class="scale">
+                        <div class="scale-mark" data-label="40cm"></div>
+                        <div class="scale-mark" data-label="30cm"></div>
+                        <div class="scale-mark" data-label="20cm"></div>
+                        <div class="scale-mark" data-label="10cm"></div>
+                        <div class="scale-mark" data-label="0cm"></div>
+                    </div>
+
+                    <div class="level-indicator" id="levelIndicator">
+                        Nivel: <span id="levelPercent">60%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROLES LATERALES -->
+        <div class="controls-section">
+            <!-- SLIDER -->
+            <div class="control-card slider-control">
+                <div class="card-title">📡 Distancia al agua</div>
+                <input type="range" id="distSlider" min="2" max="40" value="20" step="0.5" />
+                <div class="slider-value">
+                    <span class="number" id="distDisplay">20</span>
+                    <span class="unit">cm</span>
+                    <span class="status-label" id="statusText">✅ Normal</span>
+                </div>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="control-card">
+                <div class="card-title">🎮 Acciones rápidas</div>
+                <div class="side-buttons">
+                    <button class="btn-test blue" id="testBtn">
+                        <span class="icon">🧪</span> Ejecutar 4 pruebas
+                    </button>
+                    <button class="btn-test danger" id="overflowBtn">
+                        <span class="icon">💦</span> ¡DESBORDE TOTAL!
+                    </button>
+                    <button class="btn-test warning" id="lowBtn">
+                        <span class="icon">⬇️</span> Nivel BAJO
+                    </button>
+                    <button class="btn-test success" id="normalBtn">
+                        <span class="icon">✅</span> Volver a normal
+                    </button>
+                </div>
+            </div>
+
+            <!-- LEDs + ZUMBADOR -->
+            <div class="control-card">
+                <div class="card-title">📊 Estado del sistema</div>
+                <div class="leds-grid">
+                    <div class="led-mini"><div class="dot green" id="ledVerde"></div><span class="label">Normal</span></div>
+                    <div class="led-mini"><div class="dot yellow" id="ledAmarillo"></div><span class="label">Casi lleno</span></div>
+                    <div class="led-mini"><div class="dot orange" id="ledNaranja"></div><span class="label">Nivel BAJO</span></div>
+                    <div class="led-mini"><div class="dot red" id="ledRojo"></div><span class="label">🚨 DESBORDE</span></div>
+                </div>
+                <div class="buzzer-mini">
+                    <span class="icon">🔊</span>
+                    <span class="text" id="buzzerText">Alarma: APAGADA</span>
+                    <span class="badge normal" id="statusBadge">✅ Seguro</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === PLANO DEL SISTEMA === -->
+    <div class="plano-box">
+        <div class="title">📋 PLANO DEL SISTEMA</div>
+        <div class="content">
+            <div><strong>NOMBRE:</strong> Control de Nivel de Agua</div>
+            <div><strong>PROBLEMA:</strong> Desborde o vaciado sin aviso</div>
+            <div><strong>ENTRADA:</strong> HC-SR04 (ultrasónico)</div>
+            <div><strong>DETECTA:</strong> Distancia al agua</div>
+            <div style="grid-column: 1 / -1;"><strong>REGLA SI/ENTONCES:</strong></div>
+            <div>distancia > 30 cm → LED NARANJA (nivel bajo)</div>
+            <div>15 ≤ distancia ≤ 30 cm → LED VERDE (normal)</div>
+            <div>8 ≤ distancia < 15 cm → LED AMARILLO (pre-alerta)</div>
+            <div>distancia < 8 cm → LED ROJO + DESBORDE</div>
+            <div style="grid-column: 1 / -1;"><strong>SALIDA:</strong> LEDs (verde, amarillo, naranja, rojo) + Zumbador</div>
+            <div><strong>ESTADO NORMAL:</strong> LED verde, zumbador apagado</div>
+            <div><strong>ALERTA:</strong> LED rojo/naranja + zumbador</div>
+            <div><strong>SIMULADOR:</strong> [X] JavaScript / HTML</div>
+        </div>
+    </div>
+
+    <!-- === REGLAS === -->
+    <div class="rules-section">
+        <div style="color: #f97316; font-weight: 700; margin-bottom: 6px; font-size: 1.1rem;">
+            ⚙️ REGLAS DE CONTROL
+        </div>
+        <div class="rule-item">
+            <span class="rule-icon">🟠</span>
+            <code>SI distancia > 30 cm</code> →
+            <span class="highlight-bajo">⚠️ LED NARANJA + Alarma suave (tanque vacío)</span>
+        </div>
+        <div class="rule-item">
+            <span class="rule-icon">🟢</span>
+            <code>SI 15 ≤ distancia ≤ 30 cm</code> → LED VERDE (normal)
+        </div>
+        <div class="rule-item">
+            <span class="rule-icon">🟡</span>
+            <code>SI 8 ≤ distancia < 15 cm</code> → LED AMARILLO (pre-alerta)
+        </div>
+        <div class="rule-item">
+            <span class="rule-icon">🔴</span>
+            <code>SI distancia < 8 cm</code> →
+            <span class="highlight-desborde">🚨 ALARMA + 💦 AGUA SALE DEL TANQUE</span>
+        </div>
+    </div>
+
+    <!-- === TABLA DE PRUEBAS === -->
+    <h3 style="color: #e2e8f0; margin: 16px 0 8px 0; font-size: 1.1rem;">📋 Pruebas de ingeniería</h3>
+    <table class="test-table" id="testTable">
+        <thead>
+            <tr>
+                <th>Prueba</th>
+                <th>Entrada</th>
+                <th>Salida esperada</th>
+                <th>Salida real</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>01</td>
+                <td>5 cm (100% LLENO)</td>
+                <td>🚨 DESBORDE + ALARMA</td>
+                <td id="test1Real">—</td>
+                <td id="test1Result" class="pending">⏳</td>
+            </tr>
+            <tr>
+                <td>02</td>
+                <td>12 cm (casi lleno)</td>
+                <td>🟡 LED amarillo</td>
+                <td id="test2Real">—</td>
+                <td id="test2Result" class="pending">⏳</td>
+            </tr>
+            <tr>
+                <td>03</td>
+                <td>20 cm (normal)</td>
+                <td>🟢 LED verde</td>
+                <td id="test3Real">—</td>
+                <td id="test3Result" class="pending">⏳</td>
+            </tr>
+            <tr>
+                <td>04</td>
+                <td>35 cm (nivel BAJO)</td>
+                <td>🟠 LED naranja</td>
+                <td id="test4Real">—</td>
+                <td id="test4Result" class="pending">⏳</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- === DIAGRAMA === -->
+    <div class="diagram-box">
+        <div class="title">🔧 DIAGRAMA DEL SISTEMA</div>
+        <div class="code">
+            [Sensor HC-SR04] <br/>
+                    ↓ <br/>
+            [Microcontrolador] <br/>
+                    ↓ <br/>
+            [Lógica SI/ENTONCES] <br/>
+                    ↓ <br/>
+            [LEDs + Zumbador] <br/>
+                    ↓ <br/>
+            [Alerta visual y sonora]
+        </div>
+        <div class="explicacion">
+            <strong>Explicación:</strong> El sensor ultrasónico mide la distancia al agua. El microcontrolador 
+            decide según la distancia qué LEDs encender y si activar el zumbador. Cuando distancia &lt; 8 cm, 
+            se activa el desborde con chorros de agua que salen del tanque.
+        </div>
+    </div>
+
+    <!-- === MEJORA === -->
+    <div class="improvement-box">
+        <strong>🛠️ Mejora tras revisión por pares:</strong>
+        Se agregó el <strong>nivel BAJO</strong> con LED naranja y alarma suave. El <strong>desborde total</strong> 
+        ahora hace que el agua <strong>salga visiblemente del cuadro</strong> con chorros, cascadas y salpicaduras.
+        <strong>¡Controles laterales integrados!</strong>
+    </div>
+
+    <!-- === REFLEXIÓN === -->
+    <div class="reflection-box">
+        <strong>🧠 Reflexión:</strong> El sistema cubre <strong>todos los escenarios</strong>: nivel bajo, normal, 
+        pre-alerta y desborde total. La simulación visual permite entender la necesidad de un sistema de control 
+        de nivel. El agua saliendo del cuadro enfatiza la urgencia del desborde.
+    </div>
+
+    <div class="footer">
+        <strong>💧 Proyecto:</strong> Control de nivel con alarma de BAJO y DESBORDE &nbsp;|&nbsp;
+        <strong>Sensor:</strong> HC-SR04 &nbsp;|&nbsp;
+        <strong>Actuadores:</strong> LEDs + Zumbador &nbsp;|&nbsp;
+        <strong>Equipo:</strong> Thomas · Alejandro · Mathias
+    </div>
+</div>
+
+<script>
+    (function() {
+        // === ELEMENTOS DOM ===
+        const slider = document.getElementById('distSlider');
+        const distDisplay = document.getElementById('distDisplay');
+        const levelPercent = document.getElementById('levelPercent');
+        const statusText = document.getElementById('statusText');
+        const levelIndicator = document.getElementById('levelIndicator');
+
+        const water = document.getElementById('water');
+        const emptyTank = document.getElementById('emptyTank');
+        const overflowContainer = document.getElementById('overflowContainer');
+        const flyBig1 = document.getElementById('flyBig1');
+        const flyBig2 = document.getElementById('flyBig2');
+        const flyBig3 = document.getElementById('flyBig3');
+        const flyBig4 = document.getElementById('flyBig4');
+
+        const ledVerde = document.getElementById('ledVerde');
+        const ledAmarillo = document.getElementById('ledAmarillo');
+        const ledNaranja = document.getElementById('ledNaranja');
+        const ledRojo = document.getElementById('ledRojo');
+        const buzzerText = document.getElementById('buzzerText');
+        const statusBadge = document.getElementById('statusBadge');
+
+        const test1Real = document.getElementById('test1Real');
+        const test1Result = document.getElementById('test1Result');
+        const test2Real = document.getElementById('test2Real');
+        const test2Result = document.getElementById('test2Result');
+        const test3Real = document.getElementById('test3Real');
+        const test3Result = document.getElementById('test3Result');
+        const test4Real = document.getElementById('test4Real');
+        const test4Result = document.getElementById('test4Result');
+
+        // === FUNCIÓN PRINCIPAL ===
+        function updateSystem(distancia) {
+            const dist = parseFloat(distancia.toFixed(1));
+            distDisplay.textContent = dist;
+
+            // Calcular porcentaje de agua
+            let waterPercent = Math.min(100, Math.max(0, 100 - ((dist - 2) / 38) * 95));
+            waterPercent = Math.round(waterPercent);
+            water.style.height = waterPercent + '%';
+            levelPercent.textContent = waterPercent + '%';
+
+            // Resetear LEDs
+            ledVerde.classList.remove('active');
+            ledAmarillo.classList.remove('active');
+            ledNaranja.classList.remove('active');
+            ledRojo.classList.remove('active');
+
+            // Resetear desborde
+            overflowContainer.classList.remove('active');
+            emptyTank.classList.remove('active');
+            flyBig1.classList.remove('active');
+            flyBig2.classList.remove('active');
+            flyBig3.classList.remove('active');
+            flyBig4.classList.remove('active');
+
+            // Resetear clases
+            distDisplay.classList.remove('danger', 'warning');
+            levelIndicator.classList.remove('danger', 'warning');
+            buzzerText.classList.remove('alert', 'warning');
+            statusBadge.className = 'badge normal';
+            statusBadge.textContent = '✅ Seguro';
+
+            // Variables de estado
+            let statusMsg = '✅ Normal';
+            let buzzerMsg = '🔇 Alarma: APAGADA';
+            let badgeText = '✅ Seguro';
+            let badgeClass = 'normal';
+
+            // === LÓGICA DE DECISIÓN ===
+            if (dist < 8) {
+                // 🚨 DESBORDE TOTAL
+                ledRojo.classList.add('active');
+                overflowContainer.classList.add('active');
+                flyBig1.classList.add('active');
+                flyBig2.classList.add('active');
+                flyBig3.classList.add('active');
+                flyBig4.classList.add('active');
+
+                distDisplay.classList.add('danger');
+                levelIndicator.classList.add('danger');
+
+                statusMsg = '🚨 ¡DESBORDE!';
+                buzzerMsg = '🔊🚨 ALARMA: ¡DESBORDE!';
+                buzzerText.classList.add('alert');
+                badgeText = '🚨 DESBORDE';
+                badgeClass = 'danger';
+
+            } else if (dist > 30) {
+                // ⬇️ NIVEL BAJO
+                ledNaranja.classList.add('active');
+                emptyTank.classList.add('active');
+
+                distDisplay.classList.add('warning');
+                levelIndicator.classList.add('warning');
+
+                statusMsg = '⬇️ Nivel BAJO';
+                buzzerMsg = '⚠️ Alarma: NIVEL BAJO';
+                buzzerText.classList.add('warning');
+                badgeText = '⚠️ Nivel Bajo';
+                badgeClass = 'warning';
+
+            } else if (dist >= 15 && dist <= 30) {
+                // 🟢 NIVEL NORMAL
+                ledVerde.classList.add('active');
+                statusMsg = '✅ Normal';
+                buzzerMsg = '🔇 Alarma: APAGADA';
+                badgeText = '✅ Seguro';
+                badgeClass = 'normal';
+
+            } else if (dist >= 8 && dist < 15) {
+                // 🟡 PRE-ALERTA
+                ledAmarillo.classList.add('active');
+                statusMsg = '🟡 Casi lleno';
+                buzzerMsg = '⚠️ Alarma: PRE-ALERTA';
+                badgeText = '⚠️ Precaución';
+                badgeClass = 'warning';
+            }
+
+            // Actualizar UI
+            statusText.textContent = statusMsg;
+            buzzerText.textContent = buzzerMsg;
+            statusBadge.textContent = badgeText;
+            statusBadge.className = 'badge ' + badgeClass;
+
+            // === ACTUALIZAR TABLA DE PRUEBAS ===
+            if (Math.abs(dist - 5) < 0.1) {
+                test1Real.textContent = '🚨 DESBORDE + ALARMA';
+                test1Result.innerHTML = '<span class="pass">✅ APROBADO</span>';
+                test1Result.className = 'pass';
+            } else {
+                test1Real.textContent = '—';
+                test1Result.innerHTML = '⏳';
+                test1Result.className = 'pending';
+            }
+
+            if (Math.abs(dist - 12) < 0.1) {
+                test2Real.textContent = '🟡 LED amarillo';
+                test2Result.innerHTML = '<span class="pass">✅ APROBADO</span>';
+                test2Result.className = 'pass';
+            } else {
+                test2Real.textContent = '—';
+                test2Result.innerHTML = '⏳';
+                test2Result.className = 'pending';
+            }
+
+            if (Math.abs(dist - 20) < 0.1) {
+                test3Real.textContent = '🟢 LED verde';
+                test3Result.innerHTML = '<span class="pass">✅ APROBADO</span>';
+                test3Result.className = 'pass';
+            } else {
+                test3Real.textContent = '—';
+                test3Result.innerHTML = '⏳';
+                test3Result.className = 'pending';
+            }
+
+            if (Math.abs(dist - 35) < 0.1) {
+                test4Real.textContent = '🟠 LED naranja';
+                test4Result.innerHTML = '<span class="pass">✅ APROBADO</span>';
+                test4Result.className = 'pass';
+            } else {
+                test4Real.textContent = '—';
+                test4Result.innerHTML = '⏳';
+                test4Result.className = 'pending';
+            }
+        }
+
+        // === EVENTOS ===
+        slider.addEventListener('input', function() {
+            const val = parseFloat(this.value);
+            updateSystem(val);
+        });
+
+        document.getElementById('testBtn').addEventListener('click', function() {
+            const steps = [5, 12, 20, 35];
+            let index = 0;
+            function runStep() {
+                if (index >= steps.length) {
+                    slider.value = '20';
+                    updateSystem(20);
+                    return;
+                }
+                const val = steps[index];
+                slider.value = val.toString();
+                updateSystem(val);
+                index++;
+                setTimeout(runStep, 1400);
+            }
+            runStep();
+        });
+
+        document.getElementById('overflowBtn').addEventListener('click', function() {
+            slider.value = '5';
+            updateSystem(5);
+            setTimeout(() => updateSystem(5), 100);
+        });
+
+        document.getElementById('lowBtn').addEventListener('click', function() {
+            slider.value = '35';
+            updateSystem(35);
+            setTimeout(() => updateSystem(35), 100);
+        });
+
+        document.getElementById('normalBtn').addEventListener('click', function() {
+            slider.value = '20';
+            updateSystem(20);
+            setTimeout(() => updateSystem(20), 100);
+        });
+
+        // === INICIALIZAR ===
+        slider.value = '20';
+        updateSystem(20);
+
+        console.log('✅ Simulador iniciado');
+        console.log('👥 Equipo: Thomas, Alejandro, Mathias');
+    })();
+</script>
+</body>
+</html>

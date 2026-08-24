@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)file:///C:/Users/BSNORMA-18/Downloads/deepseek_html_20260821_7e74b1%20(4).html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 ECO-RECICLA · Edición Premium · Emmanuel, Matteo &amp; David</title>
+    <style>
+        /* ============================================================
+           DISEÑO PREMIUM · NIVEL PROFESIONAL
+           ============================================================ */
+
+        /* ----- IMPORTACIÓN DE FUENTES ----- */
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+        /* ----- RESET Y BASE ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: #0d1f14;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ----- FONDO CON PARTÍCULAS (CSS puro) ----- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(46, 125, 50, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 193, 7, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(0, 150, 136, 0.10) 0%, transparent 50%),
+                linear-gradient(135deg, #0d1f14 0%, #1a3a2a 40%, #0d2818 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Partículas flotantes (hojas) */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            font-size: 1.4rem;
+            opacity: 0.15;
+            animation: floatParticle linear infinite;
+            user-select: none;
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% { transform: translateY(-10vh) rotate(720deg) scale(1.2); opacity: 0; }
+        }
+
+        /* ----- CONTENEDOR PRINCIPAL (glassmorphism) ----- */
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 880px;
+            width: 100%;
+            background: rgba(255, 255, 245, 0.12);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border-radius: 64px;
+            padding: 32px 34px 28px;
+            border: 1px solid rgba(255, 255, 240, 0.20);
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(255, 255, 240, 0.06) inset,
+                0 0 40px rgba(46, 125, 50, 0.10);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .game-container:hover {
+            box-shadow:
+                0 50px 100px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(255, 255, 240, 0.10) inset,
+                0 0 60px rgba(46, 125, 50, 0.15);
+        }
+
+        /* ----- HEADER (neumorfismo) ----- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 245, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 14px 28px;
+            border-radius: 80px;
+            border: 1px solid rgba(255, 255, 240, 0.12);
+            box-shadow:
+                inset 0 2px 4px rgba(255, 255, 255, 0.06),
+                0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #a5d6a7 50%, #66bb6a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 2px 20px rgba(76, 175, 80, 0.20);
+        }
+        .title span {
+            background: rgba(76, 175, 80, 0.25);
+            -webkit-text-fill-color: #a5d6a7;
+            padding: 0 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(165, 214, 167, 0.20);
+        }
+
+        .score-board {
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 26px;
+            border-radius: 60px;
+            color: #e8f5e9;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            border: 1px solid rgba(255, 255, 240, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+        .score-board span {
+            background: linear-gradient(135deg, #fdd835, #f9a825);
+            color: #1a2a1a;
+            padding: 2px 20px;
+            border-radius: 40px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            box-shadow: 0 2px 12px rgba(253, 216, 53, 0.30);
+        }
+
+        /* ----- CRÉDITOS DEL EQUIPO (con estilo) ----- */
+        .team-credits {
+            background: rgba(255, 255, 245, 0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 8px 22px;
+            border-radius: 60px;
+            color: #c8e6c9;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 240, 0.06);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+        .team-credits .member {
+            background: linear-gradient(135deg, #fdd835, #f9a825);
+            color: #1a2a1a;
+            padding: 2px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(253, 216, 53, 0.20);
+            transition: transform 0.2s ease;
+        }
+        .team-credits .member:hover {
+            transform: scale(1.05);
+        }
+        .team-credits .badge-code {
+            background: rgba(76, 175, 80, 0.20);
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            border: 1px solid rgba(165, 214, 167, 0.10);
+        }
+
+        /* ----- ESCENARIO (glass + neumorfismo) ----- */
+        .game-scene {
+            background: rgba(255, 255, 245, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 56px;
+            padding: 32px 24px 24px;
+            margin: 6px 0 20px;
+            border: 1px solid rgba(255, 255, 240, 0.06);
+            box-shadow:
+                inset 0 4px 20px rgba(0, 0, 0, 0.15),
+                0 8px 32px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .game-scene::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 40%, rgba(76, 175, 80, 0.04), transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Residuo actual - con animación de rebote */
+        .residuo-actual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .residuo-icon {
+            font-size: 6rem;
+            line-height: 1;
+            background: rgba(255, 255, 245, 0.08);
+            padding: 12px 40px;
+            border-radius: 120px;
+            border: 1px solid rgba(255, 255, 240, 0.10);
+            box-shadow:
+                inset 0 2px 20px rgba(255, 255, 255, 0.04),
+                0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: inset 0 2px 20px rgba(255, 255, 255, 0.04), 0 8px 32px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: inset 0 2px 30px rgba(165, 214, 167, 0.10), 0 8px 40px rgba(76, 175, 80, 0.15); }
+        }
+
+        .residuo-icon.pop {
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.6) rotate(-10deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .residuo-nombre {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e8f5e9;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 4px 32px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 240, 0.06);
+            letter-spacing: 0.5px;
+        }
+
+        /* ----- CATEGORÍAS (botones premium) ----- */
+        .categorias-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin: 18px 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cat-btn {
+            flex: 1 0 100px;
+            max-width: 148px;
+            background: rgba(255, 255, 245, 0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 240, 0.08);
+            border-radius: 60px;
+            padding: 16px 8px 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e8f5e9;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                0 6px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        .cat-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 60px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), transparent 50%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .cat-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: rgba(255, 255, 245, 0.12);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.10),
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(76, 175, 80, 0.05);
+        }
+        .cat-btn:active {
+            transform: translateY(2px) scale(0.97);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .cat-btn .emoji {
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+        }
+        .cat-btn .label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        /* Colores específicos por categoría (hover) */
+        .cat-btn[data-categoria="organico"]:hover { border-color: rgba(139, 195, 74, 0.3); }
+        .cat-btn[data-categoria="reciclable"]:hover { border-color: rgba(33, 150, 243, 0.3); }
+        .cat-btn[data-categoria="vidrio"]:hover { border-color: rgba(0, 188, 212, 0.3); }
+        .cat-btn[data-categoria="metal"]:hover { border-color: rgba(158, 158, 158, 0.3); }
+        .cat-btn[data-categoria="peligroso"]:hover { border-color: rgba(244, 67, 54, 0.3); }
+
+        /* ----- FEEDBACK (con animación) ----- */
+        .feedback {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 14px 10px 6px;
+            min-height: 4rem;
+            color: #c8e6c9;
+            letter-spacing: 0.2px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .feedback.correcto {
+            color: #81c784;
+            text-shadow: 0 0 30px rgba(129, 199, 132, 0.15);
+        }
+        .feedback.incorrecto {
+            color: #ef9a9a;
+            text-shadow: 0 0 30px rgba(239, 154, 154, 0.10);
+        }
+        .feedback .emoji-fb {
+            font-size: 1.6rem;
+            display: inline-block;
+            animation: shake 0.5s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        /* ----- HISTORIAL (lista) ----- */
+        .historial {
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 48px;
+            padding: 16px 22px;
+            margin: 12px 0 6px;
+            border: 1px solid rgba(255, 255, 240, 0.04);
+            box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.10);
+        }
+        .historial h4 {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 1rem;
+            color: #a5d6a7;
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+            font-weight: 600;
+        }
+        .historial h4 small {
+            font-weight: 400;
+            color: #81c784;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(165, 214, 167, 0.06);
+        }
+        .lista-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            min-height: 36px;
+            font-size: 0.95rem;
+        }
+        .badge-item {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.30), rgba(27, 94, 32, 0.20));
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #c8e6c9;
+            padding: 4px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            border: 1px solid rgba(165, 214, 167, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 0.3s ease;
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(8px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .lista-items .empty {
+            color: #81c784;
+            font-style: italic;
+            opacity: 0.4;
+            font-weight: 400;
+        }
+
+        /* ----- ACCIONES (botones premium) ----- */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 245, 0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 240, 0.08);
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #e8f5e9;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                0 6px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 60px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 50%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 245, 0.10);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(253, 216, 53, 0.20), rgba(249, 168, 37, 0.15));
+            border-color: rgba(253, 216, 53, 0.15);
+            color: #fdd835;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, rgba(253, 216, 53, 0.30), rgba(249, 168, 37, 0.20));
+            box-shadow: 0 10px 30px rgba(253, 216, 53, 0.05);
+        }
+
+        .btn-secondary {
+            background: rgba(76, 175, 80, 0.10);
+            border-color: rgba(76, 175, 80, 0.10);
+        }
+        .btn-secondary:hover {
+            background: rgba(76, 175, 80, 0.18);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-weight: 600;
+            color: #a5d6a7;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 8px 24px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            border: 1px solid rgba(255, 255, 240, 0.04);
+        }
+        .stats span {
+            background: rgba(0, 0, 0, 0.25);
+            color: #e8f5e9;
+            padding: 0 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        /* ----- PIE DE PÁGINA ----- */
+        .footer-note {
+            text-align: center;
+            margin-top: 18px;
+            color: rgba(165, 214, 167, 0.30);
+            font-weight: 500;
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.10);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            padding: 8px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 240, 0.02);
+            letter-spacing: 0.5px;
+        }
+        .footer-note strong {
+            color: rgba(165, 214, 167, 0.50);
+        }
+
+        /* ----- RESPONSIVE (diseño adaptativo) ----- */
+        @media (max-width: 700px) {
+            .game-container { padding: 20px 18px; border-radius: 40px; }
+            .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 18px; }
+            .score-board { justify-content: center; font-size: 1.1rem; padding: 6px 18px; }
+            .title { font-size: 1.5rem; justify-content: center; }
+            .cat-btn { flex: 1 0 70px; max-width: 110px; font-size: 0.95rem; padding: 12px 4px; }
+            .cat-btn .emoji { font-size: 1.5rem; }
+            .residuo-icon { font-size: 4.2rem; padding: 8px 24px; }
+            .residuo-nombre { font-size: 1.3rem; padding: 2px 20px; }
+            .team-credits { font-size: 0.8rem; gap: 8px; padding: 6px 16px; }
+            .game-scene { padding: 20px 12px 16px; }
+            .actions { flex-direction: column; align-items: stretch; }
+            .btn { justify-content: center; padding: 12px 20px; }
+            .stats { justify-content: center; }
+            .feedback { font-size: 1.1rem; min-height: 3.2rem; }
+        }
+
+        @media (max-width: 400px) {
+            .game-container { padding: 12px 10px; border-radius: 28px; }
+            .residuo-icon { font-size: 3.2rem; padding: 6px 16px; }
+            .cat-btn { flex: 1 0 60px; max-width: 80px; font-size: 0.75rem; padding: 8px 2px; }
+            .cat-btn .emoji { font-size: 1.2rem; }
+            .title { font-size: 1.2rem; }
+        }
+
+        /* ----- SCROLLBAR ESTILIZADA ----- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.10); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(76, 175, 80, 0.30); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(76, 175, 80, 0.50); }
+    </style>
+</head>
+<body>
+
+    <!-- ===== PARTÍCULAS DE FONDO (hojas y brillos) ===== -->
+    <div class="particles" id="particlesContainer"><span class="particle" style="left: 91.674%; font-size: 1.21607rem; animation-duration: 34.8248s; animation-delay: 15.2107s; opacity: 0.0610381;">🍃</span><span class="particle" style="left: 89.4665%; font-size: 1.56381rem; animation-duration: 29.3427s; animation-delay: 3.16121s; opacity: 0.057209;">🌿</span><span class="particle" style="left: 39.2167%; font-size: 1.54212rem; animation-duration: 34.7733s; animation-delay: 10.1965s; opacity: 0.0815342;">🍀</span><span class="particle" style="left: 44.77%; font-size: 2.04671rem; animation-duration: 21.6088s; animation-delay: 12.0516s; opacity: 0.134687;">✨</span><span class="particle" style="left: 40.6308%; font-size: 1.40646rem; animation-duration: 34.4174s; animation-delay: 3.10072s; opacity: 0.0695965;">🌱</span><span class="particle" style="left: 4.32043%; font-size: 2.21738rem; animation-duration: 20.492s; animation-delay: 7.74217s; opacity: 0.107238;">💚</span><span class="particle" style="left: 71.3123%; font-size: 2.16445rem; animation-duration: 36.587s; animation-delay: 12.471s; opacity: 0.0784047;">🍃</span><span class="particle" style="left: 62.5818%; font-size: 1.98103rem; animation-duration: 37.1341s; animation-delay: 17.0315s; opacity: 0.149645;">🌿</span><span class="particle" style="left: 68.3191%; font-size: 1.90407rem; animation-duration: 33.8205s; animation-delay: 14.9242s; opacity: 0.0971789;">🍀</span><span class="particle" style="left: 44.6804%; font-size: 2.33634rem; animation-duration: 36.1119s; animation-delay: 11.553s; opacity: 0.124414;">✨</span><span class="particle" style="left: 29.9754%; font-size: 0.869035rem; animation-duration: 36.8706s; animation-delay: 19.2958s; opacity: 0.055962;">🌱</span><span class="particle" style="left: 19.0188%; font-size: 1.8418rem; animation-duration: 36.7351s; animation-delay: 15.0784s; opacity: 0.111057;">💚</span><span class="particle" style="left: 29.0237%; font-size: 1.12038rem; animation-duration: 19.9629s; animation-delay: 12.5291s; opacity: 0.129223;">🍃</span><span class="particle" style="left: 30.0325%; font-size: 1.47721rem; animation-duration: 31.5131s; animation-delay: 18.0953s; opacity: 0.0810746;">🌿</span><span class="particle" style="left: 82.9849%; font-size: 0.892259rem; animation-duration: 32.7737s; animation-delay: 8.81588s; opacity: 0.104942;">🍀</span><span class="particle" style="left: 57.4921%; font-size: 1.43352rem; animation-duration: 26.6792s; animation-delay: 1.12688s; opacity: 0.0664615;">✨</span><span class="particle" style="left: 79.9166%; font-size: 1.44485rem; animation-duration: 28.2896s; animation-delay: 3.31758s; opacity: 0.130777;">🌱</span><span class="particle" style="left: 1.91815%; font-size: 0.809357rem; animation-duration: 16.4153s; animation-delay: 5.6124s; opacity: 0.130725;">💚</span><span class="particle" style="left: 25.1917%; font-size: 1.27035rem; animation-duration: 18.5169s; animation-delay: 1.61215s; opacity: 0.0779487;">🍃</span><span class="particle" style="left: 47.1695%; font-size: 1.19843rem; animation-duration: 34.6181s; animation-delay: 15.5231s; opacity: 0.0768988;">🌿</span><span class="particle" style="left: 13.58%; font-size: 1.18845rem; animation-duration: 35.9865s; animation-delay: 3.73317s; opacity: 0.0742344;">🍀</span><span class="particle" style="left: 59.8854%; font-size: 1.55281rem; animation-duration: 22.0293s; animation-delay: 9.83404s; opacity: 0.100523;">✨</span></div>
+
+    <!-- ===== CONTENEDOR PRINCIPAL ===== -->
+    <div class="game-container">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="title">
+                ♻️ ECO-RECICLA
+                <span>ODS 13</span>
+            </div>
+            <div class="score-board">
+                🏆 Puntos <span id="puntosDisplay">30</span>
+            </div>
+        </div>
+
+        <!-- CRÉDITOS EQUIPO -->
+        <div class="team-credits">
+            👥 <strong>CODE CREATORS</strong>
+            <span class="member">⭐ EMMANUEL</span>
+            <span class="member">⭐ MATTEO</span>
+            <span class="member">⭐ DAVID</span>
+            <span class="badge-code">⚡ Programando soluciones</span>
+        </div>
+
+        <!-- ESCENARIO -->
+        <div class="game-scene">
+            <div class="residuo-actual">
+                <div class="residuo-icon pop" id="iconoResiduo">📚</div>
+                <div class="residuo-nombre" id="nombreResiduo">Revista</div>
+            </div>
+
+            <!-- Categorías -->
+            <div class="categorias-grid">
+                <button class="cat-btn" data-categoria="organico">
+                    <span class="emoji">🍌</span> Orgánico
+                    <span class="label">compostable</span>
+                </button>
+                <button class="cat-btn" data-categoria="reciclable">
+                    <span class="emoji">📄</span> Reciclable
+                    <span class="label">reutilizar</span>
+                </button>
+                <button class="cat-btn" data-categoria="vidrio">
+                    <span class="emoji">🫙</span> Vidrio
+                    <span class="label">infinito</span>
+                </button>
+                <button class="cat-btn" data-categoria="metal">
+                    <span class="emoji">🔩</span> Metal
+                    <span class="label">recuperable</span>
+                </button>
+                <button class="cat-btn" data-categoria="peligroso">
+                    <span class="emoji">🧪</span> Peligroso
+                    <span class="label">manejo especial</span>
+                </button>
+            </div>
+
+            <div class="feedback" id="feedbackMsg">🤔 ¿A qué categoría pertenece?</div>
+
+            <!-- HISTORIAL (lista) -->
+            <div class="historial">
+                <h4>📋 Historial de aciertos <small>lista de residuos clasificados</small></h4>
+                <div class="lista-items" id="listaAciertos"><span class="badge-item">✅ Restos de comida</span><span class="badge-item">✅ Botella de vidrio</span><span class="badge-item">✅ Botella de vidrio</span></div>
+            </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="actions">
+            <button class="btn btn-secondary" id="btnNuevoResiduo">🔄 Nuevo residuo</button>
+            <button class="btn btn-primary" id="btnReiniciar">🔄 Reiniciar juego</button>
+            <div class="stats">
+                ❤️ Vidas <span id="vidasDisplay">3</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            🌱 <strong>Emmanuel · Matteo · David</strong> · Proyecto CODE CREATORS · Tecnología 6° · 2026
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        //  INGENIERÍA + DISEÑO PREMIUM
+        //  EQUIPO: EMMANUEL · MATTEO · DAVID
+        // ================================================================
+
+        // ----- PARTÍCULAS DE FONDO (generadas dinámicamente) -----
+        (function crearParticulas() {
+            const container = document.getElementById('particlesContainer');
+            const emojis = ['🍃', '🌿', '🍀', '✨', '🌱', '💚'];
+            for (let i = 0; i < 22; i++) {
+                const p = document.createElement('span');
+                p.className = 'particle';
+                p.textContent = emojis[i % emojis.length];
+                p.style.left = (Math.random() * 100) + '%';
+                p.style.fontSize = (0.8 + Math.random() * 1.6) + 'rem';
+                p.style.animationDuration = (15 + Math.random() * 25) + 's';
+                p.style.animationDelay = (Math.random() * 20) + 's';
+                p.style.opacity = 0.05 + Math.random() * 0.10;
+                container.appendChild(p);
+            }
+        })();
+
+        // ----- LÓGICA DEL JUEGO (premium) -----
+        (function() {
+            // LISTAS (colecciones de datos)
+            const residuos = [
+                { nombre: 'Cáscara de plátano', icono: '🍌', categoria: 'organico' },
+                { nombre: 'Papel periódico', icono: '📰', categoria: 'reciclable' },
+                { nombre: 'Botella de vidrio', icono: '🍾', categoria: 'vidrio' },
+                { nombre: 'Lata de aluminio', icono: '🥫', categoria: 'metal' },
+                { nombre: 'Pila usada', icono: '🔋', categoria: 'peligroso' },
+                { nombre: 'Restos de comida', icono: '🍂', categoria: 'organico' },
+                { nombre: 'Cartón', icono: '📦', categoria: 'reciclable' },
+                { nombre: 'Frasco de vidrio', icono: '🫙', categoria: 'vidrio' },
+                { nombre: 'Tornillo', icono: '🔩', categoria: 'metal' },
+                { nombre: 'Aerosol', icono: '💨', categoria: 'peligroso' },
+                { nombre: 'Manzana podrida', icono: '🍎', categoria: 'organico' },
+                { nombre: 'Revista', icono: '📚', categoria: 'reciclable' },
+                { nombre: 'Tarro de vidrio', icono: '🏺', categoria: 'vidrio' },
+                { nombre: 'Clavo', icono: '📌', categoria: 'metal' },
+                { nombre: 'Batería', icono: '🔋', categoria: 'peligroso' },
+            ];
+
+            // VARIABLES
+            let puntuacion = 0;
+            let vidas = 3;
+            let residuoActual = null;
+            let historialAciertos = [];
+            let juegoActivo = true;
+
+            // DOM
+            const iconoEl = document.getElementById('iconoResiduo');
+            const nombreEl = document.getElementById('nombreResiduo');
+            const puntosDisplay = document.getElementById('puntosDisplay');
+            const vidasDisplay = document.getElementById('vidasDisplay');
+            const feedbackMsg = document.getElementById('feedbackMsg');
+            const listaAciertosEl = document.getElementById('listaAciertos');
+            const btnNuevo = document.getElementById('btnNuevoResiduo');
+            const btnReiniciar = document.getElementById('btnReiniciar');
+            const botonesCategoria = document.querySelectorAll('.cat-btn');
+
+            // Funciones
+            function actualizarUI() {
+                puntosDisplay.textContent = puntuacion;
+                vidasDisplay.textContent = vidas;
+
+                if (historialAciertos.length === 0) {
+                    listaAciertosEl.innerHTML = `<span class="empty">Todavía sin aciertos</span>`;
+                } else {
+                    listaAciertosEl.innerHTML = historialAciertos.map(item =>
+                        `<span class="badge-item">✅ ${item}</span>`
+                    ).join('');
+                }
+            }
+
+            function mostrarNuevoResiduo() {
+                if (!juegoActivo) return;
+                const indice = Math.floor(Math.random() * residuos.length);
+                residuoActual = residuos[indice];
+                iconoEl.textContent = residuoActual.icono;
+                nombreEl.textContent = residuoActual.nombre;
+                feedbackMsg.textContent = '🤔 ¿A qué categoría pertenece?';
+                feedbackMsg.className = 'feedback';
+                // Animación de entrada
+                iconoEl.classList.remove('pop');
+                void iconoEl.offsetWidth;
+                iconoEl.classList.add('pop');
+            }
+
+            function clasificarResiduo(categoriaSeleccionada) {
+                if (!juegoActivo) {
+                    feedbackMsg.innerHTML = '⛔ <span class="emoji-fb">💀</span> Juego terminado. Reinicia para seguir.';
+                    feedbackMsg.className = 'feedback incorrecto';
+                    return;
+                }
+                if (!residuoActual) {
+                    feedbackMsg.textContent = '⚠️ Presiona "Nuevo residuo" primero.';
+                    return;
+                }
+
+                const esCorrecto = (categoriaSeleccionada === residuoActual.categoria);
+
+                // CONDICIONALES
+                if (esCorrecto) {
+                    puntuacion += 10;
+                    historialAciertos.push(residuoActual.nombre);
+                    feedbackMsg.innerHTML = '✅ <span class="emoji-fb">🎉</span> ¡Correcto! +10 puntos. ¡Bien hecho!';
+                    feedbackMsg.className = 'feedback correcto';
+                    mostrarNuevoResiduo();
+                } else {
+                    vidas -= 1;
+                    feedbackMsg.innerHTML = `❌ <span class="emoji-fb">😅</span> Incorrecto. Era "${residuoActual.categoria}". Te quedan ${vidas} vidas.`;
+                    feedbackMsg.className = 'feedback incorrecto';
+
+                    if (vidas <= 0) {
+                        juegoActivo = false;
+                        feedbackMsg.innerHTML = '💀 <span class="emoji-fb">🌍</span> GAME OVER · ¡Recicla mejor la próxima vez!';
+                        feedbackMsg.className = 'feedback incorrecto';
+                    } else {
+                        mostrarNuevoResiduo();
+                    }
+                }
+                actualizarUI();
+            }
+
+            function reiniciarJuego() {
+                puntuacion = 0;
+                vidas = 3;
+                historialAciertos = [];
+                juegoActivo = true;
+                residuoActual = null;
+                actualizarUI();
+                mostrarNuevoResiduo();
+                feedbackMsg.innerHTML = '🔄 <span class="emoji-fb">✨</span> Juego reiniciado. ¡A clasificar!';
+                feedbackMsg.className = 'feedback';
+            }
+
+            // EVENTOS (ciclos)
+            botonesCategoria.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const categoria = this.dataset.categoria;
+                    clasificarResiduo(categoria);
+                });
+            });
+
+            btnNuevo.addEventListener('click', function() {
+                if (!juegoActivo) {
+                    feedbackMsg.innerHTML = '⛔ <span class="emoji-fb">💀</span> Juego terminado. Reinicia para continuar.';
+                    return;
+                }
+                mostrarNuevoResiduo();
+            });
+
+            btnReiniciar.addEventListener('click', reiniciarJuego);
+
+            // INICIALIZAR
+            mostrarNuevoResiduo();
+            actualizarUI();
+            feedbackMsg.innerHTML = '🌍 <span class="emoji-fb">♻️</span> Clasifica el residuo en la categoría correcta.';
+        })();
+    </script>
+
+</body></html>

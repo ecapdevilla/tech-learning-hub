@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱 EcoQuiz · Code Creators · 6º</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e2f0e5 0%, #c8dfce 100%);
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.8rem;
+            color: #1e3a2a;
+        }
+
+        .container {
+            max-width: 1280px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border-radius: 3.5rem;
+            box-shadow: 0 25px 50px -8px rgba(20, 50, 30, 0.4);
+            padding: 2.5rem 2.8rem;
+            border: 1px solid rgba(120, 170, 130, 0.25);
+            transition: all 0.2s;
+        }
+
+        /* ===== TYPOGRAPHY & ICONS ===== */
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #175236, #2f7a54);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge-ods {
+            background: #1f5e3f;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.3rem 1.4rem;
+            border-radius: 60px;
+            -webkit-text-fill-color: white;
+            background: #1f5e3f;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 8px rgba(20, 80, 40, 0.2);
+        }
+
+        .chip {
+            background: #dceee0;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e4a2e;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            border: 1px solid #b0cfb8;
+        }
+
+        .card {
+            background: #f6fbf7;
+            border-radius: 2rem;
+            padding: 1.6rem 2rem;
+            box-shadow: 0 6px 18px rgba(20, 60, 30, 0.06);
+            border: 1px solid #d6e8da;
+            transition: 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: #8ebd9a;
+            background: #fafffb;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+            color: #1e4f34;
+            border-bottom: 2px dashed #b8d6bf;
+            padding-bottom: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.8rem 0;
+        }
+
+        @media (max-width: 820px) {
+            .container {
+                padding: 1.8rem;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* ===== CODE BLOCK ===== */
+        .code-block {
+            background: #17261e;
+            color: #cae6d2;
+            padding: 1.2rem 1.6rem;
+            border-radius: 1.4rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            border-left: 6px solid #3d9662;
+            white-space: pre-wrap;
+            margin: 0.6rem 0;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            background: #1f6e47;
+            border: none;
+            color: white;
+            padding: 0.5rem 1.6rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 2px 8px rgba(20, 70, 40, 0.15);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #1f6e47;
+            color: #1f6e47;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: #1f6e47;
+            color: white;
+            transform: scale(0.96);
+        }
+
+        .btn:hover {
+            background: #125435;
+            transform: scale(0.97);
+        }
+
+        .btn:active {
+            transform: scale(0.94);
+        }
+
+        .btn-sm {
+            padding: 0.25rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* ===== PROGRESS ===== */
+        .progress-bar {
+            background: #dceade;
+            border-radius: 40px;
+            height: 12px;
+            margin: 0.8rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 40px;
+            background: linear-gradient(90deg, #378d58, #6ab386);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* ===== LISTAS ===== */
+        .list-check {
+            list-style: none;
+            padding: 0;
+        }
+        .list-check li {
+            padding: 0.5rem 0 0.5rem 2.2rem;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%231b6e3a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') left center no-repeat;
+            background-size: 1.4rem;
+            border-bottom: 1px solid #e2f0e2;
+            font-weight: 500;
+        }
+
+        .feedback-box {
+            background: #e9f4ea;
+            border-radius: 1.2rem;
+            padding: 0.8rem 1.4rem;
+            margin: 0.6rem 0;
+            border-left: 4px solid #3f8f5e;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .badge-role {
+            background: #cde2d0;
+            border-radius: 40px;
+            padding: 0.2rem 1.2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #12452b;
+            letter-spacing: 0.2px;
+        }
+
+        /* ===== SIMULADOR ===== */
+        .sim-card {
+            background: #e5f2e7;
+            border-radius: 1.8rem;
+            padding: 1.2rem 1.8rem;
+        }
+
+        .option-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0.6rem 0;
+        }
+
+        .stat-badge {
+            background: #c6ddca;
+            border-radius: 60px;
+            padding: 0.2rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-print {
+            margin-top: 2.2rem;
+            border-top: 2px solid #caddce;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            font-size: 0.9rem;
+            color: #1f4f35;
+        }
+
+        /* ===== TABLA ===== */
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .test-table th {
+            background: #d1e4d3;
+            padding: 0.4rem 0.6rem;
+            text-align: left;
+        }
+        .test-table td {
+            padding: 0.4rem 0.6rem;
+            border-bottom: 1px solid #c8ddcb;
+        }
+
+        /* ===== UTILITY ===== */
+        .mt-1 { margin-top: 0.8rem; }
+        .mb-1 { margin-bottom: 0.8rem; }
+        .gap-1 { gap: 0.8rem; }
+        .text-center { text-align: center; }
+        .font-mono { font-family: monospace; }
+
+        /* ===== TEAM NAMES ===== */
+        .team-names {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.5rem;
+            background: #e4f0e4;
+            border-radius: 60px;
+            padding: 0.3rem 1.6rem;
+            font-weight: 600;
+            color: #1c5437;
+            border: 1px solid #b0cfb8;
+        }
+        .team-names span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <!-- ===== HEADER ===== -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem 1rem;">
+        <h1>
+            <span>🌱 ECOQUIZ</span>
+            <span class="badge-ods">CODE CREATORS · 6º</span>
+        </h1>
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <span class="chip">💻 Tecnología</span>
+            <span class="chip">➕ Matemáticas</span>
+            <span class="chip">🔬 Ciencias Naturales</span>
+            <span class="chip">🌍 ODS 4,11,13,15</span>
+        </div>
+    </div>
+
+    <!-- ===== TEAM NAMES ===== -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin: 0.6rem 0 1.2rem 0;">
+        <p style="font-size: 1.2rem; font-weight: 400; color: #1f583b; margin: 0;">
+            🎮 Programando soluciones interactivas para mi comunidad · Reciclaje & cuidado del agua
+        </p>
+        <div class="team-names">
+            <span>👨‍💻 Samir Amin</span>
+            <span>👨‍💻 Santiago Barcha</span>
+            <span>👨‍💻 Samuel Figueroa</span>
+        </div>
+    </div>
+
+    <!-- ===== OBJETIVO + METODOLOGÍA ===== -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">🎯 Objetivo del proyecto</div>
+            <p>Diseñar, programar y presentar un proyecto interactivo funcional (juego de preguntas) usando Scratch que resuelva un problema real: <strong>falta de conciencia sobre reciclaje y ahorro de agua</strong> en la escuela.</p>
+            <div style="margin-top: 1rem; background: #e0f0e2; border-radius: 1.2rem; padding: 0.8rem 1.4rem;">
+                <strong>❓ Pregunta orientadora</strong>
+                <p style="margin-top: 0.3rem;">¿Cómo podemos usar variables, condicionales, ciclos y listas para crear un juego interactivo que enseñe a separar residuos y cuidar el agua?</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📋 Metodología · ABP + STEM</div>
+            <ul style="list-style: square; padding-left: 1.4rem; line-height: 1.8;">
+                <li>🔍 Identificar problema (ODS)</li>
+                <li>👥 Equipo: 4 roles activos</li>
+                <li>📚 Investigar y planificar</li>
+                <li>✏️ Diseñar prototipo</li>
+                <li>🛠️ Construir con Scratch</li>
+                <li>🧪 Probar y recolectar datos</li>
+                <li>🔧 Mejorar diseño</li>
+                <li>🎤 Feria STEM</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ===== ARQUITECTURA + PLAN ===== -->
+    <div class="card" style="margin: 1.2rem 0;">
+        <div class="card-title">🧭 Arquitectura del proyecto · Planificar</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; background: #dcebde; padding: 0.6rem 1.2rem; border-radius: 2rem; font-weight: 600; justify-content: center; font-size: 0.95rem;">
+            <span>INICIO</span> <span>→</span> <span>ENTRADA</span> <span>→</span> <span>PROCESO</span> <span>→</span> <span>DECISIÓN</span> <span>→</span> <span>REPETICIÓN</span> <span>→</span> <span>RESULTADO</span>
+        </div>
+        <div class="grid-2" style="margin-top: 1.2rem;">
+            <div>
+                <p><strong>📌 Proyecto:</strong> EcoQuiz · Reciclaje y agua</p>
+                <p><strong>🎯 Propósito:</strong> Educar mediante preguntas sobre separación de residuos, ahorro de agua y energía.</p>
+                <p><strong>📦 Variables:</strong> <span class="badge-role">score</span> <span class="badge-role">lives</span> <span class="badge-role">name</span></p>
+                <p><strong>🔀 Condición:</strong> si score ≥ 8 → ganar</p>
+                <p><strong>🔁 Ciclo:</strong> repetir 6 preguntas</p>
+                <p><strong>📚 Lista (desafío):</strong> preguntas, respuestas, pistas</p>
+            </div>
+            <div>
+                <div style="background: #e7f1e7; border-radius: 1.2rem; padding: 0.8rem 1.2rem;">
+                    <span style="font-weight: 600;">👥 Equipo de creación</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+                        <span class="badge-role">🧩 Programador</span>
+                        <span class="badge-role">🎨 Diseñador</span>
+                        <span class="badge-role">📊 Datos</span>
+                        <span class="badge-role">📝 Documentador</span>
+                        <span class="badge-role">🎤 Presentador</span>
+                    </div>
+                    <p style="margin-top: 0.8rem;">
+                        <strong>📅 Fecha:</strong> 21/08/2026 · <strong>Curso:</strong> 6th Grade<br>
+                        <strong>👨‍🎓 Estudiantes:</strong> Samir Amin, Santiago Barcha, Samuel Figueroa
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CÓDIGO + SIMULADOR ===== -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">🧠 Bloques · estructura</div>
+            <div class="code-block">
+                // variables
+                score = 0
+                lives = 3
+                name = ""
+
+                // entrada
+                ask "¿Cómo te llamas?" → name
+
+                // condicional
+                if score >= 8 {
+                    say "¡Ganaste! 🌟"
+                }
+
+                // ciclo + lista
+                questions = ["¿Plástico se recicla?", "¿Ahorrar agua?"]
+                answers = ["sí", "cerrar grifo"]
+
+                repeat 6 times {
+                    ask questions[i]
+                    if answer == answers[i] {
+                        score += 1
+                    } else {
+                        lives -= 1
+                    }
+                }
+            </div>
+            <div style="margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem;">
+                <span class="chip">📦 Variable</span>
+                <span class="chip">⌨️ Entrada</span>
+                <span class="chip">🔀 Condicional</span>
+                <span class="chip">🔁 Ciclo</span>
+                <span class="chip">📚 Lista</span>
+            </div>
+        </div>
+
+        <!-- ===== SIMULADOR INTERACTIVO ===== -->
+        <div class="card sim-card">
+            <div class="card-title">🎮 Simulador · EcoQuiz</div>
+            <div id="simQuestion" style="font-size: 1.1rem; font-weight: 600; min-height: 3rem;">🌿 ¿Qué material es reciclable?</div>
+            <div class="option-grid" id="simOptions">
+                <button class="btn btn-outline btn-sm" data-answer="plástico">♻️ Plástico</button>
+                <button class="btn btn-outline btn-sm" data-answer="orgánico">🍂 Orgánico</button>
+                <button class="btn btn-outline btn-sm" data-answer="vidrio">🧴 Vidrio</button>
+                <button class="btn btn-outline btn-sm" data-answer="papel">📄 Papel</button>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; background: #cde0ce; border-radius: 3rem; padding: 0.4rem 1.2rem;">
+                <span>🏆 <strong id="simScore">0</strong> pts</span>
+                <span>❤️ <strong id="simLives">3</strong> vidas</span>
+                <span>📌 <span id="simRound">1/6</span></span>
+            </div>
+            <div id="simFeedback" style="font-weight: 500; min-height: 2.2rem; padding: 0.3rem 0;">👉 Elige una opción</div>
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <button class="btn" id="resetSimBtn">🔄 Reiniciar</button>
+                <button class="btn btn-outline" id="nextSimBtn" disabled>⏩ Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CHECKLIST + PROGRESO ===== -->
+    <div class="card" style="margin: 1.2rem 0;">
+        <div class="card-title">✅ Progreso · evidencia</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 70%;"></div></div>
+        <ul class="list-check" id="checklist">
+            <li>✔️ Proyecto seleccionado (EcoQuiz)</li>
+            <li>✔️ Arquitectura planeada</li>
+            <li>✔️ Variable creada (score, lives)</li>
+            <li>✔️ Entrada de usuario (nombre)</li>
+            <li>✔️ Condicional añadido (if/else)</li>
+            <li>✔️ Ciclo añadido (repeat 6)</li>
+            <li>✔️ Lista/arreglo (desafío) – preguntas y respuestas</li>
+        </ul>
+        <div class="flex-row">
+            <span><strong>¿Qué funciona?</strong> Variables, entrada, condición, ciclo y lista de preguntas.</span>
+            <span><strong>¿Qué falta?</strong> Depuración fina, sonidos, más preguntas.</span>
+        </div>
+    </div>
+
+    <!-- ===== PRUEBAS + FEEDBACK ===== -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">🧪 Laboratorio de pruebas</div>
+            <table class="test-table">
+                <thead><tr><th>Prueba</th><th>Esperado</th><th>Resultado</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>Inicio score=0, lives=3</td><td>✅ ok</td></tr>
+                    <tr><td>2</td><td>Respuesta correcta +1</td><td>✅ ok</td></tr>
+                    <tr><td>3</td><td>Respuesta incorrecta -1 vida</td><td>✅ ok</td></tr>
+                    <tr><td>4</td><td>Lista de preguntas (6 items)</td><td>✅ ok</td></tr>
+                    <tr><td>5</td><td>Condición de victoria (score≥8)</td><td>⏳ pendiente</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card">
+            <div class="card-title">🤝 Retroalimentación entre pares</div>
+            <div class="feedback-box">👍 Me gusta: la temática de reciclaje, las opciones claras y el diseño visual.</div>
+            <div class="feedback-box">💡 Sugiero: agregar un temporizador y más preguntas sobre agua.</div>
+            <div class="feedback-box">❓ Pregunta: ¿cómo se guardan las respuestas en la lista?</div>
+        </div>
+    </div>
+
+    <!-- ===== RÚBRICA + CIERRE ===== -->
+    <div class="card" style="margin: 1.2rem 0;">
+        <div class="card-title">📊 Rúbrica · evaluación</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 0.4rem; font-size: 0.9rem;">
+            <div><span class="badge-role">Diseño</span> 4/4</div>
+            <div><span class="badge-role">Variables</span> 4/4</div>
+            <div><span class="badge-role">Condicionales</span> 4/4</div>
+            <div><span class="badge-role">Ciclos</span> 4/4</div>
+            <div><span class="badge-role">Listas</span> 4/4 (desafío)</div>
+            <div><span class="badge-role">Creatividad</span> 4/4</div>
+        </div>
+        <div style="margin-top: 1rem; background: #dcebde; border-radius: 1.4rem; padding: 0.6rem 1.4rem;">
+            <strong>💭 Cierre Lasallista:</strong> Agradecemos la oportunidad de aprender, crear, colaborar y usar la tecnología al servicio de los demás.
+        </div>
+    </div>
+
+    <!-- ===== FOOTER EVIDENCIA ===== -->
+    <div class="footer-print">
+        <div><strong>📄 Evidencia:</strong> 6th Grade · Cycle 4 · Interactive Project Master Lab</div>
+        <div>📥 Descargar · 🖨️ PDF · ☁️ Subir</div>
+        <div><span class="badge-role">Design 4/4</span> <span class="badge-role">Structures 4/4</span> <span class="badge-role">Testing 4/4</span></div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ============================================================
+        //  SIMULADOR COMPLETO CON LISTAS, CICLOS, CONDICIONALES, VARIABLES
+        // ============================================================
+
+        // ---- LISTAS (desafío) ----
+        const questionBank = [
+            { q: "🌿 ¿Qué material es reciclable?", options: ["plástico", "orgánico", "vidrio", "papel"], correct: "plástico" },
+            { q: "💧 ¿Cómo ahorrar agua al lavarse los dientes?", options: ["grifo abierto", "cerrar grifo", "usar manguera", "llenar tina"], correct: "cerrar grifo" },
+            { q: "♻️ ¿Dónde se deposita el vidrio?", options: ["contenedor verde", "contenedor azul", "contenedor amarillo", "orgánico"], correct: "contenedor verde" },
+            { q: "⚡ ¿Qué acción ayuda a ahorrar energía?", options: ["dejar luces encendidas", "usar bombillas LED", "usar muchos electrodomésticos", "abrir refrigerador"], correct: "usar bombillas LED" },
+            { q: "🌎 ¿Cuál es un residuo orgánico?", options: ["cáscara de plátano", "botella de plástico", "lata de aluminio", "pila"], correct: "cáscara de plátano" },
+            { q: "🚰 ¿Cuánta agua se ahorra al cerrar el grifo mientras te enjabonas?", options: ["5 litros", "10 litros", "2 litros", "1 litro"], correct: "10 litros" }
+        ];
+
+        // ---- variables de estado ----
+        let currentIndex = 0;
+        let score = 0;
+        let lives = 3;
+        let gameActive = true;
+        let answered = false;
+
+        // ---- DOM elements ----
+        const simQuestion = document.getElementById('simQuestion');
+        const simOptions = document.getElementById('simOptions');
+        const simScore = document.getElementById('simScore');
+        const simLives = document.getElementById('simLives');
+        const simRound = document.getElementById('simRound');
+        const simFeedback = document.getElementById('simFeedback');
+        const resetBtn = document.getElementById('resetSimBtn');
+        const nextBtn = document.getElementById('nextSimBtn');
+
+        // ---- helper: renderizar pregunta ----
+        function renderQuestion() {
+            if (!gameActive) return;
+            const data = questionBank[currentIndex];
+            simQuestion.textContent = data.q;
+
+            // limpiar y crear botones
+            simOptions.innerHTML = '';
+            data.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline btn-sm';
+                btn.textContent = opt;
+                btn.dataset.answer = opt;
+                btn.addEventListener('click', (e) => handleAnswer(e, opt));
+                simOptions.appendChild(btn);
+            });
+
+            // actualizar round
+            simRound.textContent = `${currentIndex+1}/${questionBank.length}`;
+            simScore.textContent = score;
+            simLives.textContent = lives;
+            simFeedback.textContent = '🤔 Elige una opción';
+            answered = false;
+            nextBtn.disabled = true;
+
+            // habilitar opciones
+            document.querySelectorAll('#simOptions button').forEach(b => b.disabled = false);
+        }
+
+        // ---- manejar respuesta ----
+        function handleAnswer(event, selected) {
+            if (!gameActive || answered) return;
+            const data = questionBank[currentIndex];
+            const isCorrect = (selected === data.correct);
+
+            // deshabilitar botones
+            document.querySelectorAll('#simOptions button').forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                score += 1;
+                simFeedback.textContent = '✅ ¡Correcto! +1 punto';
+                simScore.textContent = score;
+            } else {
+                lives -= 1;
+                simFeedback.textContent = `❌ Incorrecto. La respuesta era: "${data.correct}"`;
+                simLives.textContent = lives;
+            }
+
+            answered = true;
+            nextBtn.disabled = false;
+
+            // verificar condiciones de fin
+            if (score >= 8) {
+                simFeedback.textContent = '🎉 ¡Ganaste! Has alcanzado 8 puntos. ¡Eres un experto en reciclaje!';
+                gameActive = false;
+                nextBtn.disabled = true;
+                simQuestion.textContent = '🏆 ¡Felicidades! Proyecto completado.';
+                simOptions.innerHTML = '';
+            } else if (lives <= 0) {
+                simFeedback.textContent = '😵 Perdiste. ¡Reinicia para intentar de nuevo!';
+                gameActive = false;
+                nextBtn.disabled = true;
+                simQuestion.textContent = '💔 Sin vidas. ¡Reintenta!';
+                simOptions.innerHTML = '';
+            }
+        }
+
+        // ---- siguiente pregunta (ciclo) ----
+        function nextQuestion() {
+            if (!gameActive) return;
+            if (answered && currentIndex < questionBank.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else if (currentIndex === questionBank.length - 1 && gameActive) {
+                // si se completaron todas las preguntas y no se ganó / perdió
+                if (score >= 8) {
+                    simFeedback.textContent = '🎉 ¡Ganaste! Puntuación máxima.';
+                } else {
+                    simFeedback.textContent = '📚 Has completado todas las preguntas. Sigue practicando.';
+                }
+                gameActive = false;
+                nextBtn.disabled = true;
+                simOptions.innerHTML = '';
+                simQuestion.textContent = '🏁 ¡Fin del juego!';
+            }
+        }
+
+        // ---- reiniciar (reset) ----
+        function resetGame() {
+            currentIndex = 0;
+            score = 0;
+            lives = 3;
+            gameActive = true;
+            answered = false;
+            simScore.textContent = '0';
+            simLives.textContent = '3';
+            nextBtn.disabled = true;
+            renderQuestion();
+            simFeedback.textContent = '🔄 Reiniciado. ¡Buena suerte!';
+            // habilitar opciones
+            document.querySelectorAll('#simOptions button').forEach(b => b.disabled = false);
+        }
+
+        // ---- eventos ----
+        resetBtn.addEventListener('click', resetGame);
+        nextBtn.addEventListener('click', nextQuestion);
+
+        // ---- inicializar ----
+        renderQuestion();
+
+        // ---- actualizar barra de progreso (ejemplo) ----
+        const progressFill = document.getElementById('progressFill');
+        if (progressFill) {
+            progressFill.style.width = '75%'; // refleja checklist completo
+        }
+
+        // ---- (opcional) exponer funciones para consola ----
+        window.__sim = { resetGame, nextQuestion, score, lives };
+    })();
+</script>
+
+</body>
+</html>

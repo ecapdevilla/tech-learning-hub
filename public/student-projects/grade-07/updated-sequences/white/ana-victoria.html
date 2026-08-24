@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EcoReto Escolar ♻️</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #dff7df, #b7e4c7);
+            min-height: 100vh;
+            color: #173b2b;
+        }
+
+        /* BARRA SUPERIOR */
+
+        .barra {
+            background: #174d32;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .barra h3 {
+            font-size: 18px;
+        }
+
+        .curso {
+            background: #e9f7ef;
+            color: #174d32;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+
+        .contenedor {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .encabezado {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .encabezado h1 {
+            font-size: 40px;
+            color: #126b3a;
+            margin-bottom: 10px;
+        }
+
+        .encabezado p {
+            font-size: 18px;
+            color: #42634f;
+        }
+
+        /* TARJETAS */
+
+        .contenido {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .tarjeta h2 {
+            color: #126b3a;
+            margin-bottom: 15px;
+        }
+
+        .tarjeta p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* FORMULARIO */
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid #c9dfd0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #2e8b57;
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-clasificar {
+            background: #18884b;
+            color: white;
+        }
+
+        .btn-clasificar:hover {
+            background: #116b3a;
+            transform: translateY(-2px);
+        }
+
+        .btn-limpiar {
+            background: #e8eeee;
+            color: #174d32;
+        }
+
+        .btn-limpiar:hover {
+            background: #d3dddd;
+        }
+
+        /* RESULTADO */
+
+        #resultado {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .exito {
+            display: block !important;
+            background: #e4f7e9;
+            border: 2px solid #4caf70;
+            color: #176b39;
+        }
+
+        .error {
+            display: block !important;
+            background: #ffeaea;
+            border: 2px solid #e35d5d;
+            color: #a32929;
+        }
+
+        /* CONTENEDORES */
+
+        .contenedores {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .contenedor-residuo {
+            padding: 15px 8px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .azul {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .amarillo {
+            background: #fff3b0;
+            color: #927000;
+        }
+
+        .verde {
+            background: #d8f3dc;
+            color: #237a3b;
+        }
+
+        .marron {
+            background: #ead7c0;
+            color: #704214;
+        }
+
+        .gris {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        /* REGISTRO */
+
+        .registro {
+            margin-top: 25px;
+        }
+
+        .registro h2 {
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #174d32;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* ESTADISTICAS */
+
+        .estadisticas {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .estadistica {
+            background: #f0f9f4;
+            padding: 15px;
+            border-radius: 12px;
+            flex: 1;
+        }
+
+        .estadistica strong {
+            display: block;
+            font-size: 28px;
+            color: #168044;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 750px) {
+
+            .contenido {
+                grid-template-columns: 1fr;
+            }
+
+            .contenedores {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .encabezado h1 {
+                font-size: 30px;
+            }
+
+            .barra {
+                justify-content: center;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+
+    <div class="barra">
+
+        <h3>🌱 EcoReto Escolar</h3>
+
+        <div class="curso">
+            7th Grade · Technical Evidence
+        </div>
+
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="contenedor">
+
+        <section class="encabezado">
+
+            <h1>♻️ EcoReto Escolar</h1>
+
+            <p>
+                Clasifica correctamente tus residuos y ayuda a cuidar el planeta 🌎
+            </p>
+
+        </section>
+
+
+        <section class="contenido">
+
+            <!-- FORMULARIO -->
+
+            <div class="tarjeta">
+
+                <h2>🔎 Clasificar residuo</h2>
+
+                <p>
+                    Selecciona el tipo de residuo que deseas clasificar.
+                </p>
+
+                <label for="residuo">
+                    Tipo de residuo:
+                </label>
+
+                <select id="residuo">
+
+                    <option value="">
+                        Seleccione una opción...
+                    </option>
+
+                    <option value="papel">
+                        📄 Papel y cartón
+                    </option>
+
+                    <option value="plastico">
+                        🧴 Plástico
+                    </option>
+
+                    <option value="vidrio">
+                        🍾 Vidrio
+                    </option>
+
+                    <option value="organico">
+                        🍎 Orgánico
+                    </option>
+
+                    <option value="metal">
+                        🥫 Metal
+                    </option>
+
+                </select>
+
+
+                <label for="cantidad">
+                    Cantidad de residuos:
+                </label>
+
+                <input
+                    type="number"
+                    id="cantidad"
+                    min="1"
+                    placeholder="Ejemplo: 5"
+                >
+
+
+                <div class="botones">
+
+                    <button
+                        class="btn-clasificar"
+                        id="btnClasificar">
+                        ♻️ Clasificar
+                    </button>
+
+                    <button
+                        class="btn-limpiar"
+                        id="btnLimpiar">
+                        🗑️ Limpiar
+                    </button>
+
+                </div>
+
+
+                <div id="resultado"></div>
+
+            </div>
+
+
+            <!-- INFORMACION -->
+
+            <div class="tarjeta">
+
+                <h2>🗑️ Contenedores</h2>
+
+                <p>
+                    Cada residuo debe depositarse en el contenedor
+                    correspondiente.
+                </p>
+
+
+                <div class="contenedores">
+
+                    <div class="contenedor-residuo azul">
+                        🔵<br>
+                        Papel
+                    </div>
+
+                    <div class="contenedor-residuo amarillo">
+                        🟡<br>
+                        Plástico
+                    </div>
+
+                    <div class="contenedor-residuo verde">
+                        🟢<br>
+                        Vidrio
+                    </div>
+
+                    <div class="contenedor-residuo marron">
+                        🟤<br>
+                        Orgánico
+                    </div>
+
+                    <div class="contenedor-residuo gris">
+                        ⚪<br>
+                        Metal
+                    </div>
+
+                </div>
+
+
+                <div class="estadisticas">
+
+                    <div class="estadistica">
+
+                        <strong id="total">
+                            0
+                        </strong>
+
+                        Residuos
+
+                    </div>
+
+
+                    <div class="estadistica">
+
+                        <strong id="clasificados">
+                            0
+                        </strong>
+
+                        Clasificados
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- REGISTRO -->
+
+        <section class="tarjeta registro">
+
+            <h2>📋 Registro de residuos</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Residuo
+                        </th>
+
+                        <th>
+                            Cantidad
+                        </th>
+
+                        <th>
+                            Contenedor
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaRegistro">
+
+                    <tr>
+
+                        <td colspan="3">
+                            No hay residuos registrados todavía.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        // Obtener elementos HTML
+
+        const residuo = document.getElementById("residuo");
+        const cantidad = document.getElementById("cantidad");
+        const resultado = document.getElementById("resultado");
+
+        const btnClasificar =
+            document.getElementById("btnClasificar");
+
+        const btnLimpiar =
+            document.getElementById("btnLimpiar");
+
+        const tablaRegistro =
+            document.getElementById("tablaRegistro");
+
+        const total =
+            document.getElementById("total");
+
+        const clasificados =
+            document.getElementById("clasificados");
+
+
+        // Variables
+
+        let totalResiduos = 0;
+        let totalClasificados = 0;
+
+
+        // EVENTO DEL BOTÓN CLASIFICAR
+
+        btnClasificar.addEventListener("click", clasificar);
+
+
+        function clasificar() {
+
+            let tipo = residuo.value;
+            let cantidadIngresada = Number(cantidad.value);
+
+            let mensaje = "";
+            let contenedor = "";
+
+
+            // VALIDACIÓN
+
+            if (tipo === "") {
+
+                resultado.innerHTML =
+                    "⚠️ Debes seleccionar un tipo de residuo.";
+
+                resultado.className = "error";
+
+                return;
+
+            }
+
+
+            if (cantidadIngresada <= 0 || isNaN(cantidadIngresada)) {
+
+                resultado.innerHTML =
+                    "⚠️ Debes ingresar una cantidad válida.";
+
+                resultado.className = "error";
+
+                return;
+
+            }
+
+
+            // CONDICIONALES
+
+            if (tipo === "papel") {
+
+                mensaje =
+                    "📄 El papel y cartón deben depositarse en el contenedor azul.";
+
+                contenedor = "🔵 Azul";
+
+            }
+
+            else if (tipo === "plastico") {
+
+                mensaje =
+                    "🧴 El plástico debe depositarse en el contenedor amarillo.";
+
+                contenedor = "🟡 Amarillo";
+
+            }
+
+            else if (tipo === "vidrio") {
+
+                mensaje =
+                    "🍾 El vidrio debe depositarse en el contenedor verde.";
+
+                contenedor = "🟢 Verde";
+
+            }
+
+            else if (tipo === "organico") {
+
+                mensaje =
+                    "🍎 Los residuos orgánicos deben depositarse en el contenedor marrón.";
+
+                contenedor = "🟤 Marrón";
+
+            }
+
+            else if (tipo === "metal") {
+
+                mensaje =
+                    "🥫 El metal debe depositarse en el contenedor gris.";
+
+                contenedor = "⚪ Gris";
+
+            }
+
+
+            // MOSTRAR RESULTADO
+
+            resultado.innerHTML =
+                "✅ " + mensaje;
+
+            resultado.className = "exito";
+
+
+            // ACTUALIZAR ESTADÍSTICAS
+
+            totalResiduos += cantidadIngresada;
+
+            totalClasificados++;
+
+
+            total.textContent =
+                totalResiduos;
+
+            clasificados.textContent =
+                totalClasificados;
+
+
+            // REGISTRAR EN TABLA
+
+            if (
+                tablaRegistro.children.length === 1 &&
+                tablaRegistro.children[0].children.length === 1
+            ) {
+
+                tablaRegistro.innerHTML = "";
+
+            }
+
+
+            let fila =
+                document.createElement("tr");
+
+
+            fila.innerHTML = `
+
+                <td>
+                    ${tipo.toUpperCase()}
+                </td>
+
+                <td>
+                    ${cantidadIngresada}
+                </td>
+
+                <td>
+                    ${contenedor}
+                </td>
+
+            `;
+
+
+            tablaRegistro.appendChild(fila);
+
+        }
+
+
+        // BOTÓN LIMPIAR
+
+        btnLimpiar.addEventListener("click", function () {
+
+            residuo.value = "";
+
+            cantidad.value = "";
+
+            resultado.innerHTML = "";
+
+            resultado.className = "";
+
+        });
+
+
+        // PERMITIR USAR ENTER
+
+        cantidad.addEventListener("keydown", function(event) {
+
+            if (event.key === "Enter") {
+
+                clasificar();
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>♻ WasteSort · Sistema Automatizado de Residuos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #eef2f7;
+            color: #0a1a2b;
+            padding: 28px 20px 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-bar {
+            width: 100%;
+            max-width: 1160px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #0f2a1e 0%, #1a3d2c 100%);
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(15, 42, 30, 0.25);
+        }
+
+        .top-bar .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .top-bar .brand .logo-icon {
+            font-size: 34px;
+            line-height: 1;
+        }
+
+        .top-bar .brand h1 {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .top-bar .brand h1 span {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 18px;
+            letter-spacing: 0px;
+        }
+
+        .top-bar .brand .badge-pro {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            padding: 4px 16px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #a7d4b8;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .top-bar .student-meta {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 18px 6px 22px;
+            border-radius: 100px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .top-bar .student-meta .name {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .top-bar .student-meta .name .highlight {
+            color: #b8e6cd;
+        }
+
+        .top-bar .student-meta .grade {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 14px;
+            border-radius: 100px;
+        }
+
+        .app-wrapper {
+            max-width: 1160px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 840px) {
+            .app-wrapper {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px 30px 32px;
+            box-shadow: 0 4px 24px rgba(0, 20, 30, 0.06), 0 1px 4px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: box-shadow 0.25s ease, transform 0.15s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 40px rgba(0, 20, 30, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #edf2f7;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #0a1a2b;
+        }
+
+        .card-header .badge {
+            background: #eef2ff;
+            color: #384b6d;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 100px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .card-header .badge-accent {
+            background: #dff0e7;
+            color: #1a4d34;
+        }
+
+        .sim-card {
+            background: #fafcff;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #eef2f7;
+        }
+
+        .sim-card label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f344a;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .sim-card select {
+            width: 100%;
+            padding: 15px 18px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #0a1a2b;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5l6 6 6-6' stroke='%236b7a93' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .sim-card select:focus {
+            outline: none;
+            border-color: #1f5c3e;
+            box-shadow: 0 0 0 5px rgba(31, 92, 62, 0.12);
+        }
+
+        .sim-card button {
+            width: 100%;
+            margin-top: 16px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1a4d34, #0f331f);
+            color: white;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.08s, box-shadow 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(26, 77, 52, 0.25);
+        }
+
+        .sim-card button:hover {
+            background: linear-gradient(135deg, #215f41, #123d27);
+            box-shadow: 0 6px 20px rgba(26, 77, 52, 0.35);
+        }
+
+        .sim-card button:active {
+            transform: scale(0.97);
+        }
+
+        .sim-card button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #estado {
+            margin-top: 22px;
+            padding: 22px 24px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #e9edf3;
+            min-height: 120px;
+            font-size: 15px;
+            line-height: 1.7;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        #estado .placeholder {
+            color: #8896a8;
+            font-weight: 400;
+        }
+
+        #estado .residuo-nombre {
+            font-weight: 700;
+            color: #0a1a2b;
+        }
+
+        #estado .tag {
+            display: inline-block;
+            padding: 3px 18px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .tag-reciclable {
+            background: #dbeafe;
+            color: #1a4a7a;
+        }
+        .tag-organico {
+            background: #d1fae5;
+            color: #0b5e3a;
+        }
+        .tag-peligroso {
+            background: #fce4e4;
+            color: #9b2c2c;
+        }
+        .tag-no-reciclable {
+            background: #f1f0f0;
+            color: #5a5a5a;
+        }
+
+        .estado-loading {
+            background: #f1f6fe !important;
+            border-color: #c8d9f0 !important;
+        }
+
+        .estado-success {
+            background: #f4faf7 !important;
+            border-color: #b8d9c9 !important;
+        }
+
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 4px 2px;
+            margin: 18px 0 4px;
+            padding: 16px 12px;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 1px solid #eef2f7;
+        }
+
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f344a;
+            flex: 1;
+            min-width: 48px;
+        }
+
+        .flow-step .icon {
+            font-size: 28px;
+            margin-bottom: 2px;
+        }
+
+        .flow-arrow {
+            color: #9aabbf;
+            font-size: 20px;
+            font-weight: 300;
+            flex-shrink: 0;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .test-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 14px 14px 12px;
+            border: 1px solid #edf2f7;
+            font-size: 13px;
+            transition: border-color 0.2s;
+        }
+
+        .test-item:hover {
+            border-color: #cbd5e1;
+        }
+
+        .test-item .label {
+            font-weight: 700;
+            color: #2c405a;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .test-item .result {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .pass {
+            color: #0f7b4a;
+        }
+        .fail {
+            color: #b13a3a;
+        }
+
+        .blueprint-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+            margin: 14px 0 6px;
+            font-size: 14px;
+        }
+
+        .blueprint-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blueprint-item .label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7e97;
+        }
+
+        .blueprint-item .value {
+            font-weight: 500;
+            color: #0a1a2b;
+            margin-top: 2px;
+        }
+
+        .blueprint-item .value small {
+            font-weight: 400;
+            color: #5f738d;
+        }
+
+        .blueprint-item .rule-box {
+            background: #f0f6fe;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-top: 4px;
+            font-size: 14px;
+            line-height: 1.7;
+            border-left: 4px solid #1f5c3e;
+            font-weight: 500;
+        }
+
+        .hr-light {
+            border: none;
+            border-top: 1px solid #edf2f7;
+            margin: 18px 0 16px;
+        }
+
+        .improve-box {
+            background: #f5f8fe;
+            border-radius: 12px;
+            padding: 18px 20px;
+            border-left: 5px solid #1f5c3e;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 10px;
+        }
+
+        .reflection-box {
+            background: #faf7f0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            border-left: 5px solid #b8953a;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 14px;
+        }
+
+        .chip {
+            display: inline-block;
+            background: #edf2f7;
+            padding: 3px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c405a;
+        }
+
+        .chip-green {
+            background: #dff0e7;
+            color: #1a4d34;
+        }
+
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            align-items: center;
+        }
+
+        .mt-1 {
+            margin-top: 6px;
+        }
+        .mt-2 {
+            margin-top: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 16px 18px;
+            }
+
+            .top-bar .brand {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .top-bar .brand h1 {
+                font-size: 24px;
+            }
+
+            .top-bar .student-meta {
+                justify-content: center;
+                padding: 6px 14px;
+                flex-wrap: wrap;
+            }
+
+            .top-bar .student-meta .name {
+                font-size: 17px;
+            }
+
+            .blueprint-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px 16px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="brand">
+            <span class="logo-icon">♻️</span>
+            <h1>
+                WasteSort
+                <span>· Simulador</span>
+            </h1>
+            <span class="badge-pro">v2.1 · Clasificación avanzada</span>
+        </div>
+        <div class="student-meta">
+            <span class="name">👤 <span class="highlight">Christopher</span></span>
+            <span class="grade">7° Grado · Ciclo 4</span>
+        </div>
+    </div>
+
+    <div class="app-wrapper">
+
+        <div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>⚙️ Simulación</h2>
+                    <span class="badge">Input → Lógica → Output</span>
+                </div>
+
+                <div class="sim-card">
+                    <label for="residuo">🧪 Selecciona un residuo para clasificar</label>
+                    <select id="residuo">
+                        <option value="">— Elegir material —</option>
+                        <option>Botella Plástica</option>
+                        <option>Cartón</option>
+                        <option>Vidrio</option>
+                        <option>Lata</option>
+                        <option>Restos de Comida</option>
+                        <option>Pilas</option>
+                        <option>Medicamentos</option>
+                        <option>Aceite usado</option>
+                        <option>Ropa / Textiles</option>
+                    </select>
+
+                    <button id="btnDetectar" onclick="detectar()">
+                        <span>▶</span> Iniciar sistema
+                    </button>
+
+                    <div id="estado">
+                        <span class="placeholder">🔎 Esperando residuo…</span>
+                    </div>
+                </div>
+
+                <div style="margin-top:18px;">
+                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#6b7e97;margin-bottom:6px;">
+                        📐 Ruta de ingeniería
+                    </div>
+                    <div class="flow">
+                        <div class="flow-step"><span class="icon">📥</span>Sensor</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step"><span class="icon">🧠</span>Lógica</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step"><span class="icon">⚡</span>Actuador</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step"><span class="icon">✅</span>Acción</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-header">
+                    <h2>📋 Pruebas de ingeniería</h2>
+                    <span class="badge badge-accent">5 escenarios</span>
+                </div>
+
+                <div class="test-grid">
+                    <div class="test-item">
+                        <span class="label">Test 01</span>
+                        <strong>Botella Plástica</strong>
+                        <div class="result"><span class="pass">✔</span> Reciclable → AZUL</div>
+                    </div>
+                    <div class="test-item">
+                        <span class="label">Test 02</span>
+                        <strong>Restos de Comida</strong>
+                        <div class="result"><span class="pass">✔</span> Orgánico → VERDE</div>
+                    </div>
+                    <div class="test-item">
+                        <span class="label">Test 03</span>
+                        <strong>Pilas</strong>
+                        <div class="result"><span class="pass">✔</span> Peligroso → ESPECIAL</div>
+                    </div>
+                    <div class="test-item">
+                        <span class="label">Test 04</span>
+                        <strong>Medicamentos</strong>
+                        <div class="result"><span class="pass">✔</span> Peligroso → ESPECIAL</div>
+                    </div>
+                    <div class="test-item">
+                        <span class="label">Test 05</span>
+                        <strong>Ropa / Textiles</strong>
+                        <div class="result"><span class="pass">✔</span> No reciclable → DONACIÓN</div>
+                    </div>
+                </div>
+                <div style="font-size:13px;color:#5f738d;margin-top:12px;text-align:center;background:#f0f6f0;padding:10px;border-radius:10px;font-weight:600;">
+                    ✅ 5/5 pruebas superadas · sistema validado
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>📐 Especificación técnica</h2>
+                    <span class="badge">Blueprint</span>
+                </div>
+
+                <div class="blueprint-grid">
+                    <div class="blueprint-item">
+                        <span class="label">Proyecto</span>
+                        <span class="value"><strong>WasteSort</strong> · Clasificador Automático</span>
+                    </div>
+                    <div class="blueprint-item">
+                        <span class="label">Problema</span>
+                        <span class="value">Residuos mal clasificados en el hogar</span>
+                    </div>
+                    <div class="blueprint-item">
+                        <span class="label">Sensor</span>
+                        <span class="value">Selección manual <small>(simula sensor óptico)</small></span>
+                    </div>
+                    <div class="blueprint-item">
+                        <span class="label">Detecta</span>
+                        <span class="value">Tipo de material (plástico, orgánico, peligroso, textil)</span>
+                    </div>
+                    <div class="blueprint-item" style="grid-column:1/-1;">
+                        <span class="label">Regla de decisión</span>
+                        <div class="rule-box">
+                            <strong>IF</strong> material ∈ {plástico, cartón, vidrio, lata} <strong>THEN</strong> ♻️ Reciclable → contenedor AZUL<br />
+                            <strong>ELSE IF</strong> material = "Restos de Comida" <strong>THEN</strong> 🌱 Orgánico → contenedor VERDE<br />
+                            <strong>ELSE IF</strong> material ∈ {Pilas, Medicamentos, Aceite usado} <strong>THEN</strong> ⚠️ Peligroso → contenedor ESPECIAL<br />
+                            <strong>ELSE</strong> 🧵 No reciclable → donación / contenedor TEXTIL
+                        </div>
+                    </div>
+                    <div class="blueprint-item">
+                        <span class="label">Actuador</span>
+                        <span class="value">Brazo robótico + indicador visual</span>
+                    </div>
+                    <div class="blueprint-item">
+                        <span class="label">Estado normal</span>
+                        <span class="value">🟢 En espera</span>
+                    </div>
+                    <div class="blueprint-item">
+                        <span class="label">Estado alerta</span>
+                        <span class="value">🔴 Peligroso → protocolo especial</span>
+                    </div>
+                </div>
+
+                <hr class="hr-light" />
+
+                <div class="flex-wrap">
+                    <span><span style="font-weight:700;">Simulador:</span> Wokwi · Tinkercad</span>
+                    <span class="chip">IF / THEN / ELSE</span>
+                    <span class="chip chip-green">Sensor + Actuador</span>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div class="card-header">
+                    <h2>🔄 Iteración &amp; reflexión</h2>
+                    <span class="badge badge-accent">Post‑simulación</span>
+                </div>
+
+                <div class="improve-box">
+                    <strong>📌 Mejora tras revisión de pares:</strong><br />
+                    Se amplió la <strong>clasificación de residuos</strong> para incluir <strong>materiales no reciclables</strong> 
+                    como ropa/textiles y aceite usado. Ahora el sistema distingue entre <strong>4 categorías</strong>: 
+                    reciclable, orgánico, peligroso y no reciclable. Cada una tiene un <strong>contenedor específico</strong> 
+                    y una acción clara (reciclar, compostar, desechar seguro, donar).
+                </div>
+
+                <div class="reflection-box">
+                    <strong>💭 Reflexión:</strong><br />
+                    La simulación permitió <strong>validar la lógica de clasificación</strong> con <strong>9 materiales diferentes</strong>, 
+                    incluyendo aquellos que no son reciclables. Esto mejoró la <strong>precisión del sistema</strong> y 
+                    enseñó que <strong>no todos los residuos van al mismo lugar</strong>. El feedback visual (color, íconos, 
+                    mensajes) ayuda a que el sistema sea comprensible para cualquier usuario, cumpliendo el objetivo de 
+                    <em>“simular antes de construir”</em>.
+                </div>
+
+                <div style="margin-top:16px;font-size:13px;color:#5f738d;background:#f8fafc;padding:12px 18px;border-radius:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border:1px solid #edf2f7;">
+                    <span>📎 <strong>Evidencia:</strong> simulación funcional · 5 tests OK · diagrama incluido</span>
+                    <span class="chip chip-green">✅ Listo para construir</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const estadoEl = document.getElementById('estado');
+        const btn = document.getElementById('btnDetectar');
+        const select = document.getElementById('residuo');
+
+        function detectar() {
+            const r = select.value;
+
+            if (r === '') {
+                estadoEl.innerHTML = `<span style="color:#b13a3a;font-weight:600;">⚠️ Selecciona un residuo antes de iniciar.</span>`;
+                estadoEl.className = '';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Procesando…';
+
+            estadoEl.className = 'estado-loading';
+            estadoEl.innerHTML = `
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <span style="font-size:32px;">🔍</span>
+                    <span style="font-weight:500;">Analizando <strong>${r}</strong>…</span>
+                </div>
+            `;
+
+            setTimeout(() => {
+                let html = '';
+                let tagClass = '';
+                let icon = '';
+                let container = '';
+                let action = '';
+
+                const reciclables = ['Botella Plástica', 'Cartón', 'Vidrio', 'Lata'];
+                const peligrosos = ['Pilas', 'Medicamentos', 'Aceite usado'];
+
+                if (reciclables.includes(r)) {
+                    tagClass = 'tag-reciclable';
+                    icon = '♻️';
+                    container = '🟦 Contenedor AZUL';
+                    action = '🤖 Brazo automático activado';
+                    html = `
+                        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                            <span style="font-size:36px;">${icon}</span>
+                            <div>
+                                <div style="font-weight:700;font-size:18px;">Residuo: <span class="residuo-nombre">${r}</span></div>
+                                <span class="tag ${tagClass}">♻️ Reciclable</span>
+                                <div style="margin-top:6px;color:#1a4d34;font-weight:500;">${action}</div>
+                                <div style="font-weight:700;background:#dbeafe;padding:4px 18px;border-radius:100px;display:inline-block;margin-top:4px;font-size:14px;">${container}</div>
+                            </div>
+                        </div>
+                    `;
+                } else if (r === 'Restos de Comida') {
+                    tagClass = 'tag-organico';
+                    icon = '🌱';
+                    container = '🟩 Contenedor VERDE';
+                    action = '🤖 Brazo automático activado';
+                    html = `
+                        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                            <span style="font-size:36px;">${icon}</span>
+                            <div>
+                                <div style="font-weight:700;font-size:18px;">Residuo: <span class="residuo-nombre">${r}</span></div>
+                                <span class="tag ${tagClass}">🌱 Orgánico</span>
+                                <div style="margin-top:6px;color:#1a4d34;font-weight:500;">${action}</div>
+                                <div style="font-weight:700;background:#d1fae5;padding:4px 18px;border-radius:100px;display:inline-block;margin-top:4px;font-size:14px;">${container}</div>
+                            </div>
+                        </div>
+                    `;
+                } else if (peligrosos.includes(r)) {
+                    tagClass = 'tag-peligroso';
+                    icon = '⚠️';
+                    container = '🟥 Contenedor ESPECIAL';
+                    action = '🛡️ Sistema de seguridad activado';
+                    html = `
+                        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                            <span style="font-size:36px;">${icon}</span>
+                            <div>
+                                <div style="font-weight:700;font-size:18px;">Residuo: <span class="residuo-nombre">${r}</span></div>
+                                <span class="tag ${tagClass}">⚠️ Peligroso</span>
+                                <div style="margin-top:6px;color:#9b2c2c;font-weight:500;">${action}</div>
+                                <div style="font-weight:700;background:#fce4e4;padding:4px 18px;border-radius:100px;display:inline-block;margin-top:4px;font-size:14px;">${container}</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // No reciclable: Ropa / Textiles, etc.
+                    tagClass = 'tag-no-reciclable';
+                    icon = '🧵';
+                    container = '🟫 Contenedor GRIS / Donación';
+                    action = '📦 Sistema de reutilización activado';
+                    html = `
+                        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                            <span style="font-size:36px;">${icon}</span>
+                            <div>
+                                <div style="font-weight:700;font-size:18px;">Residuo: <span class="residuo-nombre">${r}</span></div>
+                                <span class="tag ${tagClass}">🧵 No reciclable</span>
+                                <div style="margin-top:6px;color:#5a5a5a;font-weight:500;">${action}</div>
+                                <div style="font-weight:700;background:#f1f0f0;padding:4px 18px;border-radius:100px;display:inline-block;margin-top:4px;font-size:14px;">${container}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                estadoEl.innerHTML = html;
+                estadoEl.className = 'estado-success';
+
+                btn.disabled = false;
+                btn.innerHTML = '<span>▶</span> Iniciar sistema';
+
+            }, 2000);
+        }
+
+        select.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') detectar();
+        });
+    </script>
+
+</body>
+</html>

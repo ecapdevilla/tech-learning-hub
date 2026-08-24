@@ -2,6 +2,38 @@ import type { LessonSummary } from "@/modules/lessons/types/lesson";
 
 export const lessons: LessonSummary[] = [
   {
+    id: "grade-06-updated-class-sequences",
+    grade: 6,
+    cycle: 5,
+    title: {
+      en: "Updated Class Sequences",
+      es: "Secuencias de Clase Actualizadas",
+    },
+    objective: {
+      en: "Review recent Code Creators projects and classroom evidence before completing Cycle 5.",
+      es: "Revisar proyectos recientes de Code Creators y evidencias de clase antes de completar el Ciclo 5.",
+    },
+    durationMinutes: 15,
+    guidePath: "/guides/grade-06/updated-class-sequences.html",
+    tags: ["Updated Class Sequences", "Projects", "Evidence", "Grade 6"],
+  },
+  {
+    id: "grade-07-updated-class-sequences",
+    grade: 7,
+    cycle: 5,
+    title: {
+      en: "Updated Class Sequences",
+      es: "Secuencias de Clase Actualizadas",
+    },
+    objective: {
+      en: "Review recent automation and interactive projects before completing Cycle 5.",
+      es: "Revisar proyectos recientes de automatización e interacción antes de completar el Ciclo 5.",
+    },
+    durationMinutes: 15,
+    guidePath: "/guides/grade-07/updated-class-sequences.html",
+    tags: ["Updated Class Sequences", "Automation", "Projects", "Evidence", "Grade 7"],
+  },
+  {
     id: "grade-02-algorithm-adventure",
     grade: 2,
     cycle: 5,

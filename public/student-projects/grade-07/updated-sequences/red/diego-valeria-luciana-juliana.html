@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>AutoLab · Aprendizaje de sistemas automatizados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, Roboto, sans-serif;
+        }
+        body {
+            background: #0b1a2b;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .game-container {
+            max-width: 1300px;
+            width: 100%;
+            background: #f0f7fe;
+            border-radius: 40px;
+            padding: 20px 24px 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transition: all 0.2s;
+        }
+
+        /* header */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .game-title {
+            font-weight: 700;
+            font-size: 1.7rem;
+            background: linear-gradient(145deg, #004a7c, #0077be);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .badge-rank {
+            background: #1e2f4b;
+            padding: 8px 18px;
+            border-radius: 60px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .badge-rank span {
+            background: #f5b042;
+            padding: 0 12px;
+            border-radius: 40px;
+            color: #1e2f4b;
+        }
+        .score-box {
+            background: #1e2f4b;
+            padding: 6px 18px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* pantallas */
+        .screen {
+            display: none;
+            animation: fade 0.3s ease;
+        }
+        .screen.active {
+            display: block;
+        }
+        @keyframes fade { 0% { opacity:0.4; } 100% { opacity:1; } }
+
+        /* cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 18px;
+            margin: 20px 0;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 20px 12px;
+            box-shadow: 0 6px 14px rgba(0, 20, 40, 0.08);
+            text-align: center;
+            transition: 0.2s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #0077be;
+        }
+        .card .icon {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+        }
+        .card h4 {
+            font-weight: 600;
+            color: #0a2942;
+        }
+        .card p {
+            font-size: 0.8rem;
+            color: #2c4a6a;
+        }
+        .tag {
+            background: #e6eff9;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #004a7c;
+        }
+
+        /* laboratorio */
+        .lab-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: #dce9f5;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 18px 0;
+            min-height: 160px;
+            align-items: center;
+            border: 2px dashed #3d6e9b;
+        }
+        .chip {
+            background: white;
+            border-radius: 60px;
+            padding: 10px 22px;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 6px solid #0077be;
+        }
+        .chip.actuator { border-left-color: #e67e22; }
+        .chip.sensor { border-left-color: #2e86c1; }
+        .chip.process { border-left-color: #8e44ad; }
+
+        .rule-editor {
+            background: #edf4fa;
+            padding: 20px;
+            border-radius: 28px;
+            margin: 18px 0;
+        }
+        .rule-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 14px 20px;
+            border-radius: 60px;
+            margin: 10px 0;
+        }
+        .rule-line select {
+            padding: 8px 14px;
+            border-radius: 40px;
+            border: 1px solid #b8d0e5;
+            background: white;
+            font-weight: 500;
+        }
+
+        .simu-box {
+            background: #132c44;
+            border-radius: 28px;
+            padding: 20px;
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .simu-indicator {
+            padding: 8px 30px;
+            border-radius: 60px;
+            font-weight: 700;
+        }
+        .normal { background: #27ae60; }
+        .alerta { background: #e74c3c; }
+
+        .test-table {
+            background: white;
+            border-radius: 24px;
+            padding: 12px;
+            overflow-x: auto;
+        }
+        .test-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .test-table th, .test-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #d6e4f0;
+            text-align: center;
+        }
+
+        .btn {
+            background: #006c9e;
+            border: none;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 80px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .btn:hover { background: #004a7c; transform: scale(1.02); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #006c9e;
+            color: #006c9e;
+        }
+        .btn-success { background: #1f8b4c; }
+        .flex { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        /* colores */
+        .color-sensor { border-left: 8px solid #2e86c1; }
+        .color-proc { border-left: 8px solid #8e44ad; }
+        .color-decision { border-left: 8px solid #f1c40f; }
+        .color-actuator { border-left: 8px solid #e67e22; }
+
+        .feedback-msg {
+            background: #fff8e1;
+            padding: 16px 22px;
+            border-radius: 20px;
+            border-left: 8px solid #f39c12;
+            margin: 16px 0;
+        }
+
+        @media (max-width: 600px) {
+            .game-container { padding: 16px; }
+            .top-bar { flex-direction: column; align-items: start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container" id="app">
+    <!-- barra superior -->
+    <div class="top-bar">
+        <div class="game-title">⚙️ AutoLab · ODS 6</div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <div class="score-box">🏆 <span id="puntuacionDisplay">0</span></div>
+            <div class="badge-rank">Rango <span id="rangoDisplay">APRENDIZ</span></div>
+        </div>
+    </div>
+
+    <!-- ========== PANTALLA INICIO ========== -->
+    <div id="pantallaInicio" class="screen active">
+        <div style="text-align: center; padding: 30px 10px;">
+            <h1 style="font-size: 3rem;">🧪 Ingeniería de Sistemas</h1>
+            <p style="font-size: 1.2rem; max-width: 500px; margin: 20px auto; color: #1e3a5a;">Diseña, conecta, simula y mejora sistemas automatizados. Aprende el proceso de ingeniería.</p>
+            <button class="btn" onclick="mostrarPantalla('pantallaMisiones')">🚀 Comenzar misión</button>
+        </div>
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+            <span style="background: #2e86c1; padding: 6px 16px; border-radius: 60px; color:white;">Sensor</span>
+            <span style="background: #8e44ad; padding: 6px 16px; border-radius: 60px; color:white;">Procesamiento</span>
+            <span style="background: #f1c40f; padding: 6px 16px; border-radius: 60px;">Decisión</span>
+            <span style="background: #e67e22; padding: 6px 16px; border-radius: 60px; color:white;">Actuador</span>
+        </div>
+    </div>
+
+    <!-- ========== PANTALLA MISIONES ========== -->
+    <div id="pantallaMisiones" class="screen">
+        <h2>🎯 Selecciona un problema real</h2>
+        <div class="card-grid" id="misionesGrid"></div>
+        <button class="btn btn-outline" onclick="mostrarPantalla('pantallaInicio')">← Volver</button>
+    </div>
+
+    <!-- ========== PANTALLA LABORATORIO ========== -->
+    <div id="pantallaLab" class="screen">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <h2>🧰 Laboratorio · <span id="misionNombreLab">Tanque de agua</span></h2>
+            <button class="btn btn-outline" onclick="mostrarPantalla('pantallaMisiones')">✕ Cambiar misión</button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0;">
+            <div class="chip sensor">📡 Sensor: <span id="sensorSeleccionado">Ninguno</span></div>
+            <div class="chip process">⚙️ Procesador: Arduino</div>
+            <div class="chip actuator">🔧 Actuador: <span id="actuadorSeleccionado">Ninguno</span></div>
+        </div>
+        <div class="lab-area" id="areaConstruccion">
+            <span style="color:#1e4b6e;">🔌 Arrastra los componentes para construir</span>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn" onclick="agregarComponente('sensor')">➕ Sensor</button>
+            <button class="btn" onclick="agregarComponente('actuador')">➕ Actuador</button>
+            <button class="btn btn-success" onclick="siguienteProgramacion()">✏️ Programar regla →</button>
+        </div>
+        <div style="margin-top: 14px;" id="feedbackConstruccion" class="feedback-msg" style="display:none;"></div>
+    </div>
+
+    <!-- ========== PANTALLA PROGRAMACION ========== -->
+    <div id="pantallaProgramacion" class="screen">
+        <h2>📐 Regla SI / ENTONCES</h2>
+        <div class="rule-editor">
+            <div class="rule-line">
+                <span style="font-weight:700;">SI</span>
+                <select id="condicionSensor">
+                    <option value="nivel">Nivel de agua</option>
+                    <option value="movimiento">Movimiento</option>
+                    <option value="luz">Luz ambiental</option>
+                    <option value="temperatura">Temperatura</option>
+                    <option value="humedad">Humedad suelo</option>
+                </select>
+                <select id="operadorCond">
+                    <option value="<">&lt; (menor que)</option>
+                    <option value=">">> (mayor que)</option>
+                    <option value="==">= = (igual)</option>
+                </select>
+                <input type="number" id="valorUmbral" value="30" style="width:80px; padding:6px; border-radius:40px; border:1px solid #b0c8dd;">
+                <span style="font-weight:700;">ENTONCES</span>
+                <select id="accionActuador">
+                    <option value="bomba">Activar bomba</option>
+                    <option value="alarma">Activar alarma</option>
+                    <option value="ventilador">Encender ventilador</option>
+                    <option value="riego">Activar riego</option>
+                    <option value="led">Encender LED</option>
+                </select>
+            </div>
+            <button class="btn" onclick="guardarRegla()">💾 Guardar regla</button>
+            <div id="reglaGuardadaMsg" style="margin-top:10px; font-weight:500;"></div>
+        </div>
+        <button class="btn btn-success" onclick="siguienteSimulacion()">▶️ Ir a simulación</button>
+        <button class="btn btn-outline" onclick="mostrarPantalla('pantallaLab')">← Volver</button>
+    </div>
+
+    <!-- ========== PANTALLA SIMULACION ========== -->
+    <div id="pantallaSimulacion" class="screen">
+        <h2>📡 Simulación</h2>
+        <div class="simu-box">
+            <div>
+                <label style="font-weight:300;">Valor sensor: <span id="valorSensorSimu">25</span></label>
+                <input type="range" id="simuladorSlider" min="0" max="100" value="25" oninput="actualizarSimulacion()" style="width:160px;">
+            </div>
+            <div class="simu-indicator normal" id="indicadorEstado">🟢 NORMAL</div>
+            <div style="background:#1e3a5a; padding:8px 20px; border-radius:60px;">
+                Actuador: <span id="estadoActuadorSimu">⏸️ apagado</span>
+            </div>
+        </div>
+        <div style="margin: 16px 0; background: #e9f0f8; padding: 16px; border-radius: 30px;">
+            <p><strong>Condición:</strong> <span id="reglaMostrada">SI nivel < 30 → activar bomba</span></p>
+        </div>
+        <button class="btn btn-success" onclick="siguientePruebas()">🧪 Ir a pruebas</button>
+        <button class="btn btn-outline" onclick="mostrarPantalla('pantallaProgramacion')">← Regla</button>
+    </div>
+
+    <!-- ========== PANTALLA PRUEBAS ========== -->
+    <div id="pantallaPruebas" class="screen">
+        <h2>✅ Pruebas obligatorias</h2>
+        <div class="test-table">
+            <table>
+                <thead><tr><th>Prueba</th><th>Entrada</th><th>Esperado</th><th>Real</th><th>Resultado</th></tr></thead>
+                <tbody id="tablaPruebas"></tbody>
+            </table>
+        </div>
+        <div id="resultadoPruebas" style="margin:12px 0; font-weight:700;"></div>
+        <button class="btn" onclick="ejecutarPruebas()">🔄 Ejecutar pruebas</button>
+        <button class="btn btn-success" onclick="siguienteMejora()">📈 Mejora y revisión</button>
+        <button class="btn btn-outline" onclick="mostrarPantalla('pantallaSimulacion')">← Simulación</button>
+    </div>
+
+    <!-- ========== PANTALLA MEJORA ========== -->
+    <div id="pantallaMejora" class="screen">
+        <h2>👥 Revisión por pares</h2>
+        <div id="comentariosPares" class="feedback-msg" style="background:#eaf4e8;">
+            <p>✏️ "Sería mejor agregar una alerta visual."</p>
+            <p>🔧 "El sistema debería responder cuando el nivel llegue al 20%, no al 30%."</p>
+            <p>📊 "Falta una prueba para comprobar el valor límite."</p>
+        </div>
+        <div style="margin:16px 0;">
+            <label>Selecciona una mejora para aplicar:</label>
+            <select id="mejoraSelect" style="padding:10px; border-radius:40px; width:100%; max-width:300px;">
+                <option value="alertaVisual">Agregar alerta visual (LED)</option>
+                <option value="ajusteUmbral">Cambiar umbral a 20%</option>
+                <option value="pruebaLimite">Agregar prueba de límite</option>
+            </select>
+            <button class="btn" onclick="aplicarMejora()" style="margin-top:10px;">🔧 Aplicar mejora</button>
+        </div>
+        <button class="btn btn-success" onclick="siguienteInforme()">📄 Ver informe final</button>
+        <button class="btn btn-outline" onclick="mostrarPantalla('pantallaPruebas')">← Pruebas</button>
+    </div>
+
+    <!-- ========== PANTALLA INFORME ========== -->
+    <div id="pantallaInforme" class="screen">
+        <h2>📋 Informe final del proyecto</h2>
+        <div style="background:white; border-radius:30px; padding:20px;" id="informeContenido"></div>
+        <div style="margin:20px 0;">
+            <label>✍️ Reflexión: ¿Cómo ayudó la simulación a mejorar el diseño?</label>
+            <textarea id="reflexionInput" rows="3" style="width:100%; border-radius:20px; padding:12px; border:1px solid #b8d0e5;"></textarea>
+            <button class="btn" onclick="guardarReflexion()">💾 Guardar reflexión</button>
+        </div>
+        <button class="btn btn-outline" onclick="mostrarPantalla('pantallaMejora')">← Mejora</button>
+        <button class="btn" onclick="reiniciarJuego()">🔄 Nueva misión</button>
+    </div>
+</div>
+
+<script>
+    // ----- ESTADO GLOBAL -----
+    const estado = {
+        misionActual: null,
+        puntuacion: 0,
+        rango: 'APRENDIZ',
+        sensorSeleccionado: null,
+        actuadorSeleccionado: null,
+        regla: { condicion: 'nivel', operador: '<', umbral: 30, accion: 'bomba' },
+        pruebasSuperadas: 0,
+        mejorasAplicadas: [],
+        historialPruebas: [],
+        misiones: [
+            { id: 'tanque', nombre: 'Tanque de agua', desc: 'Detectar nivel bajo y activar bomba', dificultad: 'Fácil', sensor: 'nivel', actuador: 'bomba' },
+            { id: 'seguridad', nombre: 'Seguridad', desc: 'Detectar movimiento y activar alarma', dificultad: 'Media', sensor: 'movimiento', actuador: 'alarma' },
+            { id: 'iluminacion', nombre: 'Iluminación inteligente', desc: 'Detectar poca luz y encender lámpara', dificultad: 'Media', sensor: 'luz', actuador: 'led' },
+            { id: 'temperatura', nombre: 'Temperatura', desc: 'Detectar calor y encender ventilador', dificultad: 'Media', sensor: 'temperatura', actuador: 'ventilador' },
+            { id: 'riego', nombre: 'Riego automático', desc: 'Detectar suelo seco y activar riego', dificultad: 'Difícil', sensor: 'humedad', actuador: 'riego' }
+        ],
+        componentesConstruidos: [],
+        pruebasEjecutadas: false,
+        // para simulación
+        valorSensorActual: 25,
+    };
+
+    // ----- FUNCIONES DE PANTALLA -----
+    function mostrarPantalla(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (id === 'pantallaMisiones') renderMisiones();
+        if (id === 'pantallaLab') actualizarLab();
+        if (id === 'pantallaProgramacion') mostrarReglaActual();
+        if (id === 'pantallaSimulacion') actualizarSimulacion();
+        if (id === 'pantallaPruebas') renderTablaPruebas();
+        if (id === 'pantallaInforme') generarInforme();
+        actualizarPuntuacion();
+    }
+
+    function actualizarPuntuacion() {
+        document.getElementById('puntuacionDisplay').innerText = estado.puntuacion;
+        let rango = 'APRENDIZ';
+        if (estado.puntuacion >= 50) rango = 'DISEÑADOR';
+        if (estado.puntuacion >= 100) rango = 'INGENIERO';
+        if (estado.puntuacion >= 180) rango = 'INGENIERO EXPERTO';
+        estado.rango = rango;
+        document.getElementById('rangoDisplay').innerText = rango;
+    }
+
+    // ----- MISIONES -----
+    function renderMisiones() {
+        const grid = document.getElementById('misionesGrid');
+        grid.innerHTML = '';
+        estado.misiones.forEach(m => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="icon">${m.id==='tanque'?'💧':m.id==='seguridad'?'🚨':m.id==='iluminacion'?'💡':m.id==='temperatura'?'🌡️':'🌱'}</div>
+                <h4>${m.nombre}</h4>
+                <p>${m.desc}</p>
+                <span class="tag">${m.dificultad}</span>
+            `;
+            card.onclick = () => seleccionarMision(m.id);
+            grid.appendChild(card);
+        });
+    }
+
+    function seleccionarMision(id) {
+        const mision = estado.misiones.find(m => m.id === id);
+        if (!mision) return;
+        estado.misionActual = mision;
+        estado.sensorSeleccionado = mision.sensor;
+        estado.actuadorSeleccionado = mision.actuador;
+        estado.componentesConstruidos = [mision.sensor, mision.actuador];
+        estado.pruebasSuperadas = 0;
+        estado.historialPruebas = [];
+        estado.mejorasAplicadas = [];
+        estado.regla = { condicion: mision.sensor, operador: '<', umbral: 30, accion: mision.actuador };
+        estado.valorSensorActual = 25;
+        mostrarPantalla('pantallaLab');
+    }
+
+    // ----- LABORATORIO -----
+    function actualizarLab() {
+        if (!estado.misionActual) return;
+        document.getElementById('misionNombreLab').innerText = estado.misionActual.nombre;
+        const sensorN = estado.sensorSeleccionado || 'Ninguno';
+        const actuadorN = estado.actuadorSeleccionado || 'Ninguno';
+        document.getElementById('sensorSeleccionado').innerText = sensorN;
+        document.getElementById('actuadorSeleccionado').innerText = actuadorN;
+        const area = document.getElementById('areaConstruccion');
+        area.innerHTML = '';
+        estado.componentesConstruidos.forEach(c => {
+            const chip = document.createElement('span');
+            chip.className = 'chip';
+            chip.style.margin = '4px';
+            chip.innerText = c;
+            if (c === estado.sensorSeleccionado) chip.classList.add('sensor');
+            if (c === estado.actuadorSeleccionado) chip.classList.add('actuator');
+            area.appendChild(chip);
+        });
+        if (estado.componentesConstruidos.length === 0) {
+            area.innerHTML = '<span style="color:#1e4b6e;">🔌 Arrastra los componentes para construir</span>';
+        }
+        document.getElementById('feedbackConstruccion').style.display = 'none';
+    }
+
+    function agregarComponente(tipo) {
+        if (!estado.misionActual) return alert('Selecciona una misión primero');
+        const lista = tipo === 'sensor' ? ['nivel','movimiento','luz','temperatura','humedad'] : ['bomba','alarma','ventilador','riego','led'];
+        const nombres = { 'nivel':'Nivel agua', 'movimiento':'Movimiento', 'luz':'Luz', 'temperatura':'Temperatura', 'humedad':'Humedad',
+                          'bomba':'Bomba', 'alarma':'Alarma', 'ventilador':'Ventilador', 'riego':'Riego', 'led':'LED' };
+        const sugerido = tipo === 'sensor' ? estado.misionActual.sensor : estado.misionActual.actuador;
+        const comp = prompt(`Selecciona un ${tipo} (sugerido: ${nombres[sugerido] || sugerido})`, sugerido);
+        if (!comp) return;
+        const valido = lista.includes(comp);
+        if (!valido) {
+            document.getElementById('feedbackConstruccion').style.display = 'block';
+            document.getElementById('feedbackConstruccion').innerHTML = `⚠️ "${comp}" no es un ${tipo} válido. Prueba con: ${lista.join(', ')}`;
+            return;
+        }
+        if (tipo === 'sensor') estado.sensorSeleccionado = comp;
+        else estado.actuadorSeleccionado = comp;
+        if (!estado.componentesConstruidos.includes(comp)) estado.componentesConstruidos.push(comp);
+        estado.puntuacion += 3;
+        actualizarLab();
+        actualizarPuntuacion();
+    }
+
+    // ----- PROGRAMACION -----
+    function mostrarReglaActual() {
+        const r = estado.regla;
+        document.getElementById('condicionSensor').value = r.condicion || 'nivel';
+        document.getElementById('operadorCond').value = r.operador || '<';
+        document.getElementById('valorUmbral').value = r.umbral || 30;
+        document.getElementById('accionActuador').value = r.accion || 'bomba';
+        document.getElementById('reglaGuardadaMsg').innerText = '';
+    }
+
+    function guardarRegla() {
+        const cond = document.getElementById('condicionSensor').value;
+        const op = document.getElementById('operadorCond').value;
+        const umbral = parseInt(document.getElementById('valorUmbral').value);
+        const accion = document.getElementById('accionActuador').value;
+        if (isNaN(umbral) || umbral < 0) return alert('Umbral inválido');
+        estado.regla = { condicion: cond, operador: op, umbral: umbral, accion: accion };
+        document.getElementById('reglaGuardadaMsg').innerHTML = '✅ Regla guardada: SI ' + cond + ' ' + op + ' ' + umbral + ' → ' + accion;
+        estado.puntuacion += 5;
+        actualizarPuntuacion();
+    }
+
+    function siguienteProgramacion() {
+        if (!estado.sensorSeleccionado || !estado.actuadorSeleccionado) {
+            alert('Selecciona al menos un sensor y un actuador en el laboratorio');
+            return;
+        }
+        mostrarPantalla('pantallaProgramacion');
+    }
+
+    // ----- SIMULACION -----
+    function actualizarSimulacion() {
+        const slider = document.getElementById('simuladorSlider');
+        const val = parseInt(slider.value);
+        estado.valorSensorActual = val;
+        document.getElementById('valorSensorSimu').innerText = val;
+        const regla = estado.regla;
+        const cond = regla.condicion;
+        const op = regla.operador;
+        const umbral = regla.umbral;
+        let condicionActiva = false;
+        if (op === '<') condicionActiva = val < umbral;
+        else if (op === '>') condicionActiva = val > umbral;
+        else if (op === '==') condicionActiva = val === umbral;
+        const actuadorEncendido = condicionActiva;
+        const estadoActuador = actuadorEncendido ? '🔴 encendido' : '⏸️ apagado';
+        document.getElementById('estadoActuadorSimu').innerHTML = estadoActuador;
+        const indicador = document.getElementById('indicadorEstado');
+        if (actuadorEncendido) {
+            indicador.className = 'simu-indicator alerta';
+            indicador.innerHTML = '🔴 ALERTA';
+        } else {
+            indicador.className = 'simu-indicator normal';
+            indicador.innerHTML = '🟢 NORMAL';
+        }
+        const nombreAccion = { 'bomba':'bomba', 'alarma':'alarma', 'ventilador':'ventilador', 'riego':'riego', 'led':'LED' };
+        document.getElementById('reglaMostrada').innerHTML = `SI ${cond} ${op} ${umbral} → activar ${nombreAccion[regla.accion] || regla.accion}`;
+    }
+
+    function siguienteSimulacion() {
+        if (!estado.regla) return alert('Guarda una regla primero');
+        mostrarPantalla('pantallaSimulacion');
+        actualizarSimulacion();
+    }
+
+    // ----- PRUEBAS -----
+    function renderTablaPruebas() {
+        const tbody = document.getElementById('tablaPruebas');
+        tbody.innerHTML = '';
+        const escenarios = [
+            { valor: 15, esperado: 'Encendido' },
+            { valor: 45, esperado: 'Apagado' },
+            { valor: 30, esperado: 'Depende' }
+        ];
+        estado.historialPruebas = escenarios.map((e, idx) => {
+            const regla = estado.regla;
+            const val = e.valor;
+            const op = regla.operador;
+            const umbral = regla.umbral;
+            let activo = false;
+            if (op === '<') activo = val < umbral;
+            else if (op === '>') activo = val > umbral;
+            else if (op === '==') activo = val === umbral;
+            const real = activo ? 'Encendido' : 'Apagado';
+            const ok = real === e.esperado;
+            return { ...e, real, ok };
+        });
+        estado.historialPruebas.forEach((p, i) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${i+1}</td>
+                <td>${p.valor}</td>
+                <td>${p.esperado}</td>
+                <td>${p.real}</td>
+                <td>${p.ok ? '✅ APROBADO' : '❌ REPROBADO'}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        const totalOk = estado.historialPruebas.filter(p => p.ok).length;
+        document.getElementById('resultadoPruebas').innerHTML = `Pruebas superadas: ${totalOk}/3`;
+        if (totalOk === 3) {
+            estado.puntuacion += 15;
+            actualizarPuntuacion();
+        }
+    }
+
+    function ejecutarPruebas() {
+        renderTablaPruebas();
+    }
+
+    function siguientePruebas() {
+        mostrarPantalla('pantallaPruebas');
+        renderTablaPruebas();
+    }
+
+    // ----- MEJORA -----
+    function siguienteMejora() {
+        const ok = estado.historialPruebas.filter(p => p.ok).length;
+        if (ok < 3) {
+            alert('Debes superar las 3 pruebas antes de pasar a la mejora');
+            return;
+        }
+        mostrarPantalla('pantallaMejora');
+    }
+
+    function aplicarMejora() {
+        const mejora = document.getElementById('mejoraSelect').value;
+        if (estado.mejorasAplicadas.includes(mejora)) return alert('Ya aplicaste esta mejora');
+        estado.mejorasAplicadas.push(mejora);
+        estado.puntuacion += 10;
+        if (mejora === 'ajusteUmbral') {
+            estado.regla.umbral = 20;
+            document.getElementById('comentariosPares').innerHTML += `<p>✅ Umbral ajustado a 20%</p>`;
+        } else if (mejora === 'alertaVisual') {
+            document.getElementById('comentariosPares').innerHTML += `<p>✅ Alerta visual (LED) agregada</p>`;
+        } else {
+            document.getElementById('comentariosPares').innerHTML += `<p>✅ Prueba de límite añadida</p>`;
+        }
+        actualizarPuntuacion();
+    }
+
+    // ----- INFORME -----
+    function generarInforme() {
+        const m = estado.misionActual;
+        if (!m) return;
+        const cont = document.getElementById('informeContenido');
+        const regla = estado.regla;
+        const nombreAccion = { 'bomba':'Bomba', 'alarma':'Alarma', 'ventilador':'Ventilador', 'riego':'Riego', 'led':'LED' };
+        cont.innerHTML = `
+            <p><strong>Proyecto:</strong> ${m.nombre}</p>
+            <p><strong>Problema:</strong> ${m.desc}</p>
+            <p><strong>Sensor:</strong> ${estado.sensorSeleccionado}</p>
+            <p><strong>Detecta:</strong> ${regla.condicion}</p>
+            <p><strong>Regla:</strong> SI ${regla.condicion} ${regla.operador} ${regla.umbral} → activar ${nombreAccion[regla.accion] || regla.accion}</p>
+            <p><strong>Actuador:</strong> ${estado.actuadorSeleccionado}</p>
+            <p><strong>Estado normal:</strong> Apagado</p>
+            <p><strong>Estado alerta:</strong> Encendido</p>
+            <p><strong>Pruebas:</strong> ${estado.historialPruebas.filter(p=>p.ok).length}/3 superadas</p>
+            <p><strong>Mejoras aplicadas:</strong> ${estado.mejorasAplicadas.join(', ') || 'Ninguna'}</p>
+        `;
+    }
+
+    function guardarReflexion() {
+        const ref = document.getElementById('reflexionInput').value;
+        if (ref.length > 5) {
+            estado.puntuacion += 8;
+            actualizarPuntuacion();
+            alert('✅ Reflexión guardada +8 puntos');
+        } else {
+            alert('Escribe una reflexión más detallada');
+        }
+    }
+
+    function siguienteInforme() {
+        mostrarPantalla('pantallaInforme');
+        generarInforme();
+    }
+
+    // ----- REINICIO -----
+    function reiniciarJuego() {
+        if (confirm('¿Comenzar nueva misión? Se perderá el progreso actual.')) {
+            estado.misionActual = null;
+            estado.componentesConstruidos = [];
+            estado.historialPruebas = [];
+            estado.mejorasAplicadas = [];
+            mostrarPantalla('pantallaMisiones');
+        }
+    }
+
+    // inicializar
+    renderMisiones();
+    mostrarPantalla('pantallaInicio');
+</script>
+</body>
+</html>
