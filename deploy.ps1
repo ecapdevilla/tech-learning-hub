@@ -10,8 +10,14 @@ param(
     [switch]$NoPush
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 Set-StrictMode -Version Latest
+
+# Para evitar que git escriba avisos (p. ej. LF/CRLF) a stderr y los trate como fallo fatal.
+function Invoke-Git {
+    param([string[]]$Args)
+    & git @Args 2>$null
+}
 
 if (-not (Test-Path "package.json")) {
     throw "Ejecuta este script dentro de la carpeta tech-learning-hub."
@@ -24,7 +30,7 @@ function Write-Step {
 }
 
 if ($PushOnly) {
-    git push
+    Invoke-Git push
     exit 0
 }
 
@@ -39,11 +45,12 @@ if (-not $?) { throw "Build fallo. No se envia a produccion." }
 Write-Host "Build correcto. Vercel usara este build para desplegar." -ForegroundColor Green
 
 Write-Step "2/2 - Commit y Push"
-git add .
+Invoke-Git add .
+if (-not $?) { throw "git add fallo." }
 $hasChanges = git status --porcelain
 if (-not $hasChanges) {
     Write-Host "No hay cambios pendientes. Nada que commitear." -ForegroundColor Yellow
-    if (-not $NoPush) { git pull --ff-only; git push }
+    if (-not $NoPush) { Invoke-Git pull --ff-only; Invoke-Git push }
     exit 0
 }
 
@@ -56,12 +63,12 @@ if ([string]::IsNullOrWhiteSpace($Message)) {
     $Message = ($Message.Trim() -replace '^"|"$', '')
 }
 
-git commit -m $Message
+Invoke-Git commit -m $Message
 if (-not $?) { throw "Commit fallo." }
 
 if (-not $NoPush) {
-    git pull --ff-only
-    if ($?) { git push }
+    Invoke-Git pull --ff-only
+    if ($?) { Invoke-Git push }
 }
 
 Write-Step "Listo"
