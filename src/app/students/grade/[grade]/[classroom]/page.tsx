@@ -13,7 +13,15 @@ export default async function ClassroomGalleryPage({ params }: Props) {
   return <SiteLayout><main className="page-shell student-projects-page">
     <Link href={`/students/grade/${grade}`} className="back-link">← {gradeLabels[grade]}</Link>
     <section className={`classroom-gallery-hero classroom-${values.classroom}`}><span>STUDENT PROJECT GALLERY</span>
-      <h1>{gradeLabels[grade]} · {values.classroom.toUpperCase()}</h1><p>Digital projects, learning sequences and evidence created by our students.</p></section>
+      <h1>{gradeLabels[grade]} · {values.classroom.toUpperCase()}</h1><p>Digital projects, learning sequences and evidence created by our students.</p>
+      <div className="hero-actions" style={{ marginTop: 16 }}>
+        <Link href={`/students/grade/${grade}/${values.classroom}/self-assessment`} className="primary-button">
+          📝 Autoevaluación Ciclo 6
+        </Link>
+        <Link href={`/students/grade/${grade}/${values.classroom}/self-assessment/results`} className="secondary-button">
+          Ver resultados
+        </Link>
+      </div></section>
     {projects.length === 0 ? <EmptyGallery /> : <section className="student-project-grid">{projects.map((p) => <ProjectCard key={p.id} project={p} />)}</section>}
   </main></SiteLayout>;
 }

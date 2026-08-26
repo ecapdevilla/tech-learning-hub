@@ -943,3 +943,39 @@ a {
   .live-grade-selector{grid-template-columns:1fr}
   .live-form-actions{grid-template-columns:1fr;display:grid}
 }
+
+/* SELF-ASSESSMENT CYCLE 6 V1 */
+.self-assessment-page{padding-block:32px 70px}
+.classroom-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.classroom-link{padding:8px 14px;border-radius:999px;background:#eef4f9;border:1px solid #d6e5f0;color:#174f7a;font-weight:900;text-decoration:none}
+.classroom-link.active{background:#0e2946;color:#fff;border-color:#0e2946}
+.self-assessment-form{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 12px 30px #0f27400d}
+.student-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.student-fields label{display:flex;flex-direction:column;gap:6px;font-weight:800;font-size:14px;color:#33495e}
+.student-fields input{padding:11px 13px;border:1px solid #d6e0ea;border-radius:12px;font-size:15px;outline:none;background:#fbfcfe}
+.student-fields input:focus{border-color:#2670c9;background:#fff}
+.self-assessment-scale-hint{font-size:13.5px;color:#506579;background:#f3f8fc;border:1px solid #e1ecf5;padding:12px 14px;border-radius:12px;margin-bottom:20px;line-height:1.5}
+.self-question{border:1px solid #e2ebf3;border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.self-question legend{font-weight:800;padding:0 6px;color:#17324a;font-size:15px}
+.self-question-options{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.self-option{display:flex;align-items:center;gap:6px;padding:8px 13px;border:1px solid #d6e0ea;border-radius:999px;cursor:pointer;font-weight:800;font-size:14px;background:#fff;transition:.15s}
+.self-option:hover{border-color:#2670c9}
+.self-option:has(input:checked){background:#edf6ff;border-color:#2670c9;color:#174f7a}
+.self-option input{accent-color:#0e6fd0}
+.self-assessment-message{margin-top:16px;padding:11px 13px;border-radius:12px;background:#fff6ec;border:1px solid #f2d7a8;color:#8a5a08;font-weight:700}
+.self-assessment-result{background:linear-gradient(135deg,#0e2946,#155b83);color:#fff;border-radius:18px;padding:24px;margin-top:14px}
+.self-assessment-result h3{font-size:24px;margin:6px 0}
+.self-result-score{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+.self-result-score strong{font-size:28px}
+.level-badge{padding:6px 12px;border-radius:999px;font-weight:900;font-size:13px}
+.level-bajo{background:#8c1d28;color:#fff}
+.level-básico{background:#b97a12;color:#fff}
+.level-alto{background:#16668f;color:#fff}
+.level-superior{background:#0d7a53;color:#fff}
+.results-summary{margin-top:14px;padding:14px 18px;background:#edf6ff;border:1px solid #d4e6f6;border-radius:14px;font-weight:800;color:#174f7a}
+.results-table{width:100%;border-collapse:collapse;margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 12px 30px #0f27400d}
+.results-table th{background:#0e2946;color:#fff;text-align:left;padding:12px 14px;font-size:13px;letter-spacing:.04em}
+.results-table td{padding:11px 14px;border-top:1px solid #eef2f6;font-size:14.5px}
+.results-table tbody tr:nth-child(even){background:#f8fbfd}
+.results-table tbody tr:hover{background:#eef6ff}
+@media(max-width:600px){.student-fields{grid-template-columns:1fr}.self-question-options .self-option{flex:1 1 40%}}
