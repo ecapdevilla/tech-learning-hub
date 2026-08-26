@@ -6,6 +6,7 @@ type Props = {
   kicker: string;
   description: string;
   grades: Grade[];
+  subject?: string;
 };
 
 export function GradeSection({
@@ -13,6 +14,7 @@ export function GradeSection({
   kicker,
   description,
   grades,
+  subject,
 }: Props) {
   return (
     <section className="school-section">
@@ -26,7 +28,7 @@ export function GradeSection({
 
       <div className="grades-grid">
         {grades.map((grade) => (
-          <GradeCard key={grade.id} grade={grade} />
+          <GradeCard key={grade.id} grade={grade} subject={subject} />
         ))}
       </div>
     </section>

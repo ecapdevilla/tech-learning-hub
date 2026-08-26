@@ -3,6 +3,10 @@ import {
   primaryGrades,
   secondaryGrades,
 } from "@/content/grades/grades";
+import {
+  mathPrimaryGrades,
+  mathSecondaryGrades,
+} from "@/content/math/grades";
 import { GradeSection } from "@/modules/grades/components/GradeSection";
 import { HeroCopy } from "@/modules/grades/components/HeroCopy";
 import { HeroVisual } from "@/modules/grades/components/HeroVisual";
@@ -62,6 +66,33 @@ export default function Home() {
           title="Build, code and solve"
           description="Progressive learning paths in programming, web development, digital systems and IoT."
           grades={secondaryGrades}
+        />
+
+        <section className="math-home-entry">
+          <a href="/math" className="feature-card" style={{ display: "block" }}>
+            <span className="feature-icon">🔢</span>
+            <div>
+              <span className="section-kicker">Mathematics · Grades 1–11</span>
+              <h3>Math Learning Hub</h3>
+              <p>Explore numbers, patterns and problem solving across every grade, from primary to secondary.</p>
+            </div>
+          </a>
+        </section>
+
+        <GradeSection
+          subject="math"
+          kicker="Mathematics"
+          title="Learn by numbers and patterns"
+          description="Hands-on math paths that build number sense, reasoning and problem-solving skills."
+          grades={mathPrimaryGrades}
+        />
+
+        <GradeSection
+          subject="math"
+          kicker="Mathematics"
+          title="Think, solve and model"
+          description="Progressive levels from algebra to calculus foundations, reusing the same learning structure."
+          grades={mathSecondaryGrades}
         />
 
         <HomeFeatures />

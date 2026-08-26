@@ -11,6 +11,7 @@ export function Navbar() {
         </Link>
 
         <nav className="nav-links">
+          <Link href="/math">Math</Link>
           <Link href="/explore">Explore</Link>
           <Link href="/resources">Resources</Link>
           <LanguageSwitcher />

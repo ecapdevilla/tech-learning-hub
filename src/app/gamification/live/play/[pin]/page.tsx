@@ -427,8 +427,8 @@ export default function PlayerRoom({
         playerPayload.avatar = selectedAvatar;
       }
 
-      let data: any = null;
-      let error: any = null;
+      let data: unknown = null;
+      let error: { message?: string } | null = null;
 
       const firstAttempt = await liveSupabase
         .from("live_players")

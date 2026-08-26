@@ -223,7 +223,6 @@ export default function LiveHostPage() {
   // Auto-advance timer when in reveal state
   useEffect(() => {
     if (!autoAdvanceEnabled || game?.status !== "reveal") {
-      setAutoAdvanceCountdown(0);
       return;
     }
 
@@ -351,10 +350,9 @@ export default function LiveHostPage() {
             </section>
           )}
 
-          {(game.status === "question" || game.status === "reveal") &&
-            current && (
-              <>
-                <section className="live-question-card">
+          {game.status === "reveal" && current && (
+            <>
+              <section className="live-question-card">
                   <div className="live-question-head">
                     <span>
                       QUESTION {game.current_question_index + 1} / {bank.length}
@@ -386,33 +384,27 @@ export default function LiveHostPage() {
                     {answers.length} / {players.length} answered
                   </div>
 
-                  {game.status === "question" ? (
-                    <button className="live-btn live-btn-primary" onClick={reveal}>
-                      👀 Reveal Answer
-                    </button>
-                  ) : (
-                    <div className="live-reveal-actions">
-                      <p className="live-explanation">
-                        ✅ {current.explanation}
-                        <br />
-                        <span>{current.explanationEs}</span>
-                      </p>
-                      <div className="live-reveal-button-group">
-                        <button className="live-btn live-btn-primary" onClick={next}>
-                          {game.current_question_index + 1 >= bank.length
-                            ? "🏆 Final Leaderboard"
-                            : "Next Question →"}
-                        </button>
-                        <button 
-                          className="live-btn"
-                          onClick={() => setAutoAdvanceEnabled(!autoAdvanceEnabled)}
-                          title={autoAdvanceEnabled ? "Click to pause auto-advance" : "Click to resume auto-advance"}
-                        >
-                          {autoAdvanceEnabled ? `⏸ Auto (${4 - autoAdvanceCountdown}s)` : "▶ Resume Auto"}
-                        </button>
-                      </div>
+                  <div className="live-reveal-actions">
+                    <p className="live-explanation">
+                      ✅ {current.explanation}
+                      <br />
+                      <span>{current.explanationEs}</span>
+                    </p>
+                    <div className="live-reveal-button-group">
+                      <button className="live-btn live-btn-primary" onClick={next}>
+                        {game.current_question_index + 1 >= bank.length
+                          ? "🏆 Final Leaderboard"
+                          : "Next Question →"}
+                      </button>
+                      <button 
+                        className="live-btn"
+                        onClick={() => setAutoAdvanceEnabled(!autoAdvanceEnabled)}
+                        title={autoAdvanceEnabled ? "Click to pause auto-advance" : "Click to resume auto-advance"}
+                      >
+                        {autoAdvanceEnabled ? `⏸ Auto (${4 - autoAdvanceCountdown}s)` : "▶ Resume Auto"}
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </section>
 
                 <section className="live-panel">
