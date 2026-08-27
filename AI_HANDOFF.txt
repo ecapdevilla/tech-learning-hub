@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-d981cab feat(self-assessment): lock selected classroom on form page, hide other colors
+8a717af feat(grading): add teacher grading module (Saber/Hacer/Ser) with Excel export
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
