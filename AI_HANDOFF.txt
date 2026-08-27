@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-8a717af feat(grading): add teacher grading module (Saber/Hacer/Ser) with Excel export
+fdb7168 chore(handoff): update current head to 8a717af
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -268,6 +268,29 @@ Changes/Files:
 Database: none.
 Tests: `npm run build` passes.
 Pending: configure SUPABASE_SERVICE_ROLE_KEY in Vercel + (optional) drop public SELECT policy on self_assessment_submissions.
+
+### SESSION 2026-08-27 (7) — Roster loading for 6th blue (roster SQL given to user)
+Current HEAD: fdb7168 (before); new commit after this session.
+Changes:
+- No app code changed. Prepared and gave the user the INSERT roster SQL for grade 6, classroom blue (31 students) into `public.grading_students` (first_name, last_name, grade=6, classroom='blue').
+- THE USER IS LOADING MORE CLASSROOMS AT HOME. Continue helping them generate INSERT SQL for the remaining classrooms (grades 6–11, blue/white/red).
+Database:
+- grading schema created in Supabase (user confirmed: subject 1, period 2, students 0 before load). Teachers/periods preloaded: subject 'Tecnología y Programación', periods (2026,3) and (2026,4).
+- User is loading students now. grade_dimensions auto-created by the app on first access (ensureDimensions).
+Important for next AI:
+- Read this file first per the START-OF-SESSION RULE. Do NOT re-scan the repo.
+- If the user wants to keep loading classrooms: generate INSERT INTO public.grading_students (first_name, last_name, grade, classroom) VALUES ... from their roster.
+- The app is deployed to Vercel (tech-learning-hub-vert.vercel.app). Your working tree must be clean before `git pull`.
+- Do NOT rebuild/deploy unless asked. Only push when making a code/config change.
+Tests: build passes (already at fdb7168).
+Pending (next sessions, user-driven):
+- Keep loading remaining classrooms via roster INSERT SQL.
+- (Optional) Ruta de import de estudiantes por Excel (not implemented yet).
+- Auto-link self-assessment "Ser autoeval" grade into grading (pending).
+- Optional: import notas por Excel (solo digitado implementado).
+Warnings / Decisions:
+- Teacher access for grading uses the same TEACHER_COOKIE as self-assessment results. Requires SUPABASE_SERVICE_ROLE_KEY in Vercel (verify it's set).
+- Do not expose anonymous access to grading tables (server uses service role only).
 
 ### SESSION 2026-08-27 (6) — GRADING SYSTEM IMPLEMENTED
 Current HEAD: 32d5f0e (before); new commit after this session.
