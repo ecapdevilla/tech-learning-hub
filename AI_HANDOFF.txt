@@ -1,0 +1,189 @@
+# TECH LEARNING HUB — AI HANDOFF
+Last updated: 2026-08-26
+Repository: ecapdevilla/tech-learning-hub
+Branch: main
+
+## PURPOSE
+This file is the communication bridge between AI sessions / computers.
+Read this file FIRST before exploring the repository.
+
+## START-OF-SESSION RULE
+When a new AI session begins, the user should say:
+
+"Read AI_HANDOFF.txt first. Use it as the current project state.
+Do not scan the whole repository.
+Check only git status, git log -5 --oneline, and the files related to the task I give you."
+
+The AI must:
+1. Read AI_HANDOFF.txt.
+2. Run/check git status.
+3. Run/check git log -5 --oneline.
+4. Work only on files related to the requested task.
+5. Avoid broad repository scans unless absolutely necessary.
+
+## END-OF-SESSION RULE
+Before finishing a meaningful work session, the AI must update this file with:
+- Current HEAD commit.
+- What was changed.
+- Files / modules affected.
+- Database changes or migrations.
+- What was tested.
+- What remains pending.
+- Any warnings / decisions the next AI must know.
+
+Then the AI should commit the handoff update with the related work or immediately after it.
+
+## CURRENT PROJECT BASELINE
+Latest known received commit before today's local changes:
+- d717db0 feat(self-eval): add Cycle 6 self-assessment for grades 6-11 with Supabase storage
+- c860024 chore: make deploy script robust to git stderr warnings
+- fcdb21c feat(math): add Math subject reusing grade components, fix lint lets, add deploy script
+
+IMPORTANT:
+Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
+
+## CURRENT HEAD
+UNKNOWN AFTER TODAY'S FINAL PUSH
+Update this after the next `git log -1 --oneline`.
+
+## TODAY'S IMPORTANT CHANGES
+### Math
+Math subject was added and reuses grade components.
+
+### Cycle 6 Self-Assessment
+New module for grades 6–11 with:
+- student self-assessment form
+- results page
+- Supabase storage
+- service/repository/types structure
+- SQL migration
+
+### Supabase Self-Assessment
+SQL was executed successfully in Supabase.
+Supabase response:
+`Success. No rows returned`
+
+Expected structure:
+- self_assessment_questions
+- self_assessment_scale
+- self_assessment_submissions
+- RLS enabled
+
+There are 11 questions.
+Responses p1...p11 use values 1–4.
+Total range: 11–44.
+
+Scale:
+11=1.3 Bajo
+12=1.4 Bajo
+13=1.5 Bajo
+14=1.6 Bajo
+15=1.7 Bajo
+16=1.8 Bajo
+17=1.9 Bajo
+18=2.0 Bajo
+19=2.2 Bajo
+20=2.3 Bajo
+21=2.4 Bajo
+22=2.5 Bajo
+23=2.6 Bajo
+24=2.7 Bajo
+25=2.8 Bajo
+26=3.0 Bajo
+27=3.1 Bajo
+28=3.2 Bajo
+29=3.3 Bajo
+30=3.4 Bajo
+31=3.5 Básico
+32=3.6 Básico
+33=3.8 Básico
+34=3.9 Básico
+35=4.0 Alto
+36=4.1 Alto
+37=4.2 Alto
+38=4.3 Alto
+39=4.4 Alto
+40=4.5 Alto
+41=4.7 Superior
+42=4.8 Superior
+43=4.9 Superior
+44=5.0 Superior
+
+Submission data should include:
+- first_name
+- last_name
+- grade 6–11
+- classroom blue/white/red
+- academic_year 2026
+- cycle 6
+- p1...p11
+- total
+- nota
+- nivel
+- created_at
+
+IMPORTANT SECURITY DECISION:
+Do NOT expose unrestricted anonymous SELECT access to student submissions.
+Teacher/results access should be protected/reviewed separately.
+
+### Grade 2
+Algorithm Adventure was created:
+- public/guides/grade-02/algorithm-adventure.html
+- English default
+- full Spanish toggle
+- five interactive games
+- browser-only / no Supabase
+
+### Updated Class Sequences / Student Projects
+Updated Class Sequences exist for grades 6–11.
+Student project evidence was curated by grade/section.
+Do not overwrite the original student HTML unnecessarily.
+
+### Download HTML
+Requirement added:
+Updated Class Sequences for grades 6–11 should show:
+- Open project
+- Download HTML
+
+A patch was prepared/applied to add Download HTML buttons without modifying student project files.
+
+## WORKING RULES
+- Preserve existing content unless explicitly asked to replace it.
+- English is default for classroom guides.
+- Spanish is a full-page toggle; do not mix both languages at the same time.
+- Use first names only in public student project indexes where possible.
+- Do not expose unnecessary surnames.
+- Updated Class Sequences and Cycle guides are separate concepts.
+- Avoid committing temporary `phase-*` installer folders.
+- Do not touch Supabase, Live Game or unrelated modules unless the task requires it.
+
+## NEXT SESSION — FIRST CHECKS
+1. git status
+2. git pull origin main (only if working tree is clean)
+3. git log -5 --oneline
+4. Read this file
+5. Update CURRENT HEAD
+6. Continue only with the requested task
+
+## NEXT SESSION — SELF-ASSESSMENT PENDING
+1. Verify 11 rows in self_assessment_questions.
+2. Verify scale totals 11–44.
+3. Verify self_assessment_submissions.
+4. Submit one test self-assessment from the app.
+5. Confirm name, grade, classroom, answers, total, nota, nivel, created_at.
+6. Confirm academic_year=2026 and cycle=6 behavior.
+7. Review secure teacher access to results.
+
+## HANDOFF FORMAT FOR EVERY AI
+At the end of each meaningful session, append/update:
+
+### SESSION YYYY-MM-DD
+Current HEAD:
+Changes:
+Files:
+Database:
+Tests:
+Pending:
+Warnings / Decisions:
+
+Keep it concise. Git stores the detailed history; this file stores only the context needed by the next AI.
