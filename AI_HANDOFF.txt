@@ -268,3 +268,28 @@ Changes/Files:
 Database: none.
 Tests: `npm run build` passes.
 Pending: configure SUPABASE_SERVICE_ROLE_KEY in Vercel + (optional) drop public SELECT policy on self_assessment_submissions.
+
+### SESSION 2026-08-27 (5) — GRADING SYSTEM: DESIGN AGREED (NO CODE)
+State: DESIGN DECIDED. Do NOT code until told. This section is the permanent spec.
+Goal: Teacher enters notes (Saber/Hacer/Ser) per student; export Excel in institutional format for uploading; scalable to multi-period, multi-year, multi-teacher (future rent/share).
+Formulas (FINAL):
+- Parcial Saber = promedio(n1..n4)
+- Parcial Hacer = promedio(n1..n4)
+- Ser = promedio simple de 3: (ser_secuencia + ser_autoevaluacion + ser_docente)/3
+- Nota final = saber*0.33 + hacer*0.33 + ser*0.34
+Table design (Supabase):
+- students: id, first_name, last_name, grade, classroom, subject_id (one-time load)
+- subjects: id, name, teacher (enables multi-teacher later)
+- periods: id, academic_year, period (e.g. 2026-3, 2026-4)
+- grade_dimensions: id, subject_id, period, dimension (saber/hacer/ser), entregas_count (4/4/3), weight (33/33/0 is the final-nota weight; Ser uses avg of 3)
+- grades: id, student_id, dimension_id, entrega_index (1..count), value (1..5)
+APP module: src/modules/grading/ (parallel to self-assessment). Teacher access with same key as self-assessment. Flow: teacher key -> choose subject + grade + classroom + period -> alphabetical list -> digit input OR import Excel -> auto compute parciales + final -> export Excel institutional (N | Nombre completo | n1-n4 Saber | parcial | n1-n4 Hacer | parcial | n1-n3 Ser | parcial | final).
+IMPORTANT decisions already made:
+- Dimensions currently FIXED (4/4/3) but configurable later via grade_dimensions (no code change needed when counts/weights change).
+- Multi-teacher/subject model built-in; login+permissions deferred (later phase).
+- import + export + on-screen digit are all in scope.
+Pending to implement (NEXT SESSION):
+- supabase/grading.sql (tables above + RLS)
+- src/modules/grading/* app screens
+- Excel export route (institutional format) + import route
+- Home/nav entry + teacher access
