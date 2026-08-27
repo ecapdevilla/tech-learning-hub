@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-bd7d50a feat(self-assessment): protect results with teacher password + CSV download via server role key
+3ce4899 chore(handoff): update current head to bd7d50a
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -234,3 +234,30 @@ Pending:
 Warnings / Decisions:
 - Teacher password verified only server-side; cookie httpOnly + sameSite lax + secure in prod.
 - The student form (INSERT) is unchanged and works with the public/anon key.
+
+### SESSION 2026-08-27 (3) — Standalone /self-assessment flow + home entry
+Current HEAD: 3ce4899 (before); new commit after this session.
+Changes:
+- Created a dedicated, non-hidden flow for the self-assessment starting from the home page.
+- New routes: /self-assessment (choose grade 6–11) -> /self-assessment/[grade] (choose classroom) -> /self-assessment/[grade]/[classroom] (form, reuses SelfAssessmentForm) -> /self-assessment/[grade]/[classroom]/results (teacher-protected + CSV, same logic as before).
+- Home page now has a prominent "Autoevaluación" entry card linking to /self-assessment.
+- The old entry inside the student gallery was commented out (kept, not deleted) so it can be re-enabled later.
+Files (new):
+- src/app/self-assessment/page.tsx
+- src/app/self-assessment/[grade]/page.tsx
+- src/app/self-assessment/[grade]/[classroom]/page.tsx
+- src/app/self-assessment/[grade]/[classroom]/results/page.tsx
+Files (edited):
+- src/app/page.tsx (home entry card)
+- src/app/students/grade/[grade]/[classroom]/page.tsx (commented out old buttons)
+- src/app/globals.css (standalone flow styles)
+Database:
+- No DB changes. Supabase schema unchanged.
+Tests:
+- `npm run build` passes (all routes present).
+Pending:
+- Configure SUPABASE_SERVICE_ROLE_KEY in Vercel + (optional) drop public SELECT policy on self_assessment_submissions for full teacher-only protection.
+- Validate end-to-end from the new /self-assessment path in Vercel.
+Warnings / Decisions:
+- Old routes under /students/.../self-assessment still exist and work for compatibility; UI points to new /self-assessment flow.
+- Share link for students: https://<deploy-url>/self-assessment

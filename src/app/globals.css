@@ -987,3 +987,25 @@ a {
 .teacher-gate-form input:focus{border-color:#2670c9}
 .results-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
 .download-csv{text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+
+/* SELF-ASSESSMENT STANDALONE FLOW V1 */
+.self-assessment-home-entry{margin-top:28px;margin-bottom:28px}
+.self-assessment-hero{margin-top:18px;padding:46px;border-radius:30px;color:#fff;background:radial-gradient(circle at 88% 8%,#5bd0e0 0,transparent 26%),linear-gradient(135deg,#0e2946,#155b83 60%,#0a7d68);box-shadow:0 24px 60px #0e29462a}
+.self-assessment-hero h1{font-size:clamp(40px,6vw,68px);line-height:1;margin:12px 0}
+.self-assessment-hero p{font-size:18px;max-width:760px}
+.self-assessment-intro{margin:22px 0;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:20px}
+.self-assessment-intro p{font-size:17px;line-height:1.5;color:#33495e}
+.self-step-title{font-size:22px;margin:26px 0 14px;color:#17324a}
+.self-grade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.self-grade-card{display:flex;flex-direction:column;gap:6px;padding:22px 20px;border:1px solid var(--line);background:#fff;border-radius:20px;text-decoration:none;color:inherit;box-shadow:0 12px 30px #0f27400d;transition:.2s}
+.self-grade-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px #0f27401d}
+.self-grade-number{float:right;margin:-22px -20px 0 0}
+.self-grade-card strong{font-size:22px}
+.self-grade-card small{color:#2670c9;font-weight:800}
+.self-classroom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.self-classroom-card{display:flex;flex-direction:column;gap:6px;padding:24px;border-radius:20px;text-decoration:none;color:#fff;transition:.2s}
+.self-classroom-card:hover{transform:translateY(-4px)}
+.self-classroom-card strong{font-size:24px}
+.self-classroom-card small{opacity:.9;font-weight:800}
+@media(max-width:700px){.self-grade-grid,.self-classroom-grid{grid-template-columns:1fr 1fr}.self-assessment-hero{padding:30px}}
+@media(max-width:440px){.self-grade-grid,.self-classroom-grid{grid-template-columns:1fr}}

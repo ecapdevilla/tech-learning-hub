@@ -68,6 +68,20 @@ export default function Home() {
           grades={secondaryGrades}
         />
 
+        <section className="self-assessment-home-entry">
+          <a href="/self-assessment" className="feature-card" style={{ display: "block" }}>
+            <span className="feature-icon">📝</span>
+            <div>
+              <span className="section-kicker">Grades 6–11 · Cycle 6</span>
+              <h3>Autoevaluación</h3>
+              <p>
+                Responde las 11 preguntas y obtén tu nota al instante. Elige tu grado y tu salón
+                para comenzar.
+              </p>
+            </div>
+          </a>
+        </section>
+
         <section className="math-home-entry">
           <a href="/math" className="feature-card" style={{ display: "block" }}>
             <span className="feature-icon">🔢</span>
