@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-fdb7168 chore(handoff): update current head to 8a717af
+bfe68da chore(handoff): add roster session for 6th blue + instructions for next AI
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
