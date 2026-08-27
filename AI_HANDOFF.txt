@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-3034749 feat: add project downloads and AI handoff bridge
+041afcb chore(handoff): sync self-assessment SQL to live DB and update bridge
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
