@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import { SiteLayout } from "@/shared/components/layout/SiteLayout";
 import { selfAssessmentRepository } from "@/modules/self-assessment/data/selfAssessmentRepository";
+import { TeacherGate } from "@/modules/self-assessment/components/TeacherGate";
+import { TEACHER_COOKIE } from "@/app/api/self-assessment/teacher-login/route";
 import { isValidClassroom } from "@/modules/student-projects/services/studentProjectService";
 import { isGradeId } from "@/modules/grades/types/grade";
 import { gradeLabels } from "@/modules/student-projects/data/classrooms";
@@ -13,7 +16,7 @@ const CLEAN_LABEL: Record<string, string> = {
 };
 
 type Props = {
-  params: Promise<{ grade: string; classroom: string; results?: string }>;
+  params: Promise<{ grade: string; classroom: string }>;
 };
 
 export default async function SelfAssessmentResultsPage({ params }: Props) {
@@ -23,7 +26,10 @@ export default async function SelfAssessmentResultsPage({ params }: Props) {
   if (!isGradeId(gradeNumber) || gradeNumber < 6 || gradeNumber > 11) notFound();
   if (!isValidClassroom(gradeNumber, classroom)) notFound();
 
-  const configured = selfAssessmentRepository.isConfigured();
+  const cookieStore = await cookies();
+  const isTeacher = cookieStore.get(TEACHER_COOKIE)?.value === "authorized";
+
+  const label = gradeLabels[gradeNumber] ?? `${gradeNumber}th Grade`;
 
   let submissions: {
     firstName: string;
@@ -32,26 +38,28 @@ export default async function SelfAssessmentResultsPage({ params }: Props) {
     nota: number;
     nivel: string;
   }[] = [];
+  let configured = true;
+  let avg = 0;
 
-  if (configured) {
-    const rows = await selfAssessmentRepository.getSubmissions(gradeNumber, classroom);
-    submissions = rows
-      .map((r) => ({
-        firstName: r.first_name,
-        lastName: r.last_name,
-        total: r.total,
-        nota: Number(r.nota),
-        nivel: r.nivel,
-      }))
-      .sort((a, b) => a.lastName.localeCompare(b.lastName, "es", { sensitivity: "base" }));
+  if (isTeacher) {
+    configured = selfAssessmentRepository.isConfigured();
+    if (configured) {
+      const rows = await selfAssessmentRepository.getSubmissions(gradeNumber, classroom);
+      submissions = rows
+        .map((r) => ({
+          firstName: r.first_name,
+          lastName: r.last_name,
+          total: r.total,
+          nota: Number(r.nota),
+          nivel: r.nivel,
+        }))
+        .sort((a, b) => a.lastName.localeCompare(b.lastName, "es", { sensitivity: "base" }));
+      avg =
+        submissions.length > 0
+          ? submissions.reduce((acc, s) => acc + s.nota, 0) / submissions.length
+          : 0;
+    }
   }
-
-  const label = gradeLabels[gradeNumber] ?? `${gradeNumber}th Grade`;
-
-  const avg =
-    submissions.length > 0
-      ? submissions.reduce((acc, s) => acc + s.nota, 0) / submissions.length
-      : 0;
 
   return (
     <SiteLayout>
@@ -67,10 +75,12 @@ export default async function SelfAssessmentResultsPage({ params }: Props) {
               {label} · {CLEAN_LABEL[classroom]} Classroom
             </h2>
           </div>
-          <p>Resultados guardados, ordenados alfabéticamente por apellido.</p>
+          <p>Resultados guardados, ordenados alfabéticamente por apellido. Acceso restringido.</p>
         </section>
 
-        {!configured ? (
+        {!isTeacher ? (
+          <TeacherGate />
+        ) : !configured ? (
           <div className="empty-card">
             <span>⚠️</span>
             <h3>Supabase no está configurado</h3>
@@ -84,11 +94,20 @@ export default async function SelfAssessmentResultsPage({ params }: Props) {
           </div>
         ) : (
           <>
-            <div className="results-summary">
-              <p>
-                <strong>Estudiantes:</strong> {submissions.length} · <strong>Promedio del salón:</strong>{" "}
-                {avg.toFixed(2)}
-              </p>
+            <div className="results-toolbar">
+              <div className="results-summary">
+                <p>
+                  <strong>Estudiantes:</strong> {submissions.length} ·{" "}
+                  <strong>Promedio del salón:</strong> {avg.toFixed(2)}
+                </p>
+              </div>
+              <a
+                className="primary-button download-csv"
+                href={`/api/self-assessment/export?grade=${gradeNumber}&classroom=${classroom}`}
+                download
+              >
+                ⬇️ Descargar CSV
+              </a>
             </div>
             <table className="results-table">
               <thead>

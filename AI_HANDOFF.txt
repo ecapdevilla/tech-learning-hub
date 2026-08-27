@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-041afcb chore(handoff): sync self-assessment SQL to live DB and update bridge
+6a7059c chore(handoff): update current head to 041afcb
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -208,3 +208,29 @@ Pending:
 Warnings / Decisions:
 - The repo SQL must mirror the live DB. If someone modifies the DB manually, update this file too.
 - `src/modules/self-assessment/data/selfAssessmentRepository.ts` computes total/nota/nivel client-side redundant to the DB trigger; both agree. Keep DB trigger as authority.
+
+### SESSION 2026-08-27 (2) — Teacher-only results + CSV download
+Current HEAD: 6a7059c (before); new commit after this session.
+Changes:
+- Protected the results page with a teacher password (default 1048273177, env SELF_ASSESSMENT_TEACHER_PASSWORD).
+- Results now read from the server using the Supabase SERVICE ROLE key instead of the anon key, so students cannot fetch results even if they inspect the client.
+- Added CSV download of a grade/classroom results.
+Files:
+- src/app/api/self-assessment/teacher-login/route.ts (POST validates password, sets httpOnly cookie; DELETE clears it)
+- src/app/api/self-assessment/export/route.ts (GET requires cookie, returns CSV)
+- src/app/students/.../self-assessment/results/page.tsx (server reads cookie; TeacherGate when not authed)
+- src/modules/self-assessment/components/TeacherGate.tsx (password form)
+- src/modules/self-assessment/data/supabase.ts (getSelfAssessmentAdminClient via SUPABASE_SERVICE_ROLE_KEY)
+- src/modules/self-assessment/data/selfAssessmentRepository.ts (getSubmissions uses admin client)
+- src/modules/self-assessment/types/selfAssessment.ts (SELF_ASSESSMENT_TEACHER_PASSWORD)
+- src/app/globals.css (gate + toolbar styles)
+Database:
+- IMPORTANT: add Environment Variable SUPABASE_SERVICE_ROLE_KEY in Vercel (Settings -> Environment Variables). Without it, getSubmissions falls back to the public key, so teacher protection relies only on the password (still hides UI, but data could be read via anon). For full protection, also REMOVE the public SELECT policy on self_assessment_submissions after adding the service role key; the server uses the service role (bypasses RLS) to read.
+Tests:
+- `npm run build` passes.
+Pending:
+- Configure SUPABASE_SERVICE_ROLE_KEY in Vercel and set SELF_ASSESSMENT_TEACHER_PASSWORD if desired.
+- (Optional hardening) SQL: drop policy "self_assessment_submissions_read" so anon cannot read submissions; server reads via role key.
+Warnings / Decisions:
+- Teacher password verified only server-side; cookie httpOnly + sameSite lax + secure in prod.
+- The student form (INSERT) is unchanged and works with the public/anon key.

@@ -979,3 +979,11 @@ a {
 .results-table tbody tr:nth-child(even){background:#f8fbfd}
 .results-table tbody tr:hover{background:#eef6ff}
 @media(max-width:600px){.student-fields{grid-template-columns:1fr}.self-question-options .self-option{flex:1 1 40%}}
+
+/* SELF-ASSESSMENT TEACHER GATE V1 */
+.results-gate{max-width:480px}
+.teacher-gate-form{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.teacher-gate-form input{flex:1;min-width:180px;padding:11px 13px;border:1px solid #d6e0ea;border-radius:12px;font-size:15px;outline:none}
+.teacher-gate-form input:focus{border-color:#2670c9}
+.results-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.download-csv{text-decoration:none;display:inline-flex;align-items:center;gap:8px}

@@ -39,3 +39,8 @@ export type SelfAssessmentSubmission = {
 
 export const SELF_ASSESSMENT_MIN = 11;
 export const SELF_ASSESSMENT_MAX = 44;
+
+// Clave de acceso docente para ver resultados. Es verificada en el servidor (route handler),
+// nunca en el cliente. Cambiable via env: process.env.SELF_ASSESSMENT_TEACHER_PASSWORD.
+export const SELF_ASSESSMENT_TEACHER_PASSWORD =
+  process.env.SELF_ASSESSMENT_TEACHER_PASSWORD ?? "1048273177";

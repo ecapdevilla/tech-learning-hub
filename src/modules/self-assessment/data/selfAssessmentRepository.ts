@@ -1,4 +1,4 @@
-import { getSelfAssessmentClient } from "@/modules/self-assessment/data/supabase";
+import { getSelfAssessmentAdminClient, getSelfAssessmentClient } from "@/modules/self-assessment/data/supabase";
 import type {
   SelfAssessmentQuestion,
   SelfAssessmentScaleRow,
@@ -7,6 +7,7 @@ import type {
 
 export interface SelfAssessmentRepository {
   isConfigured(): boolean;
+  isAdminConfigured(): boolean;
   getQuestions(): Promise<SelfAssessmentQuestion[]>;
   getScale(): Promise<SelfAssessmentScaleRow[]>;
   getSubmissions(grade: number, classroom: string): Promise<SelfAssessmentSubmission[]>;
@@ -19,6 +20,10 @@ export interface SelfAssessmentRepository {
 export const selfAssessmentRepository: SelfAssessmentRepository = {
   isConfigured() {
     return getSelfAssessmentClient() !== null;
+  },
+
+  isAdminConfigured() {
+    return getSelfAssessmentAdminClient() !== null;
   },
 
   async getQuestions() {
@@ -44,7 +49,8 @@ export const selfAssessmentRepository: SelfAssessmentRepository = {
   },
 
   async getSubmissions(grade: number, classroom: string) {
-    const client = getSelfAssessmentClient();
+    // Usamos el cliente admin (service role) en el servidor para leer resultados.
+    const client = getSelfAssessmentAdminClient() ?? getSelfAssessmentClient();
     if (!client) return [];
     const { data, error } = await client
       .from("self_assessment_submissions")
