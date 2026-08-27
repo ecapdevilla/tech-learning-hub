@@ -269,6 +269,41 @@ Database: none.
 Tests: `npm run build` passes.
 Pending: configure SUPABASE_SERVICE_ROLE_KEY in Vercel + (optional) drop public SELECT policy on self_assessment_submissions.
 
+### SESSION 2026-08-27 (6) — GRADING SYSTEM IMPLEMENTED
+Current HEAD: 32d5f0e (before); new commit after this session.
+State: Grading module CODED per the design in session (5). Next step: run `supabase/grading.sql` in Supabase, then load students, then use the UI.
+Files added:
+- supabase/grading.sql (subjects, periods, grading_students, grade_dimensions, grades + RLS; no anon policies - server-only via service role)
+- src/modules/grading/types/grading.ts (Grade, Student, ENTRADAS 4/4/3, WEIGHTS 33/33/34)
+- src/modules/grading/data/supabase.ts (getGradingAdminClient via SUPABASE_SERVICE_ROLE_KEY)
+- src/modules/grading/data/gradingRepository.ts (repository + computeStudent + ensureDimensions)
+- src/app/api/grading/context/route.ts (subjects+periods)
+- src/app/api/grading/save/route.ts (POST upsert grades, maps dimension->dimension_id)
+- src/app/api/grading/export/route.ts (GET xlsx export, institutional format; requires teacher cookie)
+- src/app/grading/page.tsx (home: gate + GradingSelector)
+- src/modules/grading/components/GradingSelector.tsx (subject/period/grade/classroom -> /grading/entry)
+- src/app/grading/entry/page.tsx (server: computes rows, renders GradingEntry)
+- src/modules/grading/components/GradingEntry.tsx (digit table, save, export link)
+- src/app/page.tsx (home entry card "Calificaciones Saber/Hacer/Ser")
+- src/app/globals.css (grading styles)
+FORMULAS implemented: parcial Saber = avg(4), Hacer = avg(4), Ser = avg(3); final = saber*.33+hacer*.33+ser*.34. Excel columns: N, Nombre completo, Saber n1..n4, Parcial Saber, Hacer n1..n4, Parcial Hacer, Ser secuencia, Ser autoeval, Ser docente, Parcial Ser, Nota final.
+Database:
+- IMPENDIENTE: run supabase/grading.sql in Supabase SQL Editor (creates tables).
+- Grading uses service role only (SUPABASE_SERVICE_ROLE_KEY) - must exist in Vercel; anon key NOT sufficient for grading reads/writes.
+- To use: 1) run SQL, 2) insert subjects (e.g. Matematicas/Programacion) and periods (2026,3 / 2026,4), 3) load students into grading_students.
+- Dimensions are auto-created on first access (ensureDimensions) for the chosen subject+period with counts 4/4/3.
+Tests:
+- `npm run build` passes. Routes: /grading, /grading/entry, /api/grading/{context,save,export}.
+Pending:
+- Run grading.sql in Supabase + add SUPABASE_SERVICE_ROLE_KEY in Vercel.
+- Load students (grading_students) - user must provide roster (Excel/CSV); import route NOT created yet.
+- Optional: import Excel for notes (only on-screen digit implemented; export done; import not yet).
+- Teacher password reused from self-assessment (same TEACHER_COOKIE).
+Warnings / Decisions:
+- export/save routes require TEACHER_COOKIE; reuse of self_assessment_teacher cookie means teacher who logged into results is also authed for grading.
+- grading_students has no subject_id (students global); subjects/periods separate for scalability.
+- Max note value 1..5 (0 ignored -> null).
+
 ### SESSION 2026-08-27 (5) — GRADING SYSTEM: DESIGN AGREED (NO CODE)
 State: DESIGN DECIDED. Do NOT code until told. This section is the permanent spec.
 Goal: Teacher enters notes (Saber/Hacer/Ser) per student; export Excel in institutional format for uploading; scalable to multi-period, multi-year, multi-teacher (future rent/share).

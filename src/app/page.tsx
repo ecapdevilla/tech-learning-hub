@@ -82,6 +82,20 @@ export default function Home() {
           </a>
         </section>
 
+        <section className="grading-home-entry" style={{ marginTop: "28px", marginBottom: "28px" }}>
+          <a href="/grading" className="feature-card" style={{ display: "block" }}>
+            <span className="feature-icon">🧑‍🏫</span>
+            <div>
+              <span className="section-kicker">Teacher · Notes</span>
+              <h3>Calificaciones · Saber / Hacer / Ser</h3>
+              <p>
+                Carga notas por estudiante (Saber 33% · Hacer 33% · Ser 34%) y exporta el Excel
+                en formato institucional.
+              </p>
+            </div>
+          </a>
+        </section>
+
         <section className="math-home-entry">
           <a href="/math" className="feature-card" style={{ display: "block" }}>
             <span className="feature-icon">🔢</span>

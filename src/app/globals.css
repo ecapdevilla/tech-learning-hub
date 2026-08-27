@@ -1009,3 +1009,22 @@ a {
 .self-classroom-card small{opacity:.9;font-weight:800}
 @media(max-width:700px){.self-grade-grid,.self-classroom-grid{grid-template-columns:1fr 1fr}.self-assessment-hero{padding:30px}}
 @media(max-width:440px){.self-grade-grid,.self-classroom-grid{grid-template-columns:1fr}}
+
+/* GRADING V1 */
+.grading-selector-form{padding:26px}
+.grading-selector-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grading-selector-grid label{display:flex;flex-direction:column;gap:6px;font-weight:800;font-size:14px;color:#33495e}
+.grading-selector-grid select,.grading-input{width:100%;padding:11px 13px;border:1px solid #d6e0ea;border-radius:12px;font-size:15px;outline:none;background:#fbfcfe}
+.grading-selector-grid select:focus{border-color:#2670c9}
+.grading-table{width:100%;border-collapse:collapse;margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 12px 30px #0f27400d}
+.grading-table th{background:#0e2946;color:#fff;text-align:left;padding:10px 8px;font-size:12px;letter-spacing:.03em;white-space:nowrap}
+.grading-table td{padding:6px 8px;border-top:1px solid #eef2f6;font-size:14px;white-space:nowrap}
+.grading-table tbody tr:nth-child(even){background:#f8fbfd}
+.grading-table tbody tr:hover{background:#eef6ff}
+.grading-input{width:62px;text-align:center;font-size:13px}
+.grading-cell{font-weight:900;font-size:13px}
+.grading-final{font-weight:950;font-size:14px;color:#0e6fd0}
+.grading-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.grading-save-msg{margin-top:12px;padding:10px 14px;border-radius:12px;background:#e8f7ec;border:1px solid #bfe6cb;color:#0d7a4f;font-weight:800}
+@media(max-width:900px){.grading-selector-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.grading-table{display:block;overflow-x:auto}}
