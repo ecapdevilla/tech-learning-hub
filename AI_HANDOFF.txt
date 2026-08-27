@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-3ce4899 chore(handoff): update current head to bd7d50a
+25fc8c2 feat(self-assessment): standalone flow on home page with grade+classroom selection
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
