@@ -43,8 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-UNKNOWN AFTER TODAY'S FINAL PUSH
-Update this after the next `git log -1 --oneline`.
+3034749 feat: add project downloads and AI handoff bridge
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -187,3 +186,25 @@ Pending:
 Warnings / Decisions:
 
 Keep it concise. Git stores the detailed history; this file stores only the context needed by the next AI.
+
+### SESSION 2026-08-27
+Current HEAD: 3034749 (previously). This session updated Supabase SQL + handoff; new commit follows.
+Changes:
+- Reconciled `supabase/cycle6-self-assessment.sql` to match the schema actually executed in Supabase.
+- The DB version (already run by user) is more advanced than the previous repo SQL: it includes `academic_year` (default 2026), `cycle` (default 6), per-column checks (p1..p11 1–4), and a BEFORE INSERT/UPDATE trigger `calculate_self_assessment()` that computes total/nota/nivel server-side.
+Files:
+- supabase/cycle6-self-assessment.sql (rewritten to match live DB + public results read policy).
+Database:
+- User reported success running the improved SQL: `Success. No rows returned`.
+- RLS enabled on questions/scale/submissions.
+- Students can INSERT (policy `sa_submissions_insert`, grades 6–11, classroom blue/white/red).
+- Results read: enabled for anonymous (`self_assessment_submissions_read`) so the teacher/app can view the list. Acknowledged trade-off: anyone with the anon key can read; teacher-only auth is the pending secure option.
+Tests:
+- Not yet re-run end-to-end from the app after this sync (build/behaviour pending).
+Pending:
+- Validate one test submission from the app now that read is enabled.
+- Verify results page `/students/grade/{g}/{c}/self-assessment/results` shows rows sorted by last name.
+- Teacher/secure access: replace public read with Supabase Auth if needed.
+Warnings / Decisions:
+- The repo SQL must mirror the live DB. If someone modifies the DB manually, update this file too.
+- `src/modules/self-assessment/data/selfAssessmentRepository.ts` computes total/nota/nivel client-side redundant to the DB trigger; both agree. Keep DB trigger as authority.
