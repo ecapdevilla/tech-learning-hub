@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-6a7059c chore(handoff): update current head to 041afcb
+bd7d50a feat(self-assessment): protect results with teacher password + CSV download via server role key
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
