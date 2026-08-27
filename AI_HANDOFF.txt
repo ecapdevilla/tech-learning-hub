@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-25fc8c2 feat(self-assessment): standalone flow on home page with grade+classroom selection
+e62df89 (auto-assessment UI adjustments pending a new commit)
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -257,7 +257,14 @@ Tests:
 - `npm run build` passes (all routes present).
 Pending:
 - Configure SUPABASE_SERVICE_ROLE_KEY in Vercel + (optional) drop public SELECT policy on self_assessment_submissions for full teacher-only protection.
-- Validate end-to-end from the new /self-assessment path in Vercel.
 Warnings / Decisions:
 - Old routes under /students/.../self-assessment still exist and work for compatibility; UI points to new /self-assessment flow.
 - Share link for students: https://<deploy-url>/self-assessment
+
+### SESSION 2026-08-27 (4) — Hide other classrooms on the form page
+Current HEAD: e62df89 (before); new commit after this session.
+Changes/Files:
+- src/app/self-assessment/[grade]/[classroom]/page.tsx: replaced the classroom switcher (which linked to other colors) with a fixed label showing only the selected classroom, so a student cannot switch/fill the wrong classroom.
+Database: none.
+Tests: `npm run build` passes.
+Pending: configure SUPABASE_SERVICE_ROLE_KEY in Vercel + (optional) drop public SELECT policy on self_assessment_submissions.

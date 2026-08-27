@@ -43,15 +43,7 @@ export default async function SelfAssessmentFormPage({ params }: Props) {
             tus respuestas y se guarda en tu salón.
           </p>
           <div className="classroom-links" style={{ marginTop: 12 }}>
-            {classrooms.map((c) => (
-              <Link
-                key={c}
-                href={`/self-assessment/${gradeNumber}/${c}`}
-                className={c === classroom ? "classroom-link active" : "classroom-link"}
-              >
-                {CLEAN_LABEL[c]}
-              </Link>
-            ))}
+            <span className="classroom-link active">{CLEAN_LABEL[classroom]} Classroom</span>
           </div>
         </section>
 
