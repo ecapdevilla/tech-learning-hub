@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-35648d5 feat(grading): surface Supabase config/error in selector for diagnostics
+31b200b feat(grading): show connection state and counts in selector
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -407,8 +407,21 @@ AI WORKFLOW
 ============================================================
 END SESSION UPDATE - 2026-08-28
 ============================================================
-### SESSION 2026-08-28 (1) — Grading "can't save notes" diagnosis
-Current HEAD: 010dec7 (before); new commit after this session.
+### SESSION 2026-08-28 (2) — Grading fixed: env var + seed data
+Current HEAD: 31b200b (after).
+Changes:
+- Root cause of "Sin materias/Sin periodos": grading_students roster existed, but `subjects` and `periods` tables were EMPTY (only students were inserted earlier).
+- Added SUPABASE_SERVICE_ROLE_KEY in Vercel (verified in env vars: Production).
+- User ran INSERT to seed `subjects` ('Tecnología y Programación') and `periods` (2026,3 and 2026,4).
+- Improved /api/grading/context + GradingSelector to always show connection state/counts (msg) for easier diagnosis.
+Database: subjects=1, periods=2 (user confirmed). grading_students being populated by user.
+Tests: build passes.
+Pending:
+- Verify /grading now shows materia + periodos and can open /grading/entry with students.
+- Then test SAVING a note end-to-end (confirm grades rows created).
+- Continue loading remaining classrooms.
+- Excel export test.
+Warnings: grade_dimensions auto-create on first access; ensure env key set in Production for the correct Supabase project.
 Changes: none (diagnosis only).
 Symptom reported by user: yesterday could not enter/save notes in the grading app.
 Diagnosis (most likely cause):
