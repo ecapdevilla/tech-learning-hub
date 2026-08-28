@@ -351,3 +351,60 @@ Pending to implement (NEXT SESSION):
 - src/modules/grading/* app screens
 - Excel export route (institutional format) + import route
 - Home/nav entry + teacher access
+
+============================================================
+SESSION UPDATE - 2026-08-28
+============================================================
+
+PROJECT PUBLICATION
+- Published recent student project evidence without replacing previous sequences.
+- Grade 6 Blue: Aug 27-28 final projects published.
+- Grade 7 Blue: Aug 24 projects published.
+- Grade 7: valid TXT containing real HTML was converted to .html when applicable.
+- Grade 7 White/Red: only Aug 26 new/updated evidence published.
+- Old Aug 18 evidence was NOT duplicated.
+- Grade 8 Blue: Aug 25 final project published.
+- Grade 8 Updated Class Sequences page was created because it did not previously exist.
+- Grade 10 Blue: Aug 27 final projects published.
+- Projects expose Open Project and Download HTML.
+- Supporting DOCX/images are preserved when supplied.
+- Empty/invalid TXT files were not fabricated.
+
+GRADING / SUPABASE
+- grading_students roster is being populated for Grades 6-11.
+- Classroom mapping:
+  A = blue
+  B = white
+  C = red
+- Existing grading architecture uses Saber / Hacer / Ser.
+- Published student projects can now be used as grading evidence.
+- Continue using existing Supabase grading structure; do not redesign it unnecessarily.
+
+IMPORTANT RULES
+- Preserve all existing Updated Class Sequences.
+- Preserve Cycle guides.
+- Do not duplicate previously published student projects.
+- For new project deliveries, publish only genuinely new/updated evidence.
+- TXT containing complete HTML may be converted to .html.
+- Empty/invalid TXT must not be invented or reconstructed.
+- Do NOT commit phase-* installer folders.
+
+NEXT
+1. Verify latest deployment in Vercel.
+2. Continue publishing missing recent classroom projects.
+3. Review published projects as evidence.
+4. Begin Saber/Hacer/Ser grading.
+5. Update this AI_HANDOFF.txt after meaningful changes.
+
+AI WORKFLOW
+- Read AI_HANDOFF.txt first.
+- Run git log -5 --oneline.
+- Run git status.
+- Do NOT scan the entire repository unless necessary.
+- Inspect only files needed for the current task.
+- At end of work, update AI_HANDOFF.txt briefly and push it.
+
+============================================================
+END SESSION UPDATE - 2026-08-28
+============================================================
+
