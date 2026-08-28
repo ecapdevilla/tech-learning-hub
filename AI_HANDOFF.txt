@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-6950085 chore(handoff): grading save diagnosis - check SUPABASE_SERVICE_ROLE_KEY
+35648d5 feat(grading): surface Supabase config/error in selector for diagnostics
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
