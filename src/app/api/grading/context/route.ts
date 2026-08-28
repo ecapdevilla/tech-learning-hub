@@ -10,11 +10,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+
   const client = getGradingAdminClient();
   if (!client) {
     return NextResponse.json({
       configured: false,
-      msg: "⚠️ SUPABASE_SERVICE_ROLE_KEY no está configurada o mal en Vercel.",
+      msg: `⚠️ SUPABASE_SERVICE_ROLE_KEY no está configurada o mal en Vercel. URL: ${url}`,
+      url,
       subjects: [],
       periods: [],
     });
@@ -42,8 +45,8 @@ export async function GET(request: NextRequest) {
   const pers = periods ?? [];
   const msg =
     subs.length === 0 || pers.length === 0
-      ? `⚠️ La conexión funciona (✅ key OK) pero las tablas están vacías: subjects=${subs.length} · periods=${pers.length}. Ejecuta los INSERT o revisa que sea el proyecto correcto.`
-      : `✅ Conexión OK · ${subs.length} materia(s) · ${pers.length} periodo(s).`;
+      ? `⚠️ Conectado a: ${url} · La conexión funciona pero subjects=${subs.length} · periods=${pers.length}. Si esto está vacío, la clave apunta a un proyecto distinto del que insertó los datos.`
+      : `✅ Conexión OK (${url}) · ${subs.length} materia(s) · ${pers.length} periodo(s).`;
 
-  return NextResponse.json({ configured: true, msg, subjects: subs, periods: pers });
+  return NextResponse.json({ configured: true, msg, url, subjects: subs, periods: pers });
 }
