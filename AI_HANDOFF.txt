@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-857308f feat(grading): add diagnostics exposing service role key ref matching
+cbcc431 feat(grading): auto-preaload Ser autoeval from self-assessment submissions
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -422,6 +422,26 @@ Pending:
 - Continue loading remaining classrooms.
 - Excel export test.
 Warnings: grade_dimensions auto-create on first access; ensure env key set in Production for the correct Supabase project.
+
+### SESSION 2026-08-28 (3) — Grading E2E working + Ser autoeval preload
+Current HEAD: cbcc431 (after).
+Changes:
+- Grading endpoint now works E2E: user fixed Vercel env vars (SUPABASE_SERVICE_ROLE_KEY was from wrong project; replaced with correct one from fpbffoqq) + seeded subjects (now 3) and periods (2) + roster 423 students loaded. /grading loads materia/periods/students.
+- Added diagnostics in /api/grading/context: shows URL, key ref (JWT ref), role, and match vs expected project. Selector displays it.
+- NEW: /grading/entry now auto-preloads the "Ser n2" (Ser autoeval) value from public.self_assessment_submissions (matched by normalized last_name+first_name, grade, classroom) when the teacher hasn't typed it. Shows a note about how many were preloaded.
+Files:
+- src/app/api/grading/context/route.ts (diagnostics: url, keyRef, keyRole, refMatch)
+- src/modules/grading/data/supabase.ts (serviceRoleRef/serviceRoleRole/projectUrl via JWT decode)
+- src/app/grading/entry/page.tsx (preload Ser autoeval + note)
+- src/modules/grading/components/GradingEntry.tsx (th label "Ser n2 (auto)")
+- src/modules/grading/data/gradingRepository.ts (getSelfAssessmentNotes)
+Database: no schema change.
+Tests: build passes.
+Pending:
+- (Next) Fine-tune the institutional Excel export format (N | nombre completo | sab/hac/ser con n1..n4/n1..n3 | parciales | final) with subtotal/ceros layout for upload. Current export is basic but functional.
+- Import notas por Excel (digitación + export exist; import pending).
+- Multi-teacher login/permissions (future).
+Warnings: self_assessment_submissions nota is numeric; matched on normalized name. If a student is not found, Ser n2 stays empty (teacher can type it).
 Changes: none (diagnosis only).
 Symptom reported by user: yesterday could not enter/save notes in the grading app.
 Diagnosis (most likely cause):
