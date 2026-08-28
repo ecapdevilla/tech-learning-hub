@@ -148,7 +148,7 @@ export function GradingEntry({ subjectId, periodId, grade, classroom, initial }:
           style={{ display: "none" }}
           onChange={handleImport}
         />
-        <button className="secondary-button" onClick={() => fileRef.current?.click()} disabled={importing}>
+        <button className="primary-button import-excel-btn" onClick={() => fileRef.current?.click()} disabled={importing}>
           {importing ? "Importando…" : "📤 Importar Excel"}
         </button>
       </div>
