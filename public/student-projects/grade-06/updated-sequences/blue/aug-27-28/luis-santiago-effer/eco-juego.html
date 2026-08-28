@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Eco-Aventura · Luis Santiago Effer Rojano</title>
+    <style>
+        /* =============================================
+                   ESTILOS GLOBALES (CSS) - PALETA VERDE
+                   ============================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0d2818 0%, #1a4d2e 45%, #2d6b45 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Decoración de hojas sutiles (puramente estético) */
+        body::before {
+            content: "🌿🍃🌱";
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 3rem;
+            opacity: 0.15;
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "🌳🌿🍀";
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 3.5rem;
+            opacity: 0.12;
+            transform: rotate(10deg);
+            pointer-events: none;
+        }
+
+        /* Contenedor principal con efecto de tarjeta - VERDE */
+        .container {
+            background: rgba(235, 248, 235, 0.97);
+            backdrop-filter: blur(10px);
+            max-width: 780px;
+            width: 100%;
+            padding: 2.5rem 2rem;
+            border-radius: 48px 48px 48px 48px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), 0 0 0 3px #3a8a5a inset, 0 0 0 6px #1f4f32 inset;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* =============================================
+                   PORTADA
+                   ============================================= */
+        #portada {
+            display: block;
+        }
+
+        .logo-icon {
+            font-size: 5.5rem;
+            margin-bottom: 0.3rem;
+            display: block;
+            animation: pulse 2.5s infinite;
+            filter: drop-shadow(0 8px 12px rgba(0,80,20,0.3));
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.08) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .titulo-principal {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #0f4028;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 4px rgba(0,80,30,0.15);
+            margin-bottom: 0.2rem;
+        }
+
+        .titulo-principal span {
+            color: #2d8a4e;
+        }
+
+        .subtitulo {
+            font-size: 1.2rem;
+            color: #1d5a38;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            border-bottom: 2px dashed #6fbb8a;
+            padding-bottom: 1rem;
+        }
+
+        /* Nombres de los integrantes - DESTACADO */
+        .integrantes {
+            background: linear-gradient(135deg, #1a5c38, #2d7a4a);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            display: inline-block;
+            margin-bottom: 1.8rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 0 #0d3a22;
+            border: 2px solid #7fc99a;
+        }
+
+        .integrantes i {
+            font-style: normal;
+            background: #f5c542;
+            color: #0f4028;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            margin: 0 4px;
+        }
+
+        .descripcion-juego {
+            background: #daf0e2;
+            padding: 1.3rem 1.5rem;
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            color: #0d3a22;
+            font-size: 1rem;
+            line-height: 1.7;
+            text-align: left;
+            border-left: 6px solid #1d8a4a;
+            box-shadow: inset 0 2px 8px rgba(0,50,20,0.08);
+        }
+
+        .descripcion-juego strong {
+            color: #0a552a;
+            font-size: 1.05rem;
+        }
+
+        .descripcion-juego .verde-destacado {
+            background: #1d7a42;
+            color: white;
+            padding: 0.1rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .btn-jugar {
+            background: #1a7a3e;
+            border: none;
+            color: white;
+            font-size: 1.9rem;
+            font-weight: 800;
+            padding: 1rem 3.5rem;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 12px 0 #0b4629;
+            transition: all 0.08s linear;
+            letter-spacing: 3px;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            border: 2px solid #9edbb2;
+        }
+
+        .btn-jugar:active {
+            transform: translateY(8px);
+            box-shadow: 0 4px 0 #0b4629;
+        }
+
+        .btn-jugar:hover {
+            background: #239b52;
+            transform: scale(1.02);
+        }
+
+        /* =============================================
+                   CUESTIONARIO - VERDE
+                   ============================================= */
+        #cuestionario {
+            display: none;
+        }
+
+        .header-nivel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #124d2a, #1f6a3a);
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            color: white;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            border: 2px solid #6dbb85;
+            box-shadow: 0 6px 0 #0a3a1e;
+        }
+
+        .nivel-texto {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nivel-texto::before {
+            content: "🌱 ";
+        }
+
+        .puntos-texto {
+            background: #f5c542;
+            color: #0e3a20;
+            padding: 0.3rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            box-shadow: inset 0 -3px 0 #b58f2a;
+        }
+
+        .pregunta {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #0a2e1a;
+            margin-bottom: 2rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(200, 235, 210, 0.4);
+            padding: 1rem 1.5rem;
+            border-radius: 30px;
+            border: 2px dashed #4a9a66;
+            line-height: 1.4;
+        }
+
+        .opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .opcion {
+            background: #edf9f0;
+            border: 2px solid #8ac4a0;
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #0d3320;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 2px 6px rgba(0,60,20,0.06);
+        }
+
+        .opcion:hover {
+            background: #ceecdb;
+            border-color: #2a8a4e;
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(26, 130, 60, 0.2);
+        }
+
+        .opcion.seleccionada {
+            background: #1e7a42;
+            border-color: #0b4a28;
+            color: white;
+            box-shadow: 0 4px 0 #0b4a28;
+            transform: scale(1.01);
+        }
+
+        .opcion span {
+            background: #1a5a38;
+            color: white;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+            border: 2px solid #7fc99a;
+        }
+
+        .opcion.seleccionada span {
+            background: #f5c542;
+            color: #0d3320;
+            border-color: #ffe08a;
+        }
+
+        .btn-siguiente {
+            background: linear-gradient(135deg, #1d6a3a, #2d8a4e);
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 0.9rem 2.5rem;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 8px 0 #0d4628;
+            width: 100%;
+            border: 2px solid #7fc99a;
+            letter-spacing: 1px;
+        }
+
+        .btn-siguiente:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #0d4628;
+        }
+
+        .btn-siguiente:hover:not(:disabled) {
+            background: linear-gradient(135deg, #2a7a48, #3a9a5e);
+            transform: scale(1.01);
+        }
+
+        .btn-siguiente:disabled {
+            opacity: 0.5;
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #0d4628;
+            cursor: not-allowed;
+        }
+
+        /* =============================================
+                   PANTALLA DE RESULTADOS - VERDE
+                   ============================================= */
+        #resultados {
+            display: none;
+        }
+
+        .resultado-icono {
+            font-size: 5rem;
+            margin-bottom: 0.3rem;
+            filter: drop-shadow(0 8px 16px rgba(0,60,20,0.3));
+        }
+
+        .resultado-titulo {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: #0f4028;
+            text-shadow: 0 2px 4px rgba(0,80,30,0.1);
+            margin-bottom: 0.2rem;
+        }
+
+        .resultado-diagnostico {
+            background: #daf0e2;
+            padding: 1.8rem;
+            border-radius: 30px;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            text-align: left;
+            border-left: 8px solid #1d8a4a;
+            border-right: 2px solid #9edbb2;
+            box-shadow: inset 0 2px 12px rgba(0,50,20,0.06);
+        }
+
+        .resultado-diagnostico strong {
+            color: #0a552a;
+        }
+
+        .resultado-puntos {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #f5c542;
+            background: #0e3a20;
+            display: inline-block;
+            padding: 0.3rem 2.5rem;
+            border-radius: 60px;
+            margin-bottom: 1.5rem;
+            border: 3px solid #7fc99a;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .btn-reiniciar {
+            background: linear-gradient(135deg, #1d6a3a, #2d8a4e);
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 0.8rem 2.5rem;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #0d4628;
+            transition: all 0.08s linear;
+            border: 2px solid #9edbb2;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .btn-reiniciar:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #0d4628;
+        }
+
+        .btn-reiniciar:hover {
+            background: linear-gradient(135deg, #2a7a48, #3a9a5e);
+            transform: scale(1.02);
+        }
+
+        /* =============================================
+                   RESPONSIVE
+                   ============================================= */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem 1rem;
+                border-radius: 32px;
+            }
+            .titulo-principal {
+                font-size: 2.2rem;
+            }
+            .pregunta {
+                font-size: 1.3rem;
+                min-height: 60px;
+                padding: 0.8rem 1rem;
+            }
+            .opcion {
+                font-size: 0.95rem;
+                padding: 0.8rem 1rem;
+            }
+            .header-nivel {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            .integrantes {
+                font-size: 1rem;
+                padding: 0.6rem 1rem;
+            }
+            .logo-icon {
+                font-size: 4rem;
+            }
+            .resultado-titulo {
+                font-size: 2rem;
+            }
+            .resultado-diagnostico {
+                font-size: 1rem;
+                padding: 1.2rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 1rem 0.8rem;
+            }
+            .btn-jugar, .btn-siguiente, .btn-reiniciar {
+                font-size: 1.1rem;
+                padding: 0.7rem 1.5rem;
+            }
+            .opcion span {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- =========================================
+        PORTADA
+        ========================================= -->
+        <div id="portada">
+            <span class="logo-icon">🌿</span>
+            <h1 class="titulo-principal">ECO-<span>AVENTURA</span></h1>
+            <p class="subtitulo">🌎 10 niveles para salvar el planeta</p>
+
+            <!-- INTEGRANTES DESTACADOS -->
+            <div class="integrantes">
+                👨‍💻 <i>Luis Santiago Effer Rojano</i>
+            </div>
+
+            <div class="descripcion-juego">
+                <strong>🌱 ¿Listo para el reto?</strong><br>
+                Pon a prueba tus conocimientos sobre <span class="verde-destacado">sostenibilidad</span>,
+                <span class="verde-destacado">cambio climático</span> y <span class="verde-destacado">consumo responsable</span>.
+                Cada respuesta correcta te acerca a ser un <strong>Guardián del Planeta</strong>.
+                <br><br>
+                <span style="display: block; text-align: center; background: #c6e6d4; padding: 0.3rem; border-radius: 30px;">
+                    ✅ Aprende · ✅ Juega · ✅ Actúa
+                </span>
+            </div>
+
+            <button class="btn-jugar" id="btnIniciar">▶ JUGAR</button>
+        </div>
+
+        <!-- =========================================
+        CUESTIONARIO
+        ========================================= -->
+        <div id="cuestionario">
+            <div class="header-nivel">
+                <span class="nivel-texto" id="nivelActual">Nivel 1 / 10</span>
+                <span class="puntos-texto" id="puntosActual">⭐ 0 pts</span>
+            </div>
+
+            <div class="pregunta" id="preguntaTexto">Cargando pregunta...</div>
+
+            <div class="opciones" id="opcionesContainer">
+                <!-- Las opciones se inyectan desde JS -->
+            </div>
+
+            <button class="btn-siguiente" id="btnSiguiente" disabled>▶ Siguiente</button>
+        </div>
+
+        <!-- =========================================
+        RESULTADOS
+        ========================================= -->
+        <div id="resultados">
+            <div class="resultado-icono" id="resultIcono">🏆</div>
+            <h2 class="resultado-titulo" id="resultTitulo">¡Nivel alcanzado!</h2>
+            <div class="resultado-puntos" id="resultPuntos">0 pts</div>
+            <div class="resultado-diagnostico" id="resultDiagnostico">
+                Aquí irá tu diagnóstico personalizado.
+            </div>
+            <button class="btn-reiniciar" id="btnReiniciar">🔄 Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        //  LÓGICA PRINCIPAL (JavaScript)
+        //  Desarrollado por: Luis Santiago Effer Rojano
+        //  Estructura clara, escalable y mantenible.
+        // ================================================================
+
+        (function() {
+            'use strict';
+
+            // -------- BASE DE DATOS DE PREGUNTAS (10 niveles) --------
+            const QUESTIONS = [{
+                pregunta: '¿Cuál de estos materiales tarda más en degradarse en la naturaleza?',
+                opciones: ['Papel', 'Vidrio', 'Plástico', 'Cáscara de plátano'],
+                correcta: 2,
+                consejo: '💡 El plástico puede tardar hasta 500 años en degradarse. ¡Reduce su uso!'
+            }, {
+                pregunta: '¿Qué acción ayuda más a reducir la huella de carbono personal?',
+                opciones: ['Comprar ropa nueva cada mes', 'Usar transporte público o bicicleta', 'Dejar la televisión encendida', 'Comer carne todos los días'],
+                correcta: 1,
+                consejo: '🚲 El transporte es responsable de gran parte de las emisiones. Opta por movilidad sostenible.'
+            }, {
+                pregunta: '¿Cuál es el principal gas de efecto invernadero emitido por la actividad humana?',
+                opciones: ['Oxígeno (O₂)', 'Dióxido de carbono (CO₂)', 'Nitrógeno (N₂)', 'Helio (He)'],
+                correcta: 1,
+                consejo: '🌫️ El CO₂ es el principal culpable del calentamiento global. Planta árboles para compensar.'
+            }, {
+                pregunta: '¿Qué hábito diario ahorra más agua?',
+                opciones: ['Ducharse en 10 minutos', 'Cerrar el grifo al cepillarse', 'Lavar el coche con manguera', 'Regar el jardín al mediodía'],
+                correcta: 1,
+                consejo: '💧 Cerrar el grifo mientras te cepillas ahorra hasta 12 litros por minuto. ¡Pequeños gestos importan!'
+            }, {
+                pregunta: '¿Cuál es la "Regla de las 3R" en ecología?',
+                opciones: ['Reciclar, Recuperar, Reutilizar', 'Reducir, Reutilizar, Reciclar', 'Reutilizar, Reciclar, Recrear', 'Reducir, Reciclar, Recordar'],
+                correcta: 1,
+                consejo: '♻️ Reduce, Reutiliza y Recicla: el orden es clave para minimizar residuos.'
+            }, {
+                pregunta: '¿Qué electrodoméstico consume más energía en un hogar promedio?',
+                opciones: ['Televisor', 'Refrigerador', 'Microondas', 'Cargador de móvil'],
+                correcta: 1,
+                consejo: '❄️ El refrigerador está encendido 24/7. Elige modelos eficientes (A+++) y no lo abras sin necesidad.'
+            }, {
+                pregunta: '¿Cuál es una fuente de energía renovable?',
+                opciones: ['Carbón', 'Petróleo', 'Solar', 'Gas natural'],
+                correcta: 2,
+                consejo: '☀️ La energía solar es limpia e inagotable. Apuesta por renovables para un futuro sostenible.'
+            }, {
+                pregunta: '¿Qué impacto tiene la moda rápida (fast fashion) en el medio ambiente?',
+                opciones: ['Ninguno, es muy ecológica', 'Genera gran cantidad de residuos y contaminación', 'Ayuda a reciclar', 'Usa solo materiales orgánicos'],
+                correcta: 1,
+                consejo: '👗 La industria textil es la segunda más contaminante. Compra ropa duradera y de segunda mano.'
+            }, {
+                pregunta: '¿Qué es la "huella ecológica"?',
+                opciones: ['La cantidad de árboles en un bosque', 'La demanda de recursos naturales por persona', 'El peso de los residuos que generamos', 'La cantidad de CO₂ que exhalamos'],
+                correcta: 1,
+                consejo: '🌍 Mide el impacto de nuestro estilo de vida. ¡Podemos reducirla con consumo responsable!'
+            }, {
+                pregunta: '¿Cuál es la mejor forma de gestionar los residuos orgánicos?',
+                opciones: ['Mezclarlos con plásticos', 'Enterrarlos en el jardín sin más', 'Hacer compost o vermicompost', 'Quemarlos al aire libre'],
+                correcta: 2,
+                consejo: '🌱 El compostaje convierte residuos orgánicos en abono natural. ¡Cierra el ciclo de los nutrientes!'
+            }];
+
+            // -------- ESTADO DE LA APLICACIÓN --------
+            let state = {
+                currentQuestion: 0,
+                points: 0,
+                selectedOption: null,
+                answered: false,
+                totalQuestions: QUESTIONS.length
+            };
+
+            // -------- REFERENCIAS DOM --------
+            const $ = (id) => document.getElementById(id);
+            const portada = $('portada');
+            const cuestionario = $('cuestionario');
+            const resultados = $('resultados');
+            const btnIniciar = $('btnIniciar');
+            const btnSiguiente = $('btnSiguiente');
+            const btnReiniciar = $('btnReiniciar');
+            const nivelActual = $('nivelActual');
+            const puntosActual = $('puntosActual');
+            const preguntaTexto = $('preguntaTexto');
+            const opcionesContainer = $('opcionesContainer');
+            const resultIcono = $('resultIcono');
+            const resultTitulo = $('resultTitulo');
+            const resultPuntos = $('resultPuntos');
+            const resultDiagnostico = $('resultDiagnostico');
+
+            // -------- RENDERIZAR PREGUNTA --------
+            function renderQuestion() {
+                const q = QUESTIONS[state.currentQuestion];
+                if (!q) return;
+
+                nivelActual.textContent = `Nivel ${state.currentQuestion + 1} / ${state.totalQuestions}`;
+                puntosActual.textContent = `⭐ ${state.points} pts`;
+
+                preguntaTexto.textContent = q.pregunta;
+
+                opcionesContainer.innerHTML = '';
+                q.opciones.forEach((opcion, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'opcion';
+                    div.innerHTML = `<span>${String.fromCharCode(65 + idx)}</span> ${opcion}`;
+                    div.dataset.index = idx;
+                    div.addEventListener('click', () => handleOptionClick(idx));
+                    opcionesContainer.appendChild(div);
+                });
+
+                state.selectedOption = null;
+                state.answered = false;
+                btnSiguiente.disabled = true;
+
+                document.querySelectorAll('.opcion').forEach(el => el.classList.remove('seleccionada'));
+            }
+
+            // -------- MANEJO DE CLICK EN OPCIÓN --------
+            function handleOptionClick(index) {
+                if (state.answered) return;
+
+                const opciones = document.querySelectorAll('.opcion');
+                opciones.forEach((el, i) => {
+                    el.classList.toggle('seleccionada', i === index);
+                });
+
+                state.selectedOption = index;
+                state.answered = true;
+                btnSiguiente.disabled = false;
+
+                const q = QUESTIONS[state.currentQuestion];
+                if (index === q.correcta) {
+                    state.points += 10;
+                    puntosActual.textContent = `⭐ ${state.points} pts`;
+                }
+            }
+
+            // -------- AVANZAR AL SIGUIENTE NIVEL O RESULTADOS --------
+            function goToNext() {
+                if (!state.answered) return;
+
+                if (state.currentQuestion === state.totalQuestions - 1) {
+                    showResults();
+                    return;
+                }
+
+                state.currentQuestion++;
+                renderQuestion();
+            }
+
+            // -------- MOSTRAR RESULTADOS --------
+            function showResults() {
+                cuestionario.style.display = 'none';
+                resultados.style.display = 'block';
+
+                const totalPosible = state.totalQuestions * 10;
+                const porcentaje = (state.points / totalPosible) * 100;
+
+                let icono, titulo, diagnostico;
+
+                if (porcentaje >= 90) {
+                    icono = '🌟';
+                    titulo = '¡Guardián del Planeta!';
+                    diagnostico = 'Eres un ejemplo a seguir. Tus hábitos son extraordinariamente sostenibles. ' +
+                        'Comparte tu conocimiento con otros y sigue inspirando. El planeta te necesita. 🌍';
+                } else if (porcentaje >= 70) {
+                    icono = '🌱';
+                    titulo = 'Campeón Sostenible';
+                    diagnostico = 'Vas por buen camino. Aún puedes mejorar en algunos aspectos como el consumo de ' +
+                        'agua y energía. Revisa los consejos de las preguntas y aplícalos. 💪';
+                } else if (porcentaje >= 50) {
+                    icono = '🌿';
+                    titulo = 'Aprendiz Ecológico';
+                    diagnostico = 'Tienes conciencia, pero falta acción. Empieza por pequeños cambios: ' +
+                        'usa menos plástico, camina más y apaga los electrodomésticos. ¡Cada paso cuenta! 🚶';
+                } else {
+                    icono = '⚠️';
+                    titulo = 'Impacto Alto';
+                    diagnostico = 'Tu huella ecológica es elevada. No te desanimes, este es el primer paso para ' +
+                        'cambiar. Revisa todas las preguntas y sus consejos. El cambio empieza hoy. 💚';
+                }
+
+                diagnostico += '<br><br>📌 <strong>Recuerda:</strong> Cada acción cuenta. Reduce, reutiliza y recicla.';
+
+                resultIcono.textContent = icono;
+                resultTitulo.textContent = titulo;
+                resultPuntos.textContent = `${state.points} pts`;
+                resultDiagnostico.innerHTML = diagnostico;
+            }
+
+            // -------- REINICIAR JUEGO --------
+            function resetGame() {
+                state.currentQuestion = 0;
+                state.points = 0;
+                state.selectedOption = null;
+                state.answered = false;
+
+                resultados.style.display = 'none';
+                portada.style.display = 'none';
+                cuestionario.style.display = 'block';
+
+                renderQuestion();
+            }
+
+            // -------- INICIAR DESDE PORTADA --------
+            function startGame() {
+                portada.style.display = 'none';
+                cuestionario.style.display = 'block';
+                resultados.style.display = 'none';
+                resetGame();
+            }
+
+            // -------- EVENTOS --------
+            btnIniciar.addEventListener('click', startGame);
+            btnSiguiente.addEventListener('click', goToNext);
+            btnReiniciar.addEventListener('click', function() {
+                portada.style.display = 'block';
+                cuestionario.style.display = 'none';
+                resultados.style.display = 'none';
+                state.currentQuestion = 0;
+                state.points = 0;
+                state.selectedOption = null;
+                state.answered = false;
+                puntosActual.textContent = '⭐ 0 pts';
+            });
+
+            // -------- INICIALIZACIÓN --------
+            portada.style.display = 'block';
+            cuestionario.style.display = 'none';
+            resultados.style.display = 'none';
+
+        })();
+    </script>
+</body>
+</html>

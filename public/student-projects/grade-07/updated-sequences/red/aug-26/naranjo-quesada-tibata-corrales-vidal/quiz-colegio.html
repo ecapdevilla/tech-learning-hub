@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Quiz Colegio · Juego Completo con Retroalimentación</title>
+    <style>
+        /* ----- RESET & BASE ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b1a2e 0%, #1d3b4f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            padding: 1.5rem;
+            margin: 0;
+        }
+
+        /* ----- WRAPPER MODERNO CON GLASSMORPHISM ----- */
+        .quiz-wrapper {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 4rem;
+            padding: 1.8rem;
+            max-width: 880px;
+            width: 100%;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .quiz-container {
+            background: #f2f9ff;
+            border-radius: 3.2rem;
+            padding: 2rem 2.4rem 2.6rem;
+            box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.02), 0 20px 48px rgba(0, 0, 0, 0.25);
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ----- HEADER ----- */
+        .quiz-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            margin-bottom: 0.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 3px solid rgba(27, 79, 114, 0.15);
+        }
+
+        .quiz-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f3b57;
+            letter-spacing: -0.3px;
+        }
+
+        .quiz-title .emoji-badge {
+            background: #f7c948;
+            padding: 0.2rem 0.9rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            color: #1d3f4f;
+            font-weight: 600;
+        }
+
+        .progress-badge {
+            background: #d0e4f5;
+            padding: 0.35rem 1.6rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #124263;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+            white-space: nowrap;
+        }
+
+        /* ----- INTRO / WELCOME SCREEN ----- */
+        .intro-screen {
+            background: #ffffff;
+            border-radius: 2.4rem;
+            padding: 2.2rem 2.4rem 2.6rem;
+            margin: 1.2rem 0 0.8rem;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e3eef9;
+            text-align: center;
+        }
+
+        .intro-screen .intro-icon {
+            font-size: 4.2rem;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .intro-screen h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0a2a3f;
+            margin-bottom: 0.8rem;
+        }
+
+        .intro-screen .intro-sub {
+            font-size: 1.1rem;
+            color: #2b5a78;
+            max-width: 600px;
+            margin: 0 auto 1.8rem;
+            line-height: 1.6;
+        }
+
+        .intro-screen .intro-objective {
+            background: #e7f2fa;
+            border-radius: 1.8rem;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 2rem;
+            border-left: 6px solid #3f8db5;
+            text-align: left;
+        }
+
+        .intro-screen .intro-objective strong {
+            color: #0a3b57;
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .intro-screen .intro-objective p {
+            color: #1d4a66;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .intro-screen .intro-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem 1.8rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            color: #1d4f6b;
+        }
+
+        .intro-screen .intro-features span {
+            background: #f0f7fe;
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border: 1px solid #cde0ef;
+        }
+
+        .btn-start {
+            background: #3f946b;
+            border: none;
+            border-radius: 60px;
+            padding: 0.9rem 3.5rem;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: white;
+            box-shadow: 0 8px 0 #1f5f41, 0 8px 24px rgba(0, 0, 0, 0.15);
+            transition: all 0.08s ease;
+            cursor: pointer;
+            border: 1px solid #72bf94;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-start:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #1f5f41;
+        }
+
+        .btn-start:hover {
+            background: #47a87a;
+            transform: scale(1.02);
+        }
+
+        /* ----- QUIZ CARD (oculto inicialmente) ----- */
+        .quiz-card {
+            background: #ffffff;
+            border-radius: 2.4rem;
+            padding: 2rem 2.2rem 2.2rem;
+            margin: 1.2rem 0 0.8rem;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e3eef9;
+            display: none;
+        }
+
+        .quiz-card.active {
+            display: block;
+            animation: fadeSlideUp 0.4s ease;
+        }
+
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(18px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #dcebf6;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a577a;
+            margin-bottom: 0.6rem;
+        }
+
+        .question-text {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #0a2a3f;
+            line-height: 1.4;
+            min-height: 4.8rem;
+            margin-bottom: 1.8rem;
+            padding-left: 0.2rem;
+            word-break: break-word;
+        }
+
+        /* ----- OPTIONS ----- */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            background: #f5faff;
+            border: 2px solid #d5e6f5;
+            border-radius: 60px;
+            padding: 0.9rem 1.8rem;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #1a405a;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.12s ease;
+            box-shadow: 0 3px 0 #bccfdf;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #e7f1fb;
+            border-color: #8bb3d1;
+            transform: scale(1.01) translateY(-1px);
+            box-shadow: 0 4px 0 #a9bfd2;
+        }
+
+        .option-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #bccfdf;
+        }
+
+        .option-btn .letter {
+            background: #c6dcee;
+            border-radius: 50%;
+            width: 2.1rem;
+            height: 2.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #044163;
+            flex-shrink: 0;
+            transition: 0.1s;
+        }
+
+        .option-btn.correct {
+            background: #c8f0c8;
+            border-color: #2d8f2d;
+            box-shadow: 0 0 0 3px #4bb34b, 0 3px 0 #1e6b1e;
+            color: #064d06;
+        }
+
+        .option-btn.correct .letter {
+            background: #3caf3c;
+            color: white;
+        }
+
+        .option-btn.wrong {
+            background: #fad6d6;
+            border-color: #b84a4a;
+            box-shadow: 0 0 0 3px #db6a6a, 0 3px 0 #8f3a3a;
+            color: #6b1a1a;
+        }
+
+        .option-btn.wrong .letter {
+            background: #d9534f;
+            color: white;
+        }
+
+        .option-btn:disabled {
+            opacity: 0.85;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 2px 0 #bccfdf;
+        }
+
+        /* ----- FEEDBACK MEJORADO (RETROALIMENTACIÓN) ----- */
+        .feedback-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.2rem;
+        }
+
+        .message-box {
+            background: #e7f0f9;
+            padding: 0.9rem 1.8rem;
+            border-radius: 60px;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #13415b;
+            min-height: 4.2rem;
+            display: flex;
+            align-items: center;
+            flex: 2;
+            min-width: 200px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+            border-left: 6px solid #6a9fc7;
+            transition: all 0.3s ease;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .message-box .feedback-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .message-box .feedback-text {
+            flex: 1;
+        }
+
+        .message-box .feedback-detail {
+            font-size: 0.9rem;
+            font-weight: 400;
+            opacity: 0.85;
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .message-box.feedback-correct {
+            background: #e6f5e6;
+            border-left-color: #3caf3c;
+        }
+
+        .message-box.feedback-wrong {
+            background: #fdeaea;
+            border-left-color: #db6a6a;
+        }
+
+        .message-box.feedback-info {
+            background: #e7f0f9;
+            border-left-color: #6a9fc7;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #2d7aa3;
+            border: none;
+            border-radius: 60px;
+            padding: 0.75rem 2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            box-shadow: 0 6px 0 #12415e, 0 6px 16px rgba(0, 0, 0, 0.15);
+            transition: all 0.08s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid #6ea7ca;
+            letter-spacing: 0.3px;
+        }
+
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #12415e;
+        }
+
+        button:disabled {
+            opacity: 0.45;
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #12415e;
+            pointer-events: none;
+        }
+
+        .btn-secondary {
+            background: #5d7186;
+            border-color: #95a9bb;
+            box-shadow: 0 6px 0 #3a4a5a;
+        }
+
+        .btn-success {
+            background: #3f946b;
+            border-color: #72bf94;
+            box-shadow: 0 6px 0 #1f5f41;
+        }
+
+        /* ----- STATS ----- */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1b4b66;
+            background: #dcebf6;
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 0.3rem 1rem;
+        }
+
+        .stats .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #ffffffcc;
+            padding: 0.15rem 1.2rem 0.15rem 0.8rem;
+            border-radius: 40px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .stats .stat-item strong {
+            background: #1b4f6b;
+            color: white;
+            padding: 0.05rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+        }
+
+        .stat-correct strong { background: #2a7a2a; }
+        .stat-wrong strong { background: #a14242; }
+        .stat-progress strong { background: #2b6f8a; }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 640px) {
+            .quiz-wrapper { padding: 0.8rem; }
+            .quiz-container { padding: 1.2rem; }
+            .quiz-title { font-size: 1.5rem; }
+            .question-text { font-size: 1.3rem; min-height: 3.5rem; }
+            .option-btn { font-size: 1rem; padding: 0.7rem 1.2rem; gap: 0.6rem; }
+            .feedback-area { flex-direction: column; align-items: stretch; }
+            .message-box { min-height: 3.5rem; font-size: 1rem; padding: 0.7rem 1.2rem; }
+            button { padding: 0.6rem 1.4rem; font-size: 1rem; }
+            .stats { flex-direction: column; align-items: stretch; gap: 0.3rem; }
+            .stats .stat-item { justify-content: center; }
+            .quiz-header { flex-direction: column; align-items: flex-start; }
+            .progress-badge { align-self: flex-start; }
+            .intro-screen { padding: 1.5rem; }
+            .intro-screen h2 { font-size: 1.7rem; }
+            .intro-screen .intro-icon { font-size: 3rem; }
+            .btn-start { padding: 0.7rem 2.5rem; font-size: 1.1rem; }
+            .message-box .feedback-icon { font-size: 1.4rem; }
+        }
+
+        /* ----- UTILITY ----- */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-wrapper">
+    <div class="quiz-container">
+        <!-- HEADER -->
+        <div class="quiz-header">
+            <div class="quiz-title">
+                🧠 Quiz Colegio
+                <span class="emoji-badge">📖</span>
+            </div>
+            <div class="progress-badge" id="progressLabel">1 / 30</div>
+        </div>
+
+        <!-- INTRO / WELCOME SCREEN -->
+        <div id="introScreen" class="intro-screen">
+            <span class="intro-icon">🚀</span>
+            <h2>¡Bienvenido al Quiz!</h2>
+            <p class="intro-sub">
+                Pon a prueba tus conocimientos con <strong>30 preguntas</strong> de cultura general,
+                ciencia, historia, arte y más.
+            </p>
+
+            <div class="intro-objective">
+                <strong>🎯 Objetivo del juego</strong>
+                <p>
+                    Responde correctamente la mayor cantidad de preguntas posible.
+                    Cada acierto suma un punto. ¡Intenta llegar al 100% de respuestas correctas!
+                    Al finalizar, podrás ver tu puntuación y reiniciar para volver a jugar.
+                </p>
+            </div>
+
+            <div class="intro-features">
+                <span>📚 30 preguntas</span>
+                <span>⏱️ Sin límite de tiempo</span>
+                <span>💡 Feedback inmediato</span>
+                <span>🏆 Puntuación en vivo</span>
+            </div>
+
+            <button class="btn-start" id="startBtn">🎮 Comenzar</button>
+        </div>
+
+        <!-- QUIZ CARD (oculto inicialmente) -->
+        <div id="quizCard" class="quiz-card">
+            <div class="question-number" id="questionNumber">Pregunta 1</div>
+            <div class="question-text" id="questionText">
+                Cargando pregunta...
+            </div>
+
+            <div class="options-grid" id="optionsContainer">
+                <!-- opciones JS -->
+            </div>
+
+            <div class="feedback-area">
+                <div class="message-box feedback-info" id="feedbackMessage">
+                    <span class="feedback-icon">💡</span>
+                    <span class="feedback-text">Selecciona una opción</span>
+                </div>
+                <div class="action-buttons">
+                    <button id="nextBtn" class="btn-success" disabled>➡️ Siguiente</button>
+                    <button id="resetBtn" class="btn-secondary">🔄 Reiniciar</button>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats">
+                <span class="stat-item stat-correct">✅ Aciertos: <strong id="correctCount">0</strong></span>
+                <span class="stat-item stat-wrong">❌ Fallos: <strong id="wrongCount">0</strong></span>
+                <span class="stat-item stat-progress">📊 Progreso: <strong id="progressPercent">0%</strong></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ----- 30 PREGUNTAS (variadas) con retroalimentación extra -----
+        const QUESTIONS = [
+            { question: "¿Cuál es el planeta más grande del sistema solar?", options: ["Júpiter", "Saturno", "Urano", "Neptuno"], correct: 0, explanation: "Júpiter es el planeta más grande, con un diámetro de unos 139.820 km." },
+            { question: "¿Qué elemento químico tiene el símbolo 'Fe'?", options: ["Fósforo", "Flúor", "Hierro", "Francio"], correct: 2, explanation: "'Fe' proviene del latín 'Ferrum', que significa hierro." },
+            { question: "¿Cuántos huesos tiene el cuerpo humano adulto (aprox.)?", options: ["206", "210", "195", "220"], correct: 0, explanation: "El esqueleto humano adulto tiene 206 huesos (los bebés tienen más, que se fusionan)." },
+            { question: "¿Qué tipo de animal es un delfín?", options: ["Pez", "Mamífero", "Anfibio", "Reptil"], correct: 1, explanation: "Los delfines son mamíferos marinos, respiran aire y amamantan a sus crías." },
+            { question: "¿Cuál es la velocidad aproximada de la luz en km/s?", options: ["300.000", "150.000", "500.000", "100.000"], correct: 0, explanation: "La luz viaja a aproximadamente 299.792 km/s en el vacío." },
+            { question: "¿Qué gas es el más abundante en la atmósfera?", options: ["Oxígeno", "Nitrógeno", "CO₂", "Argón"], correct: 1, explanation: "El nitrógeno (N₂) compone cerca del 78% de la atmósfera terrestre." },
+            { question: "¿Qué parte de la célula contiene el material genético?", options: ["Membrana", "Citoplasma", "Núcleo", "Mitocondria"], correct: 2, explanation: "El núcleo celular alberga el ADN, el material genético." },
+            { question: "¿Cuál es el animal más grande del mundo?", options: ["Elefante", "Ballena azul", "Calamar gigante", "Tiburón ballena"], correct: 1, explanation: "La ballena azul puede medir más de 30 metros y pesar hasta 200 toneladas." },
+            { question: "¿Qué tipo de roca se forma por enfriamiento del magma?", options: ["Sedimentaria", "Metamórfica", "Ígnea", "Caliza"], correct: 2, explanation: "Las rocas ígneas se forman por el enfriamiento y solidificación del magma." },
+            { question: "¿Qué científico propuso la teoría de la relatividad?", options: ["Newton", "Einstein", "Hawking", "Galileo"], correct: 1, explanation: "Albert Einstein publicó la teoría de la relatividad en 1905 y 1915." },
+            { question: "¿En qué año llegó el hombre a la Luna?", options: ["1965", "1969", "1971", "1968"], correct: 1, explanation: "El Apolo 11 aterrizó en la Luna el 20 de julio de 1969." },
+            { question: "¿Qué país tiene la mayor población del mundo?", options: ["India", "China", "EE.UU.", "Indonesia"], correct: 0, explanation: "India superó a China en 2023 como el país más poblado." },
+            { question: "¿Cuál es el océano más extenso?", options: ["Atlántico", "Índico", "Pacífico", "Ártico"], correct: 2, explanation: "El océano Pacífico cubre más de 165 millones de km²." },
+            { question: "¿Quién fue el primer emperador romano?", options: ["Julio César", "Augusto", "Nerón", "Calígula"], correct: 1, explanation: "Augusto (Cayo Octavio) fue el primer emperador romano en el 27 a.C." },
+            { question: "¿Qué civilización construyó Machu Picchu?", options: ["Azteca", "Maya", "Inca", "Olmeca"], correct: 2, explanation: "Machu Picchu fue construida por los incas en el siglo XV." },
+            { question: "¿En qué continente está Egipto?", options: ["Asia", "Europa", "África", "América"], correct: 2, explanation: "Egipto está en el noreste de África, aunque tiene territorio en Asia (Sinaí)." },
+            { question: "¿Qué río es el más largo del mundo?", options: ["Nilo", "Amazonas", "Misisipi", "Yangtsé"], correct: 1, explanation: "El Amazonas es el río más largo (≈7.000 km), superando al Nilo." },
+            { question: "¿Qué país es 'el país del sol naciente'?", options: ["China", "Corea", "Japón", "Tailandia"], correct: 2, explanation: "Japón es conocido como 'el país del sol naciente' (Nippon)." },
+            { question: "¿Quién pintó la Mona Lisa?", options: ["Miguel Ángel", "Leonardo da Vinci", "Rafael", "Donatello"], correct: 1, explanation: "Leonardo da Vinci pintó la Mona Lisa entre 1503 y 1519." },
+            { question: "¿En qué siglo ocurrió la Revolución Francesa?", options: ["XVIII", "XIX", "XVII", "XX"], correct: 0, explanation: "La Revolución Francesa comenzó en 1789, en el siglo XVIII." },
+            { question: "¿Quién escribió 'Cien años de soledad'?", options: ["Mario Vargas Llosa", "Gabriel García Márquez", "Julio Cortázar", "Pablo Neruda"], correct: 1, explanation: "Gabriel García Márquez publicó esta obra maestra en 1967." },
+            { question: "¿Qué obra es de William Shakespeare?", options: ["Hamlet", "La Divina Comedia", "El Quijote", "La Ilíada"], correct: 0, explanation: "Hamlet es una de las tragedias más famosas de Shakespeare." },
+            { question: "¿Cuál es el instrumento más grande de una orquesta?", options: ["Violonchelo", "Contrabajo", "Arpa", "Trombón"], correct: 1, explanation: "El contrabajo es el instrumento de cuerda más grande y grave." },
+            { question: "¿Qué deporte se juega con un 'birdie'?", options: ["Tenis", "Bádminton", "Pádel", "Squash"], correct: 1, explanation: "En bádminton se usa un volante (birdie) hecho de plumas o plástico." },
+            { question: "¿Qué idioma es el más hablado (lengua materna)?", options: ["Inglés", "Mandarín", "Español", "Hindi"], correct: 1, explanation: "El mandarín es el idioma con más hablantes nativos (≈1.100 millones)." },
+            { question: "¿Cuál es el día más largo en el hemisferio norte?", options: ["21 junio", "21 diciembre", "20 marzo", "22 septiembre"], correct: 0, explanation: "El solsticio de verano (21 de junio) es el día más largo." },
+            { question: "¿Qué moneda se usa en el Reino Unido?", options: ["Euro", "Dólar", "Libra esterlina", "Yen"], correct: 2, explanation: "La libra esterlina (GBP) es la moneda oficial del Reino Unido." },
+            { question: "¿Qué es un 'archipiélago'?", options: ["Desierto", "Grupo de islas", "Cordillera", "Río"], correct: 1, explanation: "Un archipiélago es un conjunto de islas cercanas entre sí." },
+            { question: "¿Qué vitamina produce el sol en la piel?", options: ["Vitamina A", "B12", "C", "D"], correct: 3, explanation: "La vitamina D se sintetiza en la piel con la exposición solar." },
+            { question: "¿Qué se celebra el 12 de octubre en muchos países hispanos?", options: ["Navidad", "Día de la Raza", "Año Nuevo", "Día del Trabajo"], correct: 1, explanation: "El Día de la Raza conmemora el encuentro entre Europa y América." }
+        ];
+
+        // ----- ESTADO -----
+        let currentIndex = 0;
+        let scoreCorrect = 0;
+        let scoreWrong = 0;
+        let isAnswered = false;
+        const totalQuestions = QUESTIONS.length;
+        let gameStarted = false;
+
+        // DOM
+        const introScreen = document.getElementById('introScreen');
+        const quizCard = document.getElementById('quizCard');
+        const startBtn = document.getElementById('startBtn');
+
+        const questionEl = document.getElementById('questionText');
+        const questionNumberEl = document.getElementById('questionNumber');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const feedbackEl = document.getElementById('feedbackMessage');
+        const nextBtn = document.getElementById('nextBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressLabel = document.getElementById('progressLabel');
+        const correctSpan = document.getElementById('correctCount');
+        const wrongSpan = document.getElementById('wrongCount');
+        const progressPercent = document.getElementById('progressPercent');
+
+        // ----- ACTUALIZAR UI -----
+        function updateStatsUI() {
+            correctSpan.textContent = scoreCorrect;
+            wrongSpan.textContent = scoreWrong;
+            const answered = scoreCorrect + scoreWrong;
+            const pct = totalQuestions > 0 ? Math.round((answered / totalQuestions) * 100) : 0;
+            progressPercent.textContent = Math.min(pct, 100) + '%';
+        }
+
+        function updateProgressUI() {
+            progressLabel.textContent = `${currentIndex + 1} / ${totalQuestions}`;
+            questionNumberEl.textContent = `Pregunta ${currentIndex + 1}`;
+        }
+
+        function resetOptionsStyle() {
+            optionsContainer.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('correct', 'wrong');
+                btn.disabled = false;
+            });
+        }
+
+        function disableOptions() {
+            optionsContainer.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+        }
+
+        // ----- FUNCIÓN PARA ACTUALIZAR FEEDBACK CON RETROALIMENTACIÓN -----
+        function setFeedback(isCorrect, correctAnswer, explanation) {
+            const iconSpan = feedbackEl.querySelector('.feedback-icon');
+            const textSpan = feedbackEl.querySelector('.feedback-text');
+
+            // Resetear clases
+            feedbackEl.classList.remove('feedback-correct', 'feedback-wrong', 'feedback-info');
+
+            if (isCorrect) {
+                feedbackEl.classList.add('feedback-correct');
+                iconSpan.textContent = '✅';
+                textSpan.innerHTML = `
+                    ¡Correcto! Muy bien.
+                    <span class="feedback-detail">${explanation || '¡Sigue así!'}</span>
+                `;
+            } else {
+                feedbackEl.classList.add('feedback-wrong');
+                iconSpan.textContent = '❌';
+                textSpan.innerHTML = `
+                    Incorrecto. La respuesta correcta era: <strong>"${correctAnswer}"</strong>
+                    <span class="feedback-detail">${explanation || '¡Sigue practicando!'}</span>
+                `;
+            }
+        }
+
+        function setFeedbackInfo(message) {
+            const iconSpan = feedbackEl.querySelector('.feedback-icon');
+            const textSpan = feedbackEl.querySelector('.feedback-text');
+            feedbackEl.classList.remove('feedback-correct', 'feedback-wrong');
+            feedbackEl.classList.add('feedback-info');
+            iconSpan.textContent = '💡';
+            textSpan.innerHTML = message;
+        }
+
+        // ----- RENDERIZAR PREGUNTA -----
+        function renderQuestion() {
+            const q = QUESTIONS[currentIndex];
+            if (!q) return;
+
+            questionEl.textContent = q.question;
+            optionsContainer.innerHTML = '';
+
+            const letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.setAttribute('data-index', idx);
+                btn.innerHTML = `<span class="letter">${letters[idx]}</span> ${optText}`;
+                btn.addEventListener('click', () => handleOptionClick(idx));
+                optionsContainer.appendChild(btn);
+            });
+
+            resetOptionsStyle();
+            setFeedbackInfo('Selecciona una opción');
+            nextBtn.disabled = true;
+            isAnswered = false;
+
+            updateProgressUI();
+            updateStatsUI();
+        }
+
+        // ----- MANEJAR CLICK EN OPCIÓN (CON RETROALIMENTACIÓN DETALLADA) -----
+        function handleOptionClick(selectedIndex) {
+            if (isAnswered) return;
+
+            const q = QUESTIONS[currentIndex];
+            const isCorrect = (selectedIndex === q.correct);
+            const btns = optionsContainer.querySelectorAll('.option-btn');
+
+            btns.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('correct');
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            if (isCorrect) {
+                scoreCorrect++;
+                setFeedback(true, q.options[q.correct], q.explanation);
+            } else {
+                scoreWrong++;
+                setFeedback(false, q.options[q.correct], q.explanation);
+            }
+
+            isAnswered = true;
+            nextBtn.disabled = false;
+            updateStatsUI();
+        }
+
+        // ----- SIGUIENTE / FINALIZAR -----
+        function goToNextQuestion() {
+            if (!isAnswered) return;
+
+            if (currentIndex + 1 < totalQuestions) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                // Quiz completado
+                setFeedbackInfo('🎉 ¡Has completado el quiz! Presiona "Reiniciar" para jugar de nuevo.');
+                nextBtn.disabled = true;
+                disableOptions();
+                questionEl.textContent = '🏁 ¡Cuestionario finalizado!';
+                questionNumberEl.textContent = '🎓 Fin';
+                optionsContainer.innerHTML = `
+                    <div style="text-align:center; padding: 1.8rem; background: #e5f2fa; border-radius: 40px; font-size: 1.3rem; border: 2px dashed #3f7b9e;">
+                        ✅ Aciertos: ${scoreCorrect} &nbsp;|&nbsp; ❌ Fallos: ${scoreWrong}
+                        <br><span style="font-size:0.95rem; color: #1d5779;">🎯 ¡Excelente trabajo, campeón!</span>
+                    </div>
+                `;
+                progressLabel.textContent = `✅ Fin`;
+                progressPercent.textContent = '100%';
+                nextBtn.disabled = true;
+            }
+        }
+
+        // ----- REINICIAR (desde el quiz) -----
+        function resetQuiz() {
+            currentIndex = 0;
+            scoreCorrect = 0;
+            scoreWrong = 0;
+            isAnswered = false;
+
+            renderQuestion();
+            setFeedbackInfo('Selecciona una opción');
+            nextBtn.disabled = true;
+            updateProgressUI();
+            updateStatsUI();
+            // Asegurar que el quiz esté visible
+            introScreen.classList.add('hidden');
+            quizCard.classList.add('active');
+            gameStarted = true;
+        }
+
+        // ----- INICIAR JUEGO (desde intro) -----
+        function startGame() {
+            introScreen.classList.add('hidden');
+            quizCard.classList.add('active');
+            gameStarted = true;
+            resetQuiz(); // carga primera pregunta
+        }
+
+        // ----- INICIALIZAR -----
+        function init() {
+            // Mostrar intro por defecto
+            introScreen.classList.remove('hidden');
+            quizCard.classList.remove('active');
+            gameStarted = false;
+
+            startBtn.addEventListener('click', startGame);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            resetBtn.addEventListener('click', resetQuiz);
+
+            // Atajos de teclado (solo cuando el quiz está activo)
+            document.addEventListener('keydown', (e) => {
+                if (!gameStarted) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        startGame();
+                    }
+                    return;
+                }
+                if (e.key === 'r' || e.key === 'R') {
+                    e.preventDefault();
+                    resetQuiz();
+                }
+                if (e.key === 'ArrowRight' && !nextBtn.disabled) {
+                    e.preventDefault();
+                    goToNextQuestion();
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+    })();
+</script>
+</body>
+</html>

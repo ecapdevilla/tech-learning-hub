@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Mentorías Invertidas · Ever After High ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           CSS EVER AFTER HIGH - Estilo mágico, rosa y rojo
+           ============================================================ */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 30%, #f48fb1 60%, #ec407a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Elementos decorativos Ever After High */
+        body::before {
+            content: '✨';
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 40px;
+            opacity: 0.3;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '👑';
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 40px;
+            opacity: 0.3;
+            animation: sparkle 3s ease-in-out infinite 1.5s;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+            50% { transform: scale(1.2) rotate(10deg); opacity: 0.6; }
+        }
+
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            box-shadow: 0 40px 80px -20px rgba(180, 40, 80, 0.4),
+                        0 0 0 3px rgba(255, 215, 0, 0.3),
+                        0 0 40px rgba(255, 215, 0, 0.1);
+            padding: 30px 35px 35px;
+            border: 3px solid rgba(255, 215, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Brillo mágico */
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            animation: magicGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes magicGlow {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(5%, 5%); }
+        }
+
+        /* ============================================================
+           HEADER - Ever After High Style
+           ============================================================ */
+        .team-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-header::after {
+            content: '✨';
+            position: absolute;
+            bottom: -18px;
+            right: 40px;
+            font-size: 24px;
+            opacity: 0.6;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #e91e63, #f06292, #ffd700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4),
+                        0 0 30px rgba(255, 215, 0, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .header-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4a1528, #e91e63, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.03em;
+        }
+
+        .header-left h1 small {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e91e63, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding: 3px 14px;
+            border-radius: 40px;
+            margin-left: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            -webkit-text-fill-color: #e91e63;
+        }
+
+        .team-names {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 10px 24px;
+            border-radius: 60px;
+            border: 2px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.08);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4a1528;
+        }
+
+        .team-names span {
+            background: linear-gradient(135deg, #fce4ec, #fff5f5);
+            padding: 4px 14px;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.06);
+            transition: all 0.3s ease;
+            color: #6d1a3a;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .team-names span:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.15);
+            background: linear-gradient(135deg, #f8bbd0, #fce4ec);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        /* ============================================================
+           GRID PRINCIPAL
+           ============================================================ */
+        .app-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================================
+           MAIN PANEL - Ever After High
+           ============================================================ */
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: linear-gradient(145deg, #ffffff, #fce4ec);
+            border-radius: 28px;
+            padding: 24px 28px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 4px 24px rgba(233, 30, 99, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '👑';
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            font-size: 70px;
+            opacity: 0.06;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .welcome-card::after {
+            content: '✨';
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            font-size: 30px;
+            opacity: 0.08;
+            animation: sparkle 3s ease-in-out infinite 1s;
+        }
+
+        .welcome-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #4a1528;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .welcome-card .objetivo {
+            margin-top: 12px;
+            padding: 14px 18px;
+            background: rgba(233, 30, 99, 0.05);
+            border-radius: 14px;
+            border-left: 5px solid #ffd700;
+            position: relative;
+        }
+
+        .welcome-card .objetivo::before {
+            content: '⭐';
+            position: absolute;
+            top: -8px;
+            right: 10px;
+            font-size: 20px;
+        }
+
+        .welcome-card .objetivo p {
+            color: #5a1f36;
+            font-weight: 500;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .badge-ods-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .badge-ods {
+            background: linear-gradient(135deg, #e91e63, #f06292, #ffd700);
+            color: white;
+            padding: 5px 18px;
+            border-radius: 60px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.25);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .badge-ods-outline {
+            background: transparent;
+            border: 2px solid #e91e63;
+            color: #e91e63;
+            padding: 4px 16px;
+            border-radius: 60px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Simulator Card */
+        .simulator-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 24px 28px;
+            box-shadow: 0 8px 40px rgba(233, 30, 99, 0.08);
+            border: 2px solid rgba(255, 215, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .simulator-card::before {
+            content: '🌟';
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 60px;
+            opacity: 0.05;
+        }
+
+        .simulator-card:hover {
+            box-shadow: 0 12px 56px rgba(233, 30, 99, 0.12);
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .simulator-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #4a1528;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .simulator-card h3 .badge-game {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e91e63, #ffd700);
+            color: white;
+            font-size: 0.55rem;
+            padding: 3px 16px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.25);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* Role Selector - Ever After High */
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            padding: 5px;
+            border-radius: 60px;
+            margin-bottom: 16px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            box-shadow: inset 0 2px 8px rgba(233, 30, 99, 0.06);
+        }
+
+        .role-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 12px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #6d1a3a;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .role-btn.active {
+            background: linear-gradient(135deg, #ffffff, #fce4ec);
+            color: #4a1528;
+            box-shadow: 0 4px 24px rgba(233, 30, 99, 0.2),
+                        0 0 20px rgba(255, 215, 0, 0.1);
+            transform: scale(1.02);
+            border: 2px solid #ffd700;
+        }
+
+        .role-btn:not(.active):hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.02);
+        }
+
+        .role-btn .emoji-role {
+            font-size: 1.2rem;
+        }
+
+        /* Tutorial Box */
+        .tutorial-box {
+            background: linear-gradient(145deg, #fce4ec, #f8f0f3);
+            border-radius: 20px;
+            padding: 20px 22px;
+            border: 2px solid rgba(255, 215, 0, 0.12);
+            min-height: 180px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tutorial-box::before {
+            content: '💖';
+            position: absolute;
+            bottom: -30px;
+            right: -20px;
+            font-size: 100px;
+            opacity: 0.04;
+        }
+
+        .tutorial-box .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tutorial-box .step-number {
+            background: linear-gradient(135deg, #e91e63, #f06292, #ffd700);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.25);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .tutorial-box .step-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #4a1528;
+        }
+
+        .tutorial-box .step-desc {
+            color: #5a1f36;
+            margin: 8px 0 12px;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .tutorial-box .step-code {
+            background: #2a0f1a;
+            color: #f8bbd0;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-family: 'Menlo', 'Courier New', monospace;
+            font-size: 0.75rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            position: relative;
+        }
+
+        .tutorial-box .step-code::before {
+            content: '✨';
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.9rem;
+            opacity: 0.2;
+        }
+
+        /* Example Image */
+        .example-image {
+            margin: 12px 0 10px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 14px;
+            border: 2px dashed rgba(255, 215, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            transition: all 0.3s ease;
+        }
+
+        .example-image:hover {
+            border-color: rgba(255, 215, 0, 0.4);
+            background: #fce4ec;
+            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.06);
+        }
+
+        .example-image .img-placeholder {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0, #ffd700);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .example-image .img-caption {
+            font-size: 0.8rem;
+            color: #5a1f36;
+            flex: 1;
+        }
+
+        .example-image .img-caption strong {
+            color: #4a1528;
+        }
+
+        .example-image .img-caption div {
+            font-size: 0.7rem;
+            color: #8a4b62;
+            margin-top: 2px;
+        }
+
+        /* Buttons - Ever After High Style */
+        .action-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e91e63, #f06292, #ffd700);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 24px rgba(233, 30, 99, 0.3);
+            flex: 1;
+            justify-content: center;
+            min-width: 120px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary::after {
+            content: '✨';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 40px rgba(233, 30, 99, 0.4),
+                        0 0 30px rgba(255, 215, 0, 0.15);
+        }
+
+        .btn-primary:hover::after {
+            opacity: 1;
+            right: 15px;
+        }
+
+        .btn-primary:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.25);
+            color: #5a1f36;
+            font-weight: 600;
+            padding: 11px 22px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            border-color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(233, 30, 99, 0.1);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #c2185b, #e91e63, #ffd700);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 24px rgba(194, 24, 91, 0.3);
+            flex: 1;
+            justify-content: center;
+            min-width: 120px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 40px rgba(194, 24, 91, 0.4),
+                        0 0 30px rgba(255, 215, 0, 0.15);
+        }
+
+        .btn-success:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #880e4f, #ad1457);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 24px rgba(136, 14, 79, 0.25);
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 40px rgba(136, 14, 79, 0.35);
+        }
+
+        .btn-danger:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
+        /* Feedback Box */
+        .feedback-box {
+            margin-top: 14px;
+            padding: 14px 20px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border-left: 6px solid #ffd700;
+            color: #4a1528;
+            font-weight: 500;
+            display: none;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.06);
+            position: relative;
+        }
+
+        .feedback-box::before {
+            content: '✨';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            opacity: 0.3;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 8px 20px;
+            border: 2px solid rgba(255, 215, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 100px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stat-item::after {
+            content: '✨';
+            position: absolute;
+            right: -5px;
+            top: -8px;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover::after {
+            opacity: 0.6;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.08);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .stat-item .stat-label {
+            font-weight: 500;
+            color: #5a1f36;
+            font-size: 0.8rem;
+        }
+
+        .stat-item .stat-value {
+            font-weight: 700;
+            color: #4a1528;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            padding: 2px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        /* ============================================================
+           SIDE PANEL - Ever After High
+           ============================================================ */
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 24px 22px;
+            box-shadow: 0 8px 40px rgba(233, 30, 99, 0.08);
+            border: 2px solid rgba(255, 215, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '👑';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 40px;
+            opacity: 0.05;
+        }
+
+        .profile-card:hover {
+            box-shadow: 0 12px 48px rgba(233, 30, 99, 0.12);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .profile-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #4a1528;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .avatar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #fce4ec, #fff5f5);
+            padding: 10px 14px;
+            border-radius: 40px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .avatar-item:hover {
+            background: linear-gradient(135deg, #f8bbd0, #fce4ec);
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateX(4px) scale(1.02);
+            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.06);
+        }
+
+        .avatar-item .emoji {
+            font-size: 1.5rem;
+            width: 36px;
+            text-align: center;
+        }
+
+        .avatar-item .info {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a1528;
+        }
+
+        .avatar-item .info small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.65rem;
+            color: #8a4b62;
+        }
+
+        .profile-card .badge-ods-small {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0, #ffd700);
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6d1a3a;
+            display: inline-block;
+            margin-top: 14px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.06);
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background: linear-gradient(145deg, #ffffff, #fce4ec);
+            border-radius: 28px;
+            padding: 20px 22px;
+            box-shadow: 0 8px 40px rgba(233, 30, 99, 0.08);
+            border: 2px solid rgba(255, 215, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '⭐';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 30px;
+            opacity: 0.05;
+        }
+
+        .stats-card .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(233, 30, 99, 0.06);
+        }
+
+        .stats-card .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stats-card .stat-row .label {
+            font-weight: 500;
+            color: #5a1f36;
+            font-size: 0.85rem;
+        }
+
+        .stats-card .stat-row .value {
+            font-weight: 700;
+            background: linear-gradient(135deg, #e91e63, #f06292, #ffd700);
+            color: white;
+            padding: 2px 16px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.25);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .stats-card .impact-text {
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: rgba(233, 30, 99, 0.04);
+            border-radius: 14px;
+            border-left: 5px solid #ffd700;
+            font-size: 0.8rem;
+            color: #5a1f36;
+            font-weight: 500;
+        }
+
+        /* Quote Card */
+        .quote-card {
+            background: linear-gradient(135deg, #e91e63, #f06292, #ffd700);
+            border-radius: 28px;
+            padding: 20px 24px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 40px rgba(233, 30, 99, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quote-card::before {
+            content: '👑';
+            position: absolute;
+            top: -30px;
+            right: -20px;
+            font-size: 100px;
+            opacity: 0.08;
+        }
+
+        .quote-card::after {
+            content: '✨';
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            font-size: 80px;
+            opacity: 0.06;
+        }
+
+        .quote-card .quote-icon {
+            font-size: 2.2rem;
+            margin-bottom: 4px;
+        }
+
+        .quote-card p {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .quote-card .quote-author {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            opacity: 0.85;
+            margin-top: 6px;
+            font-weight: 400;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer-dev {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 3px solid rgba(255, 215, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: #6d1a3a;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-dev strong {
+            color: #4a1528;
+        }
+
+        .footer-dev .badge-code {
+            background: linear-gradient(135deg, #2a0f1a, #4a1528);
+            color: #f8bbd0;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            font-family: 'Menlo', monospace;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 900px) {
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+            .team-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .team-names {
+                width: 100%;
+                justify-content: center;
+            }
+            .app-container {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 14px;
+                border-radius: 28px;
+            }
+            .role-selector {
+                flex-direction: column;
+                border-radius: 30px;
+            }
+            .role-btn {
+                padding: 10px;
+            }
+            .action-group {
+                flex-direction: column;
+            }
+            .btn-primary, .btn-secondary, .btn-success, .btn-danger {
+                flex: none;
+                width: 100%;
+            }
+            .welcome-card, .simulator-card {
+                padding: 16px;
+            }
+            .tutorial-box {
+                padding: 14px;
+            }
+            .example-image {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .stats-row {
+                flex-direction: column;
+            }
+            .header-left h1 {
+                font-size: 1.3rem;
+            }
+            .team-names {
+                font-size: 0.7rem;
+                padding: 8px 16px;
+            }
+            body::before, body::after {
+                display: none;
+            }
+        }
+
+        ::selection {
+            background: rgba(233, 30, 99, 0.15);
+            color: #4a1528;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- ============================================================
+    HEADER - Ever After High
+    ============================================================ -->
+    <header class="team-header">
+        <div class="header-left">
+            <div class="logo-icon">👑</div>
+            <h1>
+                Mentorías Invertidas
+                <small>✨ Ever After</small>
+            </h1>
+        </div>
+        <div class="team-names">
+            <span>👩‍💻 Sarah Domenech</span>
+            <span>👩‍💻 Andrea Saenz</span>
+            <span>👨‍💻 Javier Vengoechea</span>
+            <span>👩‍💻 Elise Sacar</span>
+            <span>👩‍💻 Salomé Castro</span>
+            <span>👩‍💻 Mariana Ricardo</span>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    GRID PRINCIPAL
+    ============================================================ -->
+    <div class="app-grid">
+
+        <!-- ======== COLUMNA IZQUIERDA ======== -->
+        <div class="main-panel">
+
+            <!-- Tarjeta de bienvenida -->
+            <div class="welcome-card">
+                <h2>🎮 Juego de Mentoría</h2>
+                <div class="objetivo">
+                    <p><strong>🎯 Objetivo:</strong> Completa los 3 pasos del tutorial enseñando a un aprendiz virtual. Gana puntos, sube de nivel y demuestra tu habilidad como mentor. ¡Cada paso completado te acerca a la insignia de "Mentor Experto"!</p>
+                </div>
+                <div class="badge-ods-container">
+                    <span class="badge-ods">🎓 ODS 4 · Educación</span>
+                    <span class="badge-ods">💡 ODS 9 · Innovación</span>
+                    <span class="badge-ods">🏘️ ODS 11 · Comunidades</span>
+                    <span class="badge-ods-outline">👑 Ever After High</span>
+                </div>
+            </div>
+
+            <!-- SIMULADOR / JUEGO -->
+            <div class="simulator-card">
+                <h3>
+                    📱 Simulador de Mentoría
+                    <span class="badge-game">🎮 Juego</span>
+                </h3>
+
+                <!-- Selector de rol -->
+                <div class="role-selector" id="roleSelector">
+                    <button class="role-btn active" data-role="tutor">
+                        <span class="emoji-role">🧑‍🏫</span> Tutor
+                    </button>
+                    <button class="role-btn" data-role="aprendiz">
+                        <span class="emoji-role">👴</span> Aprendiz
+                    </button>
+                </div>
+
+                <!-- Tutorial box -->
+                <div class="tutorial-box" id="tutorialBox">
+                    <div class="step-header">
+                        <div class="step-number" id="stepNumber">1</div>
+                        <div class="step-title" id="stepTitle">📘 ¿Cómo enviar un archivo por WhatsApp?</div>
+                    </div>
+                    <div class="step-desc" id="stepDesc">
+                        Paso 1: Abre el chat y toca el clip (📎). Luego selecciona "Documento".
+                    </div>
+                    <div class="example-image">
+                        <div class="img-placeholder">📱</div>
+                        <div class="img-caption">
+                            <strong>📸 Ejemplo:</strong> Captura de pantalla de WhatsApp mostrando el botón 📎 para adjuntar archivos.
+                            <div>(Imagen de referencia · UI simulada)</div>
+                        </div>
+                    </div>
+                    <div class="step-code" id="stepCode">
+                        // Simulación de explicación<br>
+                        función enviarArchivo(usuario) {<br>
+                        &nbsp;&nbsp;if (usuario.confirmado) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;abrirGaleria();<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </div>
+                </div>
+
+                <!-- Acciones del juego -->
+                <div class="action-group">
+                    <button class="btn-primary" id="btnSiguiente">
+                        ➡️ Siguiente
+                    </button>
+                    <button class="btn-secondary" id="btnReiniciar">
+                        🔄 Reiniciar
+                    </button>
+                    <button class="btn-success" id="btnCompletar">
+                        ✅ Completar Paso
+                    </button>
+                    <button class="btn-danger" id="btnResetPuntos">
+                        🔥 Reset Puntos
+                    </button>
+                </div>
+
+                <!-- Feedback -->
+                <div class="feedback-box" id="feedbackBox">
+                    ⭐ ¡Bien! Has avanzado en la mentoría.
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-label">🧑‍🏫 Tutores</span>
+                    <span class="stat-value" id="tutoresActivos">4</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">👴 Aprendices</span>
+                    <span class="stat-value" id="aprendicesActivos">3</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">⭐ Puntos</span>
+                    <span class="stat-value" id="puntosJuego">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">🏆 Nivel</span>
+                    <span class="stat-value" id="nivelJuego">1</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======== COLUMNA DERECHA ======== -->
+        <div class="side-panel">
+
+            <!-- Perfil del equipo -->
+            <div class="profile-card">
+                <h4>👑 Equipo de Desarrollo</h4>
+                <div class="avatar-group">
+                    <div class="avatar-item"><span class="emoji">👩‍💻</span><div class="info">Sarah Domenech <small>Desarrolladora</small></div></div>
+                    <div class="avatar-item"><span class="emoji">🎨</span><div class="info">Andrea Saenz <small>UI/UX Designer</small></div></div>
+                    <div class="avatar-item"><span class="emoji">📊</span><div class="info">Javier Vengoechea <small>Gestor de Datos</small></div></div>
+                    <div class="avatar-item"><span class="emoji">📝</span><div class="info">Elise Sacar <small>Documentación</small></div></div>
+                    <div class="avatar-item"><span class="emoji">🎤</span><div class="info">Salomé Castro <small>Presentadora</small></div></div>
+                    <div class="avatar-item"><span class="emoji">🧪</span><div class="info">Mariana Ricardo <small>QA / Testing</small></div></div>
+                </div>
+                <div class="badge-ods-small">
+                    ⭐ Diseño Centrado en el Usuario
+                </div>
+            </div>
+
+            <!-- Estadísticas del juego -->
+            <div class="stats-card">
+                <div class="stat-row">
+                    <span class="label">📚 Pasos Completados</span>
+                    <span class="value" id="pasosCompletados">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">🏅 Insignias</span>
+                    <span class="value" id="insignias">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">🎯 Progreso</span>
+                    <span class="value" id="progreso">0%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">🔄 Intentos</span>
+                    <span class="value" id="intentos">0</span>
+                </div>
+                <div class="impact-text">
+                    🌱 ODS 4 · 9 · 11 — Impacto comunitario
+                </div>
+            </div>
+
+            <!-- Frase inspiradora -->
+            <div class="quote-card">
+                <div class="quote-icon">👑</div>
+                <p>"La tecnología une generaciones"</p>
+                <div class="quote-author">— Proyecto Code for Change</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <div class="footer-dev">
+        <div>
+            <strong>📌 Código documentado</strong> · JavaScript · HTML5 · CSS3
+            <span class="badge-code">💻 v2.0</span>
+        </div>
+        <div>
+            <span>📋 <strong>Code for Change</strong> · Ingeniería de Soluciones</span>
+        </div>
+        <div>
+            <span>📅 2026 · Todos los derechos reservados</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- ============================================================
+JAVASCRIPT COMPLETO - JUEGO SIMULADOR
+Integra: Variables, Condicionales, Ciclos, Funciones, Arrays, Eventos, DOM
+============================================================ -->
+<script>
+    (function() {
+        "use strict";
+
+        // ============================================================
+        // 1. VARIABLES (estado del juego)
+        // ============================================================
+        let pasoActual = 0;
+        let rolActual = 'tutor';
+        let puntos = 0;
+        let nivel = 1;
+        let pasosCompletados = 0;
+        let insignias = 0;
+        let intentos = 0;
+        let progreso = 0;
+
+        // ============================================================
+        // 2. ARRAYS (colección de datos)
+        // ============================================================
+        const pasosTutorial = [
+            {
+                titulo: "📘 ¿Cómo enviar un archivo por WhatsApp?",
+                descripcion: "Paso 1: Abre el chat y toca el clip (📎). Luego selecciona 'Documento'.",
+                codigo: "// Simulación de explicación\nfunción enviarArchivo(usuario) {\n  if (usuario.confirmado) {\n    abrirGaleria();\n  }\n}"
+            },
+            {
+                titulo: "📎 Paso 2: Buscar el archivo",
+                descripcion: "Navega hasta la carpeta donde guardaste el PDF o imagen. Toca el archivo para seleccionarlo.",
+                codigo: "function buscarArchivo(ruta) {\n  let archivos = ['tarea.pdf', 'foto.jpg'];\n  for (let i=0; i<archivos.length; i++) {\n    if (archivos[i].includes('pdf')) {\n      return archivos[i];\n    }\n  }\n}"
+            },
+            {
+                titulo: "📤 Paso 3: Enviar y confirmar",
+                descripcion: "Toca el botón de enviar (➤). Aparecerá un check verde. ¡Listo!",
+                codigo: "function confirmarEnvio(archivo) {\n  if (archivo !== null) {\n    console.log('Enviado: ' + archivo);\n    return true;\n  } else {\n    return false;\n  }\n}"
+            }
+        ];
+
+        // ============================================================
+        // 3. REFERENCIAS DOM
+        // ============================================================
+        const stepNumber = document.getElementById('stepNumber');
+        const stepTitle = document.getElementById('stepTitle');
+        const stepDesc = document.getElementById('stepDesc');
+        const stepCode = document.getElementById('stepCode');
+        const feedbackBox = document.getElementById('feedbackBox');
+        const roleBtns = document.querySelectorAll('.role-btn');
+
+        // Estadísticas
+        const tutoresActivosEl = document.getElementById('tutoresActivos');
+        const aprendicesActivosEl = document.getElementById('aprendicesActivos');
+        const puntosJuegoEl = document.getElementById('puntosJuego');
+        const nivelJuegoEl = document.getElementById('nivelJuego');
+        const pasosCompletadosEl = document.getElementById('pasosCompletados');
+        const insigniasEl = document.getElementById('insignias');
+        const progresoEl = document.getElementById('progreso');
+        const intentosEl = document.getElementById('intentos');
+
+        // Botones
+        const btnSiguiente = document.getElementById('btnSiguiente');
+        const btnReiniciar = document.getElementById('btnReiniciar');
+        const btnCompletar = document.getElementById('btnCompletar');
+        const btnResetPuntos = document.getElementById('btnResetPuntos');
+
+        // ============================================================
+        // 4. FUNCIONES (lógica reutilizable)
+        // ============================================================
+
+        // Función para actualizar el tutorial (usa condicionales)
+        function actualizarTutorial() {
+            const paso = pasosTutorial[pasoActual];
+            stepNumber.textContent = pasoActual + 1;
+            stepTitle.textContent = paso.titulo;
+            stepDesc.textContent = paso.descripcion;
+            stepCode.textContent = paso.codigo;
+
+            // Condicional: si es aprendiz, mostrar mensaje adicional
+            if (rolActual === 'aprendiz') {
+                stepDesc.textContent += ' (Modo fácil: letra grande y voz disponible)';
+            }
+
+            // Ocultar feedback
+            feedbackBox.classList.remove('show');
+        }
+
+        // Función para cambiar de rol (condicionales)
+        function cambiarRol(rol) {
+            rolActual = rol;
+            roleBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.role === rol) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Condicional: feedback según rol
+            if (rol === 'tutor') {
+                mostrarFeedback('🧑‍🏫 Modo tutor activado. Explica con claridad y paciencia.', 'info');
+            } else {
+                mostrarFeedback('👴 Modo aprendiz activado. Pregunta sin miedo.', 'info');
+            }
+            actualizarTutorial();
+            guardarEstado();
+        }
+
+        // Función para mostrar feedback (condicionales)
+        function mostrarFeedback(mensaje, tipo = 'info') {
+            feedbackBox.textContent = mensaje;
+            feedbackBox.classList.add('show');
+            // Condicional para estilo
+            if (tipo === 'exito') {
+                feedbackBox.style.borderLeftColor = '#ffd700';
+                feedbackBox.style.background = 'linear-gradient(135deg, #fce4ec, #f8bbd0)';
+            } else if (tipo === 'warning') {
+                feedbackBox.style.borderLeftColor = '#e91e63';
+                feedbackBox.style.background = 'linear-gradient(135deg, #fce4ec, #f8bbd0)';
+            } else if (tipo === 'puntos') {
+                feedbackBox.style.borderLeftColor = '#ffd700';
+                feedbackBox.style.background = 'linear-gradient(135deg, #f8bbd0, #fce4ec)';
+            } else {
+                feedbackBox.style.borderLeftColor = '#ffd700';
+                feedbackBox.style.background = 'linear-gradient(135deg, #fce4ec, #f8bbd0)';
+            }
+
+            // Auto-ocultar después de 4s
+            if (window.feedbackTimeout) clearTimeout(window.feedbackTimeout);
+            window.feedbackTimeout = setTimeout(() => {
+                feedbackBox.classList.remove('show');
+            }, 4000);
+        }
+
+        // Función para actualizar el DOM (usa arrays y ciclos)
+        function actualizarEstadisticas() {
+            tutoresActivosEl.textContent = 4;
+            aprendicesActivosEl.textContent = 3;
+            puntosJuegoEl.textContent = puntos;
+            nivelJuegoEl.textContent = nivel;
+            pasosCompletadosEl.textContent = pasosCompletados;
+            insigniasEl.textContent = insignias;
+            progresoEl.textContent = progreso + '%';
+            intentosEl.textContent = intentos;
+        }
+
+        // Función para calcular nivel (usa condicionales y ciclos)
+        function calcularNivel(puntos) {
+            if (puntos < 10) return 1;
+            if (puntos < 25) return 2;
+            if (puntos < 45) return 3;
+            if (puntos < 70) return 4;
+            return 5;
+        }
+
+        // Función para calcular progreso (usa condicionales)
+        function calcularProgreso(pasosCompletados, totalPasos) {
+            if (totalPasos === 0) return 0;
+            const porcentaje = Math.round((pasosCompletados / totalPasos) * 100);
+            return porcentaje > 100 ? 100 : porcentaje;
+        }
+
+        // Función para completar un paso (integra todas las estructuras)
+        function completarPaso() {
+            // Condicional: verificar si ya está completado
+            if (pasosCompletados >= pasosTutorial.length) {
+                mostrarFeedback('🎯 ¡Ya completaste todos los pasos! Reinicia para practicar.', 'warning');
+                return;
+            }
+
+            // Incrementar contadores
+            pasosCompletados++;
+            intentos++;
+            
+            // Condicional: puntos según rol
+            if (rolActual === 'tutor') {
+                puntos += 5;
+                insignias += 1;
+                mostrarFeedback('✅ ¡Excelente! Has guiado a un aprendiz. +5 puntos y +1 insignia.', 'exito');
+            } else {
+                puntos += 3;
+                mostrarFeedback('🎉 ¡Bien! Has completado un paso como aprendiz. +3 puntos.', 'exito');
+            }
+
+            // Calcular nivel (usa función con condicionales)
+            const nuevoNivel = calcularNivel(puntos);
+            if (nuevoNivel > nivel) {
+                nivel = nuevoNivel;
+                mostrarFeedback(`⬆️ ¡Subiste al nivel ${nivel}!`, 'puntos');
+            }
+
+            // Calcular progreso (usa función con condicional)
+            progreso = calcularProgreso(pasosCompletados, pasosTutorial.length);
+
+            // Condicional: si completó todos los pasos
+            if (pasosCompletados === pasosTutorial.length) {
+                mostrarFeedback('🏆 ¡Felicidades! Completaste todos los pasos. Eres un Mentor Experto.', 'exito');
+                insignias += 2;
+            }
+
+            // Avanzar al siguiente paso
+            if (pasoActual < pasosTutorial.length - 1) {
+                pasoActual++;
+                actualizarTutorial();
+            } else {
+                mostrarFeedback('📚 Ya estás en el último paso. ¡Reinicia para repetir!', 'warning');
+            }
+
+            // Actualizar DOM
+            actualizarEstadisticas();
+            guardarEstado();
+        }
+
+        // Función para reiniciar el juego (resetea variables)
+        function reiniciarJuego() {
+            pasoActual = 0;
+            pasosCompletados = 0;
+            puntos = 0;
+            nivel = 1;
+            insignias = 0;
+            intentos = 0;
+            progreso = 0;
+            actualizarTutorial();
+            actualizarEstadisticas();
+            mostrarFeedback('🔄 Juego reiniciado. ¡Comienza de nuevo!', 'info');
+            guardarEstado();
+        }
+
+        // Función para resetear puntos (mantiene progreso)
+        function resetearPuntos() {
+            puntos = 0;
+            nivel = 1;
+            mostrarFeedback('🔥 Puntos reiniciados. El nivel vuelve a 1.', 'warning');
+            actualizarEstadisticas();
+            guardarEstado();
+        }
+
+        // ============================================================
+        // 5. PERSISTENCIA (localStorage)
+        // ============================================================
+        function guardarEstado() {
+            const estado = {
+                pasoActual,
+                rolActual,
+                puntos,
+                nivel,
+                pasosCompletados,
+                insignias,
+                intentos,
+                progreso
+            };
+            try {
+                localStorage.setItem('mentorias_juego_estado', JSON.stringify(estado));
+            } catch (e) {}
+        }
+
+        function cargarEstado() {
+            try {
+                const raw = localStorage.getItem('mentorias_juego_estado');
+                if (!raw) return false;
+                const estado = JSON.parse(raw);
+                pasoActual = estado.pasoActual || 0;
+                rolActual = estado.rolActual || 'tutor';
+                puntos = estado.puntos || 0;
+                nivel = estado.nivel || 1;
+                pasosCompletados = estado.pasosCompletados || 0;
+                insignias = estado.insignias || 0;
+                intentos = estado.intentos || 0;
+                progreso = estado.progreso || 0;
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // ============================================================
+        // 6. EVENTOS (interacción del usuario)
+        // ============================================================
+
+        // Evento: Siguiente paso
+        btnSiguiente.addEventListener('click', function() {
+            if (pasoActual < pasosTutorial.length - 1) {
+                pasoActual++;
+                actualizarTutorial();
+                mostrarFeedback('➡️ Avanzaste al siguiente paso.', 'info');
+                guardarEstado();
+            } else {
+                mostrarFeedback('🎯 Ya estás en el último paso.', 'warning');
+            }
+        });
+
+        // Evento: Reiniciar
+        btnReiniciar.addEventListener('click', reiniciarJuego);
+
+        // Evento: Completar paso
+        btnCompletar.addEventListener('click', completarPaso);
+
+        // Evento: Resetear puntos
+        btnResetPuntos.addEventListener('click', resetearPuntos);
+
+        // Eventos: Cambio de rol (condicionales)
+        roleBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const rol = this.dataset.role;
+                cambiarRol(rol);
+            });
+        });
+
+        // ============================================================
+        // 7. INICIALIZACIÓN
+        // ============================================================
+        function inicializarApp() {
+            const cargado = cargarEstado();
+
+            // Actualizar botones de rol según estado guardado
+            roleBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.role === rolActual) {
+                    btn.classList.add('active');
+                }
+            });
+
+            actualizarTutorial();
+            actualizarEstadisticas();
+
+            if (cargado) {
+                mostrarFeedback('👋 Sesión restaurada. ¡Continúa tu juego!', 'info');
+            } else {
+                mostrarFeedback('🎮 Bienvenido al Juego de Mentorías. ¡Completa los 3 pasos!', 'info');
+            }
+        }
+
+        inicializarApp();
+
+        // ============================================================
+        // 8. DOCUMENTACIÓN DEL CÓDIGO
+        // ============================================================
+        /*
+         *  MENTORÍAS INVERTIDAS - JUEGO SIMULADOR
+         *  =====================================
+         *  Estilo: Ever After High ✨👑
+         *  Estructuras de JavaScript integradas:
+         * 
+         *  1. VARIABLES: pasoActual, rolActual, puntos, nivel, 
+         *     pasosCompletados, insignias, intentos, progreso
+         * 
+         *  2. CONDICIONALES: if/else en cambiarRol(), mostrarFeedback(),
+         *     calcularNivel(), calcularProgreso(), completarPaso()
+         * 
+         *  3. CICLOS: forEach en roleBtns (eventos)
+         * 
+         *  4. FUNCIONES: actualizarTutorial, cambiarRol, mostrarFeedback,
+         *     actualizarEstadisticas, calcularNivel, calcularProgreso,
+         *     completarPaso, reiniciarJuego, resetearPuntos, guardarEstado,
+         *     cargarEstado, inicializarApp
+         * 
+         *  5. ARRAYS: pasosTutorial (colección de objetos)
+         * 
+         *  6. EVENTOS: click en botones
+         * 
+         *  7. DOM: Actualización dinámica de contenido y estadísticas
+         * 
+         *  PROYECTO: Code for Change - Ciclo 5
+         *  EQUIPO: Sarah, Andrea, Javier, Elise, Salomé, Mariana
+         *  ODS: 4, 9, 11
+         *  DISEÑO: Ever After High - Rosa, Rojo, Dorado ✨
+         */
+
+        // Exponer para debug
+        window.__juego = {
+            pasoActual,
+            rolActual,
+            puntos,
+            nivel,
+            pasosCompletados,
+            completarPaso,
+            reiniciarJuego,
+            resetearPuntos
+        };
+
+    })();
+</script>
+
+</body>
+</html>

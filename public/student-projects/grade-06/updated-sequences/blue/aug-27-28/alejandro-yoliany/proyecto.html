@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ EcoReto · Fútbol Verde</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            background: radial-gradient(circle at 20% 30%, #1a5c2e, #0a2f16);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .ecoreto-card {
+            max-width: 1050px;
+            width: 100%;
+            background: #0f7a3f;
+            background-image: repeating-linear-gradient(45deg, #128a48 0px, #128a48 4px, #0d6d34 4px, #0d6d34 9px);
+            border-radius: 80px 80px 50px 50px;
+            padding: 1.8rem 2rem 2rem;
+            box-shadow: 0 30px 0 #0a4222, 0 45px 70px rgba(0, 0, 0, 0.7);
+            border: 8px solid #f5d742;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .ecoreto-card::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 60px;
+            right: 60px;
+            height: 16px;
+            background: rgba(255, 255, 220, 0.12);
+            border-radius: 40px;
+            filter: blur(2px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .header-ecoreto {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f1a0f;
+            padding: 0.5rem 2rem 0.5rem 2.2rem;
+            border-radius: 120px;
+            border: 4px solid #f5d742;
+            box-shadow: 0 8px 0 #0a0f0a, inset 0 -4px 0 #3a3a3a;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.2rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .header-ecoreto h1 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: #fff6b0;
+            text-shadow: 4px 4px 0 #1f6b30, 0 0 30px #fdffb8;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-ecoreto h1 small {
+            font-size: 1rem;
+            background: #edb82b;
+            padding: 0.2rem 1.4rem;
+            border-radius: 40px;
+            color: #1d3d1d;
+            font-weight: 800;
+            box-shadow: inset 0 -3px 0 #8f6b0f;
+        }
+
+        .developer-badge {
+            background: #1f3a1f;
+            padding: 0.3rem 1.6rem;
+            border-radius: 60px;
+            font-weight: 700;
+            color: #f7efb0;
+            border: 2px solid #f5d742;
+            box-shadow: 0 4px 0 #6a551a;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .developer-badge span {
+            color: #fadf6b;
+            font-weight: 900;
+        }
+
+        .nav-ecoreto {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            background: #0f2a0f;
+            padding: 0.6rem 1.8rem;
+            border-radius: 80px;
+            border: 3px solid #eac75a;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            box-shadow: inset 0 -4px 0 #0a1f0a;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #b8c99a;
+            cursor: pointer;
+            transition: 0.2s;
+            text-shadow: 1px 1px 0 #1a3a1a;
+            letter-spacing: 0.5px;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            background: #3f6b3f;
+            color: #fff8d0;
+            transform: scale(1.05);
+            border-color: #f5d742;
+        }
+
+        .nav-btn.active {
+            background: #f5d742;
+            color: #1a3a1a;
+            box-shadow: 0 4px 0 #8f701a, inset 0 -2px 0 #fff2b0;
+            border-color: #fff2b0;
+            transform: translateY(-2px);
+        }
+
+        .section-container {
+            background: linear-gradient(145deg, #4fb86a, #1e7a38);
+            border-radius: 60px 60px 35px 35px;
+            padding: 2rem 2rem 2rem;
+            box-shadow: inset 0 -10px 0 #1b622b, 0 20px 30px rgba(0, 0, 0, 0.4);
+            border: 4px solid #edd86b;
+            min-height: 420px;
+            position: relative;
+            z-index: 3;
+        }
+
+        #section-inicio {
+            display: block;
+        }
+
+        .inicio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .inicio-texto h2 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #fff6b0;
+            text-shadow: 4px 4px 0 #1f6b30;
+            margin-bottom: 1.2rem;
+        }
+
+        .inicio-texto p {
+            font-size: 1.3rem;
+            color: #f0f7e0;
+            font-weight: 600;
+            line-height: 1.7;
+            background: rgba(0, 30, 10, 0.5);
+            padding: 1.5rem;
+            border-radius: 40px;
+            backdrop-filter: blur(3px);
+            border: 2px solid #b8d98a;
+        }
+
+        .inicio-texto p strong {
+            color: #fadf6b;
+        }
+
+        .inicio-iconos {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            background: rgba(255, 255, 220, 0.1);
+            padding: 1.8rem;
+            border-radius: 60px;
+            border: 3px dashed #f5d742;
+        }
+
+        .inicio-iconos .item-icono {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff8d0;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            border-left: 8px solid #f5d742;
+        }
+
+        .inicio-iconos .item-icono span {
+            font-size: 2.2rem;
+        }
+
+        #section-ecoreto {
+            display: none;
+        }
+
+        .scoreboard-eco {
+            display: flex;
+            justify-content: space-between;
+            background: #0c0c0c;
+            padding: 0.6rem 2rem;
+            border-radius: 80px;
+            border: 3px solid #ebc74a;
+            box-shadow: inset 0 -6px 0 #3b3b3b, 0 6px 0 #1a3d1a;
+            margin-bottom: 2rem;
+            color: white;
+            font-weight: 700;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: #1f2a1f;
+            padding: 0.2rem 1.4rem 0.2rem 1rem;
+            border-radius: 60px;
+            border: 1px solid #bb952b;
+        }
+
+        .score-item span {
+            background: #f5d742;
+            color: #0a1f0a;
+            padding: 0 1rem;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            line-height: 1.9;
+            min-width: 3rem;
+            text-align: center;
+            font-weight: 900;
+            box-shadow: inset 0 -3px 0 #8f701a;
+        }
+
+        .question-card-eco {
+            background: #f8f2d3;
+            padding: 1.8rem 2rem;
+            border-radius: 80px 80px 40px 40px;
+            border: 6px solid #f3d35b;
+            box-shadow: inset 0 -8px 0 #b1922b, 0 12px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.8rem;
+            background-image: radial-gradient(circle at 10% 30%, #fffce6, #efeac0);
+        }
+
+        .question-text-eco {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1d4d1d;
+            text-align: center;
+            text-shadow: 2px 2px 0 #dacb7a;
+        }
+
+        .options-grid-eco {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin: 1.5rem 0 1.2rem;
+        }
+
+        .option-btn-eco {
+            background: #fcf9e3;
+            border: 4px solid #c6a535;
+            padding: 1rem 0.5rem;
+            border-radius: 120px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #152b15;
+            box-shadow: 0 8px 0 #7e641f, 0 8px 14px rgba(0, 0, 0, 0.2);
+            transition: all 0.06s linear;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .option-btn-eco:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #7e641f;
+        }
+
+        .option-btn-eco.correct-glow {
+            background: #b3f0a3;
+            border-color: #0f7a2a;
+            box-shadow: 0 0 0 5px #f5ffb0, 0 8px 0 #1a6b1a;
+            transform: scale(1.03);
+        }
+
+        .option-btn-eco.wrong-glow {
+            background: #f5a3a3;
+            border-color: #a12222;
+            box-shadow: 0 0 0 5px #ffbaba, 0 8px 0 #7a1f1f;
+        }
+
+        .option-btn-eco:disabled {
+            opacity: 0.6;
+            filter: grayscale(0.4);
+            pointer-events: none;
+        }
+
+        .feedback-eco {
+            min-height: 4.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: #f6f0c0;
+            border-radius: 80px;
+            padding: 0.6rem 1.8rem;
+            border: 4px solid #dbb13b;
+            box-shadow: inset 0 -4px 0 #ac872a;
+            margin-top: 1.2rem;
+            color: #1d401d;
+            text-align: center;
+        }
+
+        .action-bar-eco {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.8rem;
+            gap: 1.2rem;
+        }
+
+        .btn-eco {
+            border: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 80px;
+            font-weight: 900;
+            font-size: 1.3rem;
+            background: #f7eec7;
+            border-bottom: 8px solid #9d852a;
+            box-shadow: 0 8px 0 #4b3f13, 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: 0.07s linear;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .btn-eco:active {
+            transform: translateY(6px);
+            border-bottom-width: 4px;
+            box-shadow: 0 4px 0 #4b3f13;
+        }
+
+        .btn-eco-primary {
+            background: #f7d64a;
+            color: #1c3a1a;
+            border-bottom-color: #b3891a;
+            box-shadow: 0 8px 0 #7a5f13, 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-eco-secondary {
+            background: #c7d6b0;
+            border-bottom-color: #6d7f4d;
+            box-shadow: 0 8px 0 #41552b;
+        }
+
+        .btn-eco:disabled {
+            opacity: 0.4;
+            transform: translateY(4px);
+            border-bottom-width: 4px;
+            pointer-events: none;
+        }
+
+        #section-acciones {
+            display: none;
+        }
+
+        .acciones-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .accion-card {
+            background: #f8f2d3;
+            padding: 1.5rem 1.5rem;
+            border-radius: 50px;
+            border: 4px solid #f3d35b;
+            box-shadow: 0 8px 0 #b1922b;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1d401d;
+            transition: 0.2s;
+            cursor: default;
+        }
+
+        .accion-card span {
+            font-size: 2.8rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .accion-card:hover {
+            transform: scale(1.03);
+            background: #fffce6;
+        }
+
+        #section-progreso {
+            display: none;
+        }
+
+        .progreso-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: #f8f2d3;
+            padding: 1.5rem;
+            border-radius: 50px;
+            text-align: center;
+            border: 4px solid #f3d35b;
+            box-shadow: 0 8px 0 #b1922b;
+        }
+
+        .stat-card .numero {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #1d6b1d;
+            text-shadow: 3px 3px 0 #dacb7a;
+        }
+
+        .stat-card .label {
+            font-weight: 700;
+            color: #1d401d;
+            font-size: 1.1rem;
+        }
+
+        .progreso-bar {
+            background: #0f1f0f;
+            padding: 1.8rem;
+            border-radius: 60px;
+            border: 3px solid #f5d742;
+        }
+
+        .bar-label {
+            color: #fff6b0;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+        }
+
+        .bar-fill {
+            height: 32px;
+            background: #f5d742;
+            border-radius: 60px;
+            width: 0%;
+            box-shadow: inset 0 -4px 0 #8f701a;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 800px) {
+            .inicio-grid {
+                grid-template-columns: 1fr;
+            }
+            .acciones-grid {
+                grid-template-columns: 1fr;
+            }
+            .progreso-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .options-grid-eco {
+                grid-template-columns: 1fr;
+            }
+            .header-ecoreto h1 {
+                font-size: 2rem;
+            }
+            .question-text-eco {
+                font-size: 1.6rem;
+            }
+            .nav-btn {
+                font-size: 1.1rem;
+                padding: 0.5rem 1.4rem;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .progreso-stats {
+                grid-template-columns: 1fr;
+            }
+            .header-ecoreto h1 {
+                font-size: 1.6rem;
+            }
+            .nav-btn {
+                font-size: 0.9rem;
+                padding: 0.4rem 1rem;
+            }
+            .developer-badge {
+                font-size: 0.8rem;
+                padding: 0.2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ecoreto-card">
+        <!-- HEADER -->
+        <div class="header-ecoreto">
+            <h1>⚽ Eco<span style="color:#fadf6b;">Reto</span> <small>Fútbol Verde</small></h1>
+            <div class="developer-badge">
+                👨‍💻 <span>Alejandro Yoliany</span>
+            </div>
+        </div>
+
+        <!-- MENÚ NAVEGACIÓN -->
+        <div class="nav-ecoreto">
+            <button class="nav-btn active" data-section="inicio">🏠 Inicio</button>
+            <button class="nav-btn" data-section="ecoreto">⚽ EcoReto</button>
+            <button class="nav-btn" data-section="acciones">💪 Acciones</button>
+            <button class="nav-btn" data-section="progreso">📊 Progreso</button>
+        </div>
+
+        <!-- CONTENEDOR SECCIONES -->
+        <div class="section-container">
+
+            <!-- ============ SECCIÓN INICIO ============ -->
+            <div id="section-inicio">
+                <div class="inicio-grid">
+                    <div class="inicio-texto">
+                        <h2>🌍 Nuestro objetivo</h2>
+                        <p>
+                            <strong>⚽ Problema:</strong> en la escuela puede ser difícil recordar y aplicar hábitos adecuados para cuidar el ambiente.
+                            <br><br>
+                            <strong>🏆 Solución:</strong> <strong>EcoReto Fútbol Verde</strong> convierte el aprendizaje ambiental en una experiencia sencilla, visual e interactiva con retos, puntos y acciones prácticas. ¡Como un partido de fútbol, cada acción cuenta para marcar un gol al cambio climático!
+                        </p>
+                    </div>
+                    <div class="inicio-iconos">
+                        <div class="item-icono"><span>♻️</span> Reciclaje inteligente</div>
+                        <div class="item-icono"><span>💧</span> Ahorro de agua</div>
+                        <div class="item-icono"><span>⚡</span> Energía renovable</div>
+                        <div class="item-icono"><span>🌳</span> Biodiversidad</div>
+                        <div class="item-icono"><span>⚽</span> ¡Cada gol cuenta!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ SECCIÓN ECORETO (Juego) ============ -->
+            <div id="section-ecoreto">
+                <!-- Marcador -->
+                <div class="scoreboard-eco">
+                    <div class="score-item">⚽ Goles <span id="scoreDisplay">0</span></div>
+                    <div class="score-item">❤️ Vidas <span id="livesDisplay">3</span></div>
+                    <div class="score-item">📋 Jugada <span id="qCounter">1/6</span></div>
+                </div>
+
+                <!-- Pregunta -->
+                <div class="question-card-eco">
+                    <div class="question-text-eco" id="questionText">⚽ ¿Cómo ahorrar agua en el cole?</div>
+                </div>
+
+                <!-- Opciones -->
+                <div class="options-grid-eco" id="optionsContainer">
+                    <button class="option-btn-eco" data-index="0">🚰 Cerrar grifos</button>
+                    <button class="option-btn-eco" data-index="1">💧 Manguera abierta</button>
+                    <button class="option-btn-eco" data-index="2">🚿 Agua corriente</button>
+                    <button class="option-btn-eco" data-index="3">☀️ Regar al mediodía</button>
+                </div>
+
+                <!-- Feedback -->
+                <div class="feedback-eco" id="feedbackMessage">⚡ Elige una opción, ¡ecocampeón!</div>
+
+                <!-- Acciones -->
+                <div class="action-bar-eco">
+                    <button class="btn-eco btn-eco-secondary" id="resetGameBtn">🔄 Reiniciar partido</button>
+                    <button class="btn-eco btn-eco-primary" id="nextQuestionBtn">⚡ Siguiente jugada</button>
+                </div>
+            </div>
+
+            <!-- ============ SECCIÓN ACCIONES ============ -->
+            <div id="section-acciones">
+                <div class="acciones-grid">
+                    <div class="accion-card"><span>🚰</span> Cierra el grifo al lavarte</div>
+                    <div class="accion-card"><span>♻️</span> Separa residuos en orgánicos e inorgánicos</div>
+                    <div class="accion-card"><span>💡</span> Apaga luces al salir del aula</div>
+                    <div class="accion-card"><span>🌱</span> Planta una especie nativa</div>
+                    <div class="accion-card"><span>🚲</span> Usa medios de transporte sostenibles</div>
+                    <div class="accion-card"><span>📚</span> Comparte lo aprendido con otros</div>
+                </div>
+            </div>
+
+            <!-- ============ SECCIÓN PROGRESO ============ -->
+            <div id="section-progreso">
+                <div class="progreso-stats">
+                    <div class="stat-card">
+                        <div class="numero" id="statPuntos">0</div>
+                        <div class="label">🏆 Goles acumulados</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="numero" id="statRetos">0/6</div>
+                        <div class="label">📋 Jugadas completadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="numero" id="statAcciones">0</div>
+                        <div class="label">💪 Acciones realizadas</div>
+                    </div>
+                </div>
+                <div class="progreso-bar">
+                    <div class="bar-label">
+                        <span>🌱 Progreso hacia el cambio</span>
+                        <span id="progresoPorcentaje">0%</span>
+                    </div>
+                    <div class="bar-fill" id="progresoFill" style="width:0%;"></div>
+                </div>
+            </div>
+
+        </div><!-- fin section-container -->
+    </div><!-- fin ecoreto-card -->
+
+    <script>
+        (function() {
+            // ---------- NAVEGACIÓN ----------
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const sections = {
+                inicio: document.getElementById('section-inicio'),
+                ecoreto: document.getElementById('section-ecoreto'),
+                acciones: document.getElementById('section-acciones'),
+                progreso: document.getElementById('section-progreso')
+            };
+
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const section = this.dataset.section;
+                    Object.keys(sections).forEach(key => {
+                        sections[key].style.display = (key === section) ? 'block' : 'none';
+                    });
+
+                    if (section === 'progreso') {
+                        actualizarProgreso();
+                    }
+                });
+            });
+
+            // Mostrar inicio por defecto
+            sections.inicio.style.display = 'block';
+            sections.ecoreto.style.display = 'none';
+            sections.acciones.style.display = 'none';
+            sections.progreso.style.display = 'none';
+
+            // ---------- DATOS DEL JUEGO (temática fútbol) ----------
+            const questions = [
+                { question: "⚽ ¿Qué acción es un 'gol' contra el desperdicio de agua?", options: ["🚰 Cerrar grifos al lavarse", "💧 Dejar la manguera abierta", "🚿 Lavar con agua a presión", "☀️ Regar a las 2 pm"], correct: 0, explanation: "🥅 ¡GOLAZO! Cerrar grifos ahorra litros de agua." },
+                { question: "🏆 ¿Cuál es la mejor táctica para reciclar papel?", options: ["♻️ Usar ambas caras y depositarlo en azul", "🗑️ Tirarlo a la basura", "🔥 Quemarlo", "🧴 Mezclarlo con plástico"], correct: 0, explanation: "⚽ ¡GOL! Reciclar papel salva árboles y reduce residuos." },
+                { question: "⚡ ¿Cómo ahorramos energía en el aula?", options: ["💡 Apagar luces al salir", "🔌 Dejar todo encendido", "💡 Usar más bombillas", "❄️ Aire acondicionado todo el día"], correct: 0, explanation: "⚡ ¡GOL! Apagar luces reduce el consumo energético." },
+                { question: "⛔ ¿Qué residuo es el 'peor enemigo' del ecosistema?", options: ["🍌 Cáscara de plátano", "🧴 Botella de plástico", "📄 Hoja de papel", "🍎 Restos de manzana"], correct: 1, explanation: "🟥 ¡TARJETA ROJA al plástico! Tarda siglos en degradarse." },
+                { question: "🌳 ¿Qué acción protege la biodiversidad en la escuela?", options: ["🌱 Plantar árboles nativos", "🧪 Usar pesticidas", "🪓 Talar arbustos", "🧱 Impermeabilizar el suelo"], correct: 0, explanation: "🌿 ¡GOL DE LA NATURALEZA! Árboles nativos = más vida." },
+                { question: "🥤 ¿Cómo reducir plásticos de un solo uso?", options: ["🚰 Usar botellas reutilizables", "💧 Comprar agua embotellada", "🧋 Usar popotes de plástico", "📦 Envolver en film"], correct: 0, explanation: "⚽ ¡GOL! Botellas reutilizables = menos residuos plásticos." }
+            ];
+
+            // Estado
+            let currentIndex = 0;
+            let score = 0;
+            let lives = 3;
+            let answered = false;
+            let gameOver = false;
+            let totalAcciones = 0;
+
+            // DOM juego
+            const questionText = document.getElementById('questionText');
+            const optionBtns = document.querySelectorAll('.option-btn-eco');
+            const feedback = document.getElementById('feedbackMessage');
+            const scoreSpan = document.getElementById('scoreDisplay');
+            const livesSpan = document.getElementById('livesDisplay');
+            const qCounter = document.getElementById('qCounter');
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            const resetBtn = document.getElementById('resetGameBtn');
+
+            // DOM progreso
+            const statPuntos = document.getElementById('statPuntos');
+            const statRetos = document.getElementById('statRetos');
+            const statAcciones = document.getElementById('statAcciones');
+            const progresoFill = document.getElementById('progresoFill');
+            const progresoPorcentaje = document.getElementById('progresoPorcentaje');
+
+            // Funciones juego
+            function updateUI() {
+                scoreSpan.textContent = score;
+                livesSpan.textContent = lives;
+                qCounter.textContent = `${currentIndex+1}/${questions.length}`;
+            }
+
+            function renderQuestion() {
+                const q = questions[currentIndex];
+                questionText.textContent = q.question;
+                optionBtns.forEach((btn, idx) => {
+                    btn.textContent = q.options[idx];
+                    btn.className = 'option-btn-eco';
+                    btn.disabled = false;
+                    btn.dataset.correct = (idx === q.correct) ? 'true' : 'false';
+                });
+                feedback.innerHTML = '⚡ Elige una opción, ¡ecocampeón!';
+                answered = false;
+                nextBtn.disabled = true;
+
+                if (gameOver) {
+                    feedback.innerHTML = '⛔ Partido terminado. Presiona "Reiniciar partido"';
+                    optionBtns.forEach(b => b.disabled = true);
+                    nextBtn.disabled = true;
+                    return;
+                }
+                if (lives <= 0) {
+                    gameOver = true;
+                    feedback.innerHTML = '💔 Sin vidas. ¡Reinicia para jugar de nuevo!';
+                    optionBtns.forEach(b => b.disabled = true);
+                    nextBtn.disabled = true;
+                }
+                updateUI();
+            }
+
+            function handleOptionClick(e) {
+                const btn = e.currentTarget;
+                if (answered || gameOver || btn.disabled) return;
+                if (lives <= 0) {
+                    gameOver = true;
+                    feedback.innerHTML = '⛔ Sin vidas. Reinicia el partido.';
+                    optionBtns.forEach(b => b.disabled = true);
+                    nextBtn.disabled = true;
+                    return;
+                }
+
+                const isCorrect = btn.dataset.correct === 'true';
+                const q = questions[currentIndex];
+                answered = true;
+
+                optionBtns.forEach(b => b.disabled = true);
+
+                optionBtns.forEach((b, idx) => {
+                    if (idx === q.correct) b.classList.add('correct-glow');
+                    else if (b === btn && !isCorrect) b.classList.add('wrong-glow');
+                });
+
+                if (isCorrect) {
+                    score += 10;
+                    feedback.innerHTML = `🥅 ¡GOLAZO! +10 puntos. ${q.explanation}`;
+                } else {
+                    lives -= 1;
+                    feedback.innerHTML = `❌ ¡Fuera de juego! La correcta: "${q.options[q.correct]}". ${q.explanation}`;
+                    if (lives <= 0) {
+                        gameOver = true;
+                        feedback.innerHTML += ' 💔 Sin vidas. Reinicia.';
+                        optionBtns.forEach(b => b.disabled = true);
+                        nextBtn.disabled = true;
+                    }
+                }
+
+                updateUI();
+                if (!gameOver && lives > 0) {
+                    nextBtn.disabled = false;
+                } else {
+                    nextBtn.disabled = true;
+                }
+                totalAcciones++;
+            }
+
+            function goToNext() {
+                if (gameOver) return;
+                if (!answered) {
+                    feedback.innerHTML = '⚠️ ¡Responde antes de pasar!';
+                    return;
+                }
+                if (currentIndex < questions.length - 1) {
+                    currentIndex++;
+                    renderQuestion();
+                    nextBtn.disabled = true;
+                } else {
+                    feedback.innerHTML = `🏆 ¡HAT-TRICK! Has completado el EcoReto. Puntuación: ${score} puntos. ¡Eres un campeón del planeta! 🌍`;
+                    optionBtns.forEach(b => b.disabled = true);
+                    nextBtn.disabled = true;
+                    gameOver = true;
+                }
+            }
+
+            function resetGame() {
+                currentIndex = 0;
+                score = 0;
+                lives = 3;
+                answered = false;
+                gameOver = false;
+                totalAcciones = 0;
+                
+                optionBtns.forEach(btn => {
+                    btn.className = 'option-btn-eco';
+                    btn.disabled = false;
+                });
+                
+                feedback.innerHTML = '🔄 ¡Reinicio! Nuevo partido. ¡Vamos!';
+                renderQuestion();
+                nextBtn.disabled = true;
+                updateUI();
+            }
+
+            function actualizarProgreso() {
+                const totalPreguntas = questions.length;
+                const completadas = Math.min(currentIndex + (answered ? 1 : 0), totalPreguntas);
+                const porcentaje = Math.round((completadas / totalPreguntas) * 100);
+
+                statPuntos.textContent = score;
+                statRetos.textContent = `${completadas}/${totalPreguntas}`;
+                statAcciones.textContent = totalAcciones;
+                progresoFill.style.width = porcentaje + '%';
+                progresoPorcentaje.textContent = porcentaje + '%';
+            }
+
+            // Eventos
+            optionBtns.forEach(btn => btn.addEventListener('click', handleOptionClick));
+            nextBtn.addEventListener('click', goToNext);
+            resetBtn.addEventListener('click', resetGame);
+
+            // Inicializar juego
+            renderQuestion();
+            nextBtn.disabled = true;
+
+        })();
+    </script>
+
+</body>
+</html>

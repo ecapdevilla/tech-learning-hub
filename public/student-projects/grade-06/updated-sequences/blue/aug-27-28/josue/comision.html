@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌍 EcoMisión · Guardianes del Planeta</title>
+    <style>
+        /* ---------- Reset & Base ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            background: radial-gradient(ellipse at 50% 0%, #0b2a1f 0%, #05120e 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ---------- Fondo animado ---------- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(2px 2px at 20% 30%, #6fcf97, transparent),
+                radial-gradient(2px 2px at 40% 70%, #f2c94a, transparent),
+                radial-gradient(2px 2px at 60% 20%, #6fcf97, transparent),
+                radial-gradient(2px 2px at 80% 80%, #f2c94a, transparent),
+                radial-gradient(2px 2px at 10% 90%, #6fcf97, transparent);
+            background-size: 100% 100%;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ---------- Contenedor principal ---------- */
+        .game-container {
+            max-width: 880px;
+            width: 100%;
+            background: linear-gradient(145deg, rgba(15, 45, 30, 0.85), rgba(5, 25, 18, 0.92));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 3.5rem;
+            padding: 2.5rem 2.8rem;
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(255, 215, 100, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 100, 0.06);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        /* ---------- Header ---------- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+            gap: 0.8rem;
+        }
+
+        .title-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 2.7rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #a8e6b0 0%, #f2c94a 50%, #6fcf97 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: none;
+            line-height: 1.1;
+        }
+
+        h1 .emoji-leaf {
+            filter: drop-shadow(0 0 12px rgba(111, 207, 151, 0.4));
+        }
+
+        .badge-ods {
+            background: linear-gradient(135deg, #1a4a2e, #2d7a52);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #c6f0d4;
+            border: 1px solid rgba(111, 207, 151, 0.2);
+            box-shadow: 0 0 20px rgba(111, 207, 151, 0.05);
+            white-space: nowrap;
+        }
+
+        .subhead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            padding: 0.4rem 0 1.2rem 0;
+            border-bottom: 1px solid rgba(255, 215, 100, 0.06);
+            margin-bottom: 1.5rem;
+        }
+
+        .subhead span {
+            color: #b8dfcb;
+            font-weight: 300;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subhead .highlight {
+            background: rgba(242, 201, 74, 0.12);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            color: #f2c94a;
+            font-weight: 400;
+            font-size: 0.75rem;
+            border: 1px solid rgba(242, 201, 74, 0.08);
+        }
+
+        /* ---------- Stats ---------- */
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.35), rgba(0, 30, 15, 0.25));
+            padding: 0.8rem 2.2rem;
+            border-radius: 60px;
+            margin-bottom: 2rem;
+            justify-content: center;
+            border: 1px solid rgba(255, 215, 100, 0.04);
+            backdrop-filter: blur(4px);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .stat-item .label {
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            opacity: 0.5;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            color: #b8dfcb;
+        }
+
+        .stat-item .value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #b0f0c0, #f2c94a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            min-width: 2.8rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item .value.pulse {
+            animation: pulse-gold 0.6s ease;
+        }
+
+        @keyframes pulse-gold {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+                filter: drop-shadow(0 0 20px rgba(242, 201, 74, 0.5));
+            }
+        }
+
+        /* ---------- Question Box ---------- */
+        .question-box {
+            background: linear-gradient(145deg, rgba(10, 40, 28, 0.7), rgba(5, 25, 18, 0.8));
+            border-radius: 2.5rem;
+            padding: 2rem 2rem 1.5rem;
+            border: 1px solid rgba(255, 215, 100, 0.06);
+            box-shadow: inset 0 2px 20px rgba(0, 0, 0, 0.3);
+            margin: 0.8rem 0 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(111, 207, 151, 0.03), transparent);
+            pointer-events: none;
+        }
+
+        .question-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.8rem;
+            color: #f1fcf5;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-text .icon {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        /* ---------- Options Grid ---------- */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .option-btn {
+            background: linear-gradient(145deg, rgba(40, 80, 60, 0.5), rgba(25, 55, 40, 0.6));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #e2f0e6;
+            padding: 1rem 0.8rem;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+            text-align: center;
+            backdrop-filter: blur(4px);
+            letter-spacing: 0.2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.02), transparent);
+            pointer-events: none;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: linear-gradient(145deg, #2d7a52, #1f5a3a);
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(111, 207, 151, 0.3);
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 30px rgba(111, 207, 151, 0.05);
+        }
+
+        .option-btn:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .option-btn .option-letter {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-right: 8px;
+            color: #6fcf97;
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(145deg, #1f8b4c, #156b39) !important;
+            border-color: #9bffb0 !important;
+            box-shadow: 0 0 40px rgba(46, 204, 113, 0.25), 0 6px 0 #0f4a28 !important;
+            transform: scale(1.02);
+        }
+
+        .option-btn.wrong {
+            background: linear-gradient(145deg, #8f3b3b, #6b2a2a) !important;
+            border-color: #ff8a8a !important;
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.2), 0 6px 0 #4a1a1a !important;
+        }
+
+        .option-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            filter: grayscale(0.3);
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        /* ---------- Feedback ---------- */
+        .feedback {
+            text-align: center;
+            min-height: 3.5rem;
+            padding: 0.9rem 1.2rem;
+            margin: 1rem 0 0.2rem;
+            font-size: 1.15rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 60px;
+            color: #d4eee0;
+            border: 1px solid rgba(255, 215, 100, 0.03);
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .feedback .emoji {
+            font-size: 1.5rem;
+        }
+
+        .feedback.success {
+            background: rgba(46, 204, 113, 0.08);
+            border-color: rgba(46, 204, 113, 0.1);
+        }
+
+        .feedback.error {
+            background: rgba(231, 76, 60, 0.08);
+            border-color: rgba(231, 76, 60, 0.1);
+        }
+
+        /* ---------- Actions ---------- */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .btn {
+            flex: 1 1 auto;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f2c94a, #f2994a);
+            box-shadow: 0 8px 0 #b86d0e, 0 8px 30px rgba(242, 201, 74, 0.15);
+            color: #0a1f14;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 #b86d0e, 0 15px 40px rgba(242, 201, 74, 0.2);
+            background: linear-gradient(135deg, #f5d65a, #f2a14a);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #b86d0e;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #2d5a40, #1a3a28);
+            box-shadow: 0 8px 0 #0f2a1a;
+            color: #d4eee0;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 #0f2a1a;
+            background: linear-gradient(135deg, #3a7050, #224a32);
+        }
+
+        .btn-secondary:active:not(:disabled) {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #0f2a1a;
+        }
+
+        .btn:disabled {
+            opacity: 0.35;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+            cursor: not-allowed;
+        }
+
+        /* ---------- Footer ---------- */
+        .footer-info {
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 215, 100, 0.04);
+            padding-top: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            color: #7fa893;
+            font-size: 0.8rem;
+        }
+
+        .footer-info .team {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .footer-info .team .member {
+            background: rgba(255, 215, 100, 0.04);
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 215, 100, 0.03);
+            color: #b8dfcb;
+            font-weight: 400;
+            font-size: 0.7rem;
+        }
+
+        .footer-info .team .member::before {
+            content: '👤 ';
+            opacity: 0.4;
+        }
+
+        .footer-info .badge-tech {
+            background: rgba(111, 207, 151, 0.04);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            border: 1px solid rgba(111, 207, 151, 0.04);
+            font-size: 0.65rem;
+            color: #6fcf97;
+            letter-spacing: 0.5px;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 680px) {
+            .game-container {
+                padding: 1.8rem 1.5rem;
+                border-radius: 2.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                gap: 1.2rem;
+                padding: 0.6rem 1.2rem;
+            }
+
+            .stat-item .value {
+                font-size: 1.7rem;
+                min-width: 2rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 0.7rem;
+            }
+
+            .question-text {
+                font-size: 1.4rem;
+            }
+
+            .option-btn {
+                font-size: 1rem;
+                padding: 0.8rem 0.6rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .game-container {
+                padding: 1.2rem 1rem;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .stat-item .value {
+                font-size: 1.4rem;
+            }
+
+            .btn {
+                font-size: 0.95rem;
+                padding: 0.8rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container" role="main">
+        <!-- Header -->
+        <div class="header">
+            <div class="title-group">
+                <h1>
+                    <span class="emoji-leaf">🌱</span> EcoMisión
+                </h1>
+                <span class="badge-ods">🌍 ODS 13 · Acción por el Clima</span>
+            </div>
+        </div>
+
+        <div class="subhead">
+            <span>🧭 6° grado · STEM · Cuidado del planeta</span>
+            <span class="highlight">📦 lista · 🔀 condicional · 🔁 bucle</span>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">
+                <span class="label">🌍 Huella</span>
+                <span class="value" id="scoreDisplay">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">❤️ Vidas</span>
+                <span class="value" id="livesDisplay">3</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">📌 Paso</span>
+                <span class="value" id="roundDisplay">1/6</span>
+            </div>
+        </div>
+
+        <!-- Question Box -->
+        <div class="question-box">
+            <div class="question-text" id="questionText">
+                <span class="icon">🌿</span> Presiona "Siguiente misión" para comenzar
+            </div>
+            <div class="options-grid" id="optionsContainer">
+                <button class="option-btn" data-index="0" disabled>
+                    <span class="option-letter">A</span> —
+                </button>
+                <button class="option-btn" data-index="1" disabled>
+                    <span class="option-letter">B</span> —
+                </button>
+                <button class="option-btn" data-index="2" disabled>
+                    <span class="option-letter">C</span> —
+                </button>
+                <button class="option-btn" data-index="3" disabled>
+                    <span class="option-letter">D</span> —
+                </button>
+            </div>
+            <div class="feedback" id="feedbackMessage">
+                <span class="emoji">💡</span> Elige una opción para actuar por el planeta
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn btn-primary" id="nextBtn">🚀 Siguiente misión</button>
+            <button class="btn btn-secondary" id="resetBtn">⟳ Reiniciar</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-info">
+            <span>📅 25/08/2026 · Feria STEM Code Creators</span>
+            <div class="team">
+                <span class="member">Josué</span>
+                <span class="member">Jorge</span>
+                <span class="member">Matías</span>
+                <span class="member">Santiago</span>
+            </div>
+            <span class="badge-tech">⭐ Array · Condicional · Bucle</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ---------- 📚 LISTAS / ARRAYS (estructura avanzada) ----------
+            const misiones = [{
+                pregunta: "🚗 ¿Cómo te mueves a la escuela?",
+                opciones: ["Caminando / Bici", "Transporte público", "Auto compartido", "Auto solo"],
+                pesos: [0, 1, 2, 3],
+                tipBien: "🌱 ¡Excelente! Caminar o bici reduce emisiones.",
+                tipMal: "⚠️ Intenta usar más transporte público o compartir auto."
+            }, {
+                pregunta: "💡 ¿Qué haces con las luces al salir?",
+                opciones: ["Siempre apago", "Apago casi siempre", "A veces olvido", "Las dejo encendidas"],
+                pesos: [0, 1, 2, 3],
+                tipBien: "⚡ Apagar luces ahorra energía y cuida el clima.",
+                tipMal: "🔌 Recuerda apagar luces que no uses."
+            }, {
+                pregunta: "♻️ ¿Cómo separas los residuos?",
+                opciones: ["Reciclo todo", "Reciclo la mayoría", "Solo separo algo", "No reciclo"],
+                pesos: [0, 1, 2, 3],
+                tipBien: "♻️ ¡Súper! Reciclar da nueva vida a los materiales.",
+                tipMal: "🗑️ Empieza por separar papel, plástico y vidrio."
+            }, {
+                pregunta: "🚿 ¿Cuánto tiempo te duchas?",
+                opciones: ["Menos de 5 min", "5-10 min", "10-15 min", "Más de 15 min"],
+                pesos: [0, 1, 2, 3],
+                tipBien: "💧 Ahorras agua y energía con duchas cortas.",
+                tipMal: "⏳ Intenta reducir el tiempo de ducha para cuidar el agua."
+            }, {
+                pregunta: "🧴 ¿Usas productos reutilizables?",
+                opciones: ["Siempre", "Frecuentemente", "A veces", "Nunca"],
+                pesos: [0, 1, 2, 3],
+                tipBien: "🌎 Reutilizar reduce basura y contaminación.",
+                tipMal: "🛍️ Prueba con botella y bolsa reutilizable."
+            }, {
+                pregunta: "🌳 ¿Participas en actividades verdes?",
+                opciones: ["Siempre", "A menudo", "Rara vez", "Nunca"],
+                pesos: [0, 1, 2, 3],
+                tipBien: "🌿 ¡Eres un agente de cambio!",
+                tipMal: "🌱 Anímate a plantar árboles o limpiar espacios."
+            }];
+
+            const TOTAL_MISIONES = misiones.length;
+
+            // ---------- 📦 VARIABLES (estado) ----------
+            let huella = 0;
+            let vidas = 3;
+            let pasoActual = 0;
+            let misionActiva = false;
+            let indicePregunta = 0;
+
+            // DOM
+            const scoreSpan = document.getElementById('scoreDisplay');
+            const livesSpan = document.getElementById('livesDisplay');
+            const roundSpan = document.getElementById('roundDisplay');
+            const questionText = document.getElementById('questionText');
+            const feedbackDiv = document.getElementById('feedbackMessage');
+            const optionBtns = document.querySelectorAll('.option-btn');
+            const nextBtn = document.getElementById('nextBtn');
+            const resetBtn = document.getElementById('resetBtn');
+
+            // ---------- UI Helpers ----------
+            function actualizarEstadisticas() {
+                scoreSpan.textContent = huella;
+                livesSpan.textContent = vidas;
+                roundSpan.textContent = `${pasoActual}/${TOTAL_MISIONES}`;
+
+                // Animación sutil en el puntaje
+                scoreSpan.classList.remove('pulse');
+                void scoreSpan.offsetWidth;
+                scoreSpan.classList.add('pulse');
+            }
+
+            function habilitarOpciones(estado) {
+                optionBtns.forEach(btn => btn.disabled = !estado);
+            }
+
+            function limpiarEstilosOpciones() {
+                optionBtns.forEach(btn => btn.classList.remove('correct', 'wrong'));
+            }
+
+            function cargarMision(index) {
+                const m = misiones[index];
+                if (!m) return;
+                questionText.innerHTML = `<span class="icon">🌿</span> ${m.pregunta}`;
+                const letras = ['A', 'B', 'C', 'D'];
+                optionBtns.forEach((btn, i) => {
+                    btn.innerHTML = `<span class="option-letter">${letras[i] || ''}</span> ${m.opciones[i] || '—'}`;
+                    btn.dataset.peso = m.pesos[i] ?? 0;
+                    btn.classList.remove('correct', 'wrong');
+                });
+            }
+
+            function setFeedback(message, type = '') {
+                feedbackDiv.innerHTML = message;
+                feedbackDiv.className = 'feedback';
+                if (type) feedbackDiv.classList.add(type);
+            }
+
+            // ---------- 🔁 BUCLE: nueva misión ----------
+            function iniciarNuevaMision() {
+                if (vidas <= 0) {
+                    setFeedback('💔 Tus acciones positivas se agotaron. Reinicia para seguir ayudando.', 'error');
+                    habilitarOpciones(false);
+                    nextBtn.disabled = true;
+                    return;
+                }
+                if (pasoActual >= TOTAL_MISIONES) {
+                    const mensaje = `🏁 ¡Misión completada! Huella: ${huella} puntos. ${huella <= 6 ? '🌍 ¡Eres un guardián del planeta!' : '🌱 Pequeños cambios pueden marcar la diferencia.'}`;
+                    setFeedback(mensaje, 'success');
+                    habilitarOpciones(false);
+                    nextBtn.disabled = true;
+                    return;
+                }
+
+                indicePregunta = pasoActual;
+                cargarMision(indicePregunta);
+                limpiarEstilosOpciones();
+                habilitarOpciones(true);
+                misionActiva = true;
+                nextBtn.disabled = true;
+                setFeedback('🌿 Elige una opción para conocer tu impacto.');
+                actualizarEstadisticas();
+            }
+
+            // ---------- 🔀 CONDICIONAL: evaluar respuesta ----------
+            function manejarClicOpcion(e) {
+                const btn = e.currentTarget;
+                if (btn.disabled || !misionActiva) return;
+                if (vidas <= 0 || pasoActual >= TOTAL_MISIONES) return;
+
+                const peso = parseInt(btn.dataset.peso, 10);
+                const idx = Array.from(optionBtns).indexOf(btn);
+
+                habilitarOpciones(false);
+                misionActiva = false;
+
+                // Marcar visualmente
+                optionBtns.forEach((b, i) => {
+                    if (i === idx) {
+                        if (peso <= 1) b.classList.add('correct');
+                        else b.classList.add('wrong');
+                    }
+                });
+
+                // Acumular huella
+                huella += peso;
+
+                // Si peso >= 2, se resta una vida
+                if (peso >= 2) {
+                    vidas = Math.max(0, vidas - 1);
+                }
+
+                // Feedback personalizado
+                const m = misiones[pasoActual];
+                let msg = '';
+                let type = '';
+                if (peso <= 1) {
+                    msg = '✅ ' + (m.tipBien || '¡Buena práctica!');
+                    type = 'success';
+                } else {
+                    msg = '⚠️ ' + (m.tipMal || 'Intenta mejorar esta acción.');
+                    type = 'error';
+                }
+                setFeedback(msg, type);
+
+                // Avanzar paso
+                pasoActual += 1;
+                actualizarEstadisticas();
+
+                // Verificar condiciones de fin
+                if (vidas <= 0) {
+                    setFeedback('💔 Se agotaron las vidas. Reinicia para seguir aprendiendo.', 'error');
+                    nextBtn.disabled = true;
+                    habilitarOpciones(false);
+                    roundSpan.textContent = `${pasoActual}/${TOTAL_MISIONES}`;
+                    return;
+                }
+                if (pasoActual >= TOTAL_MISIONES) {
+                    const mensajeFinal = `🏁 ¡Misión completada! Huella: ${huella} puntos. ${huella <= 6 ? '🌍 ¡Eres un ejemplo!' : '🌱 Puedes mejorar con pequeños cambios.'}`;
+                    setFeedback(mensajeFinal, 'success');
+                    nextBtn.disabled = true;
+                    habilitarOpciones(false);
+                    roundSpan.textContent = `${pasoActual}/${TOTAL_MISIONES}`;
+                    return;
+                }
+
+                nextBtn.disabled = false;
+                roundSpan.textContent = `${pasoActual}/${TOTAL_MISIONES}`;
+            }
+
+            // ---------- Reiniciar ----------
+            function reiniciarJuego() {
+                huella = 0;
+                vidas = 3;
+                pasoActual = 0;
+                misionActiva = false;
+                limpiarEstilosOpciones();
+                habilitarOpciones(false);
+                nextBtn.disabled = true;
+                setFeedback('🔄 Reiniciado. Presiona "Siguiente misión" para comenzar.');
+                questionText.innerHTML = '<span class="icon">🌱</span> Simulador de huella ecológica';
+                optionBtns.forEach((btn, i) => {
+                    const letras = ['A', 'B', 'C', 'D'];
+                    btn.innerHTML = `<span class="option-letter">${letras[i] || ''}</span> —`;
+                });
+                actualizarEstadisticas();
+            }
+
+            // ---------- Inicialización ----------
+            function inicializar() {
+                optionBtns.forEach(btn => {
+                    btn.addEventListener('click', manejarClicOpcion);
+                });
+
+                nextBtn.addEventListener('click', function() {
+                    if (vidas <= 0 || pasoActual >= TOTAL_MISIONES) {
+                        if (vidas <= 0) {
+                            setFeedback('💔 Sin vidas. Reinicia para continuar.', 'error');
+                        } else {
+                            setFeedback('🏁 Ya completaste todas las misiones. Reinicia.', 'success');
+                        }
+                        return;
+                    }
+                    iniciarNuevaMision();
+                });
+
+                resetBtn.addEventListener('click', function() {
+                    reiniciarJuego();
+                    nextBtn.disabled = false;
+                    habilitarOpciones(false);
+                    questionText.innerHTML = '<span class="icon">🌍</span> Presiona "Siguiente misión" para empezar';
+                    setFeedback('💡 El simulador está listo.');
+                    actualizarEstadisticas();
+                    limpiarEstilosOpciones();
+                    nextBtn.disabled = false;
+                });
+
+                // Estado inicial
+                reiniciarJuego();
+                questionText.innerHTML = '<span class="icon">🌿</span> Presiona "Siguiente misión" para iniciar';
+                setFeedback('💡 Evalúa tu huella ecológica paso a paso.');
+                nextBtn.disabled = false;
+                actualizarEstadisticas();
+            }
+
+            inicializar();
+        })();
+    </script>
+</body>
+</html>

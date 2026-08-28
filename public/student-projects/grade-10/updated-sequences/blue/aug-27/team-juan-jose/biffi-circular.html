@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIFFI CIRCULAR | Comparte. Reutiliza. Conecta.</title>
+
+    <style>
+        :root {
+            --verde: #16834a;
+            --verde-claro: #e9f8ef;
+            --azul: #1266b3;
+            --azul-claro: #eaf4ff;
+            --oscuro: #18322a;
+            --gris: #64748b;
+            --gris-claro: #f4f7f6;
+            --blanco: #ffffff;
+            --rojo: #d9534f;
+            --sombra: 0 10px 30px rgba(0,0,0,0.08);
+            --radio: 18px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--gris-claro);
+            color: var(--oscuro);
+            line-height: 1.6;
+        }
+        button, input, select, textarea { font: inherit; }
+        button { cursor: pointer; }
+        .contenedor { width: min(1150px, 92%); margin: auto; }
+
+        header {
+            background: linear-gradient(135deg, rgba(22,131,74,0.96), rgba(18,102,179,0.94));
+            color: white;
+            padding: 70px 0 90px;
+            text-align: center;
+        }
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 15px;
+            border-radius: 999px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        header h1 { font-size: clamp(2.5rem, 7vw, 5rem); letter-spacing: 2px; margin-bottom: 8px; }
+        .slogan { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: bold; margin-bottom: 16px; }
+        .intro { max-width: 700px; margin: auto; opacity: 0.95; }
+
+        .medalla-header {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 2.5rem;
+            background: rgba(255,255,255,0.15);
+            padding: 10px 25px;
+            border-radius: 999px;
+            border: 2px solid rgba(255,255,255,0.3);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: -42px;
+            position: relative;
+            z-index: 2;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px 20px;
+            border-radius: var(--radio);
+            box-shadow: var(--sombra);
+            text-align: center;
+        }
+        .stat-card .numero { font-size: 2rem; font-weight: bold; color: var(--verde); }
+        .stat-card p { color: var(--gris); font-size: 0.9rem; margin-top: 5px; }
+
+        section { padding: 65px 0; }
+        .titulo-seccion { text-align: center; margin-bottom: 35px; }
+        .titulo-seccion h2 { font-size: 2rem; margin-bottom: 8px; }
+        .titulo-seccion p { color: var(--gris); max-width: 700px; margin: auto; }
+
+        .formulario {
+            background: white;
+            max-width: 850px;
+            margin: auto;
+            padding: 35px;
+            border-radius: var(--radio);
+            box-shadow: var(--sombra);
+        }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .campo { display: flex; flex-direction: column; gap: 7px; }
+        .campo-completo { grid-column: 1 / -1; }
+        label { font-weight: bold; }
+        input, select, textarea {
+            padding: 13px;
+            border: 1px solid #d5dce0;
+            border-radius: 10px;
+            outline: none;
+            transition: 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--azul);
+            box-shadow: 0 0 0 3px rgba(18,102,179,0.1);
+        }
+        textarea { resize: vertical; min-height: 110px; }
+
+        .btn-principal {
+            width: 100%;
+            margin-top: 22px;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--verde), var(--azul));
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .btn-principal:hover { transform: translateY(-2px); opacity: 0.95; }
+
+        #mensaje {
+            max-width: 850px;
+            margin: 20px auto 0;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        .mensaje-exito { display: block !important; background: var(--verde-claro); color: var(--verde); }
+        .mensaje-error { display: block !important; background: #fff0f0; color: var(--rojo); }
+
+        .herramientas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .buscador {
+            width: min(500px, 100%);
+            padding: 14px;
+            border-radius: 999px;
+            border: 1px solid #d5dce0;
+        }
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+        .btn-filtro {
+            padding: 10px 15px;
+            border-radius: 999px;
+            border: 1px solid #d5dce0;
+            background: white;
+            transition: 0.2s;
+        }
+        .btn-filtro:hover, .btn-filtro.activo {
+            background: var(--verde);
+            color: white;
+            border-color: var(--verde);
+            box-shadow: 0 0 0 3px rgba(22,131,74,0.3);
+        }
+
+        #listaPublicaciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+        .tarjeta {
+            background: white;
+            border-radius: var(--radio);
+            padding: 23px;
+            box-shadow: var(--sombra);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.2s;
+        }
+        .tarjeta:hover { transform: translateY(-4px); }
+        .tarjeta.reutilizado {
+            opacity: 0.7;
+            background: #f0f2f1;
+            filter: grayscale(0.3);
+            border-left: 5px solid var(--verde);
+        }
+        .tarjeta.reutilizado h3 { text-decoration: line-through; }
+
+        .tarjeta-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .tarjeta h3 { font-size: 1.2rem; }
+        .categoria { color: var(--azul); font-weight: bold; font-size: 0.9rem; }
+        .tipo {
+            display: inline-block;
+            background: var(--verde-claro);
+            color: var(--verde);
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .descripcion { color: var(--gris); flex-grow: 1; }
+        .estado { font-size: 0.85rem; font-weight: bold; }
+        .estado.disponible { color: var(--verde); }
+        .estado.solicitado { color: #c27700; }
+        .estado.reutilizado { color: var(--rojo); }
+        .info-pequena { color: var(--gris); font-size: 0.82rem; }
+
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        .btn-secundario, .btn-reutilizar {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+        .btn-secundario { background: var(--azul-claro); color: var(--azul); }
+        .btn-reutilizar { background: var(--verde-claro); color: var(--verde); }
+        .btn-desactivado { background: #d9d9d9 !important; color: #777 !important; cursor: not-allowed; }
+
+        .sin-resultados {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border-radius: var(--radio);
+            color: var(--gris);
+        }
+        .sin-resultados a { color: var(--azul); font-weight: bold; text-decoration: underline; cursor: pointer; }
+
+        .top-categorias {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .top-badge {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 999px;
+            box-shadow: var(--sombra);
+            font-weight: bold;
+        }
+        .top-badge .categoria-nombre { color: var(--azul); }
+        .top-badge .categoria-count { color: var(--verde); }
+
+        .pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .paso {
+            background: white;
+            padding: 25px;
+            border-radius: var(--radio);
+            text-align: center;
+            box-shadow: var(--sombra);
+        }
+        .numero-paso {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 14px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--verde-claro);
+            color: var(--verde);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .ods-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .ods-card {
+            background: white;
+            padding: 24px;
+            border-radius: var(--radio);
+            box-shadow: var(--sombra);
+        }
+        .ods-card h3 { color: var(--azul); margin-bottom: 10px; }
+        .ods-card p { color: var(--gris); }
+
+        footer { background: var(--oscuro); color: white; text-align: center; padding: 28px 15px; }
+
+        @media (max-width: 850px) {
+            .estadisticas, .pasos, .ods-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            header { padding: 55px 0 75px; }
+            .estadisticas { grid-template-columns: 1fr; }
+            .form-grid, .pasos, .ods-grid { grid-template-columns: 1fr; }
+            .formulario { padding: 22px; }
+            section { padding: 45px 0; }
+            .acciones { flex-direction: column; }
+            .top-categorias { flex-direction: column; align-items: center; }
+        }
+    
+        /* ===== IDENTIDAD BLUE COURT: BALONCESTO + SOSTENIBILIDAD ===== */
+        body {
+            background:
+                radial-gradient(circle at 10% 20%, rgba(18,102,179,0.05) 0 2px, transparent 3px) 0 0/32px 32px,
+                var(--gris-claro);
+        }
+
+        header {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 85% 20%, rgba(255,255,255,0.13) 0 1px, transparent 2px) 0 0/25px 25px,
+                linear-gradient(135deg, rgba(22,131,74,0.98), rgba(18,102,179,0.97));
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 4px solid rgba(255,255,255,0.16);
+            border-radius: 50%;
+            right: -160px;
+            top: -150px;
+            box-shadow:
+                inset 0 0 0 85px rgba(255,255,255,0.025),
+                inset 0 0 0 89px rgba(255,255,255,0.12);
+        }
+        header::after {
+            content: "🏀";
+            position: absolute;
+            left: 5%;
+            bottom: -42px;
+            font-size: 9rem;
+            opacity: 0.12;
+            transform: rotate(-18deg);
+        }
+        header .contenedor { position: relative; z-index: 1; }
+
+        .logo::before { content: "🏀"; font-size: 1.15rem; }
+        .medalla-header {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .estadisticas {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .stat-card {
+            border: 1px solid rgba(18,102,179,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::after {
+            content: "🏀";
+            position: absolute;
+            right: -8px;
+            bottom: -18px;
+            font-size: 4rem;
+            opacity: 0.06;
+        }
+
+        .titulo-seccion h2::after {
+            content: "";
+            display: block;
+            width: 65px;
+            height: 4px;
+            margin: 10px auto 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--verde), var(--azul));
+        }
+
+        .formulario, .tarjeta, .paso, .ods-card {
+            border: 1px solid rgba(24,50,42,0.05);
+        }
+
+        .tarjeta {
+            position: relative;
+            overflow: hidden;
+        }
+        .tarjeta::before {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border: 2px solid rgba(18,102,179,0.06);
+            border-radius: 50%;
+            right: -55px;
+            top: -55px;
+        }
+
+        .paso {
+            position: relative;
+            overflow: hidden;
+        }
+        .paso::after {
+            content: "🏀";
+            position: absolute;
+            right: 10px;
+            bottom: 5px;
+            opacity: 0.05;
+            font-size: 2.8rem;
+        }
+
+        .numero-paso {
+            border: 3px solid rgba(22,131,74,0.12);
+            box-shadow: 0 5px 15px rgba(22,131,74,0.08);
+        }
+
+        .blue-team {
+            background: linear-gradient(135deg, #102f58, #1266b3);
+            color: white;
+            padding: 65px 0;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .blue-team::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border: 4px solid rgba(255,255,255,0.08);
+            border-radius: 50%;
+            left: -250px;
+            top: -180px;
+        }
+        .blue-team::after {
+            content: "🏀";
+            position: absolute;
+            font-size: 14rem;
+            right: -30px;
+            bottom: -85px;
+            opacity: 0.08;
+        }
+        .blue-team .contenedor { position: relative; z-index: 1; }
+        .team-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.1);
+            border-radius: 999px;
+            font-weight: bold;
+        }
+        .blue-team h2 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            margin-bottom: 14px;
+        }
+        .blue-team p {
+            max-width: 780px;
+            margin: auto;
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+        .team-names {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+        .player {
+            padding: 12px 20px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            font-weight: bold;
+            backdrop-filter: blur(6px);
+        }
+
+        footer {
+            border-top: 4px solid var(--verde);
+        }
+
+        @media (max-width: 850px) {
+            .estadisticas { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .estadisticas { grid-template-columns: 1fr; }
+            .blue-team { padding: 50px 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="contenedor">
+            <div class="logo">♻️ PROYECTO CODE FOR CHANGE</div>
+            <h1>BIFFI CIRCULAR</h1>
+            <p class="slogan">Comparte. Reutiliza. Conecta.</p>
+            <p class="intro">Una plataforma para dar una segunda vida a los recursos educativos y escolares dentro de nuestra comunidad.</p>
+            <div class="medalla-header" id="medallaHeader">🏅</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="contenedor estadisticas">
+            <article class="stat-card"><div class="numero" id="totalPublicados">0</div><p>♻️ Recursos publicados</p></article>
+            <article class="stat-card"><div class="numero" id="totalReutilizados">0</div><p>✅ Recursos reutilizados</p></article>
+            <article class="stat-card"><div class="numero" id="totalDisponibles">0</div><p>📦 Recursos disponibles</p></article>
+            <article class="stat-card"><div class="numero" id="porcentajeReutilizacion">0%</div><p>📈 Porcentaje de reutilización</p></article>
+            <article class="stat-card"><div class="numero" id="puntajeTotal">0</div><p>🏆 Puntaje acumulado</p></article>
+            <article class="stat-card"><div class="numero" id="arbolesSalvados">0.0</div><p>🌳 Árboles salvados</p></article>
+        </div>
+
+        <section id="publicar">
+            <div class="contenedor">
+                <div class="titulo-seccion">
+                    <h2>➕ Publica un recurso</h2>
+                    <p>Si algo ya no cumple su ciclo contigo, puede ser exactamente lo que otro estudiante necesita.</p>
+                </div>
+
+                <form class="formulario" id="formularioPublicacion">
+                    <div class="form-grid">
+                        <div class="campo"><label for="titulo">Nombre del recurso *</label><input type="text" id="titulo" placeholder="Ej: Calculadora científica"></div>
+                        <div class="campo">
+                            <label for="categoria">Categoría *</label>
+                            <select id="categoria">
+                                <option value="">Selecciona una categoría</option>
+                                <option value="📚 Libros">📚 Libros</option>
+                                <option value="🧮 Calculadoras y Tecnología">🧮 Calculadoras y Tecnología</option>
+                                <option value="👕 Uniformes">👕 Uniformes</option>
+                                <option value="✏️ Útiles Escolares">✏️ Útiles Escolares</option>
+                                <option value="🎨 Material de Proyectos">🎨 Material de Proyectos</option>
+                            </select>
+                        </div>
+                        <div class="campo">
+                            <label for="tipo">¿Qué quieres hacer? *</label>
+                            <select id="tipo">
+                                <option value="">Selecciona una opción</option>
+                                <option value="Donar">Donar</option>
+                                <option value="Prestar">Prestar</option>
+                                <option value="Intercambiar">Intercambiar</option>
+                            </select>
+                        </div>
+                        <div class="campo"><label for="contacto">Contacto *</label><input type="text" id="contacto" placeholder="Ej: correo o nombre del estudiante"></div>
+                        <div class="campo campo-completo"><label for="descripcion">Descripción *</label><textarea id="descripcion" placeholder="Describe el estado y las características del recurso..."></textarea></div>
+                    </div>
+                    <button type="submit" class="btn-principal">♻️ Publicar recurso</button>
+                </form>
+
+                <div id="mensaje"></div>
+            </div>
+        </section>
+
+        <section id="explorar">
+            <div class="contenedor">
+                <div class="titulo-seccion">
+                    <h2>🔎 Explora recursos</h2>
+                    <p>Busca materiales disponibles dentro de la comunidad y ayúdales a tener una segunda vida.</p>
+                </div>
+
+                <div class="herramientas"><input type="search" id="buscador" class="buscador" placeholder="Buscar por nombre o descripción..."></div>
+
+                <div class="filtros">
+                    <button class="btn-filtro activo" data-categoria="Todos">Ver todos</button>
+                    <button class="btn-filtro" data-categoria="📚 Libros">📚 Libros</button>
+                    <button class="btn-filtro" data-categoria="🧮 Calculadoras y Tecnología">🧮 Tecnología</button>
+                    <button class="btn-filtro" data-categoria="👕 Uniformes">👕 Uniformes</button>
+                    <button class="btn-filtro" data-categoria="✏️ Útiles Escolares">✏️ Útiles</button>
+                    <button class="btn-filtro" data-categoria="🎨 Material de Proyectos">🎨 Proyectos</button>
+                </div>
+
+                <div id="topCategorias" class="top-categorias"></div>
+                <div id="listaPublicaciones"></div>
+            </div>
+        </section>
+
+        <section>
+            <div class="contenedor">
+                <div class="titulo-seccion"><h2>🚀 ¿Cómo funciona?</h2></div>
+                <div class="pasos">
+                    <article class="paso"><div class="numero-paso">1</div><h3>Publica</h3><p>Agrega un recurso que ya no necesites.</p></article>
+                    <article class="paso"><div class="numero-paso">2</div><h3>Conecta</h3><p>Otro estudiante encuentra el recurso.</p></article>
+                    <article class="paso"><div class="numero-paso">3</div><h3>Comparte</h3><p>El recurso puede donarse, prestarse o intercambiarse.</p></article>
+                    <article class="paso"><div class="numero-paso">4</div><h3>Reutiliza</h3><p>El objeto obtiene una segunda vida.</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="contenedor">
+                <div class="titulo-seccion">
+                    <h2>🌍 Nuestro impacto en los ODS</h2>
+                    <p>Biffi Circular conecta la tecnología con necesidades reales de la comunidad escolar.</p>
+                </div>
+                <div class="ods-grid">
+                    <article class="ods-card"><h3>📚 ODS 4</h3><strong>Educación de Calidad</strong><p>Facilita el acceso y aprovechamiento de recursos educativos que pueden beneficiar a otros estudiantes.</p></article>
+                    <article class="ods-card"><h3>💡 ODS 9</h3><strong>Innovación</strong><p>Utiliza la programación y la tecnología para crear una solución interactiva a una necesidad real.</p></article>
+                    <article class="ods-card"><h3>🏘️ ODS 11</h3><strong>Comunidades Sostenibles</strong><p>Fortalece una comunidad escolar colaborativa mediante el aprovechamiento responsable de los recursos.</p></article>
+                    <article class="ods-card"><h3>♻️ ODS 12</h3><strong>Consumo Responsable</strong><p>Promueve la reutilización y ayuda a reducir el desperdicio de recursos útiles.</p></article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+        <section class="blue-team">
+            <div class="contenedor">
+                <div class="team-badge">🏀 10º BLUE · CODE FOR CHANGE 2026</div>
+                <h2>Un equipo. Una cancha. Un cambio. ♻️</h2>
+                <p>Así como en el baloncesto cada pase conecta al equipo, en BIFFI CIRCULAR cada recurso compartido conecta a un estudiante con una nueva oportunidad.</p>
+                <div class="team-names">
+                    <div class="player">🏀 Juan José Fernández</div>
+                    <div class="player">🏀 Isaac Rocha</div>
+                    <div class="player">🏀 Maximiliano Rendón</div>
+                </div>
+            </div>
+        </section>
+
+
+    <footer>
+        <p>♻️ BIFFI CIRCULAR — CODE FOR CHANGE 2026</p>
+        <p>“Lo que para ti ya cumplió su ciclo, para otro puede ser un nuevo comienzo.”</p>
+        <p style="margin-top: 12px; opacity: 0.85; font-size: 0.92rem;">🏀 Hecho por estudiantes de 10º Blue: Juan José Fernández, Isaac Rocha y Maximiliano Rendón.</p>
+    </footer>
+
+    <script>
+        let publicaciones = [];
+        let categoriaActual = "Todos";
+        let puntajeTotal = 0;
+
+        const formulario = document.getElementById("formularioPublicacion");
+        const listaPublicaciones = document.getElementById("listaPublicaciones");
+        const buscador = document.getElementById("buscador");
+        const mensaje = document.getElementById("mensaje");
+        const topCategoriasDiv = document.getElementById("topCategorias");
+        const medallaHeader = document.getElementById("medallaHeader");
+
+        function cargarPublicaciones() {
+            const datosGuardados = localStorage.getItem("biffiCircular");
+            if (datosGuardados) {
+                const data = JSON.parse(datosGuardados);
+                publicaciones = data.publicaciones || [];
+                puntajeTotal = data.puntajeTotal || 0;
+            } else {
+                publicaciones = [
+                    { id: 1, titulo: "Calculadora científica", categoria: "🧮 Calculadoras y Tecnología", tipo: "Donar", descripcion: "Calculadora en buen estado. Ya no la necesito.", contacto: "Estudiante de 11°", disponible: true, solicitado: false, fecha: "27/08/2026" },
+                    { id: 2, titulo: "Libro de Matemáticas", categoria: "📚 Libros", tipo: "Donar", descripcion: "Libro de apoyo para matemáticas de secundaria.", contacto: "Estudiante de 10°", disponible: true, solicitado: false, fecha: "26/08/2026" },
+                    { id: 3, titulo: "Material para proyecto STEM", categoria: "🎨 Material de Proyectos", tipo: "Intercambiar", descripcion: "Cartón, marcadores y materiales sobrantes de un proyecto.", contacto: "Equipo STEM", disponible: false, solicitado: true, fecha: "20/08/2026" }
+                ];
+                guardarPublicaciones();
+            }
+        }
+
+        function guardarPublicaciones() {
+            localStorage.setItem("biffiCircular", JSON.stringify({ publicaciones, puntajeTotal }));
+        }
+
+        function actualizarMedalla() {
+            let medalla = "🏅";
+            if (puntajeTotal >= 200) medalla = "🥇";
+            else if (puntajeTotal >= 100) medalla = "🥈";
+            else if (puntajeTotal >= 50) medalla = "🥉";
+            medallaHeader.textContent = medalla;
+            guardarPublicaciones();
+        }
+
+        function calcularTopCategorias() {
+            const conteo = {};
+            publicaciones.forEach(function(p) {
+                const cat = p.categoria;
+                conteo[cat] = (conteo[cat] || 0) + 1;
+            });
+            const categoriasArray = Object.keys(conteo).map(function(key) {
+                return { nombre: key, cantidad: conteo[key] };
+            });
+            categoriasArray.sort(function(a, b) { return b.cantidad - a.cantidad; });
+            const top3 = categoriasArray.slice(0, 3);
+            topCategoriasDiv.innerHTML = "";
+            if (top3.length === 0) {
+                topCategoriasDiv.innerHTML = "<p>No hay categorías aún.</p>";
+                return;
+            }
+            top3.forEach(function(item, index) {
+                const badge = document.createElement("div");
+                badge.className = "top-badge";
+                badge.innerHTML = `<span class="categoria-nombre">${item.nombre}</span> <span class="categoria-count">(${item.cantidad} publicaciones)</span> ${index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}`;
+                topCategoriasDiv.appendChild(badge);
+            });
+        }
+
+        function mostrarPublicaciones() {
+            listaPublicaciones.innerHTML = "";
+            const textoBusqueda = buscador.value.toLowerCase().trim();
+            const publicacionesFiltradas = publicaciones.filter(function(publicacion) {
+                const coincideCategoria = categoriaActual === "Todos" || publicacion.categoria === categoriaActual;
+                const coincideBusqueda = publicacion.titulo.toLowerCase().includes(textoBusqueda) || publicacion.descripcion.toLowerCase().includes(textoBusqueda);
+                return coincideCategoria && coincideBusqueda;
+            });
+
+            if (publicacionesFiltradas.length === 0) {
+                listaPublicaciones.innerHTML = `<div class="sin-resultados"><h3>😕 No encontramos recursos</h3><p>¿No encuentras lo que buscas? <a href="#publicar">¡Publica tu recurso aquí!</a></p></div>`;
+                return;
+            }
+
+            publicacionesFiltradas.forEach(function(publicacion) {
+                let estadoTexto, estadoClase;
+                if (!publicacion.disponible) { estadoTexto = "♻️ Reutilizado"; estadoClase = "reutilizado"; }
+                else if (publicacion.solicitado) { estadoTexto = "⏳ Solicitado"; estadoClase = "solicitado"; }
+                else { estadoTexto = "🟢 Disponible"; estadoClase = "disponible"; }
+
+                let botones = "";
+                if (publicacion.disponible) {
+                    if (!publicacion.solicitado) {
+                        botones += `<button class="btn-secundario" onclick="solicitarRecurso(${publicacion.id})">🤝 Solicitar recurso</button>`;
+                    } else {
+                        botones += `<button class="btn-secundario btn-desactivado" disabled>⏳ Recurso solicitado</button>`;
+                    }
+                    botones += `<button class="btn-reutilizar" onclick="marcarComoReutilizado(${publicacion.id})">♻️ Marcar reutilizado</button>`;
+                } else {
+                    botones = `<button class="btn-desactivado" disabled>♻️ Ya fue reutilizado</button>`;
+                }
+
+                listaPublicaciones.innerHTML += `
+                    <article class="tarjeta ${!publicacion.disponible ? "reutilizado" : ""}">
+                        <div class="tarjeta-top">
+                            <div><div class="categoria">${publicacion.categoria}</div><h3>${publicacion.titulo}</h3></div>
+                            <span class="tipo">${publicacion.tipo}</span>
+                        </div>
+                        <p class="descripcion">${publicacion.descripcion}</p>
+                        <p class="estado ${estadoClase}">${estadoTexto}</p>
+                        <p class="info-pequena">📞 ${publicacion.contacto}</p>
+                        <p class="info-pequena">📅 Publicado: ${publicacion.fecha}</p>
+                        <div class="acciones">${botones}</div>
+                    </article>
+                `;
+            });
+        }
+
+        function solicitarRecurso(id) {
+            const publicacion = publicaciones.find(function(item) { return item.id === id; });
+            if (publicacion && publicacion.disponible) {
+                const confirmar = confirm(`¿Quieres solicitar "${publicacion.titulo}"?\nContacto: ${publicacion.contacto}`);
+                if (confirmar) {
+                    publicacion.solicitado = true;
+                    guardarPublicaciones();
+                    mostrarPublicaciones();
+                    actualizarEstadisticas();
+                    calcularTopCategorias();
+                    mostrarMensaje("¡Solicitud registrada! Ahora puedes contactar al responsable del recurso.", "exito");
+                }
+            }
+        }
+
+        function marcarComoReutilizado(id) {
+            const publicacion = publicaciones.find(function(item) { return item.id === id; });
+            if (!publicacion) return;
+            if (!publicacion.solicitado) {
+                mostrarMensaje("⚠️ Primero debes solicitar el recurso antes de marcarlo como reutilizado.", "error");
+                return;
+            }
+            const confirmar = confirm(`¿Confirmas que "${publicacion.titulo}" ya fue reutilizado?`);
+            if (confirmar) {
+                publicacion.disponible = false;
+                publicacion.solicitado = true;
+                puntajeTotal += 10;
+                actualizarMedalla();
+                guardarPublicaciones();
+                mostrarPublicaciones();
+                actualizarEstadisticas();
+                calcularTopCategorias();
+                mostrarMensaje("♻️ ¡Excelente! El recurso fue marcado como reutilizado. +10 puntos 🏆", "exito");
+            }
+        }
+
+        function actualizarEstadisticas() {
+            const total = publicaciones.length;
+            const reutilizados = publicaciones.filter(function(p) { return !p.disponible; }).length;
+            const disponibles = publicaciones.filter(function(p) { return p.disponible; }).length;
+            let porcentaje = 0;
+            if (total > 0) porcentaje = Math.round((reutilizados / total) * 100);
+            const arbolesSalvados = (reutilizados * 0.5).toFixed(1);
+
+            document.getElementById("totalPublicados").textContent = total;
+            document.getElementById("totalReutilizados").textContent = reutilizados;
+            document.getElementById("totalDisponibles").textContent = disponibles;
+            document.getElementById("porcentajeReutilizacion").textContent = porcentaje + "%";
+            document.getElementById("puntajeTotal").textContent = puntajeTotal;
+            document.getElementById("arbolesSalvados").textContent = arbolesSalvados;
+        }
+
+        function mostrarMensaje(texto, tipo) {
+            mensaje.textContent = texto;
+            mensaje.className = "";
+            mensaje.classList.add(tipo === "exito" ? "mensaje-exito" : "mensaje-error");
+            mensaje.style.display = "block";
+            setTimeout(function() { mensaje.style.display = "none"; }, 6000);
+        }
+
+        formulario.addEventListener("submit", function(evento) {
+            evento.preventDefault();
+            const titulo = document.getElementById("titulo").value.trim();
+            const categoria = document.getElementById("categoria").value;
+            const tipo = document.getElementById("tipo").value;
+            const contacto = document.getElementById("contacto").value.trim();
+            const descripcion = document.getElementById("descripcion").value.trim();
+
+            if (titulo === "" || categoria === "" || tipo === "" || contacto === "" || descripcion === "") {
+                mostrarMensaje("⚠️ Por favor completa todos los campos obligatorios.", "error");
+                return;
+            }
+
+            const nuevaPublicacion = {
+                id: Date.now(),
+                titulo: titulo,
+                categoria: categoria,
+                tipo: tipo,
+                descripcion: descripcion,
+                contacto: contacto,
+                disponible: true,
+                solicitado: false,
+                fecha: new Date().toLocaleDateString("es-CO")
+            };
+
+            publicaciones.push(nuevaPublicacion);
+            guardarPublicaciones();
+            mostrarPublicaciones();
+            actualizarEstadisticas();
+            calcularTopCategorias();
+            formulario.reset();
+            mostrarMensaje("🎉 ¡Tu recurso fue publicado correctamente!", "exito");
+        });
+
+        const botonesFiltro = document.querySelectorAll(".btn-filtro");
+        botonesFiltro.forEach(function(boton) {
+            boton.addEventListener("click", function() {
+                categoriaActual = boton.dataset.categoria;
+                botonesFiltro.forEach(function(b) { b.classList.remove("activo"); });
+                boton.classList.add("activo");
+                mostrarPublicaciones();
+            });
+        });
+
+        buscador.addEventListener("input", function() { mostrarPublicaciones(); });
+
+        cargarPublicaciones();
+        mostrarPublicaciones();
+        actualizarEstadisticas();
+        calcularTopCategorias();
+        actualizarMedalla();
+    </script>
+</body>
+</html>

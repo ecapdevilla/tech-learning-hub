@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE CREATORS - Proyecto 6° Tecnología</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #1a2a4a;
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #2f4f68;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2f4f68;
+            padding-bottom: 15px;
+        }
+
+        .emoji-big {
+            font-size: 48px;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #1a2a4a;
+            background: #e8edf3;
+            padding: 10px 18px;
+            border-left: 6px solid #2f4f68;
+            margin-top: 35px;
+            margin-bottom: 18px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #2f4f68;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1e2a3a;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin-left: 22px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1e2a3a;
+            margin-bottom: 5px;
+        }
+
+        .highlight-box {
+            background: #f7f9fc;
+            border-left: 5px solid #2f4f68;
+            padding: 18px 22px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box strong {
+            color: #1a2a4a;
+        }
+
+        .driving-question {
+            background: #e8f0fe;
+            border-left: 5px solid #1a5276;
+            padding: 18px 22px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0 25px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #c5cdd8;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #2f4f68;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f7f9fc;
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0 20px;
+        }
+
+        .role-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+        }
+
+        .role-card strong {
+            display: block;
+            font-size: 15px;
+            color: #1a2a4a;
+        }
+
+        .role-card span {
+            font-size: 13px;
+            color: #3a4a5a;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #2f4f68;
+            color: white;
+            font-weight: bold;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .project-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0 20px;
+        }
+
+        .option-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 12px 14px;
+            text-align: center;
+        }
+
+        .option-card strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .option-card span {
+            font-size: 13px;
+            color: #3a4a5a;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0 20px;
+        }
+
+        .concept-card {
+            background: #f7f9fc;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 10px 14px;
+            text-align: center;
+        }
+
+        .concept-card strong {
+            display: block;
+            font-size: 15px;
+            color: #1a2a4a;
+        }
+
+        .concept-card span {
+            font-size: 12px;
+            color: #3a4a5a;
+        }
+
+        .rubric-table th:first-child {
+            width: 22%;
+        }
+        .rubric-table th {
+            text-align: center;
+            font-size: 13px;
+        }
+        .rubric-table td {
+            font-size: 13px;
+        }
+
+        .total-score {
+            margin-top: 20px;
+        }
+
+        .total-score table th {
+            text-align: center;
+        }
+        .total-score table td {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #dce3ec;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a2a4a;
+        }
+
+        .footer small {
+            display: block;
+            font-weight: normal;
+            font-size: 14px;
+            color: #5a6a7a;
+            margin-top: 6px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #2f4f68;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .materias-integradas {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 10px 0 15px;
+        }
+
+        .materia-tag {
+            background: #2f4f68;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 18px;
+            }
+            .role-grid, .project-options, .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 26px;
+            }
+            .subtitle {
+                font-size: 16px;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 6px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ======== TÍTULO ======== -->
+    <span class="emoji-big">🎮</span>
+    <h1>CODE CREATORS</h1>
+    <p class="subtitle">Programando Soluciones Interactivas para mi Comunidad</p>
+
+    <!-- ======== MATERIAS INTEGRADAS ======== -->
+    <div style="text-align:center; margin-bottom: 20px;">
+        <div class="materias-integradas">
+            <span class="materia-tag">💻 Tecnología</span>
+            <span class="materia-tag">➕ Matemáticas</span>
+            <span class="materia-tag">🔬 Ciencias Naturales</span>
+        </div>
+    </div>
+
+    <!-- ======== OBJETIVO ======== -->
+    <h2>🎯 OBJETIVO DEL PROYECTO</h2>
+    <p>
+        Diseñar, programar y presentar un <strong>proyecto interactivo funcional</strong> (juego, simulador u organizador de datos) utilizando <strong>Scratch</strong> (programación por bloques) que resuelva un problema real en la escuela o comunidad, aplicando conceptos de <strong>Tecnología, Matemáticas y Ciencias Naturales</strong>, y promoviendo los <strong>Objetivos de Desarrollo Sostenible (ODS)</strong>.
+    </p>
+
+    <!-- ======== METODOLOGÍA ======== -->
+    <h2>📋 METODOLOGÍA</h2>
+    <p>
+        Los estudiantes trabajarán como <strong>equipos de creación digital</strong> cuya misión es desarrollar una solución tecnológica que aborde una necesidad real de la comunidad a través de la programación interactiva con bloques.
+    </p>
+    <p>
+        El proyecto seguirá la metodología de <strong>Aprendizaje Basado en Proyectos (ABP)</strong> y el enfoque <strong>STEM</strong>.
+    </p>
+
+    <!-- ======== STEP 1 ======== -->
+    <h2>🔍 PASO 1: IDENTIFICAR EL PROBLEMA</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Conocerán los Objetivos de Desarrollo Sostenible (ODS) - Enfoque en ODS 4 (Educación de Calidad), ODS 11 (Comunidades Sostenibles), ODS 13 (Acción por el Clima), ODS 15 (Vida de Ecosistemas Terrestres).</li>
+        <li>Identificarán problemas en su escuela o comunidad que puedan resolverse con un juego o herramienta interactiva.</li>
+        <li>Explorarán cómo la tecnología y la programación pueden ayudar en la vida cotidiana y en el cuidado del medio ambiente.</li>
+        <li>Comprenderán la importancia de crear soluciones útiles para los demás.</li>
+    </ul>
+
+    <div class="driving-question">
+        <strong>❓ Pregunta Orientadora:</strong><br>
+        ¿Cómo podemos usar la programación (variables, condicionales, ciclos y listas) para crear un juego o herramienta interactiva que ayude a resolver un problema en nuestra escuela o comunidad, y que también cuide el medio ambiente?
+    </div>
+
+    <!-- ======== STEP 2 ======== -->
+    <h2>👥 PASO 2: FORMAR LOS EQUIPOS DE CREACIÓN</h2>
+    <p>El docente organizará equipos de trabajo colaborativo.</p>
+    <ul>
+        <li>Cada salón se dividirá en <strong>6 equipos de creación</strong>.</li>
+        <li>Cada equipo estará conformado por <strong>4 a 5 estudiantes</strong>.</li>
+        <li>Cada miembro asumirá un rol y responsabilidad específica.</li>
+    </ul>
+
+    <h3>Roles Sugeridos:</h3>
+    <div class="role-grid">
+        <div class="role-card">
+            <strong>🧩 Programador</strong>
+            <span>Responsable de la lógica y los bloques de programación</span>
+        </div>
+        <div class="role-card">
+            <strong>🎨 Diseñador de Escenarios</strong>
+            <span>Diseña los fondos, personajes y elementos visuales</span>
+        </div>
+        <div class="role-card">
+            <strong>📊 Recolector de Datos</strong>
+            <span>Gestiona las listas, puntuaciones y variables</span>
+        </div>
+        <div class="role-card">
+            <strong>📝 Documentador</strong>
+            <span>Registra el proceso y escribe las instrucciones</span>
+        </div>
+        <div class="role-card">
+            <strong>🎤 Presentador</strong>
+            <span>Lidera las presentaciones y explica el proyecto</span>
+        </div>
+    </div>
+
+    <!-- ======== STEP 3 ======== -->
+    <h2>📚 PASO 3: INVESTIGAR Y PLANIFICAR</h2>
+    <p>Los estudiantes investigarán:</p>
+    <ul>
+        <li>Qué es la programación y cómo funciona Scratch.</li>
+        <li>Estructuras básicas: variables, condicionales, ciclos y listas.</li>
+        <li>Cómo hacer un juego o herramienta interactiva.</li>
+        <li>Problemas de su entorno que puedan resolverse con tecnología.</li>
+        <li>Conceptos básicos de ciencias naturales relacionados (reciclaje, cuidado del agua, energía, biodiversidad).</li>
+    </ul>
+
+    <p>Cada equipo creará:</p>
+    <ul>
+        <li>Un nombre para el proyecto.</li>
+        <li>Un boceto de cómo será su juego o herramienta.</li>
+        <li>Una lista de los bloques que van a necesitar.</li>
+        <li>La historia o propósito de su proyecto.</li>
+    </ul>
+
+    <h3>Opciones de Proyecto Disponibles:</h3>
+    <div class="project-options">
+        <div class="option-card">
+            <strong>🎮 Juego de Preguntas</strong>
+            <span>Cuestionario sobre reciclaje, cuidado del agua o ecosistemas</span>
+        </div>
+        <div class="option-card">
+            <strong>🎯 Juego de Habilidad</strong>
+            <span>Puntería, memoria o velocidad con temática ambiental</span>
+        </div>
+        <div class="option-card">
+            <strong>📋 Organizador de Tareas</strong>
+            <span>Lista de tareas para cuidar el medio ambiente en la escuela</span>
+        </div>
+        <div class="option-card">
+            <strong>📖 Historia Interactiva</strong>
+            <span>Cuento donde el usuario toma decisiones para salvar el planeta</span>
+        </div>
+        <div class="option-card">
+            <strong>🌱 Ayuda para la Comunidad</strong>
+            <span>Juego que enseña sobre reciclaje, ahorro de agua o energía</span>
+        </div>
+    </div>
+
+    <!-- ======== STEP 4 ======== -->
+    <h2>✏️ PASO 4: DISEÑAR EL PROTOTIPO</h2>
+    <p>Los equipos diseñarán:</p>
+    <ul>
+        <li>Los personajes y escenarios (relacionados con la naturaleza).</li>
+        <li>El flujo del juego (qué pasa primero, después, al final).</li>
+        <li>Las reglas y la puntuación.</li>
+        <li>Las variables que van a usar (vidas, puntos, tiempo).</li>
+        <li>Las listas para guardar información.</li>
+    </ul>
+    <p>Los estudiantes producirán <strong>dibujos, bocetos y planes escritos</strong>.</p>
+
+    <!-- ======== STEP 5 ======== -->
+    <h2>🛠️ PASO 5: CONSTRUIR Y PROGRAMAR</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Abrirán Scratch (https://scratch.mit.edu).</li>
+        <li>Crearán los personajes y escenarios.</li>
+        <li>Programarán con bloques:</li>
+    </ul>
+
+    <div class="concept-grid">
+        <div class="concept-card">
+            <strong>📦 Variables</strong>
+            <span>Guardar puntajes, vidas, nombres</span>
+        </div>
+        <div class="concept-card">
+            <strong>🔀 Condicionales</strong>
+            <span>Decidir qué hacer (si/entonces)</span>
+        </div>
+        <div class="concept-card">
+            <strong>🔄 Ciclos</strong>
+            <span>Repetir acciones (por siempre, repetir)</span>
+        </div>
+        <div class="concept-card">
+            <strong>📊 Listas</strong>
+            <span>Guardar colecciones de datos</span>
+        </div>
+    </div>
+
+    <h3>Características Posibles:</h3>
+    <ul>
+        <li>✅ Entrada del usuario (clic, teclado)</li>
+        <li>✅ Sistema de puntuación</li>
+        <li>✅ Niveles o dificultad</li>
+        <li>✅ Mensajes de retroalimentación</li>
+        <li>✅ Música y sonidos</li>
+        <li>✅ Instrucciones para el usuario</li>
+        <li>✅ Temática ambiental (reciclaje, naturaleza, agua)</li>
+    </ul>
+
+    <!-- ======== STEP 6 ======== -->
+    <h2>🧪 PASO 6: PROBAR Y RECOLECTAR DATOS</h2>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Jugarán su propio juego para probarlo.</li>
+        <li>Identificarán errores y los corregirán.</li>
+        <li>Medirán tiempos y puntuaciones.</li>
+        <li>Preguntarán a compañeros qué les parece.</li>
+    </ul>
+
+    <h3>Integración con Matemáticas y Ciencias Naturales:</h3>
+    <ul>
+        <li><strong>Matemáticas:</strong> Conteo de puntos y vidas, operaciones matemáticas (sumas, restas), comparación de resultados, gráficos simples (opcional).</li>
+        <li><strong>Ciencias Naturales:</strong> Relación con temas de reciclaje, cuidado del agua, energía, biodiversidad y ecosistemas.</li>
+    </ul>
+    <p>Los estudiantes determinarán si su juego es divertido, útil y educativo.</p>
+
+    <!-- ======== STEP 7 ======== -->
+    <h2>🔧 PASO 7: MEJORAR EL DISEÑO</h2>
+    <p>Los equipos:</p>
+    <ul>
+        <li>Escucharán los comentarios de sus compañeros.</li>
+        <li>Corregirán errores en la programación.</li>
+        <li>Mejorarán los personajes y escenarios.</li>
+        <li>Agregarán nuevas funcionalidades.</li>
+        <li>Harán su juego más divertido, útil y educativo.</li>
+    </ul>
+    <p>Los estudiantes documentarán las mejoras en su <strong>bitácora de creación</strong>.</p>
+
+    <!-- ======== STEP 8 ======== -->
+    <h2>🎤 PASO 8: PREPARAR LA PRESENTACIÓN DEL PRODUCTO</h2>
+    <p>Cada equipo preparará:</p>
+    <ul>
+        <li>Demostración del juego o herramienta.</li>
+        <li>Explicación de cómo programaron (bloques importantes).</li>
+        <li>Explicación del problema que resuelve.</li>
+        <li>Conexión con los ODS (cómo ayuda al mundo).</li>
+        <li>Relación con Ciencias Naturales (qué enseñan sobre el medio ambiente).</li>
+    </ul>
+    <p>Los equipos explicarán cómo su creación contribuye al bienestar de la comunidad escolar y al cuidado del planeta.</p>
+
+    <!-- ======== STEP 9 ======== -->
+    <h2>🏆 PASO 9: FERIA STEM DE INNOVACIÓN</h2>
+    <p>Cada equipo participará en la <strong>Feria de Innovación Code Creators</strong>.</p>
+    <p>Los estudiantes:</p>
+    <ul>
+        <li>Exhibirán su juego o herramienta.</li>
+        <li>Demostrarán cómo funciona.</li>
+        <li>Explicarán cómo lo programaron.</li>
+        <li>Contarán cómo ayuda a la comunidad y al medio ambiente.</li>
+        <li>Recibirán retroalimentación de docentes y compañeros.</li>
+    </ul>
+
+    <!-- ======== RESUMEN ======== -->
+    <h2>📌 RESUMEN DEL PROYECTO</h2>
+    <p>Al final del proyecto, cada equipo habrá desarrollado un <strong>proyecto interactivo funcional en Scratch</strong> que combina:</p>
+
+    <table>
+        <tr>
+            <th style="width:25%;">Componente</th>
+            <th style="width:75%;">Aplicación</th>
+        </tr>
+        <tr>
+            <td><strong>Tecnología</strong></td>
+            <td>Programación con bloques en Scratch</td>
+        </tr>
+        <tr>
+            <td><strong>Matemáticas</strong></td>
+            <td>Lógica, conteo, operaciones, datos</td>
+        </tr>
+        <tr>
+            <td><strong>Ciencias Naturales</strong></td>
+            <td>Cuidado del medio ambiente, reciclaje, agua, energía, ecosistemas</td>
+        </tr>
+        <tr>
+            <td><strong>Ética</strong></td>
+            <td>Uso responsable y solidario de la tecnología</td>
+        </tr>
+    </table>
+
+    <!-- ======== RÚBRICA ======== -->
+    <h2>📊 RÚBRICA DE EVALUACIÓN</h2>
+
+    <table class="rubric-table">
+        <tr>
+            <th>Criterio</th>
+            <th>Excelente (4)</th>
+            <th>Bueno (3)</th>
+            <th>Aceptable (2)</th>
+            <th>Necesita Mejorar (1)</th>
+        </tr>
+        <tr>
+            <td><strong>1. Funcionalidad del Proyecto</strong></td>
+            <td>El proyecto funciona perfectamente. Todas las partes están implementadas.</td>
+            <td>El proyecto funciona con mínimos errores.</td>
+            <td>El proyecto funciona parcialmente.</td>
+            <td>El proyecto no funciona o tiene errores graves.</td>
+        </tr>
+        <tr>
+            <td><strong>2. Uso de Variables</strong></td>
+            <td>Usa variables correctamente para guardar puntajes, vidas y datos.</td>
+            <td>Usa variables correctamente.</td>
+            <td>Usa algunas variables, pero con errores.</td>
+            <td>No usa o usa mal las variables.</td>
+        </tr>
+        <tr>
+            <td><strong>3. Uso de Condicionales</strong></td>
+            <td>Usa condicionales (si/entonces) correctamente para tomar decisiones.</td>
+            <td>Usa condicionales correctamente.</td>
+            <td>Usa algunos condicionales, pero con errores.</td>
+            <td>No usa o usa mal los condicionales.</td>
+        </tr>
+        <tr>
+            <td><strong>4. Uso de Ciclos</strong></td>
+            <td>Usa ciclos (repetir, por siempre) correctamente para repetir acciones.</td>
+            <td>Usa ciclos correctamente.</td>
+            <td>Usa algunos ciclos, pero con errores.</td>
+            <td>No usa o usa mal los ciclos.</td>
+        </tr>
+        <tr>
+            <td><strong>5. Uso de Listas</strong></td>
+            <td>Usa listas correctamente para guardar colecciones de datos.</td>
+            <td>Usa listas correctamente.</td>
+            <td>Usa algunas listas, pero con errores.</td>
+            <td>No usa o usa mal las listas.</td>
+        </tr>
+        <tr>
+            <td><strong>6. Creatividad y Diseño</strong></td>
+            <td>El proyecto es creativo, atractivo y bien diseñado.</td>
+            <td>El proyecto es creativo y bien diseñado.</td>
+            <td>El proyecto es básico en diseño.</td>
+            <td>El proyecto no es creativo ni atractivo.</td>
+        </tr>
+        <tr>
+            <td><strong>7. Trabajo en Equipo</strong></td>
+            <td>Todos participaron activamente. Excelente comunicación.</td>
+            <td>La mayoría participó. Buena comunicación.</td>
+            <td>Algunos participaron. Roles no claros.</td>
+            <td>Participación limitada. Conflicto en el equipo.</td>
+        </tr>
+        <tr>
+            <td><strong>8. Reflexión y ODS</strong></td>
+            <td>Reflexión profunda sobre el impacto. Conexión clara con los ODS.</td>
+            <td>Reflexión adecuada. Conexión clara con los ODS.</td>
+            <td>Reflexión básica. Conexión superficial con los ODS.</td>
+            <td>No hay reflexión o conexión con los ODS.</td>
+        </tr>
+        <tr>
+            <td><strong>9. Presentación</strong></td>
+            <td>Presentación clara, organizada y profesional.</td>
+            <td>Presentación clara y organizada.</td>
+            <td>Presentación básica. Falta claridad.</td>
+            <td>Presentación confusa o incompleta.</td>
+        </tr>
+        <tr>
+            <td><strong>10. Utilidad del Proyecto</strong></td>
+            <td>El proyecto resuelve un problema real de manera efectiva y educativa.</td>
+            <td>El proyecto resuelve un problema real.</td>
+            <td>El proyecto aborda un problema de manera básica.</td>
+            <td>El proyecto no resuelve ningún problema.</td>
+        </tr>
+    </table>
+
+    <!-- ======== PUNTUACIÓN TOTAL ======== -->
+    <div class="total-score">
+        <h2>📈 PUNTUACIÓN TOTAL</h2>
+        <table>
+            <tr>
+                <th style="width:33%;">Rango</th>
+                <th style="width:33%;">Calificación</th>
+                <th style="width:34%;">Equivalencia</th>
+            </tr>
+            <tr>
+                <td>36 - 40</td>
+                <td>Excelente</td>
+                <td>9.0 - 10.0</td>
+            </tr>
+            <tr>
+                <td>30 - 35</td>
+                <td>Bueno</td>
+                <td>8.0 - 8.9</td>
+            </tr>
+            <tr>
+                <td>24 - 29</td>
+                <td>Aceptable</td>
+                <td>7.0 - 7.9</td>
+            </tr>
+            <tr>
+                <td>18 - 23</td>
+                <td>Necesita Mejorar</td>
+                <td>6.0 - 6.9</td>
+            </tr>
+            <tr>
+                <td>0 - 17</td>
+                <td>Insuficiente</td>
+                <td>&lt; 6.0</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ======== RECURSOS ======== -->
+    <h2>📦 RECURSOS</h2>
+    <table>
+        <tr>
+            <th style="width:25%;">Categoría</th>
+            <th style="width:75%;">Recursos</th>
+        </tr>
+        <tr>
+            <td><strong>Programación</strong></td>
+            <td>Scratch (https://scratch.mit.edu)</td>
+        </tr>
+        <tr>
+            <td><strong>Diseño</strong></td>
+            <td>Personajes, fondos, sonidos de Scratch</td>
+        </tr>
+        <tr>
+            <td><strong>Documentación</strong></td>
+            <td>Google Docs, papel, lápices de colores</td>
+        </tr>
+        <tr>
+            <td><strong>Colaboración</strong></td>
+            <td>Trabajo en equipo, roles asignados</td>
+        </tr>
+        <tr>
+            <td><strong>ODS</strong></td>
+            <td>Sitio web de Naciones Unidas ODS</td>
+        </tr>
+        <tr>
+            <td><strong>Ciencias Naturales</strong></td>
+            <td>Material sobre reciclaje, agua, energía, ecosistemas</td>
+        </tr>
+    </table>
+
+    <!-- ======== CONCEPTOS CLAVE ======== -->
+    <h2>🧠 CONCEPTOS CLAVE</h2>
+    <table>
+        <tr>
+            <th style="width:35%;">Concepto</th>
+            <th style="width:65%;">Aplicación</th>
+        </tr>
+        <tr>
+            <td>Variables</td>
+            <td>Guardar puntajes, vidas, nombres</td>
+        </tr>
+        <tr>
+            <td>Condicionales</td>
+            <td>Tomar decisiones en el juego</td>
+        </tr>
+        <tr>
+            <td>Ciclos</td>
+            <td>Repetir acciones (movimiento, preguntas)</td>
+        </tr>
+        <tr>
+            <td>Listas</td>
+            <td>Guardar colecciones de datos</td>
+        </tr>
+        <tr>
+            <td>Eventos</td>
+            <td>Responder a clics y teclas</td>
+        </tr>
+        <tr>
+            <td>Diseño</td>
+            <td>Crear personajes y escenarios atractivos</td>
+        </tr>
+        <tr>
+            <td>Resolución de Problemas</td>
+            <td>Ayudar a la comunidad con tecnología</td>
+        </tr>
+        <tr>
+            <td>ODS</td>
+            <td>Conectar la tecnología con objetivos globales</td>
+        </tr>
+        <tr>
+            <td>Ciencias Naturales</td>
+            <td>Cuidado del medio ambiente, reciclaje, agua, energía</td>
+        </tr>
+    </table>
+
+    <!-- ======== PRODUCTO FINAL ======== -->
+    <h2>✅ PRODUCTO FINAL</h2>
+    <p>Cada equipo entregará:</p>
+    <ol>
+        <li>✅ Proyecto interactivo funcional en Scratch</li>
+        <li>✅ Explicación de los bloques usados</li>
+        <li>✅ Instrucciones para jugar o usar</li>
+        <li>✅ Capturas de pantalla del proyecto</li>
+        <li>✅ Reflexión sobre cómo ayuda a la comunidad y al medio ambiente</li>
+        <li>✅ Presentación oral y demostración</li>
+        <li>✅ Portafolio STEM final</li>
+    </ol>
+
+    <!-- ======== FOOTER ======== -->
+    <div class="footer">
+        "Programar es crear, y crear es la mejor manera de ayudar a los demás y cuidar nuestro planeta."
+        <small>Proyecto CODE CREATORS - Tecnología 6° - Tercer Periodo 2026</small>
+        <br>
+        <small style="font-size:12px; color:#888;">Integración: Tecnología 🔹 Matemáticas 🔹 Ciencias Naturales</small>
+    </div>
+
+</div>
+
+</body>
+</html>

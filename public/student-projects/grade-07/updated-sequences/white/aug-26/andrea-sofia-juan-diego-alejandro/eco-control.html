@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌿 EcoControl · Gestión Ambiental 4.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET Y BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #0b1a0e;
+            min-height: 100vh;
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(circle at 20% 30%, #1a3a1e 0%, #0b1a0e 90%);
+        }
+
+        /* ===== BARRA DE NAVEGACIÓN ===== */
+        .tlh7bar {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-weight: 600;
+        }
+        .tlh7bar a,
+        .tlh7bar span {
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            color: #d4edda;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+        .tlh7bar a:hover {
+            background: #1f5a23;
+            color: white;
+            border-color: #66bb6a;
+            box-shadow: 0 0 20px rgba(46, 125, 50, 0.2);
+            transform: translateY(-2px);
+        }
+        .tlh7bar span {
+            background: rgba(27, 59, 31, 0.7);
+            border-color: #388e3c;
+            backdrop-filter: blur(8px);
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 2.5rem 3rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        /* ===== ENCABEZADO ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #e8f5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .header h1 span {
+            background: linear-gradient(145deg, #2e7d32, #1f5a23);
+            color: white;
+            font-size: 1rem;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+        .subtitulo {
+            color: #a5d6a7;
+            font-size: 1.1rem;
+            margin-top: 8px;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        .objetivo {
+            margin: 18px auto 0;
+            max-width: 720px;
+            background: rgba(46, 125, 50, 0.12);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(165, 214, 167, 0.15);
+            padding: 14px 28px;
+            border-radius: 60px;
+            color: #d4edda;
+            font-size: 0.95rem;
+            font-weight: 400;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        .objetivo strong {
+            color: #81c784;
+            font-weight: 600;
+        }
+
+        /* ===== GRID PRINCIPAL ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 32px;
+            margin-top: 12px;
+        }
+
+        /* ===== TARJETAS ===== */
+        .card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 2rem 2rem 2.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transition: 0.3s ease;
+        }
+        .card:hover {
+            border-color: rgba(165, 214, 167, 0.2);
+            box-shadow: 0 12px 36px rgba(46, 125, 50, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: #e8f5e9;
+            margin-bottom: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid rgba(165, 214, 167, 0.1);
+            padding-bottom: 14px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        /* ===== FORMULARIO ===== */
+        .campo {
+            margin-bottom: 1.2rem;
+        }
+        .campo label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: #c8e6c9;
+            font-size: 0.9rem;
+            letter-spacing: 0.2px;
+        }
+        .campo label i {
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+        .campo input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            font-size: 1rem;
+            margin-top: 6px;
+            transition: 0.2s;
+            font-weight: 500;
+            color: #e8f5e9;
+            backdrop-filter: blur(4px);
+        }
+        .campo input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
+        }
+        .campo input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+            font-weight: 300;
+        }
+
+        .btn-analyze {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(145deg, #1f5a23, #2e7d32);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.25s ease;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            box-shadow: 0 6px 0 #0f3a12, 0 8px 24px rgba(46, 125, 50, 0.15);
+            letter-spacing: 0.5px;
+        }
+        .btn-analyze:hover {
+            background: linear-gradient(145deg, #2e7d32, #388e3c);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #0f3a12, 0 12px 32px rgba(46, 125, 50, 0.25);
+        }
+        .btn-analyze:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #0f3a12;
+        }
+
+        /* ===== ESTADÍSTICAS EN TIEMPO REAL ===== */
+        .stats-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0 8px;
+        }
+        .stat-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 8px 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .stat-item .num {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #81c784;
+        }
+        .stat-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #a5d6a7;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+        }
+
+        /* ===== RESULTADOS ===== */
+        #salida {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem 1.8rem;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.7;
+            min-height: 200px;
+            transition: 0.3s ease;
+            color: #e8f5e9;
+        }
+        #salida h3 {
+            color: #a5d6a7;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        #salida hr {
+            margin: 16px 0;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        #salida .badge {
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            margin: 10px 0 6px;
+            font-size: 0.95rem;
+        }
+        .badge-excelente {
+            background: linear-gradient(145deg, #1f5a23, #2e7d32);
+            color: white;
+            box-shadow: 0 4px 16px rgba(46, 125, 50, 0.2);
+        }
+        .badge-bueno {
+            background: #66bb6a;
+            color: #0b1a0e;
+        }
+        .badge-mejora {
+            background: #ffcdd2;
+            color: #b71c1c;
+        }
+        .recomendacion {
+            background: rgba(30, 136, 229, 0.12);
+            border-left: 6px solid #1e88e5;
+            padding: 10px 16px;
+            border-radius: 14px;
+            margin: 10px 0;
+            backdrop-filter: blur(4px);
+        }
+        .ok-message {
+            background: rgba(46, 125, 50, 0.15);
+            border-left: 6px solid #2e7d32;
+            padding: 14px 20px;
+            border-radius: 16px;
+            font-weight: 600;
+            color: #a5d6a7;
+            backdrop-filter: blur(4px);
+        }
+        ul.lista-rec {
+            padding-left: 22px;
+            margin: 8px 0 4px;
+        }
+        ul.lista-rec li {
+            margin-bottom: 8px;
+            color: #d4edda;
+        }
+
+        /* ===== EQUIPO Y FOOTER ===== */
+        .equipo-section {
+            margin-top: 2.8rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .equipo-section h3 {
+            color: #a5d6a7;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        .equipo-nombres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            font-weight: 500;
+            color: #c8e6c9;
+        }
+        .equipo-nombres span {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .equipo-nombres span:hover {
+            background: rgba(46, 125, 50, 0.15);
+            border-color: #2e7d32;
+        }
+
+        footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: #a5d6a7;
+            font-weight: 400;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        #fecha {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .header h1 {
+                font-size: 2.4rem;
+            }
+            .equipo-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        @media (max-width: 500px) {
+            body {
+                padding: 0.8rem;
+            }
+            .container {
+                padding: 1.2rem 0.8rem;
+                border-radius: 28px;
+            }
+            .card {
+                padding: 1.2rem;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .objetivo {
+                font-size: 0.8rem;
+                padding: 10px 16px;
+                border-radius: 40px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .stats-mini {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .equipo-nombres span {
+                font-size: 0.75rem;
+                padding: 4px 14px;
+            }
+        }
+
+        /* ===== ANIMACIONES ===== */
+        .fade-in {
+            animation: fadeUp 0.5s ease forwards;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0.3;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .glow-pulse {
+            animation: pulseGlow 3s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 8px rgba(46, 125, 50, 0.1);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(46, 125, 50, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE EVIDENCIA -->
+    <div class="tlh7bar">
+        <a href="../index.html">← Learning Evidence</a>
+        <span>7th Grade · Technical Evidence</span>
+    </div>
+
+    <div class="container">
+
+        <!-- ENCABEZADO CON OBJETIVO -->
+        <div class="header">
+            <h1>
+                🌱 EcoControl
+                <span>ESG 4.0</span>
+            </h1>
+            <p class="subtitulo">
+                Monitoreo inteligente de recursos · Sostenibilidad en tiempo real
+            </p>
+            <div class="objetivo">
+                🎯 <strong>Objetivo:</strong> Evaluar el desempeño ambiental de la empresa mediante indicadores clave (energía, agua, papel y reciclaje) para generar recomendaciones estratégicas que impulsen la sostenibilidad y la eficiencia operativa.
+            </div>
+        </div>
+
+        <!-- GRID PRINCIPAL -->
+        <div class="grid">
+
+            <!-- TARJETA IZQUIERDA: INGRESO DE DATOS -->
+            <div class="card">
+                <h2>📊 Registro diario</h2>
+
+                <div class="campo">
+                    <label><i>⚡</i> Consumo de Energía (kWh)</label>
+                    <input type="number" id="energia" placeholder="ej. 420" step="0.1" />
+                </div>
+                <div class="campo">
+                    <label><i>💧</i> Consumo de Agua (Litros)</label>
+                    <input type="number" id="agua" placeholder="ej. 850" step="0.1" />
+                </div>
+                <div class="campo">
+                    <label><i>📄</i> Papel Utilizado (Hojas)</label>
+                    <input type="number" id="papel" placeholder="ej. 200" step="1" />
+                </div>
+                <div class="campo">
+                    <label><i>♻️</i> Residuos Reciclados (Kg)</label>
+                    <input type="number" id="reciclaje" placeholder="ej. 65" step="0.1" />
+                </div>
+
+                <button class="btn-analyze" onclick="analizar()">
+                    <span>🔍</span> Analizar impacto
+                </button>
+
+                <!-- Mini estadísticas en tiempo real -->
+                <div class="stats-mini" id="statsPreview">
+                    <div class="stat-item"><span class="num" id="previewEnergia">0</span><div class="label">kWh</div></div>
+                    <div class="stat-item"><span class="num" id="previewAgua">0</span><div class="label">L</div></div>
+                    <div class="stat-item"><span class="num" id="previewPapel">0</span><div class="label">Hojas</div></div>
+                    <div class="stat-item"><span class="num" id="previewReciclaje">0</span><div class="label">Kg</div></div>
+                </div>
+            </div>
+
+            <!-- TARJETA DERECHA: RESULTADOS -->
+            <div class="card">
+                <h2>📋 Reporte automático</h2>
+                <div id="salida" class="fade-in glow-pulse">
+                    <span style="color:#a5d6a7; font-weight:300;">Ingresa los datos y presiona «Analizar impacto».</span>
+                    <br />
+                    <span style="font-size:0.85rem; color:#558b2f;">🌿 Actualización automática cada 15 segundos si todos los campos están completos.</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EQUIPO DE TRABAJO -->
+        <div class="equipo-section">
+            <h3>👥 Equipo de trabajo</h3>
+            <div class="equipo-nombres">
+                <span>🌟 Sofia Sarmiento</span>
+                <span>🌟 Andrea Guerra</span>
+                <span>🌟 Alejandro Hernandez</span>
+                <span>🌟 Juandiego Ortiz</span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <span>🌍 Huella ambiental · Estrategia 2030</span>
+            <span>📅 <span id="fecha"></span></span>
+        </footer>
+
+    </div>
+
+    <script>
+        // === FECHA DINÁMICA ===
+        document.getElementById('fecha').innerHTML = new Date().toLocaleDateString('es-ES', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // === ACTUALIZAR VISTA PREVIA DE ESTADÍSTICAS ===
+        function actualizarPreview() {
+            const e = parseFloat(document.getElementById('energia').value) || 0;
+            const a = parseFloat(document.getElementById('agua').value) || 0;
+            const p = parseFloat(document.getElementById('papel').value) || 0;
+            const r = parseFloat(document.getElementById('reciclaje').value) || 0;
+            document.getElementById('previewEnergia').textContent = e.toFixed(1);
+            document.getElementById('previewAgua').textContent = a.toFixed(0);
+            document.getElementById('previewPapel').textContent = p.toFixed(0);
+            document.getElementById('previewReciclaje').textContent = r.toFixed(1);
+        }
+
+        // Escuchar cambios en los inputs para actualizar preview
+        document.querySelectorAll('.campo input').forEach(input => {
+            input.addEventListener('input', actualizarPreview);
+        });
+
+        // === FUNCIÓN PRINCIPAL DE ANÁLISIS ===
+        function analizar() {
+            const energia = parseFloat(document.getElementById('energia').value) || 0;
+            const agua = parseFloat(document.getElementById('agua').value) || 0;
+            const papel = parseFloat(document.getElementById('papel').value) || 0;
+            const reciclaje = parseFloat(document.getElementById('reciclaje').value) || 0;
+
+            let puntaje = 0;
+            const recomendaciones = [];
+
+            // Lógica de puntuación (más granular)
+            if (energia < 500) puntaje += 25;
+            else if (energia < 800) { puntaje += 12;
+                recomendaciones.push('⚡ Reduce el consumo eléctrico: apaga equipos en stand-by y usa iluminación LED.'); } else
+                recomendaciones.push('⚡ Alto consumo energético. Revisa equipos ineficientes y optimiza horarios de uso.');
+
+            if (agua < 1000) puntaje += 25;
+            else if (agua < 1500) { puntaje += 12;
+                recomendaciones.push('💧 Instala aireadores en grifos y repara fugas para reducir el consumo de agua.'); } else
+                recomendaciones.push('💧 Consumo de agua elevado. Considera sistemas de reutilización y sensores de flujo.');
+
+            if (papel < 300) puntaje += 25;
+            else if (papel < 500) { puntaje += 12;
+                recomendaciones.push('📄 Digitaliza procesos y usa papel reciclado para disminuir el uso de hojas.'); } else
+                recomendaciones.push('📄 Impresión excesiva. Implementa firmas digitales y comunicación por correo.');
+
+            if (reciclaje >= 50) puntaje += 25;
+            else if (reciclaje >= 25) { puntaje += 12;
+                recomendaciones.push('♻️ Aumenta el reciclaje: coloca más contenedores y capacita al personal.'); } else
+                recomendaciones.push('♻️ Bajo nivel de reciclaje. Establece un programa de separación en origen.');
+
+            if (puntaje > 100) puntaje = 100;
+
+            let nivel = '',
+                claseNivel = '';
+            if (puntaje >= 75) { nivel = '🌟 Excelente';
+                claseNivel = 'badge-excelente'; } else if (puntaje >= 50) { nivel = '✅ Bueno';
+                claseNivel = 'badge-bueno'; } else { nivel = '⚠️ Debe mejorar';
+                claseNivel = 'badge-mejora'; }
+
+            // Construir HTML de salida
+            let salidaHTML = `
+                <h3>📈 Resumen ambiental</h3>
+                <p><strong>⚡ Energía:</strong> ${energia} kWh &nbsp;|&nbsp; <strong>💧 Agua:</strong> ${agua} L</p>
+                <p><strong>📄 Papel:</strong> ${papel} hojas &nbsp;|&nbsp; <strong>♻️ Reciclaje:</strong> ${reciclaje} Kg</p>
+                <hr />
+                <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                    <span style="font-weight:500; color:#a5d6a7;">🌱 Puntaje sostenible:</span>
+                    <span style="font-size:1.8rem; font-weight:800; background:rgba(255,255,255,0.04); padding:2px 22px; border-radius:60px; color:#81c784;">${puntaje}%</span>
+                </div>
+                <div class="badge ${claseNivel}" style="margin:12px 0 6px;">
+                    ${nivel}
+                </div>
+            `;
+
+            if (recomendaciones.length > 0) {
+                salidaHTML += `<h3 style="margin-top:16px;">📌 Recomendaciones</h3><ul class="lista-rec">`;
+                recomendaciones.forEach(r => { salidaHTML += `<li>${r}</li>`; });
+                salidaHTML += `</ul>`;
+            } else {
+                salidaHTML += `
+                    <div class="ok-message" style="margin-top:14px;">
+                        🎉 ¡Excelente! La empresa aplica prácticas ambientales ejemplares.
+                    </div>
+                `;
+            }
+
+            const salidaDiv = document.getElementById('salida');
+            salidaDiv.innerHTML = salidaHTML;
+            salidaDiv.classList.remove('fade-in');
+            void salidaDiv.offsetWidth;
+            salidaDiv.classList.add('fade-in');
+        }
+
+        // === AUTOMATIZACIÓN CADA 15 SEGUNDOS ===
+        setInterval(() => {
+            const energia = document.getElementById('energia').value.trim();
+            const agua = document.getElementById('agua').value.trim();
+            const papel = document.getElementById('papel').value.trim();
+            const reciclaje = document.getElementById('reciclaje').value.trim();
+            if (energia !== '' && agua !== '' && papel !== '' && reciclaje !== '') {
+                analizar();
+            }
+        }, 15000);
+
+        // === CARGA INICIAL ===
+        window.addEventListener('load', () => {
+            actualizarPreview();
+            const e = document.getElementById('energia').value.trim();
+            const a = document.getElementById('agua').value.trim();
+            const p = document.getElementById('papel').value.trim();
+            const r = document.getElementById('reciclaje').value.trim();
+            if (e && a && p && r) analizar();
+        });
+    </script>
+
+</body>
+</html>

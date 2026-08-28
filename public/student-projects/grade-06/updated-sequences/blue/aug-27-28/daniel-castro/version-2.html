@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♻️ Eco-Reciclaje: Juego Interactivo - by Daniel Castro</title>
+    <style>
+        /* ---------- ESTILOS GLOBALES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #1a3a2a 0%, #2a5a3a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Contenedor principal - estilo "CODE CREATORS" */
+        .game-container {
+            max-width: 1100px;
+            width: 100%;
+            background: #f0f7f0;
+            border-radius: 28px;
+            padding: 30px 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border: 2px solid #4caf84;
+            transition: all 0.3s ease;
+        }
+
+        /* ---------- ENCABEZADO ---------- */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #2e7d5e;
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #1a3a2a;
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+
+        .header h1 span {
+            background: #2e7d5e;
+            color: white;
+            padding: 0 14px;
+            border-radius: 40px;
+            font-size: 1.8rem;
+        }
+
+        .developer-credit {
+            font-size: 0.95rem;
+            color: #2e7d5e;
+            margin-top: 4px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .developer-credit i {
+            font-style: normal;
+            background: #d4e8d4;
+            padding: 2px 14px;
+            border-radius: 30px;
+        }
+
+        .subheader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            gap: 10px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: #d4e8d4;
+            padding: 8px 20px;
+            border-radius: 50px;
+            flex-wrap: wrap;
+        }
+
+        .stats span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stats .badge {
+            background: #1a3a2a;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-reset {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 0 #922b21;
+        }
+
+        .btn-reset:hover {
+            background: #e74c3c;
+            transform: scale(1.02);
+        }
+
+        /* ---------- ÁREA DE JUEGO ---------- */
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        /* Contenedor de residuos (drag & drop) */
+        .waste-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px 10px;
+            background: #dde8dd;
+            border-radius: 24px;
+            min-height: 130px;
+            border: 3px dashed #2e7d5e;
+        }
+
+        .waste-item {
+            background: #ffffff;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a3a2a;
+            box-shadow: 0 6px 0 #b0c4b0;
+            cursor: grab;
+            user-select: none;
+            transition: 0.15s;
+            border: 2px solid #5a8f6a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 100px;
+            justify-content: center;
+        }
+
+        .waste-item:active {
+            cursor: grabbing;
+            opacity: 0.7;
+        }
+
+        .waste-item.dragging {
+            opacity: 0.4;
+            transform: scale(0.95);
+        }
+
+        /* Contenedores de reciclaje (targets) */
+        .bins-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .bin {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 12px 8px;
+            text-align: center;
+            box-shadow: 0 6px 0 #b0c4b0;
+            border: 3px solid #5a8f6a;
+            transition: 0.2s;
+            cursor: pointer;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bin:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 0 #8aa88a;
+        }
+
+        .bin.drag-over {
+            border-color: #f1c40f;
+            background: #fff9e0;
+            transform: scale(1.02);
+        }
+
+        .bin .bin-icon {
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        .bin .bin-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: #2e7d5e;
+            color: white;
+            padding: 2px 14px;
+            border-radius: 40px;
+            margin-top: 4px;
+        }
+
+        /* ---------- MENSAJES Y FEEDBACK ---------- */
+        .feedback-area {
+            background: #eaf2ea;
+            border-radius: 16px;
+            padding: 14px 20px;
+            min-height: 70px;
+            border-left: 6px solid #2e7d5e;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .feedback-message {
+            flex: 1;
+            font-weight: 500;
+            color: #1a3a2a;
+        }
+
+        .feedback-message .highlight {
+            background: #f1c40f;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        .feedback-stats {
+            font-weight: 600;
+            background: #2e7d5e;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        /* ---------- CONSEJOS DE AGUA (LISTAS) ---------- */
+        .water-tips {
+            background: #d4e8f0;
+            border-radius: 16px;
+            padding: 16px 22px;
+            border-left: 6px solid #1a6b8a;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .water-tips h3 {
+            font-size: 1.1rem;
+            color: #0a3a4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .tip-text {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #0a2a3a;
+            background: white;
+            padding: 6px 18px;
+            border-radius: 40px;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .btn-next-tip {
+            background: #1a6b8a;
+            color: white;
+            border: none;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-next-tip:hover {
+            background: #2a8baa;
+            transform: scale(1.02);
+        }
+
+        /* ---------- NIVEL / RONDA ---------- */
+        .level-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: #d4e8d4;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin: 5px 0;
+            flex-wrap: wrap;
+        }
+
+        .level-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ---------- BOTÓN DE INICIO / REINICIO ---------- */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0 5px;
+        }
+
+        .btn-primary {
+            background: #2e7d5e;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 6px 0 #1a4a3a;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            background: #3a9a72;
+            transform: scale(1.02);
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #1a4a3a;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 700px) {
+            .game-container {
+                padding: 18px;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .stats {
+                font-size: 0.9rem;
+                padding: 6px 14px;
+            }
+            .bins-container {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+            .waste-item {
+                font-size: 1rem;
+                padding: 8px 14px;
+                min-width: 70px;
+            }
+            .feedback-area {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .water-tips {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subheader {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .stats {
+                justify-content: center;
+            }
+            .btn-reset {
+                width: 100%;
+            }
+        }
+
+        /* ---------- ANIMACIONES ---------- */
+        @keyframes pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .waste-item {
+            animation: pop 0.2s ease;
+        }
+        .correct-flash {
+            background: #a8e6a8 !important;
+            transition: 0.1s;
+        }
+        .wrong-flash {
+            background: #f8a8a8 !important;
+            transition: 0.1s;
+        }
+
+        /* ---------- CRÉDITOS DEL DESARROLLADOR ---------- */
+        .footer-developer {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 0.85rem;
+            color: #3a6a4a;
+            border-top: 2px solid #b0c8b0;
+            padding-top: 12px;
+        }
+
+        .footer-developer .dev-name {
+            font-weight: 800;
+            color: #1a3a2a;
+            background: #d4e8d4;
+            padding: 2px 16px;
+            border-radius: 30px;
+            font-size: 1rem;
+        }
+
+        .footer-developer .dev-icon {
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <!-- ENCABEZADO -->
+    <div class="header">
+        <h1>♻️ <span>ECO-RECICLAJE</span> 🌱</h1>
+        <div class="developer-credit">
+            <i>👨‍💻 Desarrollado por <strong>Daniel Castro</strong> · CODE CREATORS</i>
+        </div>
+        <div class="subheader">
+            <div class="stats">
+                <span>🏆 Puntos: <strong id="scoreDisplay">0</strong></span>
+                <span>❤️ Vidas: <strong id="livesDisplay">❤️❤️❤️</strong></span>
+                <span>🎯 Aciertos: <strong id="hitsDisplay">0</strong></span>
+                <span class="badge">Nivel <span id="levelDisplay">1</span></span>
+            </div>
+            <button class="btn-reset" id="resetGameBtn">🔄 Reiniciar</button>
+        </div>
+    </div>
+
+    <!-- INFORMACIÓN DE NIVEL / RONDA -->
+    <div class="level-info">
+        <span>📦 Ronda: <strong id="roundDisplay">1</strong> / 5</span>
+        <span>⏳ Residuos restantes: <strong id="remainingDisplay">0</strong></span>
+    </div>
+
+    <!-- ÁREA DE JUEGO -->
+    <div class="game-area">
+        <!-- Residuos (drag) -->
+        <div class="waste-container" id="wasteContainer">
+            <!-- Los elementos se generan con JS -->
+        </div>
+
+        <!-- Contenedores de reciclaje (drop) -->
+        <div class="bins-container" id="binsContainer">
+            <div class="bin" data-bin="organico" id="binOrganico">
+                <div class="bin-icon">🍂</div>
+                <div class="bin-label">Orgánico</div>
+            </div>
+            <div class="bin" data-bin="plastico" id="binPlastico">
+                <div class="bin-icon">🥤</div>
+                <div class="bin-label">Plástico</div>
+            </div>
+            <div class="bin" data-bin="papel" id="binPapel">
+                <div class="bin-icon">📄</div>
+                <div class="bin-label">Papel</div>
+            </div>
+            <div class="bin" data-bin="vidrio" id="binVidrio">
+                <div class="bin-icon">🍾</div>
+                <div class="bin-label">Vidrio</div>
+            </div>
+            <div class="bin" data-bin="metal" id="binMetal">
+                <div class="bin-icon">🥫</div>
+                <div class="bin-label">Metal</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="feedback-area" id="feedbackArea">
+        <div class="feedback-message" id="feedbackMessage">
+            💡 Arrastra cada residuo al contenedor correcto.
+        </div>
+        <div class="feedback-stats" id="feedbackStats">
+            ✅ Aciertos: <span id="feedbackHits">0</span>
+        </div>
+    </div>
+
+    <!-- CONSEJOS PARA AHORRAR AGUA (LISTAS) -->
+    <div class="water-tips" id="waterTips">
+        <h3>💧 Consejo del agua:</h3>
+        <span class="tip-text" id="tipText">Cierra el grifo mientras te cepillas los dientes.</span>
+        <button class="btn-next-tip" id="nextTipBtn">➡️ Siguiente</button>
+    </div>
+
+    <!-- CONTROLES -->
+    <div class="controls">
+        <button class="btn-primary" id="nextRoundBtn">▶️ Siguiente ronda</button>
+    </div>
+
+    <!-- PIE DE PÁGINA CON CRÉDITOS DEL DESARROLLADOR -->
+    <div class="footer-developer">
+        <span class="dev-icon">👨‍💻</span> 
+        Desarrollado por <span class="dev-name">Daniel Castro</span> · 
+        Proyecto CODE CREATORS · Tecnología + Matemáticas + Ciencias Naturales · ODS 4, 11, 13, 15
+        <br>
+        <span style="font-size: 0.75rem; color: #5a8a6a;">© 2026 · Todos los derechos reservados</span>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    //  🧠  CODE CREATORS - JUEGO DE RECICLAJE Y AHORRO DE AGUA
+    //  Desarrollado por: DANIEL CASTRO
+    //  Aplicación interactiva que integra:
+    //  - Variables (puntos, vidas, aciertos, nivel)
+    //  - Condicionales (feedback, validación)
+    //  - Ciclos (rondas, generación de residuos)
+    //  - Listas (consejos de agua, datos de residuos)
+    // ============================================================
+
+    (function() {
+        'use strict';
+
+        console.log('🌍 CODE CREATORS - Juego de Reciclaje');
+        console.log('👨‍💻 Desarrollado por Daniel Castro');
+        console.log('📅 Versión 1.0 - 2026');
+
+        // ---------- LISTAS (datos) ----------
+        // Lista de consejos para ahorrar agua
+        const waterTipsList = [
+            '🚿 Toma duchas cortas (menos de 5 minutos).',
+            '🚰 Cierra el grifo mientras te enjabonas las manos.',
+            '🚽 No uses el inodoro como basurero.',
+            '💧 Reutiliza el agua de la lavadora para limpiar pisos.',
+            '🌱 Riega las plantas por la mañana o al atardecer.',
+            '🔧 Repara las fugas de agua inmediatamente.',
+            '🥤 Usa un vaso para beber agua, no dejes el grifo abierto.',
+            '🧴 Lava los platos en una bandeja con agua, no con el grifo abierto.'
+        ];
+
+        // Lista de residuos: cada objeto tiene nombre, emoji, categoría y un dato educativo
+        const wasteItems = [
+            { name: 'Cáscara de plátano', emoji: '🍌', category: 'organico', info: 'Orgánico: se descompone en abono natural.' },
+            { name: 'Restos de comida', emoji: '🍲', category: 'organico', info: 'Orgánico: ideal para compostaje.' },
+            { name: 'Botella de plástico', emoji: '🧴', category: 'plastico', info: 'Plástico: tarda hasta 500 años en degradarse.' },
+            { name: 'Bolsa de plástico', emoji: '🛍️', category: 'plastico', info: 'Plástico: contamina océanos y afecta la fauna.' },
+            { name: 'Periódico', emoji: '📰', category: 'papel', info: 'Papel: se puede reciclar hasta 7 veces.' },
+            { name: 'Cuaderno usado', emoji: '📓', category: 'papel', info: 'Papel: reciclar ahorra árboles y agua.' },
+            { name: 'Botella de vidrio', emoji: '🍶', category: 'vidrio', info: 'Vidrio: es 100% reciclable infinitamente.' },
+            { name: 'Frasco de vidrio', emoji: '🫙', category: 'vidrio', info: 'Vidrio: su reciclaje ahorra energía.' },
+            { name: 'Lata de refresco', emoji: '🥫', category: 'metal', info: 'Metal: se recicla infinitamente sin perder calidad.' },
+            { name: 'Papel de aluminio', emoji: '📁', category: 'metal', info: 'Metal: reciclarlo ahorra energía y recursos.' }
+        ];
+
+        // ---------- VARIABLES DEL ESTADO DEL JUEGO ----------
+        let score = 0;
+        let lives = 3;
+        let hits = 0;           // aciertos totales
+        let level = 1;          // nivel actual (dificultad)
+        let round = 1;          // ronda dentro del nivel (1 a 5)
+        const maxRounds = 5;
+
+        let currentWaste = [];          // residuos activos en la ronda
+        let remainingItems = 0;         // contador de residuos por clasificar
+
+        let currentTipIndex = 0;        // índice para el consejo de agua
+
+        // ---------- REFERENCIAS DOM ----------
+        const wasteContainer = document.getElementById('wasteContainer');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const livesDisplay = document.getElementById('livesDisplay');
+        const hitsDisplay = document.getElementById('hitsDisplay');
+        const levelDisplay = document.getElementById('levelDisplay');
+        const roundDisplay = document.getElementById('roundDisplay');
+        const remainingDisplay = document.getElementById('remainingDisplay');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const feedbackHits = document.getElementById('feedbackHits');
+        const tipText = document.getElementById('tipText');
+
+        const resetBtn = document.getElementById('resetGameBtn');
+        const nextRoundBtn = document.getElementById('nextRoundBtn');
+        const nextTipBtn = document.getElementById('nextTipBtn');
+
+        // ---------- FUNCIONES AUXILIARES ----------
+        function updateUI() {
+            // Actualizar estadísticas
+            scoreDisplay.textContent = score;
+            livesDisplay.textContent = '❤️'.repeat(lives) + '🖤'.repeat(Math.max(0, 3 - lives));
+            hitsDisplay.textContent = hits;
+            levelDisplay.textContent = level;
+            roundDisplay.textContent = round;
+            remainingDisplay.textContent = remainingItems;
+            feedbackHits.textContent = hits;
+
+            // Cambiar color de vidas según cantidad
+            if (lives <= 0) {
+                livesDisplay.style.color = '#c0392b';
+            } else {
+                livesDisplay.style.color = '#1a3a2a';
+            }
+
+            // Verificar si el juego terminó
+            if (lives <= 0) {
+                feedbackMessage.innerHTML = '💔 ¡Game Over! Has perdido todas las vidas. Presiona "Reiniciar" para intentarlo de nuevo.';
+                nextRoundBtn.disabled = true;
+                nextRoundBtn.style.opacity = '0.5';
+            } else {
+                nextRoundBtn.disabled = false;
+                nextRoundBtn.style.opacity = '1';
+            }
+
+            // Si no quedan residuos, habilitar siguiente ronda
+            if (remainingItems === 0 && lives > 0) {
+                nextRoundBtn.disabled = false;
+                nextRoundBtn.style.opacity = '1';
+                if (round === maxRounds && level === 3) {
+                    feedbackMessage.innerHTML = '🎉 ¡Felicidades! Has completado todos los niveles. Eres un Eco-Héroe. 🌍';
+                }
+            } else {
+                if (lives > 0) {
+                    nextRoundBtn.disabled = true;
+                    nextRoundBtn.style.opacity = '0.5';
+                }
+            }
+        }
+
+        // Mostrar un consejo de agua aleatorio (usando lista)
+        function showRandomTip() {
+            currentTipIndex = Math.floor(Math.random() * waterTipsList.length);
+            tipText.textContent = waterTipsList[currentTipIndex];
+        }
+
+        // Mostrar siguiente consejo (ciclo)
+        function showNextTip() {
+            currentTipIndex = (currentTipIndex + 1) % waterTipsList.length;
+            tipText.textContent = waterTipsList[currentTipIndex];
+        }
+
+        // ---------- GENERAR RONDA (CICLO) ----------
+        function generateRound() {
+            // Determinar cantidad de residuos según nivel (dificultad)
+            let numItems = 4 + level; // nivel 1: 5, nivel 2: 6, nivel 3: 7
+            // Limitar a la cantidad de items disponibles
+            numItems = Math.min(numItems, wasteItems.length);
+
+            // Seleccionar residuos aleatorios (sin repetir)
+            const shuffled = [...wasteItems].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, numItems);
+
+            currentWaste = selected.map(item => ({
+                ...item,
+                id: Math.random().toString(36).substring(2, 6)
+            }));
+
+            remainingItems = currentWaste.length;
+
+            // Renderizar residuos
+            renderWaste();
+
+            // Actualizar UI
+            updateUI();
+
+            // Mensaje de inicio de ronda
+            if (remainingItems > 0 && lives > 0) {
+                feedbackMessage.innerHTML = `♻️ ¡Ronda ${round}! Clasifica los ${remainingItems} residuos correctamente.`;
+            }
+        }
+
+        // Renderizar los residuos en el contenedor
+        function renderWaste() {
+            wasteContainer.innerHTML = '';
+            currentWaste.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'waste-item';
+                div.draggable = true;
+                div.dataset.category = item.category;
+                div.dataset.id = item.id;
+                div.innerHTML = `${item.emoji} ${item.name}`;
+                div.title = item.info; // información educativa al pasar el mouse
+
+                // Eventos drag & drop
+                div.addEventListener('dragstart', handleDragStart);
+                div.addEventListener('dragend', handleDragEnd);
+
+                wasteContainer.appendChild(div);
+            });
+
+            // Si no hay residuos, mostrar mensaje
+            if (currentWaste.length === 0) {
+                wasteContainer.innerHTML = '<p style="color:#3a6a4a; font-weight:500;">✅ ¡Todos los residuos clasificados!</p>';
+            }
+        }
+
+        // ---------- DRAG & DROP ----------
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.dataset.id);
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            // Remover resaltado de contenedores
+            document.querySelectorAll('.bin').forEach(b => b.classList.remove('drag-over'));
+        }
+
+        // Configurar eventos de los contenedores (bins)
+        function setupBins() {
+            const bins = document.querySelectorAll('.bin');
+            bins.forEach(bin => {
+                bin.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    bin.classList.add('drag-over');
+                });
+
+                bin.addEventListener('dragleave', () => {
+                    bin.classList.remove('drag-over');
+                });
+
+                bin.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    bin.classList.remove('drag-over');
+
+                    const itemId = e.dataTransfer.getData('text/plain');
+                    const wasteElement = document.querySelector(`.waste-item[data-id="${itemId}"]`);
+                    if (!wasteElement) return;
+
+                    const category = wasteElement.dataset.category;
+                    const binCategory = bin.dataset.bin;
+
+                    // Buscar el item en currentWaste
+                    const wasteItem = currentWaste.find(w => w.id === itemId);
+                    if (!wasteItem) return;
+
+                    // ---------- CONDICIONALES: Verificar si es correcto ----------
+                    if (category === binCategory) {
+                        // ✅ Correcto
+                        score += 10;
+                        hits += 1;
+                        remainingItems -= 1;
+
+                        // Eliminar el elemento visual
+                        wasteElement.remove();
+
+                        // Feedback positivo con información educativa
+                        feedbackMessage.innerHTML = `✅ ¡Correcto! ${wasteItem.emoji} ${wasteItem.name} → ${wasteItem.info}`;
+                        feedbackMessage.style.background = '#d4edda';
+
+                        // Efecto visual en el contenedor
+                        bin.classList.add('correct-flash');
+                        setTimeout(() => bin.classList.remove('correct-flash'), 300);
+
+                        // Verificar si completó la ronda
+                        if (remainingItems === 0) {
+                            feedbackMessage.innerHTML += ' 🎉 ¡Ronda completada!';
+                        }
+
+                    } else {
+                        // ❌ Incorrecto
+                        lives -= 1;
+                        feedbackMessage.innerHTML = `❌ ¡Error! ${wasteItem.emoji} ${wasteItem.name} no va en ese contenedor. ${wasteItem.info}`;
+                        feedbackMessage.style.background = '#f8d7da';
+
+                        // Efecto visual en el contenedor
+                        bin.classList.add('wrong-flash');
+                        setTimeout(() => bin.classList.remove('wrong-flash'), 300);
+
+                        // Si el residuo es incorrecto, se mantiene pero se puede volver a intentar
+                        // No lo eliminamos, solo restamos vida
+                    }
+
+                    // Actualizar UI
+                    updateUI();
+
+                    // Si se acabaron las vidas, terminar juego
+                    if (lives <= 0) {
+                        feedbackMessage.innerHTML = '💔 ¡Game Over! Has perdido todas las vidas. Presiona "Reiniciar" para intentarlo de nuevo.';
+                        nextRoundBtn.disabled = true;
+                        nextRoundBtn.style.opacity = '0.5';
+                        // Deshabilitar drag en todos los residuos
+                        document.querySelectorAll('.waste-item').forEach(el => {
+                            el.draggable = false;
+                            el.style.opacity = '0.5';
+                        });
+                    }
+
+                    // Si no quedan residuos, habilitar siguiente ronda
+                    if (remainingItems === 0 && lives > 0) {
+                        nextRoundBtn.disabled = false;
+                        nextRoundBtn.style.opacity = '1';
+                        // Mostrar mensaje de felicitación
+                        if (round === maxRounds && level === 3) {
+                            feedbackMessage.innerHTML = '🏆 ¡Eres un Eco-Héroe! Has completado todos los niveles. 🌍';
+                        }
+                    }
+
+                    // Restablecer el color del feedback después de un tiempo
+                    setTimeout(() => {
+                        feedbackMessage.style.background = '';
+                    }, 1200);
+                });
+            });
+        }
+
+        // ---------- AVANZAR A LA SIGUIENTE RONDA (CICLO) ----------
+        function nextRound() {
+            if (lives <= 0) {
+                return;
+            }
+
+            // Verificar si ya completó todos los niveles
+            if (round === maxRounds && level === 3) {
+                feedbackMessage.innerHTML = '🎉 ¡Ya completaste todo el juego! Presiona "Reiniciar" para jugar de nuevo.';
+                return;
+            }
+
+            // Avanzar ronda
+            if (round < maxRounds) {
+                round += 1;
+            } else {
+                // Si llegó al máximo de rondas, subir de nivel (ciclo)
+                round = 1;
+                if (level < 3) {
+                    level += 1;
+                    feedbackMessage.innerHTML = `🌟 ¡Nivel ${level}! Mayor dificultad. ¡Sigue así!`;
+                } else {
+                    // Ya está en nivel 3, ronda 5 => completado
+                    feedbackMessage.innerHTML = '🎉 ¡Felicidades! Has completado todos los niveles. Eres un Eco-Héroe. 🌍';
+                    nextRoundBtn.disabled = true;
+                    nextRoundBtn.style.opacity = '0.5';
+                    return;
+                }
+            }
+
+            // Generar nueva ronda
+            generateRound();
+
+            // Restaurar el mensaje de feedback
+            feedbackMessage.style.background = '';
+            feedbackMessage.innerHTML = `♻️ Nueva ronda ${round} - Nivel ${level}. ¡Clasifica los residuos!`;
+            nextRoundBtn.disabled = true;
+            nextRoundBtn.style.opacity = '0.5';
+
+            // Habilitar drag en todos los residuos
+            document.querySelectorAll('.waste-item').forEach(el => {
+                el.draggable = true;
+                el.style.opacity = '1';
+            });
+        }
+
+        // ---------- REINICIAR JUEGO ----------
+        function resetGame() {
+            // Reiniciar variables
+            score = 0;
+            lives = 3;
+            hits = 0;
+            level = 1;
+            round = 1;
+            remainingItems = 0;
+            currentWaste = [];
+
+            // Limpiar contenedor
+            wasteContainer.innerHTML = '';
+
+            // Restablecer UI
+            feedbackMessage.innerHTML = '🔄 Juego reiniciado. ¡Buena suerte!';
+            feedbackMessage.style.background = '';
+            nextRoundBtn.disabled = false;
+            nextRoundBtn.style.opacity = '1';
+
+            // Generar primera ronda
+            generateRound();
+
+            // Mostrar un consejo aleatorio
+            showRandomTip();
+
+            // Actualizar UI
+            updateUI();
+        }
+
+        // ---------- INICIALIZAR JUEGO ----------
+        function initGame() {
+            // Configurar bins (drag & drop)
+            setupBins();
+
+            // Mostrar consejo inicial
+            showRandomTip();
+
+            // Generar primera ronda
+            generateRound();
+
+            // Eventos de botones
+            resetBtn.addEventListener('click', resetGame);
+            nextRoundBtn.addEventListener('click', nextRound);
+            nextTipBtn.addEventListener('click', showNextTip);
+
+            // Actualizar UI
+            updateUI();
+
+            console.log('✅ Juego inicializado correctamente por Daniel Castro');
+            console.log('📊 Variables: score, lives, hits, level, round');
+            console.log('🔄 Ciclos: rondas y niveles');
+            console.log('📋 Listas: waterTipsList y wasteItems');
+            console.log('🔀 Condicionales: validación de respuestas y gestión de vidas');
+        }
+
+        // Ejecutar al cargar la página
+        window.addEventListener('DOMContentLoaded', initGame);
+
+    })();
+</script>
+
+</body>
+</html>

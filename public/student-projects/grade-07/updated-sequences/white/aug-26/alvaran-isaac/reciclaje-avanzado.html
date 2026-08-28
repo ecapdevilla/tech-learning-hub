@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>♻️ Reciclaje Avanzado - IA Detector</title>
+    <!-- TensorFlow.js y MobileNet desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@latest">
+    </script>
+    <style>
+        /* ===== RESET Y ESTILOS GLOBALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: linear-gradient(145deg, #0b1a0e 0%, #1a3a1e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 48px;
+            padding: 28px 32px 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s;
+        }
+
+        /* ===== ENCABEZADO: TÍTULO DEL TRABAJO + OBJETIVO ===== */
+        .header {
+            background: linear-gradient(135deg, #1f4d2a, #0f2e16);
+            border-radius: 28px;
+            padding: 22px 28px;
+            margin-bottom: 24px;
+            border-left: 6px solid #7bcb8c;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        /* NUEVO: Título del trabajo y autores */
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #b3e0be;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 6px 18px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(123, 203, 140, 0.15);
+        }
+        .project-title span {
+            color: #d4f5d9;
+            font-weight: 700;
+        }
+        .header h1 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #d4f5d9;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .header h1 small {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #a2d4aa;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 4px 16px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+            margin-left: 4px;
+        }
+        .header .objective {
+            margin-top: 10px;
+            font-size: 1.05rem;
+            color: #c6e8cc;
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 14px 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(123, 203, 140, 0.15);
+        }
+        .header .objective strong {
+            color: #b3f0c2;
+            font-weight: 700;
+        }
+        .header .objective .highlight {
+            background: linear-gradient(120deg, #5fa86d, #3b8250);
+            padding: 1px 10px;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* ===== CUERPO PRINCIPAL: CÁMARA + IA ===== */
+        .main-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 720px) {
+            .main-area {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
+
+        /* Panel cámara */
+        .camera-panel {
+            background: #0a1c0e;
+            border-radius: 28px;
+            padding: 16px;
+            border: 1px solid rgba(123, 203, 140, 0.15);
+            box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+        .camera-panel .cam-wrapper {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .camera-panel video,
+        .camera-panel canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .camera-panel video {
+            transform: scaleX(-1);
+        }
+        .camera-panel canvas {
+            display: none;
+        }
+        .cam-overlay {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #b0e0b8;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(123, 203, 140, 0.25);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .cam-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .cam-controls button {
+            flex: 1;
+            min-width: 100px;
+            padding: 14px 12px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #2a5e34;
+            color: #e2f5e6;
+            box-shadow: 0 4px 0 #0f2a14;
+        }
+        .cam-controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #0f2a14;
+            background: #357a42;
+        }
+        .cam-controls button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #0f2a14;
+        }
+        .cam-controls button.primary {
+            background: #3d8a4e;
+            box-shadow: 0 4px 0 #1d4526;
+        }
+        .cam-controls button.primary:hover {
+            background: #4fa363;
+        }
+        .cam-controls button.danger {
+            background: #7a3a3a;
+            box-shadow: 0 4px 0 #3d1d1d;
+        }
+        .cam-controls button.danger:hover {
+            background: #964a4a;
+        }
+        .cam-controls button:disabled {
+            opacity: 0.4;
+            transform: none !important;
+            box-shadow: 0 4px 0 #0f2a14;
+            cursor: not-allowed;
+        }
+
+        /* Panel IA / Resultados */
+        .ai-panel {
+            background: #0e2013;
+            border-radius: 28px;
+            padding: 20px 22px;
+            border: 1px solid rgba(123, 203, 140, 0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        .ai-panel .status {
+            font-size: 0.9rem;
+            color: #8eb896;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .ai-panel .status .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #5f8a6a;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .ai-panel .status .dot.active {
+            background: #7bdc8c;
+            box-shadow: 0 0 16px #7bdc8c88;
+        }
+        .ai-panel .status .dot.error {
+            background: #dc7b7b;
+            box-shadow: 0 0 16px #dc7b7b88;
+        }
+
+        .result-box {
+            background: #061009;
+            border-radius: 20px;
+            padding: 18px 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid rgba(123, 203, 140, 0.08);
+        }
+        .result-box .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #6f8f78;
+            margin-bottom: 4px;
+        }
+        .result-box .item-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e8f5eb;
+            line-height: 1.2;
+        }
+        .result-box .item-name .unknown {
+            color: #b8b8b8;
+            font-weight: 400;
+            font-size: 1.2rem;
+        }
+        .result-box .recycling-tag {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            align-self: flex-start;
+        }
+        .result-box .recycling-tag.yes {
+            background: #1f6b2f;
+            color: #b7f5c7;
+        }
+        .result-box .recycling-tag.no {
+            background: #6b2f2f;
+            color: #f5b7b7;
+        }
+        .result-box .recycling-tag.special {
+            background: #6b5f2f;
+            color: #f5eab7;
+        }
+        .result-box .confidence {
+            font-size: 0.8rem;
+            color: #7a9a82;
+            margin-top: 6px;
+        }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .game-stats .stat {
+            background: #061009;
+            border-radius: 16px;
+            padding: 12px 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .game-stats .stat .num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #d4f5d9;
+        }
+        .game-stats .stat .lbl {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #6f8f78;
+            letter-spacing: 0.5px;
+        }
+        .game-stats .stat .num.green {
+            color: #7bdc8c;
+        }
+        .game-stats .stat .num.red {
+            color: #dc7b7b;
+        }
+        .game-stats .stat .num.gold {
+            color: #e8d87b;
+        }
+
+        .feedback-msg {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            color: #b8dcc0;
+            min-height: 52px;
+            border-left: 4px solid #3d8a4e;
+            transition: 0.3s;
+        }
+        .feedback-msg.error {
+            border-left-color: #dc7b7b;
+            color: #f0c8c8;
+        }
+        .feedback-msg.success {
+            border-left-color: #7bdc8c;
+            color: #c8f0d0;
+        }
+
+        /* ===== PIE: PROCESO DEL SISTEMA ===== */
+        .footer-system {
+            margin-top: 24px;
+            background: #07170b;
+            border-radius: 24px;
+            padding: 22px 26px;
+            border: 1px solid rgba(123, 203, 140, 0.08);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        .footer-system h3 {
+            color: #a2d4aa;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-system h3 span {
+            background: #1f4d2a;
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #b3e0be;
+        }
+        .footer-system .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #b0d0b8;
+        }
+        .footer-system .process-grid .step {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .footer-system .process-grid .step .num {
+            font-weight: 800;
+            color: #7bcb8c;
+            font-size: 0.9rem;
+        }
+        .footer-system .process-grid .step .desc {
+            line-height: 1.5;
+            color: #9abfa2;
+        }
+        .footer-system .process-grid .step .tech {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: #6f8f78;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 540px) {
+            .game-container {
+                padding: 16px;
+                border-radius: 28px;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .header .objective {
+                font-size: 0.9rem;
+                padding: 12px 14px;
+            }
+            .result-box .item-name {
+                font-size: 1.3rem;
+            }
+            .game-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 6px;
+            }
+            .game-stats .stat .num {
+                font-size: 1.3rem;
+            }
+            .footer-system .process-grid {
+                grid-template-columns: 1fr;
+            }
+            .cam-controls button {
+                min-width: 70px;
+                font-size: 0.85rem;
+                padding: 12px 8px;
+            }
+            .project-title {
+                font-size: 0.95rem;
+                padding: 4px 14px;
+            }
+        }
+
+        /* ===== ANIMACIONES ===== */
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(123, 203, 140, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 24px rgba(123, 203, 140, 0.5);
+            }
+        }
+        .scanning {
+            animation: pulse-glow 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+
+        <!-- ============================================================ -->
+        <!--  ENCABEZADO: TÍTULO DEL TRABAJO + OBJETIVO + EXPLICACIÓN      -->
+        <!-- ============================================================ -->
+        <header class="header">
+            <!-- NUEVO: Título del trabajo y autores -->
+            <div class="project-title">
+                🌱 Trabajo Ambiental · <span>Alvaran &amp; Isaac</span>
+            </div>
+
+            <h1>
+                ♻️ Reciclaje 4.0
+                <small>IA + Visión Computacional</small>
+            </h1>
+            <div class="objective">
+                <strong>🎯 Objetivo:</strong> Apunta la cámara a cualquier objeto.
+                La <span class="highlight">IA</span> lo identificará y te dirá si es
+                <strong>reciclable</strong>, <strong>no reciclable</strong> o de
+                <strong>gestión especial</strong>.
+                Gana puntos por cada acierto y aprende el <strong>ciclo avanzado</strong>
+                del reciclaje: desde la <strong>economía circular</strong> hasta el
+                <strong>upcycling</strong> y la <strong>minería urbana</strong>.
+                ¡Convierte residuos en recursos!
+            </div>
+        </header>
+
+        <!-- ============================================================ -->
+        <!--  CUERPO: CÁMARA + PANEL IA                                   -->
+        <!-- ============================================================ -->
+        <div class="main-area">
+
+            <!-- PANEL CÁMARA -->
+            <section class="camera-panel">
+                <div class="cam-wrapper" id="camWrapper">
+                    <video id="video" autoplay playsinline muted></video>
+                    <canvas id="canvas"></canvas>
+                    <div class="cam-overlay" id="camOverlay">📷 Esperando cámara…</div>
+                </div>
+                <div class="cam-controls">
+                    <button id="btnStart" class="primary">▶ Iniciar</button>
+                    <button id="btnCapture" disabled>📸 Capturar</button>
+                    <button id="btnReset" class="danger">⟲ Reiniciar</button>
+                </div>
+            </section>
+
+            <!-- PANEL IA + RESULTADOS -->
+            <section class="ai-panel">
+                <div class="status">
+                    <span class="dot" id="statusDot"></span>
+                    <span id="statusText">Sistema listo</span>
+                </div>
+
+                <div class="result-box" id="resultBox">
+                    <div class="label">🔍 Detección IA</div>
+                    <div class="item-name" id="itemName">
+                        <span class="unknown">Esperando captura…</span>
+                    </div>
+                    <div id="recyclingTag" class="recycling-tag" style="display:none;">—</div>
+                    <div class="confidence" id="confidenceText">Confianza: —</div>
+                </div>
+
+                <!-- Estadísticas del juego -->
+                <div class="game-stats">
+                    <div class="stat">
+                        <div class="num" id="scoreTotal">0</div>
+                        <div class="lbl">🎯 Aciertos</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num green" id="scoreRecyclable">0</div>
+                        <div class="lbl">♻️ Reciclable</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num red" id="scoreNonRecyclable">0</div>
+                        <div class="lbl">🚫 No reciclable</div>
+                    </div>
+                </div>
+
+                <div class="feedback-msg" id="feedbackMsg">
+                    💡 Captura un objeto para comenzar.
+                </div>
+            </section>
+        </div>
+
+        <!-- ============================================================ -->
+        <!--  PIE: PROCESO DEL SISTEMA DE PROGRAMACIÓN                    -->
+        <!-- ============================================================ -->
+        <footer class="footer-system">
+            <h3>
+                ⚙️ Arquitectura del sistema
+                <span>v2.0</span>
+            </h3>
+            <div class="process-grid">
+                <div class="step">
+                    <span class="num">1. Captura</span>
+                    <span class="desc">
+                        <code>getUserMedia()</code> activa la cámara.
+                        El fotograma se extrae a un <code>&lt;canvas&gt;</code>
+                        en cada captura.
+                    </span>
+                    <span class="tech">WebRTC · Canvas 2D</span>
+                </div>
+                <div class="step">
+                    <span class="num">2. Clasificación IA</span>
+                    <span class="desc">
+                        Modelo <strong>MobileNet</strong> (TensorFlow.js) analiza
+                        la imagen y devuelve las 3 etiquetas más probables
+                        entre 1000 clases de ImageNet.
+                    </span>
+                    <span class="tech">TF.js · MobileNet v2</span>
+                </div>
+                <div class="step">
+                    <span class="num">3. Mapeo a reciclaje</span>
+                    <span class="desc">
+                        Un <strong>diccionario inteligente</strong> traduce
+                        las etiquetas de ImageNet a categorías de reciclaje:
+                        <em>plástico, vidrio, papel, metal, orgánico, electrónico</em>.
+                    </span>
+                    <span class="tech">Lookup table · Reglas semánticas</span>
+                </div>
+                <div class="step">
+                    <span class="num">4. Lógica del juego</span>
+                    <span class="desc">
+                        Se compara la categoría detectada con la
+                        <strong>respuesta del jugador</strong> (si hace clic en
+                        "Reciclable" / "No reciclable") y se actualizan
+                        puntuaciones y feedback.
+                    </span>
+                    <span class="tech">State machine · Event-driven</span>
+                </div>
+                <div class="step">
+                    <span class="num">5. Feedback & UI</span>
+                    <span class="desc">
+                        Actualización reactiva del DOM con
+                        <strong>puntuaciones</strong>, mensajes de acierto/error
+                        y el <strong>nivel de confianza</strong> de la IA.
+                        Animaciones y accesibilidad.
+                    </span>
+                    <span class="tech">CSS-in-JS · Animaciones nativas</span>
+                </div>
+                <div class="step">
+                    <span class="num">6. Economía circular</span>
+                    <span class="desc">
+                        Cada acierto suma <strong>puntos de impacto</strong>
+                        que simulan la reducción de CO₂ y el ahorro de
+                        materias primas. ¡El juego educa mientras entretiene!
+                    </span>
+                    <span class="tech">Gamificación · ODS 12</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  JAVASCRIPT: LÓGICA COMPLETA DEL JUEGO + IA + CÁMARA         -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // =============================================================
+            //  1.  REFERENCIAS DOM
+            // =============================================================
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const camOverlay = document.getElementById('camOverlay');
+
+            const btnStart = document.getElementById('btnStart');
+            const btnCapture = document.getElementById('btnCapture');
+            const btnReset = document.getElementById('btnReset');
+
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const itemName = document.getElementById('itemName');
+            const recyclingTag = document.getElementById('recyclingTag');
+            const confidenceText = document.getElementById('confidenceText');
+            const feedbackMsg = document.getElementById('feedbackMsg');
+
+            const scoreTotal = document.getElementById('scoreTotal');
+            const scoreRecyclable = document.getElementById('scoreRecyclable');
+            const scoreNonRecyclable = document.getElementById('scoreNonRecyclable');
+
+            const camWrapper = document.getElementById('camWrapper');
+
+            // =============================================================
+            //  2.  ESTADO DEL JUEGO
+            // =============================================================
+            const state = {
+                cameraActive: false,
+                modelLoaded: false,
+                capturing: false,
+                // Puntuaciones
+                total: 0,
+                recyclableCount: 0,
+                nonRecyclableCount: 0,
+                // Última detección
+                lastPrediction: null, // { className, probability, category }
+                lastImageData: null,
+                gameRound: 0,
+                feedbackTimeout: null,
+            };
+
+            // =============================================================
+            //  3.  MAPEO DE RECICLAJE (diccionario avanzado)
+            // =============================================================
+            //  Basado en clases de ImageNet + sinónimos
+            const RECYCLING_MAP = {
+                // ===== PLÁSTICO =====
+                'plastic': 'recyclable',
+                'bottle': 'recyclable',
+                'jug': 'recyclable',
+                'container': 'recyclable',
+                'bag': 'recyclable',
+                'wrap': 'recyclable',
+                'packet': 'recyclable',
+                'polyethylene': 'recyclable',
+                'pvc': 'recyclable',
+                'pet': 'recyclable',
+                'hdp': 'recyclable',
+                'ldp': 'recyclable',
+                'styrofoam': 'special', // EPS necesita gestión especial
+                'foam': 'special',
+                // ===== VIDRIO =====
+                'glass': 'recyclable',
+                'bottle': 'recyclable',
+                'jar': 'recyclable',
+                'pane': 'recyclable',
+                'window': 'recyclable',
+                'mirror': 'special', // espejos tienen tratamiento especial
+                // ===== PAPEL / CARTÓN =====
+                'paper': 'recyclable',
+                'cardboard': 'recyclable',
+                'box': 'recyclable',
+                'carton': 'recyclable',
+                'envelope': 'recyclable',
+                'magazine': 'recyclable',
+                'book': 'recyclable',
+                'newspaper': 'recyclable',
+                'tissue': 'non-recyclable', // pañuelos usados no reciclables
+                'napkin': 'non-recyclable',
+                'paper_towel': 'non-recyclable',
+                // ===== METAL =====
+                'can': 'recyclable',
+                'tin': 'recyclable',
+                'aluminum': 'recyclable',
+                'foil': 'recyclable',
+                'metal': 'recyclable',
+                'iron': 'recyclable',
+                'steel': 'recyclable',
+                'copper': 'recyclable',
+                // ===== ORGÁNICO / BIODEGRADABLE =====
+                'food': 'non-recyclable',
+                'fruit': 'non-recyclable',
+                'vegetable': 'non-recyclable',
+                'leaf': 'non-recyclable',
+                'plant': 'non-recyclable',
+                'tree': 'non-recyclable',
+                'flower': 'non-recyclable',
+                'apple': 'non-recyclable',
+                'banana': 'non-recyclable',
+                'orange': 'non-recyclable',
+                'lemon': 'non-recyclable',
+                'bread': 'non-recyclable',
+                'meat': 'non-recyclable',
+                'fish': 'non-recyclable',
+                'egg': 'non-recyclable',
+                // ===== ELECTRÓNICOS (RAEE) =====
+                'phone': 'special',
+                'smartphone': 'special',
+                'computer': 'special',
+                'laptop': 'special',
+                'monitor': 'special',
+                'screen': 'special',
+                'keyboard': 'special',
+                'mouse': 'special',
+                'cable': 'special',
+                'battery': 'special',
+                'charger': 'special',
+                'electronic': 'special',
+                'circuit': 'special',
+                'chip': 'special',
+                // ===== TEXTIL =====
+                'cloth': 'special',
+                'fabric': 'special',
+                'shirt': 'special',
+                'pants': 'special',
+                'dress': 'special',
+                'shoe': 'special',
+                'sneaker': 'special',
+                'jacket': 'special',
+                'coat': 'special',
+                // ===== PELIGROSOS / RESIDUOS ESPECIALES =====
+                'paint': 'special',
+                'oil': 'special',
+                'chemical': 'special',
+                'medicine': 'special',
+                'drug': 'special',
+                'syringe': 'special',
+                'needle': 'special',
+                'battery': 'special',
+                // ===== MUEBLES / VOLUMINOSOS =====
+                'furniture': 'special',
+                'chair': 'special',
+                'table': 'special',
+                'sofa': 'special',
+                'bed': 'special',
+                // ===== OTROS =====
+                'toy': 'special',
+                'doll': 'special',
+                'ball': 'special',
+                'sports': 'special',
+                'umbrella': 'special',
+                'tool': 'special',
+                'hammer': 'special',
+                'screwdriver': 'special',
+                'wrench': 'special',
+                // ===== POR DEFECTO =====
+                'default': 'non-recyclable'
+            };
+
+            // Palabras clave para mejorar la detección
+            const KEYWORD_MAP = {
+                'plastic': 'recyclable',
+                'glass': 'recyclable',
+                'paper': 'recyclable',
+                'cardboard': 'recyclable',
+                'metal': 'recyclable',
+                'aluminum': 'recyclable',
+                'steel': 'recyclable',
+                'can': 'recyclable',
+                'bottle': 'recyclable',
+                'jar': 'recyclable',
+                'box': 'recyclable',
+                'food': 'non-recyclable',
+                'organic': 'non-recyclable',
+                'electronic': 'special',
+                'battery': 'special',
+                'phone': 'special',
+                'computer': 'special',
+                'cloth': 'special',
+                'textile': 'special',
+                'paint': 'special',
+                'chemical': 'special',
+                'medicine': 'special',
+                'furniture': 'special',
+                'toy': 'special',
+                'tool': 'special',
+            };
+
+            // =============================================================
+            //  4.  FUNCIONES DE MAPEO
+            // =============================================================
+            function getRecyclingCategory(label) {
+                if (!label) return 'non-recyclable';
+                const lower = label.toLowerCase().trim();
+
+                // 1. Buscar en el mapa principal por coincidencia exacta o parcial
+                for (const [key, value] of Object.entries(RECYCLING_MAP)) {
+                    if (lower.includes(key) || key.includes(lower)) {
+                        return value;
+                    }
+                }
+
+                // 2. Buscar por palabras clave
+                const words = lower.split(/\s+/);
+                for (const word of words) {
+                    if (KEYWORD_MAP[word]) return KEYWORD_MAP[word];
+                    // Buscar parcial
+                    for (const [k, v] of Object.entries(KEYWORD_MAP)) {
+                        if (word.includes(k) || k.includes(word)) return v;
+                    }
+                }
+
+                // 3. Por defecto: no reciclable (para ser conservadores)
+                return 'non-recyclable';
+            }
+
+            function getCategoryLabel(category) {
+                const map = {
+                    'recyclable': '♻️ Reciclable',
+                    'non-recyclable': '🚫 No reciclable',
+                    'special': '⚠️ Gestión especial'
+                };
+                return map[category] || '❓ Desconocido';
+            }
+
+            function getCategoryEmoji(category) {
+                const map = {
+                    'recyclable': '♻️',
+                    'non-recyclable': '🚫',
+                    'special': '⚠️'
+                };
+                return map[category] || '❓';
+            }
+
+            // =============================================================
+            //  5.  CARGA DEL MODELO TENSORFLOW.JS
+            // =============================================================
+            let model = null;
+
+            async function loadModel() {
+                try {
+                    statusText.textContent = 'Cargando modelo IA…';
+                    statusDot.className = 'dot active';
+                    model = await mobilenet.load({
+                        version: 2,
+                        alpha: 0.5 // más ligero
+                    });
+                    state.modelLoaded = true;
+                    statusText.textContent = '✅ IA lista';
+                    statusDot.className = 'dot active';
+                    feedbackMsg.textContent = '✅ Modelo cargado. Inicia la cámara y captura objetos.';
+                    feedbackMsg.className = 'feedback-msg success';
+                    return true;
+                } catch (err) {
+                    console.error('Error cargando MobileNet:', err);
+                    statusText.textContent = '❌ Error cargando IA';
+                    statusDot.className = 'dot error';
+                    feedbackMsg.textContent = '❌ No se pudo cargar el modelo IA. Revisa tu conexión.';
+                    feedbackMsg.className = 'feedback-msg error';
+                    return false;
+                }
+            }
+
+            // =============================================================
+            //  6.  CÁMARA
+            // =============================================================
+            async function startCamera() {
+                if (state.cameraActive) return;
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: 'environment',
+                            width: { ideal: 640 },
+                            height: { ideal: 480 }
+                        },
+                        audio: false
+                    });
+                    video.srcObject = stream;
+                    await video.play();
+                    state.cameraActive = true;
+                    camOverlay.textContent = '📸 Cámara activa';
+                    btnStart.disabled = true;
+                    btnCapture.disabled = false;
+                    statusText.textContent = '📷 Cámara activa';
+                    feedbackMsg.textContent = '📷 Cámara lista. Captura un objeto para analizarlo.';
+                    feedbackMsg.className = 'feedback-msg';
+                    return true;
+                } catch (err) {
+                    console.error('Error accediendo a la cámara:', err);
+                    camOverlay.textContent = '❌ Error de cámara';
+                    statusText.textContent = '❌ Cámara no disponible';
+                    statusDot.className = 'dot error';
+                    feedbackMsg.textContent = '❌ No se pudo acceder a la cámara. Permite el acceso y recarga.';
+                    feedbackMsg.className = 'feedback-msg error';
+                    return false;
+                }
+            }
+
+            function stopCamera() {
+                if (video.srcObject) {
+                    video.srcObject.getTracks().forEach(t => t.stop());
+                    video.srcObject = null;
+                }
+                state.cameraActive = false;
+                camOverlay.textContent = '📷 Cámara detenida';
+                btnStart.disabled = false;
+                btnCapture.disabled = true;
+                statusText.textContent = 'Cámara detenida';
+            }
+
+            // =============================================================
+            //  7.  CAPTURA Y CLASIFICACIÓN
+            // =============================================================
+            async function captureAndClassify() {
+                if (!state.cameraActive || !state.modelLoaded || state.capturing) return;
+
+                state.capturing = true;
+                btnCapture.disabled = true;
+                camWrapper.classList.add('scanning');
+                statusText.textContent = '🔍 Analizando…';
+                feedbackMsg.textContent = '🔍 La IA está analizando el objeto…';
+                feedbackMsg.className = 'feedback-msg';
+
+                try {
+                    // 7.1 Capturar fotograma
+                    const width = video.videoWidth || 640;
+                    const height = video.videoHeight || 480;
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(video, 0, 0, width, height);
+                    const imageData = canvas.toDataURL('image/jpeg', 0.8);
+                    state.lastImageData = imageData;
+
+                    // 7.2 Clasificar con MobileNet
+                    const imgElement = new Image();
+                    imgElement.src = imageData;
+                    await new Promise((resolve) => { imgElement.onload = resolve; });
+
+                    const predictions = await model.classify(imgElement);
+                    if (!predictions || predictions.length === 0) {
+                        throw new Error('Sin predicciones');
+                    }
+
+                    // 7.3 Procesar mejor predicción
+                    const top = predictions[0];
+                    const className = top.className || 'Objeto desconocido';
+                    const probability = top.probability || 0;
+
+                    // 7.4 Mapear a categoría de reciclaje
+                    const category = getRecyclingCategory(className);
+                    const categoryLabel = getCategoryLabel(category);
+                    const emoji = getCategoryEmoji(category);
+
+                    // 7.5 Actualizar UI
+                    itemName.innerHTML = `${emoji} <strong>${className}</strong>`;
+                    recyclingTag.style.display = 'inline-block';
+                    recyclingTag.textContent = categoryLabel;
+                    recyclingTag.className = `recycling-tag ${category}`;
+
+                    const confidencePercent = (probability * 100).toFixed(1);
+                    confidenceText.textContent = `Confianza: ${confidencePercent}%`;
+
+                    // 7.6 Guardar estado
+                    state.lastPrediction = {
+                        className,
+                        probability,
+                        category,
+                        categoryLabel,
+                        emoji
+                    };
+
+                    // 7.7 Feedback
+                    const msg = `🧠 Detectado: <strong>${className}</strong> → ${categoryLabel}`;
+                    feedbackMsg.innerHTML = msg;
+                    feedbackMsg.className = `feedback-msg ${category === 'recyclable' ? 'success' : category === 'non-recyclable' ? 'error' : ''}`;
+
+                    statusText.textContent = `✅ ${categoryLabel}`;
+                    statusDot.className = `dot ${category === 'recyclable' ? 'active' : 'error'}`;
+
+                    // 7.8 Preguntar al jugador (juego)
+                    await askPlayer(category, className);
+
+                } catch (err) {
+                    console.error('Error en captura/clasificación:', err);
+                    feedbackMsg.textContent = '❌ Error al analizar. Intenta de nuevo.';
+                    feedbackMsg.className = 'feedback-msg error';
+                    statusText.textContent = '❌ Error';
+                    statusDot.className = 'dot error';
+                } finally {
+                    state.capturing = false;
+                    btnCapture.disabled = false;
+                    camWrapper.classList.remove('scanning');
+                }
+            }
+
+            // =============================================================
+            //  8.  LÓGICA DEL JUEGO: PREGUNTAR AL JUGADOR
+            // =============================================================
+            function askPlayer(correctCategory, itemNameText) {
+                // Mostrar opciones en el feedback
+                const categoryMap = {
+                    'recyclable': '♻️ Reciclable',
+                    'non-recyclable': '🚫 No reciclable',
+                    'special': '⚠️ Gestión especial'
+                };
+
+                const correctLabel = categoryMap[correctCategory] || 'Desconocido';
+
+                // Crear botones de respuesta
+                const btnsHtml = `
+                        <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+                            <button class="game-btn" data-choice="recyclable" style="background:#2a6e3a; border:none; padding:8px 18px; border-radius:40px; color:#fff; font-weight:700; cursor:pointer;">♻️ Reciclable</button>
+                            <button class="game-btn" data-choice="non-recyclable" style="background:#6e2a2a; border:none; padding:8px 18px; border-radius:40px; color:#fff; font-weight:700; cursor:pointer;">🚫 No reciclable</button>
+                            <button class="game-btn" data-choice="special" style="background:#6e5f2a; border:none; padding:8px 18px; border-radius:40px; color:#fff; font-weight:700; cursor:pointer;">⚠️ Gestión especial</button>
+                        </div>
+                    `;
+
+                feedbackMsg.innerHTML = `
+                        <div>
+                            <div>🧐 ¿Qué crees que es <strong>${itemNameText}</strong>?</div>
+                            <div style="font-size:0.85rem; color:#8eb896; margin-top:4px;">(La IA dice: ${correctLabel})</div>
+                            ${btnsHtml}
+                        </div>
+                    `;
+                feedbackMsg.className = 'feedback-msg';
+
+                // Añadir event listeners a los botones
+                document.querySelectorAll('.game-btn').forEach(btn => {
+                    btn.addEventListener('click', function handler(e) {
+                        const choice = this.dataset.choice;
+                        handlePlayerChoice(choice, correctCategory, itemNameText);
+                        // Remover listeners para evitar duplicados
+                        document.querySelectorAll('.game-btn').forEach(b => b.removeEventListener('click', handler));
+                    });
+                });
+            }
+
+            function handlePlayerChoice(choice, correctCategory, itemNameText) {
+                const isCorrect = (choice === correctCategory);
+                state.total++;
+
+                if (isCorrect) {
+                    state.recyclableCount++;
+                    feedbackMsg.innerHTML = `
+                            ✅ <strong>¡Correcto!</strong> "${itemNameText}" es <strong>${getCategoryLabel(correctCategory)}</strong>.
+                            +1 punto. ¡Sigue así!
+                        `;
+                    feedbackMsg.className = 'feedback-msg success';
+                } else {
+                    state.nonRecyclableCount++;
+                    const correctLabel = getCategoryLabel(correctCategory);
+                    feedbackMsg.innerHTML = `
+                            ❌ <strong>Incorrecto.</strong> "${itemNameText}" es en realidad <strong>${correctLabel}</strong>.
+                            ¡Sigue aprendiendo!
+                        `;
+                    feedbackMsg.className = 'feedback-msg error';
+                }
+
+                // Actualizar puntuaciones
+                updateScores();
+
+                // Mostrar un mensaje extra con información de reciclaje
+                const extraInfo = getRecyclingInfo(correctCategory, itemNameText);
+                setTimeout(() => {
+                    feedbackMsg.innerHTML += `<div style="margin-top:8px;font-size:0.9rem;color:#b0d0b8;">${extraInfo}</div>`;
+                }, 400);
+
+                // Limpiar los botones (ya se removieron los listeners)
+                document.querySelectorAll('.game-btn').forEach(b => b.remove());
+            }
+
+            // =============================================================
+            //  9.  INFORMACIÓN EDUCATIVA DE RECICLAJE
+            // =============================================================
+            function getRecyclingInfo(category, itemName) {
+                const info = {
+                    'recyclable': `♻️ <strong>${itemName}</strong> puede ir al contenedor de reciclaje. 
+                            Se transformará en nueva materia prima mediante procesos de <strong>economía circular</strong>.`,
+                    'non-recyclable': `🚫 <strong>${itemName}</strong> NO debe ir al reciclaje convencional. 
+                            Va a la fracción de <strong>rechazo</strong> o, si es orgánico, al <strong>compostaje</strong>.`,
+                    'special': `⚠️ <strong>${itemName}</strong> requiere <strong>gestión especial</strong> (RAEE, pilas, textiles, etc.). 
+                            Llévalo a un <strong>punto limpio</strong> o centro de reciclaje autorizado.`
+                };
+                return info[category] || `📘 Infórmate sobre el reciclaje de "${itemName}" en tu localidad.`;
+            }
+
+            // =============================================================
+            //  10. ACTUALIZAR PUNTUACIONES
+            // =============================================================
+            function updateScores() {
+                scoreTotal.textContent = state.total;
+                scoreRecyclable.textContent = state.recyclableCount;
+                scoreNonRecyclable.textContent = state.nonRecyclableCount;
+            }
+
+            // =============================================================
+            //  11. REINICIAR
+            // =============================================================
+            function resetGame() {
+                state.total = 0;
+                state.recyclableCount = 0;
+                state.nonRecyclableCount = 0;
+                state.lastPrediction = null;
+                updateScores();
+                itemName.innerHTML = `<span class="unknown">Esperando captura…</span>`;
+                recyclingTag.style.display = 'none';
+                confidenceText.textContent = 'Confianza: —';
+                feedbackMsg.textContent = '🔄 Juego reiniciado. Captura un nuevo objeto.';
+                feedbackMsg.className = 'feedback-msg';
+                statusText.textContent = 'Sistema listo';
+                statusDot.className = 'dot';
+                // Limpiar botones si hay
+                document.querySelectorAll('.game-btn').forEach(b => b.remove());
+            }
+
+            // =============================================================
+            //  12. EVENT LISTENERS
+            // =============================================================
+            btnStart.addEventListener('click', async () => {
+                if (!state.modelLoaded) {
+                    const ok = await loadModel();
+                    if (!ok) return;
+                }
+                await startCamera();
+            });
+
+            btnCapture.addEventListener('click', captureAndClassify);
+
+            btnReset.addEventListener('click', () => {
+                resetGame();
+                // Si la cámara está activa, mantenerla
+                if (state.cameraActive) {
+                    feedbackMsg.textContent = '🔄 Reiniciado. Captura un objeto.';
+                    feedbackMsg.className = 'feedback-msg';
+                }
+            });
+
+            // =============================================================
+            //  13. INICIALIZACIÓN
+            // =============================================================
+            (async function init() {
+                // Cargar modelo al inicio
+                await loadModel();
+                // Mostrar mensaje inicial
+                feedbackMsg.textContent = '💡 Presiona "Iniciar" para activar la cámara.';
+                feedbackMsg.className = 'feedback-msg';
+                updateScores();
+
+                // Si el navegador soporta getUserMedia, habilitar botón
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    feedbackMsg.textContent = '⚠️ Tu navegador no soporta cámara. Usa Chrome / Edge / Firefox.';
+                    feedbackMsg.className = 'feedback-msg error';
+                    btnStart.disabled = true;
+                }
+            })();
+
+            // =============================================================
+            //  14.  KEYBOARD SHORTCUT (accesibilidad)
+            // =============================================================
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !btnCapture.disabled) {
+                    btnCapture.click();
+                }
+                if (e.key === 'r' || e.key === 'R') {
+                    btnReset.click();
+                }
+                if (e.key === 's' || e.key === 'S') {
+                    btnStart.click();
+                }
+            });
+
+            // Mostrar atajos en consola
+            console.log('♻️ Atajos: [Enter] Capturar  [R] Reiniciar  [S] Iniciar cámara');
+
+            // =============================================================
+            //  15.  EXPONER FUNCIONES PARA DEBUG (opcional)
+            // =============================================================
+            window.__game = {
+                state,
+                captureAndClassify,
+                resetGame,
+                startCamera,
+                stopCamera,
+                model
+            };
+
+        })();
+    </script>
+
+</body>
+</html>
