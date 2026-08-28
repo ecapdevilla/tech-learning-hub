@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-010dec7 docs: update AI handoff after project publication
+6950085 chore(handoff): grading save diagnosis - check SUPABASE_SERVICE_ROLE_KEY
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
