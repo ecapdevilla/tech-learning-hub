@@ -1026,5 +1026,8 @@ a {
 .grading-final{font-weight:950;font-size:14px;color:#0e6fd0}
 .grading-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
 .grading-save-msg{margin-top:12px;padding:10px 14px;border-radius:12px;background:#e8f7ec;border:1px solid #bfe6cb;color:#0d7a4f;font-weight:800}
+.export-excel-btn{background:linear-gradient(135deg,#107c41,#1fa15a);border:0;color:#fff}
+.export-excel-btn:hover{filter:brightness(1.08)}
+.grading-toolbar-hint{margin-top:8px;font-size:13px;color:#506579;line-height:1.5}
 @media(max-width:900px){.grading-selector-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.grading-table{display:block;overflow-x:auto}}

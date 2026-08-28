@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 type Init = {
   studentId: string;
@@ -34,6 +34,8 @@ export function GradingEntry({ subjectId, periodId, grade, classroom, initial }:
   const [rows, setRows] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
+  const [importing, setImporting] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const setVal = (idx: number, dim: "saber" | "hacer" | "ser", entrega: number, value: string) => {
     setRows((prev) =>
@@ -85,6 +87,34 @@ export function GradingEntry({ subjectId, periodId, grade, classroom, initial }:
 
   const exportUrl = `/api/grading/export?subject=${subjectId}&period=${periodId}&grade=${grade}&classroom=${classroom}`;
 
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImporting(true);
+    setMsg("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("subject", subjectId);
+      fd.append("period", periodId);
+      fd.append("grade", String(grade));
+      fd.append("classroom", classroom);
+      const res = await fetch("/api/grading/import", { method: "POST", body: fd });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setMsg(`✅ Importadas ${json.imported ?? 0} notas desde el archivo.`);
+        setTimeout(() => window.location.reload(), 1200);
+      } else {
+        setMsg(`❌ ${json.message ?? json.error ?? "No se pudo importar el archivo."}`);
+      }
+    } catch {
+      setMsg("❌ Error al importar. Revisa el archivo.");
+    } finally {
+      setImporting(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
   const cell = (idx: number, dim: "saber" | "hacer" | "ser", entrega: number, value: number | null) => (
     <input
       className="grading-input"
@@ -103,10 +133,29 @@ export function GradingEntry({ subjectId, periodId, grade, classroom, initial }:
         <button className="primary-button" onClick={save} disabled={saving}>
           {saving ? "Guardando…" : "💾 Guardar notas"}
         </button>
-        <a className="secondary-button" download href={exportUrl}>
-          ⬇️ Exportar Excel
+        <a
+          className="primary-button export-excel-btn"
+          download
+          href={exportUrl}
+          title="Descarga el archivo Excel (.xlsx) con todas las notas de este salón, listo para subir a la plataforma institucional."
+        >
+          📥 Exportar a Excel
         </a>
+        <input
+          ref={fileRef}
+          type="file"
+          accept=".xlsx,.xls"
+          style={{ display: "none" }}
+          onChange={handleImport}
+        />
+        <button className="secondary-button" onClick={() => fileRef.current?.click()} disabled={importing}>
+          {importing ? "Importando…" : "📤 Importar Excel"}
+        </button>
       </div>
+      <p className="grading-toolbar-hint">
+        Descarga las notas en un archivo <strong>Excel</strong> para subirlas a la plataforma
+        institucional (formato: Saber · Hacer · Ser con parciales y nota final).
+      </p>
       {msg && <p className="grading-save-msg">{msg}</p>}
 
       <table className="grading-table">
