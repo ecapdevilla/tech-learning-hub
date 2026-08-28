@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-bfe68da chore(handoff): add roster session for 6th blue + instructions for next AI
+010dec7 docs: update AI handoff after project publication
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -407,4 +407,20 @@ AI WORKFLOW
 ============================================================
 END SESSION UPDATE - 2026-08-28
 ============================================================
+### SESSION 2026-08-28 (1) — Grading "can't save notes" diagnosis
+Current HEAD: 010dec7 (before); new commit after this session.
+Changes: none (diagnosis only).
+Symptom reported by user: yesterday could not enter/save notes in the grading app.
+Diagnosis (most likely cause):
+- The whole grading module depends on SUPABASE_SERVICE_ROLE_KEY (server-side). Without it,
+  getGradingAdminClient() returns null -> getStudents() returns [] (page shows "No hay estudiantes
+  cargados") AND saveGrades() returns false ("Error al guardar"). This matches the reported behavior.
+- Build passes locally; save/teacher-login routes are correct.
+Action for next AI / user:
+- VERIFY SUPABASE_SERVICE_ROLE_KEY is set in Vercel (Settings -> Environment Variables). Get it from
+  Supabase -> Settings -> API -> project service key. Redeploy after adding it (Vercel redeploys on push / Prod deploy).
+- Also verify SUPABASE_SERVICE_ROLE_KEY is correct (must equal the DB whose grading_students were loaded).
+- If set and still failing, check that the teacher cookie (self_assessment_teacher) is present when hitting /api/grading/save (front) - the user must be authed via the gate first.
+Tests: `npm run build` passes.
+Pending: none new; continue roster loading + verify grading E2E after env fix.
 
