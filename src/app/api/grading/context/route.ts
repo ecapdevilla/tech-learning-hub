@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { gradingRepository } from "@/modules/grading/data/gradingRepository";
 import { getGradingAdminClient } from "@/modules/grading/data/supabase";
 import { TEACHER_COOKIE } from "@/app/api/self-assessment/teacher-login/route";
 
@@ -15,7 +14,7 @@ export async function GET(request: NextRequest) {
   if (!client) {
     return NextResponse.json({
       configured: false,
-      message: "SUPABASE_SERVICE_ROLE_KEY no está configurada en Vercel.",
+      msg: "⚠️ SUPABASE_SERVICE_ROLE_KEY no está configurada o mal en Vercel.",
       subjects: [],
       periods: [],
     });
@@ -33,17 +32,18 @@ export async function GET(request: NextRequest) {
   if (subjErr || perErr) {
     return NextResponse.json({
       configured: true,
-      message: "Error al leer Supabase:",
-      error: subjErr?.message || perErr?.message || "desconocido",
+      msg: `⚠️ Error al leer Supabase: ${subjErr?.message || perErr?.message}`,
       subjects: [],
       periods: [],
     });
   }
 
-  return NextResponse.json({
-    configured: true,
-    message: "",
-    subjects: subjects ?? [],
-    periods: periods ?? [],
-  });
+  const subs = subjects ?? [];
+  const pers = periods ?? [];
+  const msg =
+    subs.length === 0 || pers.length === 0
+      ? `⚠️ La conexión funciona (✅ key OK) pero las tablas están vacías: subjects=${subs.length} · periods=${pers.length}. Ejecuta los INSERT o revisa que sea el proyecto correcto.`
+      : `✅ Conexión OK · ${subs.length} materia(s) · ${pers.length} periodo(s).`;
+
+  return NextResponse.json({ configured: true, msg, subjects: subs, periods: pers });
 }

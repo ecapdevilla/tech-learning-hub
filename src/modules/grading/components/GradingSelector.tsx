@@ -28,7 +28,7 @@ export function GradingSelector() {
         setPeriods(data.periods ?? []);
         if (data.subjects?.[0]) setSubjectId(data.subjects[0].id);
         if (data.periods?.[0]) setPeriodId(data.periods[0].id);
-        if (data.message) setMsg(`${data.message}${data.error ? " " + data.error : ""}`);
+        if (data.msg) setMsg(data.msg);
       })
       .catch(() => setMsg("No se pudo conectar con el servidor de notas."));
   }, []);
