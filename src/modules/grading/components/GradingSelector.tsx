@@ -18,6 +18,7 @@ export function GradingSelector() {
   const [periodId, setPeriodId] = useState("");
   const [grade, setGrade] = useState(6);
   const [classroom, setClassroom] = useState("blue");
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     fetch("/api/grading/context")
@@ -27,8 +28,9 @@ export function GradingSelector() {
         setPeriods(data.periods ?? []);
         if (data.subjects?.[0]) setSubjectId(data.subjects[0].id);
         if (data.periods?.[0]) setPeriodId(data.periods[0].id);
+        if (data.message) setMsg(`${data.message}${data.error ? " " + data.error : ""}`);
       })
-      .catch(() => {});
+      .catch(() => setMsg("No se pudo conectar con el servidor de notas."));
   }, []);
 
   const go = (e: React.FormEvent) => {
@@ -38,6 +40,7 @@ export function GradingSelector() {
 
   return (
     <div className="self-assessment-form grading-selector-form">
+      {msg && <p className="self-assessment-message">{msg}</p>}
       <form onSubmit={go} className="grading-selector-grid">
         <label>
           <span>Materia</span>
