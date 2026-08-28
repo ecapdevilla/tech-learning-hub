@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-cbcc431 feat(grading): auto-preaload Ser autoeval from self-assessment submissions
+2c7bd2f feat(grading): institutional 2-row header export with merged dimension spans
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -442,6 +442,19 @@ Pending:
 - Import notas por Excel (digitación + export exist; import pending).
 - Multi-teacher login/permissions (future).
 Warnings: self_assessment_submissions nota is numeric; matched on normalized name. If a student is not found, Ser n2 stays empty (teacher can type it).
+
+### SESSION 2026-08-28 (4) — Institutional Excel export refined
+Current HEAD: 2c7bd2f (after).
+Changes:
+- Updated /api/grading/export to produce an institutional-style sheet: 2-row header with merged dimension spans (SABER spans n1-4+Parcial, HACER same, SER spans n1-3+Parcial), N° + Nombre Completo, and a NOTA FINAL column. Empty entrega cells stay blank (decided). Order unchanged.
+Files:
+- src/app/api/grading/export/route.ts
+Database: none.
+Tests: build passes.
+Pending:
+- Verify exported .xlsx opens correctly in Excel/Google Sheets (merges + blanks).
+- Import notas por Excel (round-trip) still pending.
+- (Later) auto-suggest "Ser secuencia" from class sequence data; multi-teacher login.
 Changes: none (diagnosis only).
 Symptom reported by user: yesterday could not enter/save notes in the grading app.
 Diagnosis (most likely cause):
