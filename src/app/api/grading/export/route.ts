@@ -32,23 +32,40 @@ export async function GET(request: NextRequest) {
 
   const computed = students.map((s) => computeStudent(s, dimensions, gradeRows));
 
-  const header = [
-    "N°",
-    "Nombre completo",
-    ...Array.from({ length: ENTRADAS.saber }, (_, i) => `Saber n${i + 1}`),
-    "Parcial Saber",
-    ...Array.from({ length: ENTRADAS.hacer }, (_, i) => `Hacer n${i + 1}`),
-    "Parcial Hacer",
-    "Ser secuencia",
-    "Ser autoeval",
-    "Ser docente",
-    "Parcial Ser",
-    "Nota final",
-  ];
-
+  // Encabezado de dos filas (estilo institucional):
+  // Fila 1: N° | Nombre Completo | SABER (span 5) | HACER (span 5) | SER (span 4) | NOTA FINAL
+  // Fila 2:      |                | n1 n2 n3 n4 | Parcial | n1 n2 n3 n4 | Parcial | n1 n2 n3 | Parcial |
   const num = (v: number | null) => (v === null ? "" : Number(v.toFixed(1)));
 
-  const rows = computed.map((c, i) => [
+  const saberCount = ENTRADAS.saber;
+  const hacerCount = ENTRADAS.hacer;
+  const serCount = ENTRADAS.ser;
+
+  const headerRow1 = [
+    "N°",
+    "Nombre Completo",
+    "SABER",
+    ...Array(saberCount + 1).fill(""),
+    "HACER",
+    ...Array(hacerCount + 1).fill(""),
+    "SER",
+    ...Array(serCount + 1).fill(""),
+    "NOTA FINAL",
+  ];
+
+  const headerRow2 = [
+    "",
+    "",
+    ...Array.from({ length: saberCount }, (_, i) => `n${i + 1}`),
+    "Parcial",
+    ...Array.from({ length: hacerCount }, (_, i) => `n${i + 1}`),
+    "Parcial",
+    ...Array.from({ length: serCount }, (_, i) => `n${i + 1}`),
+    "Parcial",
+    "",
+  ];
+
+  const dataRows = computed.map((c, i) => [
     i + 1,
     `${c.student.last_name} ${c.student.first_name}`,
     ...c.valores.saber.map(num),
@@ -60,8 +77,14 @@ export async function GET(request: NextRequest) {
     num(c.notaFinal),
   ]);
 
-  const ws = XLSX.utils.aoa_to_sheet([header, ...rows]);
-  ws["!cols"] = header.map((h, i) => ({ wch: i === 1 ? 30 : 9 }));
+  const ws = XLSX.utils.aoa_to_sheet([headerRow1, headerRow2, ...dataRows]);
+  ws["!cols"] = [{ wch: 4 }, { wch: 30 }, ...Array(16).fill({ wch: 9 })];
+  ws["!merges"] = [
+    { s: { r: 0, c: 2 }, e: { r: 0, c: 2 + saberCount } }, // SABER (col 2..6)
+    { s: { r: 0, c: 3 + saberCount }, e: { r: 0, c: 3 + saberCount + hacerCount } }, // HACER (col 7..11)
+    { s: { r: 0, c: 4 + saberCount + hacerCount }, e: { r: 0, c: 4 + saberCount + hacerCount + serCount } }, // SER (col 12..15)
+  ];
+
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Notas");
   const buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
