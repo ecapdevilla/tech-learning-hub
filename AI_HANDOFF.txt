@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-2c7bd2f feat(grading): institutional 2-row header export with merged dimension spans
+565cffc feat(grading): improve export button + add Excel import route and UI
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math
@@ -455,6 +455,23 @@ Pending:
 - Verify exported .xlsx opens correctly in Excel/Google Sheets (merges + blanks).
 - Import notas por Excel (round-trip) still pending.
 - (Later) auto-suggest "Ser secuencia" from class sequence data; multi-teacher login.
+
+### SESSION 2026-08-28 (5) — Export button UX + Excel import implemented
+Current HEAD: 565cffc (after).
+Changes:
+- Export button: changed to green "📥 Exportar a Excel" (primary-button export-excel-btn) + explanatory hint text under toolbar ("Descarga las notas en Excel para subir a la plataforma institucional...").
+- NEW Excel IMPORT: /api/grading/import (multipart: file, subject, period, grade, classroom) reads .xlsx with `xlsx`, matches students by normalized full name (last_name + first_name), maps Saber n1-4/Hacer n1-4/Ser n1-3 based on the export's column order, nulls skipped, and upserts grades. Returns {ok, imported}.
+- UI: "📤 Importar Excel" button (secondary) in toolbar -> hidden file input -> on success reloads page after 1.2s.
+Files:
+- src/modules/grading/components/GradingEntry.tsx (toolbar: export button green + hint + import button + file input + handleImport)
+- src/app/api/grading/import/route.ts (new)
+- src/app/globals.css (.export-excel-btn, .grading-toolbar-hint)
+Database: none (uses existing grades table).
+Tests: build passes.
+Pending:
+- Test import round-trip manually: export a salón, edit/add values, re-import; confirm the values appear.
+- (Later) "Ser secuencia" auto-suggest; multi-teacher login.
+Warnings: import expects the same column layout as the export route (N°, Nombre Completo, Saber n1..n4 + Parcial, Hacer n1..n4 + Parcial, Ser n1..n3 + Parcial, Final). Names normalized (NFD) matching last_name first_name.
 Changes: none (diagnosis only).
 Symptom reported by user: yesterday could not enter/save notes in the grading app.
 Diagnosis (most likely cause):
