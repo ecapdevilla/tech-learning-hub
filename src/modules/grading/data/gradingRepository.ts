@@ -21,6 +21,7 @@ export interface GradingRepository {
   saveGrades(
     rows: { student_id: string; dimension_id: string; entrega_index: number; value: number | null }[]
   ): Promise<boolean>;
+  getSelfAssessmentNotes(grade: number, classroom: string): Promise<{ first_name: string; last_name: string; nota: number }[]>;
 }
 
 export const gradingRepository: GradingRepository = {
@@ -101,6 +102,17 @@ export const gradingRepository: GradingRepository = {
       { onConflict: "student_id,dimension_id,entrega_index" }
     );
     return !error;
+  },
+
+  async getSelfAssessmentNotes(grade, classroom) {
+    const c = getGradingAdminClient();
+    if (!c) return [];
+    const { data } = await c
+      .from("self_assessment_submissions")
+      .select("first_name,last_name,nota")
+      .eq("grade", grade)
+      .eq("classroom", classroom);
+    return (data ?? []) as { first_name: string; last_name: string; nota: number }[];
   },
 };
 

@@ -123,7 +123,7 @@ export function GradingEntry({ subjectId, periodId, grade, classroom, initial }:
             ))}
             <th>Hacer</th>
             {Array.from({ length: SER_COUNT }, (_, i) => (
-              <th key={`e${i}`}>Ser n{i + 1}</th>
+              <th key={`e${i}`}>{i === 1 ? "Ser n2 (auto)" : `Ser n${i + 1}`}</th>
             ))}
             <th>Ser</th>
             <th>Final</th>

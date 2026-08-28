@@ -43,7 +43,7 @@ IMPORTANT:
 Run `git log -5 --oneline` at the beginning of the next session and update CURRENT HEAD below.
 
 ## CURRENT HEAD
-31b200b feat(grading): show connection state and counts in selector
+857308f feat(grading): add diagnostics exposing service role key ref matching
 
 ## TODAY'S IMPORTANT CHANGES
 ### Math

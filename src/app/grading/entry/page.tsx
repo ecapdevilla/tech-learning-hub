@@ -46,6 +46,37 @@ export default async function GradingEntryPage({
   const gradeRows = await gradingRepository.getGrades(dimensions.map((d) => d.id));
   const computed = students.map((s) => computeStudent(s, dimensions, gradeRows));
 
+  // Precarga "Ser autoeval" (entrega 2 del Ser) desde la autoevaluación guardada.
+  const notes = await gradingRepository.getSelfAssessmentNotes(grade, classroom);
+  const norm = (s: string) =>
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+  const noteByStudent = new Map<string, number>();
+  for (const n of notes) {
+    const key = `${norm(n.last_name)}|${norm(n.first_name)}`;
+    if (!noteByStudent.has(key)) noteByStudent.set(key, Number(n.nota));
+  }
+
+  const initial = computed.map((c) => {
+    const ser = [...c.valores.ser];
+    if (ser[1] === null || ser[1] === undefined) {
+      const key = `${norm(c.student.last_name)}|${norm(c.student.first_name)}`;
+      const nota = noteByStudent.get(key);
+      if (nota !== undefined && nota !== null) ser[1] = nota;
+    }
+    return {
+      studentId: c.student.id,
+      fullName: `${c.student.last_name} ${c.student.first_name}`,
+      saber: c.valores.saber,
+      hacer: c.valores.hacer,
+      ser,
+    };
+  });
+
   return (
     <SiteLayout>
       <main className="page-shell self-assessment-page">
@@ -57,6 +88,11 @@ export default async function GradingEntryPage({
             </h2>
           </div>
           <p>Digita las notas (1..5) o deja en blanco. Parciales y final se calculan automáticamente.</p>
+          {notes.length > 0 && (
+            <p className="grading-save-msg">
+              ✨ Se precargaron {notes.length} nota(s) de autoevaluación en la columna &quot;Ser n2&quot; (autoeval).
+            </p>
+          )}
         </section>
 
         {computed.length === 0 ? (
@@ -71,13 +107,7 @@ export default async function GradingEntryPage({
             periodId={periodId}
             grade={grade}
             classroom={classroom}
-            initial={computed.map((c) => ({
-              studentId: c.student.id,
-              fullName: `${c.student.last_name} ${c.student.first_name}`,
-              saber: c.valores.saber,
-              hacer: c.valores.hacer,
-              ser: c.valores.ser,
-            }))}
+            initial={initial}
           />
         )}
       </main>
