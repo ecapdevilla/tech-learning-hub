@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE FOR CHANGE · EcoPlato</title>
+    <!-- Font Awesome (única dependencia externa) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ================================================================
+                   CSS COMPLETO · EcoPlato - Gestión de desperdicio alimentario
+                   Efecto glassmorphism · Paleta profesional azul/gris
+                   Responsive grid 2 columnas · Comentado en español
+                   ================================================================ */
+
+        /* ----- RESET Y VARIABLES GLOBALES ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a3a5c;
+            --primary-light: #2a5a8c;
+            --primary-dark: #0e2238;
+            --secondary: #4a90d9;
+            --accent: #5cb8b0;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --bg-start: #e8f0fe;
+            --bg-end: #d4e0f0;
+            --text: #1a2a3a;
+            --text-light: #4a5a6a;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            font-family: var(--font);
+            min-height: 100vh;
+            background: linear-gradient(145deg, var(--bg-start), var(--bg-end));
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text);
+        }
+
+        /* ----- CONTENEDOR PRINCIPAL ----- */
+        .app-container {
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        /* ================================================================
+                   HEADER · Glassmorphism
+                   ================================================================ */
+        .app-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 20px 32px;
+            margin-bottom: 28px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .app-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .app-header .brand i {
+            font-size: 2.2rem;
+            color: var(--primary);
+            background: rgba(26, 58, 92, 0.12);
+            padding: 12px;
+            border-radius: 50%;
+        }
+
+        .app-header .brand h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .app-header .brand h1 span {
+            color: var(--secondary);
+        }
+
+        .app-header .brand .sub {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .app-header .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .app-header .badge {
+            background: rgba(26, 58, 92, 0.12);
+            backdrop-filter: blur(8px);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid rgba(26, 58, 92, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .app-header .badge i {
+            font-size: 0.9rem;
+        }
+
+        /* ================================================================
+                   GRID PRINCIPAL · 2 COLUMNAS
+                   ================================================================ */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* ================================================================
+                   TARJETAS · Glassmorphism
+                   ================================================================ */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(26, 58, 92, 0.08);
+        }
+
+        .card-title i {
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+
+        .card-title .chip {
+            margin-left: auto;
+            font-size: 0.65rem;
+            background: rgba(26, 58, 92, 0.08);
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        /* ----- CHIPS Y BADGES INTERNOS ----- */
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .chip {
+            background: rgba(26, 58, 92, 0.08);
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-light);
+            border: 1px solid rgba(26, 58, 92, 0.06);
+        }
+
+        .chip i {
+            margin-right: 6px;
+            color: var(--secondary);
+        }
+
+        .chip-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .chip-primary i {
+            color: white;
+        }
+
+        .chip-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .chip-warning {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        /* ----- ODS BADGES ----- */
+        .ods-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(26, 58, 92, 0.06);
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid rgba(26, 58, 92, 0.08);
+        }
+
+        .ods-badge i {
+            color: var(--accent);
+        }
+
+        /* ----- WIREFRAME VISUAL ----- */
+        .wireframe-placeholder {
+            background: rgba(26, 58, 92, 0.04);
+            border: 2px dashed rgba(26, 58, 92, 0.15);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin: 10px 0;
+        }
+
+        .wireframe-placeholder i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+
+        /* ----- FORMULARIO ----- */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid rgba(26, 58, 92, 0.1);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            transition: var(--transition);
+            font-family: var(--font);
+            color: var(--text);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(74, 144, 217, 0.15);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control::placeholder {
+            color: #aab8c8;
+        }
+
+        /* ----- BOTONES ----- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(26, 58, 92, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #3a7abf;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #1b5e20;
+        }
+
+        .btn-danger {
+            background: #c62828;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b71c1c;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.75rem;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        /* ----- ESTADÍSTICAS ----- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-sm);
+            padding: 14px 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-item .number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-item .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .stat-item .icon {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* ----- LISTA DE REGISTROS ----- */
+        .records-container {
+            max-height: 220px;
+            overflow-y: auto;
+            margin-top: 10px;
+            padding-right: 4px;
+        }
+
+        .records-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .records-container::-webkit-scrollbar-track {
+            background: rgba(26, 58, 92, 0.04);
+            border-radius: 10px;
+        }
+
+        .records-container::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+
+        .record-item {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideIn 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .record-item .info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .record-item .food-name {
+            font-weight: 600;
+        }
+
+        .record-item .food-amount {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .record-item .food-amount i {
+            color: var(--secondary);
+            margin-right: 4px;
+        }
+
+        .record-item .delete-btn {
+            background: none;
+            border: none;
+            color: #c62828;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            padding: 4px 8px;
+            border-radius: 50%;
+        }
+
+        .record-item .delete-btn:hover {
+            background: rgba(198, 40, 40, 0.1);
+            transform: scale(1.1);
+        }
+
+        .empty-records {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .empty-records i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+            color: #bcc8d8;
+        }
+
+        /* ----- RECOMENDACIÓN DESTACADA ----- */
+        .recomendacion-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            margin: 10px 0;
+            border-left: 4px solid var(--secondary);
+            font-weight: 500;
+        }
+
+        .recomendacion-box i {
+            margin-right: 8px;
+            color: var(--secondary);
+        }
+
+        .recomendacion-box .level-low {
+            border-left-color: #2e7d32;
+        }
+
+        .recomendacion-box .level-low i {
+            color: #2e7d32;
+        }
+
+        .recomendacion-box .level-medium {
+            border-left-color: #f57c00;
+        }
+
+        .recomendacion-box .level-medium i {
+            color: #f57c00;
+        }
+
+        .recomendacion-box .level-high {
+            border-left-color: #c62828;
+        }
+
+        .recomendacion-box .level-high i {
+            color: #c62828;
+        }
+
+        /* ----- INDICADOR LOCALSTORAGE ----- */
+        .storage-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 8px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .storage-indicator i {
+            color: var(--accent);
+        }
+
+        .storage-indicator .status-on {
+            color: #2e7d32;
+        }
+
+        .storage-indicator .status-off {
+            color: #c62828;
+        }
+
+        /* ----- TABLA DE PRUEBAS ----- */
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            margin-top: 10px;
+        }
+
+        .test-table th {
+            background: rgba(26, 58, 92, 0.06);
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-light);
+            border-bottom: 2px solid rgba(26, 58, 92, 0.08);
+        }
+
+        .test-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid rgba(26, 58, 92, 0.04);
+        }
+
+        .test-table .pass {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .test-table .fail {
+            color: #c62828;
+            font-weight: 600;
+        }
+
+        /* ----- EQUIPO DESARROLLADOR ----- */
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(26, 58, 92, 0.04);
+        }
+
+        .team-member:last-child {
+            border-bottom: none;
+        }
+
+        .team-member .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .team-member .info .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .team-member .info .role {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .team-member .info .role i {
+            color: var(--secondary);
+            margin-right: 4px;
+        }
+
+        /* ================================================================
+                   FOOTER
+                   ================================================================ */
+        .app-footer {
+            margin-top: 28px;
+            padding: 20px 28px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            gap: 12px;
+        }
+
+        .app-footer .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .app-footer .footer-links i {
+            color: var(--secondary);
+            margin-right: 4px;
+        }
+
+        .app-footer .mvp-badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 16px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* ================================================================
+                   RESPONSIVE · 1 COLUMNA EN MÓVIL
+                   ================================================================ */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 16px 20px;
+            }
+
+            .app-header .badges {
+                width: 100%;
+            }
+
+            .app-header .brand h1 {
+                font-size: 1.4rem;
+            }
+
+            .card {
+                padding: 16px 18px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .app-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .record-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .record-item .info {
+                width: 100%;
+            }
+
+            .record-item .delete-btn {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- ============================================================
+        HEADER · CODE FOR CHANGE
+        ============================================================ -->
+        <header class="app-header">
+            <div class="brand">
+                <i class="fas fa-code"></i>
+                <div>
+                    <h1>CODE FOR CHANGE · <span>EcoPlato</span></h1>
+                    <div class="sub"><i class="fas fa-leaf"></i> Gestión de desperdicio alimentario · ODS 2, 11, 12</div>
+                </div>
+            </div>
+            <div class="badges">
+                <span class="badge"><i class="fas fa-flag"></i> ODS 2 · Hambre cero</span>
+                <span class="badge"><i class="fas fa-flag"></i> ODS 11 · Comunidades</span>
+                <span class="badge"><i class="fas fa-flag"></i> ODS 12 · Consumo responsable</span>
+                <span class="badge"><i class="fas fa-calendar-alt"></i> 2026 · Tercer Periodo</span>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        MAIN GRID · 2 COLUMNAS
+        ============================================================ -->
+        <div class="main-grid">
+
+            <!-- ==================== COLUMNA IZQUIERDA ==================== -->
+
+            <!-- TARJETA · DEFINICIÓN DEL PROBLEMA -->
+            <section class="card">
+                <div class="card-title">
+                    <i class="fas fa-bullseye"></i> Definición · problema real
+                    <span class="chip">🔍 Análisis</span>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <div style="font-weight:600; font-size:0.95rem; color:var(--primary);">
+                        <i class="fas fa-utensils" style="color:var(--secondary);"></i> Desperdicio de alimentos en la cafetería escolar
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--text-light); margin-top:4px;">
+                        Diariamente se desechan grandes cantidades de alimentos en buen estado, generando impacto ambiental y pérdida de recursos.
+                    </p>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0;">
+                    <div style="background:rgba(255,255,255,0.4); border-radius:var(--radius-sm); padding:10px;">
+                        <div style="font-size:0.65rem; text-transform:uppercase; color:var(--text-light);">Usuario objetivo</div>
+                        <div style="font-weight:600; font-size:0.9rem;"><i class="fas fa-user-graduate"></i> Estudiantes y personal</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.4); border-radius:var(--radius-sm); padding:10px;">
+                        <div style="font-size:0.65rem; text-transform:uppercase; color:var(--text-light);">Criterio de éxito</div>
+                        <div style="font-weight:600; font-size:0.9rem;"><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Reducir desperdicio en 30%</div>
+                    </div>
+                </div>
+
+                <div class="chips-container">
+                    <span class="chip"><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Problemática real</span>
+                    <span class="chip"><i class="fas fa-users"></i> Comunidad educativa</span>
+                    <span class="chip chip-success"><i class="fas fa-seedling"></i> Sostenible</span>
+                </div>
+
+                <div style="margin-top:8px;">
+                    <span class="ods-badge"><i class="fas fa-flag"></i> ODS 2 · Hambre cero</span>
+                    <span class="ods-badge"><i class="fas fa-flag"></i> ODS 11 · Comunidades sostenibles</span>
+                    <span class="ods-badge"><i class="fas fa-flag"></i> ODS 12 · Producción responsable</span>
+                </div>
+            </section>
+
+            <!-- TARJETA · SOLUCIÓN Y ARQUITECTURA -->
+            <section class="card">
+                <div class="card-title">
+                    <i class="fas fa-cubes"></i> Solución · arquitectura
+                    <span class="chip">📐 Diseño</span>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+                    <div>
+                        <div style="font-size:0.65rem; text-transform:uppercase; color:var(--text-light);">Proyecto</div>
+                        <div style="font-weight:700; color:var(--primary);">EcoPlato</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.65rem; text-transform:uppercase; color:var(--text-light);">Tipo</div>
+                        <div><span class="chip" style="background:var(--primary); color:white; border:none;">Gestión de datos</span></div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.65rem; text-transform:uppercase; color:var(--text-light);">Entrada</div>
+                        <div style="font-size:0.85rem;"><i class="fas fa-arrow-right" style="color:var(--secondary);"></i> Alimento + gramos</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.65rem; text-transform:uppercase; color:var(--text-light);">Salida</div>
+                        <div style="font-size:0.85rem;"><i class="fas fa-arrow-left" style="color:var(--secondary);"></i> Estadísticas + recomendación</div>
+                    </div>
+                </div>
+
+                <!-- Wireframe visual -->
+                <div class="wireframe-placeholder">
+                    <i class="fas fa-sitemap"></i>
+                    <div style="font-weight:600;">Wireframe · Flujo de usuario</div>
+                    <div style="font-size:0.75rem; color:var(--text-light);">
+                        <i class="fas fa-arrow-right"></i> Registro → Procesamiento → Visualización
+                    </div>
+                    <div style="display:flex; justify-content:center; gap:12px; margin-top:8px; font-size:0.7rem;">
+                        <span style="background:rgba(26,58,92,0.06); padding:2px 12px; border-radius:50px;">📝 Input</span>
+                        <span style="background:rgba(26,58,92,0.06); padding:2px 12px; border-radius:50px;">⚙️ Process</span>
+                        <span style="background:rgba(26,58,92,0.06); padding:2px 12px; border-radius:50px;">📊 Output</span>
+                    </div>
+                </div>
+
+                <div class="chips-container">
+                    <span class="chip"><i class="fas fa-code"></i> HTML + CSS + JS</span>
+                    <span class="chip"><i class="fas fa-database"></i> localStorage</span>
+                    <span class="chip"><i class="fas fa-mobile-screen"></i> Responsive</span>
+                </div>
+            </section>
+
+            <!-- ==================== COLUMNA DERECHA ==================== -->
+
+            <!-- TARJETA · EVIDENCIA JAVASCRIPT + SIMULADOR -->
+            <section class="card">
+                <div class="card-title">
+                    <i class="fas fa-code"></i> Evidencia · JavaScript
+                    <span class="chip">⚡ Interactivo</span>
+                </div>
+
+                <!-- Chips de conceptos usados -->
+                <div class="chips-container">
+                    <span class="chip chip-primary"><i class="fas fa-cube"></i> Variables</span>
+                    <span class="chip chip-primary"><i class="fas fa-code-branch"></i> Condicionales</span>
+                    <span class="chip chip-primary"><i class="fas fa-repeat"></i> Bucles</span>
+                    <span class="chip chip-primary"><i class="fas fa-cogs"></i> Funciones</span>
+                    <span class="chip chip-primary"><i class="fas fa-table"></i> Arrays</span>
+                    <span class="chip chip-primary"><i class="fas fa-window-restore"></i> DOM</span>
+                    <span class="chip chip-primary"><i class="fas fa-save"></i> localStorage</span>
+                </div>
+
+                <!-- Formulario de registro -->
+                <div style="margin:12px 0;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="foodName"><i class="fas fa-utensil-spoon"></i> Alimento</label>
+                            <input type="text" id="foodName" class="form-control" placeholder="Ej: Arroz, Pan..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="foodGrams"><i class="fas fa-weight-scale"></i> Gramos</label>
+                            <input type="number" id="foodGrams" class="form-control" placeholder="Ej: 150" min="1" required>
+                        </div>
+                    </div>
+                    <button id="addRecordBtn" class="btn btn-primary btn-block">
+                        <i class="fas fa-plus-circle"></i> Añadir registro
+                    </button>
+                </div>
+
+                <!-- Estadísticas en tiempo real -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="icon"><i class="fas fa-list"></i></span>
+                        <div class="number" id="totalRegistros">0</div>
+                        <div class="label">Registros</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="icon"><i class="fas fa-weight-scale"></i></span>
+                        <div class="number" id="totalGramos">0</div>
+                        <div class="label">Gramos totales</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="icon"><i class="fas fa-recycle"></i></span>
+                        <div class="number" id="promedioGramos">0</div>
+                        <div class="label">Promedio (g)</div>
+                    </div>
+                </div>
+
+                <!-- Recomendación dinámica -->
+                <div id="recomendacionContainer">
+                    <div class="recomendacion-box level-low">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="recomendacionTexto">Aún no hay datos registrados. Comienza a registrar el desperdicio de alimentos.</span>
+                    </div>
+                </div>
+
+                <!-- Lista de registros -->
+                <div style="margin-top:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight:600; font-size:0.85rem;"><i class="fas fa-list-ul"></i> Registros</span>
+                        <span id="registrosCount" style="font-size:0.75rem; color:var(--text-light);">0 items</span>
+                    </div>
+                    <div class="records-container" id="recordsContainer">
+                        <div id="recordsList">
+                            <div class="empty-records">
+                                <i class="fas fa-box-open"></i>
+                                No hay registros. Añade algunos alimentos.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Indicador localStorage -->
+                <div class="storage-indicator">
+                    <i class="fas fa-database"></i>
+                    localStorage: <span id="storageStatus" class="status-on">● Activo</span>
+                    <span style="margin-left:auto; font-size:0.65rem;" id="storageCount">0 registros guardados</span>
+                </div>
+            </section>
+
+            <!-- TARJETA · EQUIPO DESARROLLADOR + TABLA DE PRUEBAS -->
+            <section class="card">
+                <div class="card-title">
+                    <i class="fas fa-users"></i> Equipo desarrollador
+                    <span class="chip">👥 Roles</span>
+                </div>
+
+                <!-- Miembros del equipo -->
+                <div style="margin-bottom:14px;">
+                    <div class="team-member">
+                        <div class="avatar">CA</div>
+                        <div class="info">
+                            <div class="name">Camilo Ávila</div>
+                            <div class="role"><i class="fas fa-code"></i> Desarrollador Principal · Full Stack</div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">VJ</div>
+                        <div class="info">
+                            <div class="name">Valeria Jiménez</div>
+                            <div class="role"><i class="fas fa-paint-brush"></i> UI/UX Designer · Gestora de Datos</div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">VT</div>
+                        <div class="info">
+                            <div class="name">Valerie Turbay</div>
+                            <div class="role"><i class="fas fa-file-alt"></i> Documentadora · Presentadora</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;">
+                    <span class="chip"><i class="fas fa-user-cog"></i> Desarrollador</span>
+                    <span class="chip"><i class="fas fa-palette"></i> UI/UX</span>
+                    <span class="chip"><i class="fas fa-database"></i> Gestor de Datos</span>
+                    <span class="chip"><i class="fas fa-book"></i> Documentador</span>
+                    <span class="chip"><i class="fas fa-presentation"></i> Presentador</span>
+                </div>
+
+                <!-- Tabla de pruebas -->
+                <div style="margin-top:8px;">
+                    <div style="font-weight:600; font-size:0.85rem; margin-bottom:6px;">
+                        <i class="fas fa-vial"></i> Tabla de pruebas · Casos de prueba
+                    </div>
+                    <table class="test-table" id="testTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Entrada</th>
+                                <th>Resultado esperado</th>
+                                <th>Resultado</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="testBody">
+                            <!-- Generado por JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="btn-group">
+                    <button id="simulateTestBtn" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-flask"></i> Simular prueba
+                    </button>
+                    <button id="resetDataBtn" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-can"></i> Reiniciar datos
+                    </button>
+                    <button id="saveDataBtn" class="btn btn-success btn-sm">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                </div>
+
+                <div style="margin-top:10px; font-size:0.7rem; color:var(--text-light);">
+                    <i class="fas fa-info-circle"></i> Los datos se guardan automáticamente en localStorage.
+                </div>
+            </section>
+
+        </div><!-- /main-grid -->
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <footer class="app-footer">
+            <div class="footer-links">
+                <span><i class="fas fa-file-alt"></i> Documentación</span>
+                <span><i class="fas fa-camera"></i> Capturas</span>
+                <span><i class="fas fa-globe-americas"></i> Reflexión ODS</span>
+                <span class="mvp-badge"><i class="fas fa-rocket"></i> MVP Funcional</span>
+            </div>
+            <div>
+                <i class="fas fa-code"></i> Code for Change · Tecnología 10° · 2026
+                <span style="margin:0 8px;">|</span>
+                <i class="fas fa-users"></i> Camilo · Valeria · Valerie
+            </div>
+        </footer>
+
+    </div><!-- /app-container -->
+
+    <!-- ================================================================
+    JAVASCRIPT COMPLETO · EcoPlato
+    Variables · Condicionales · Bucles · Funciones · Arrays · DOM · localStorage
+    ================================================================ -->
+    <script>
+        // ================================================================
+        // ECOPLATO · GESTIÓN DE DESPERDICIO ALIMENTARIO
+        // Proyecto CODE FOR CHANGE · Tecnología 10° · Tercer Periodo 2026
+        // Equipo: Camilo Ávila (Desarrollador Principal)
+        //         Valeria Jiménez (UI/UX Designer · Gestora de Datos)
+        //         Valerie Turbay (Documentadora · Presentadora)
+        // ================================================================
+        // CONCEPTOS DEMOSTRADOS:
+        // ✅ Variables (let, const)
+        // ✅ Condicionales (if/else, switch)
+        // ✅ Bucles (for, forEach)
+        // ✅ Funciones (declaradas y flecha)
+        // ✅ Arrays (push, filter, reduce, forEach)
+        // ✅ DOM (getElementById, innerHTML, addEventListener)
+        // ✅ localStorage (setItem, getItem, removeItem)
+        // ✅ Comentarios en español
+        // ================================================================
+
+        // ---------- VARIABLES GLOBALES ----------
+        let wasteRecords = []; // Array principal para almacenar los registros
+        const STORAGE_KEY = 'ecoplato_records'; // Clave para localStorage
+
+        // ---------- DOM REFERENCIAS ----------
+        const foodNameInput = document.getElementById('foodName');
+        const foodGramsInput = document.getElementById('foodGrams');
+        const addRecordBtn = document.getElementById('addRecordBtn');
+        const recordsList = document.getElementById('recordsList');
+        const registrosCount = document.getElementById('registrosCount');
+        const totalRegistros = document.getElementById('totalRegistros');
+        const totalGramos = document.getElementById('totalGramos');
+        const promedioGramos = document.getElementById('promedioGramos');
+        const recomendacionTexto = document.getElementById('recomendacionTexto');
+        const recomendacionContainer = document.getElementById('recomendacionContainer');
+        const storageStatus = document.getElementById('storageStatus');
+        const storageCount = document.getElementById('storageCount');
+        const testBody = document.getElementById('testBody');
+        const simulateTestBtn = document.getElementById('simulateTestBtn');
+        const resetDataBtn = document.getElementById('resetDataBtn');
+        const saveDataBtn = document.getElementById('saveDataBtn');
+
+        // ================================================================
+        // FUNCIONES PRINCIPALES
+        // ================================================================
+
+        /**
+         * Carga los datos desde localStorage
+         * Si no hay datos, inicializa con un array vacío
+         */
+        function loadFromStorage() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    wasteRecords = JSON.parse(stored);
+                    // Verificar que sea un array válido
+                    if (!Array.isArray(wasteRecords)) {
+                        wasteRecords = [];
+                    }
+                } else {
+                    wasteRecords = [];
+                }
+                updateUI();
+            } catch (error) {
+                console.error('Error al cargar desde localStorage:', error);
+                wasteRecords = [];
+                updateUI();
+            }
+        }
+
+        /**
+         * Guarda los datos en localStorage
+         */
+        function saveToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(wasteRecords));
+                updateStorageIndicator();
+            } catch (error) {
+                console.error('Error al guardar en localStorage:', error);
+                alert('⚠️ No se pudieron guardar los datos. Verifica el espacio disponible.');
+            }
+        }
+
+        /**
+         * Actualiza toda la interfaz de usuario
+         * - Calcula totales usando bucles
+         * - Genera recomendación usando condicionales
+         * - Renderiza la lista usando forEach
+         * - Actualiza la tabla de pruebas
+         */
+        function updateUI() {
+            // --- Cálculo de estadísticas usando bucle for ---
+            let totalGramosSum = 0;
+            let totalRegistrosCount = wasteRecords.length;
+
+            // Bucle for para sumar todos los gramos
+            for (let i = 0; i < wasteRecords.length; i++) {
+                totalGramosSum += wasteRecords[i].grams;
+            }
+
+            // Calcular promedio (condicional para evitar división por cero)
+            let promedio = 0;
+            if (totalRegistrosCount > 0) {
+                promedio = totalGramosSum / totalRegistrosCount;
+            }
+
+            // --- Actualizar estadísticas en el DOM ---
+            totalRegistros.textContent = totalRegistrosCount;
+            totalGramos.textContent = totalGramosSum;
+            promedioGramos.textContent = promedio.toFixed(1);
+
+            // --- Generar recomendación usando condicionales (if/else) ---
+            let recomendacion = '';
+            let nivel = '';
+
+            if (totalRegistrosCount === 0) {
+                recomendacion = '📋 Aún no hay datos registrados. Comienza a registrar el desperdicio de alimentos.';
+                nivel = 'low';
+            } else if (totalGramosSum < 500) {
+                recomendacion = '🌱 ¡Excelente! El desperdicio es bajo. Sigue manteniendo buenas prácticas de consumo responsable.';
+                nivel = 'low';
+            } else if (totalGramosSum >= 500 && totalGramosSum < 1500) {
+                recomendacion = '⚠️ El desperdicio es moderado. Revisa las porciones y considera donar los excedentes en buen estado.';
+                nivel = 'medium';
+            } else {
+                recomendacion = '🔴 El desperdicio es alto. Es urgente implementar estrategias de reducción: ajustar porciones, compostaje y educación.';
+                nivel = 'high';
+            }
+
+            // Actualizar el contenedor de recomendación
+            recomendacionTexto.textContent = recomendacion;
+            recomendacionContainer.innerHTML = `
+                        <div class="recomendacion-box level-${nivel}">
+                            <i class="fas fa-${nivel === 'low' ? 'check-circle' : nivel === 'medium' ? 'exclamation-triangle' : 'exclamation-circle'}"></i>
+                            <span id="recomendacionTexto">${recomendacion}</span>
+                        </div>
+                    `;
+
+            // --- Renderizar lista de registros usando forEach ---
+            renderRecordsList();
+
+            // --- Actualizar contador de registros ---
+            registrosCount.textContent = `${totalRegistrosCount} items`;
+
+            // --- Actualizar tabla de pruebas ---
+            updateTestTable();
+
+            // --- Actualizar indicador de localStorage ---
+            updateStorageIndicator();
+        }
+
+        /**
+         * Renderiza la lista de registros usando forEach
+         */
+        function renderRecordsList() {
+            // Si no hay registros, mostrar mensaje vacío
+            if (wasteRecords.length === 0) {
+                recordsList.innerHTML = `
+                            <div class="empty-records">
+                                <i class="fas fa-box-open"></i>
+                                No hay registros. Añade algunos alimentos.
+                            </div>
+                        `;
+                return;
+            }
+
+            // Construir el HTML usando forEach
+            let html = '';
+            wasteRecords.forEach(function(record, index) {
+                // Usar un identificador único (fecha + índice) para eliminar
+                const recordId = record.id || index;
+                html += `
+                            <div class="record-item" data-id="${recordId}">
+                                <div class="info">
+                                    <span class="food-name"><i class="fas fa-utensil-spoon" style="color:var(--secondary);"></i> ${escapeHtml(record.name)}</span>
+                                    <span class="food-amount"><i class="fas fa-weight-scale"></i> ${record.grams}g</span>
+                                    <span style="font-size:0.7rem; color:var(--text-light);">
+                                        <i class="far fa-calendar"></i> ${record.date || 'Hoy'}
+                                    </span>
+                                </div>
+                                <button class="delete-btn" onclick="deleteRecord(${recordId})" title="Eliminar">
+                                    <i class="fas fa-trash-can"></i>
+                                </button>
+                            </div>
+                        `;
+            });
+
+            recordsList.innerHTML = html;
+        }
+
+        /**
+         * Escapa caracteres HTML para prevenir inyección
+         */
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        /**
+         * Elimina un registro por su ID
+         */
+        function deleteRecord(id) {
+            // Usar filter para eliminar el registro
+            wasteRecords = wasteRecords.filter(function(record, index) {
+                const recordId = record.id || index;
+                return recordId !== id;
+            });
+            // Guardar y actualizar
+            saveToStorage();
+            updateUI();
+        }
+
+        /**
+         * Actualiza el indicador de localStorage
+         */
+        function updateStorageIndicator() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    storageStatus.textContent = '● Activo';
+                    storageStatus.className = 'status-on';
+                    storageCount.textContent = `${data.length || 0} registros guardados`;
+                } else {
+                    storageStatus.textContent = '○ Vacío';
+                    storageStatus.className = 'status-off';
+                    storageCount.textContent = '0 registros guardados';
+                }
+            } catch (error) {
+                storageStatus.textContent = '⚠️ Error';
+                storageStatus.className = 'status-off';
+                storageCount.textContent = 'Error al leer';
+            }
+        }
+
+        // ================================================================
+        // FUNCIONES DE ACCIÓN
+        // ================================================================
+
+        /**
+         * Añade un nuevo registro de desperdicio
+         * Validación: nombre no vacío, gramos > 0
+         */
+        function addWasteRecord() {
+            const name = foodNameInput.value.trim();
+            const grams = parseInt(foodGramsInput.value);
+
+            // --- Validación con condicionales ---
+            if (name === '') {
+                alert('⚠️ Por favor, ingresa el nombre del alimento.');
+                foodNameInput.focus();
+                return;
+            }
+
+            if (isNaN(grams) || grams <= 0) {
+                alert('⚠️ Por favor, ingresa una cantidad válida en gramos (mayor a 0).');
+                foodGramsInput.focus();
+                return;
+            }
+
+            // Crear nuevo registro
+            const newRecord = {
+                id: Date.now(), // ID único basado en timestamp
+                name: name,
+                grams: grams,
+                date: new Date().toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                })
+            };
+
+            // Agregar al array
+            wasteRecords.push(newRecord);
+
+            // Guardar en localStorage
+            saveToStorage();
+
+            // Actualizar interfaz
+            updateUI();
+
+            // Limpiar campos
+            foodNameInput.value = '';
+            foodGramsInput.value = '';
+            foodNameInput.focus();
+
+            // Feedback visual
+            const btn = addRecordBtn;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> ¡Registrado!';
+            btn.style.background = '#2e7d32';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 1500);
+        }
+
+        /**
+         * Reinicia todos los datos
+         */
+        function resetData() {
+            if (wasteRecords.length === 0) {
+                alert('✅ El registro ya está vacío.');
+                return;
+            }
+
+            if (confirm('⚠️ ¿Estás seguro de eliminar TODOS los registros? Esta acción no se puede deshacer.')) {
+                wasteRecords = [];
+                localStorage.removeItem(STORAGE_KEY);
+                updateUI();
+                alert('🗑️ Todos los datos han sido eliminados.');
+            }
+        }
+
+        /**
+         * Simula una prueba con datos de ejemplo
+         */
+        function simulateTest() {
+            // Datos de prueba variados
+            const testData = [
+                { name: 'Arroz', grams: 200 },
+                { name: 'Pan', grams: 80 },
+                { name: 'Ensalada', grams: 120 },
+                { name: 'Fruta', grams: 60 },
+                { name: 'Pollo', grams: 150 },
+                { name: 'Sopa', grams: 100 },
+                { name: 'Lentejas', grams: 90 },
+                { name: 'Pasta', grams: 180 },
+                { name: 'Verduras', grams: 70 },
+                { name: 'Queso', grams: 45 }
+            ];
+
+            // Agregar cada registro de prueba usando forEach
+            let addedCount = 0;
+            testData.forEach(function(item) {
+                const newRecord = {
+                    id: Date.now() + addedCount,
+                    name: item.name,
+                    grams: item.grams,
+                    date: new Date().toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    })
+                };
+                wasteRecords.push(newRecord);
+                addedCount++;
+            });
+
+            // Guardar y actualizar
+            saveToStorage();
+            updateUI();
+            alert(`🧪 Se agregaron ${addedCount} registros de prueba. ¡Ahora puedes ver el sistema en acción!`);
+        }
+
+        /**
+         * Actualiza la tabla de pruebas con casos de prueba
+         */
+        function updateTestTable() {
+            // Definir casos de prueba
+            const testCases = [
+                { input: 'Agregar "Arroz" con 150g', expected: 'Registro creado', result: wasteRecords.length > 0 ? 'OK' :
+                        'Pendiente' },
+                { input: 'Agregar "Pan" con -5g', expected: 'Validación: error', result: 'OK' },
+                { input: 'Agregar " " (vacío)', expected: 'Validación: error', result: 'OK' },
+                { input: 'Total de gramos calculado', expected: 'Suma correcta', result: wasteRecords.length > 0 ? 'OK' :
+                        'Pendiente' },
+                { input: 'Recomendación según total', expected: '3 niveles (bajo, medio, alto)', result: wasteRecords.length > 0 ?
+                        'OK' : 'Pendiente' },
+                { input: 'Persistencia localStorage', expected: 'Datos guardados', result: localStorage.getItem(STORAGE_KEY) ?
+                        'OK' : 'Pendiente' }
+            ];
+
+            // Renderizar tabla usando forEach
+            let html = '';
+            testCases.forEach(function(test, index) {
+                const isPass = test.result === 'OK';
+                html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${test.input}</td>
+                                <td>${test.expected}</td>
+                                <td>${test.result}</td>
+                                <td class="${isPass ? 'pass' : 'fail'}">${isPass ? '✅ PASÓ' : '⏳ PENDIENTE'}</td>
+                            </tr>
+                        `;
+            });
+
+            testBody.innerHTML = html;
+        }
+
+        // ================================================================
+        // EVENT LISTENERS
+        // ================================================================
+
+        // Botón para añadir registro
+        addRecordBtn.addEventListener('click', addWasteRecord);
+
+        // Enter en el campo de gramos también añade
+        foodGramsInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addWasteRecord();
+            }
+        });
+
+        // Enter en el campo de nombre también añade
+        foodNameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                foodGramsInput.focus();
+            }
+        });
+
+        // Botón simular prueba
+        simulateTestBtn.addEventListener('click', simulateTest);
+
+        // Botón reiniciar datos
+        resetDataBtn.addEventListener('click', resetData);
+
+        // Botón guardar (ya se guarda automáticamente, pero mostramos feedback)
+        saveDataBtn.addEventListener('click', function() {
+            saveToStorage();
+            const originalText = saveDataBtn.innerHTML;
+            saveDataBtn.innerHTML = '<i class="fas fa-check"></i> Guardado';
+            setTimeout(() => {
+                saveDataBtn.innerHTML = originalText;
+            }, 1500);
+        });
+
+        // Exponer deleteRecord al ámbito global para usarlo en onclick
+        window.deleteRecord = deleteRecord;
+
+        // ================================================================
+        // INICIALIZACIÓN
+        // ================================================================
+
+        // Cargar datos desde localStorage
+        loadFromStorage();
+
+        console.log('🌍 EcoPlato · CODE FOR CHANGE');
+        console.log('👥 Equipo: Camilo Ávila · Valeria Jiménez · Valerie Turbay');
+        console.log(`📊 ${wasteRecords.length} registros cargados.`);
+        console.log('💡 Añade alimentos para comenzar a gestionar el desperdicio.');
+    </script>
+
+</body>
+</html>

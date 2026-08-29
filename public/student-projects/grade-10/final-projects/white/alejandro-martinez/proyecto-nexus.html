@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto Nexus · Gráfico + Funciones</title>
+  <!-- Font Awesome (iconos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Chart.js para gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(145deg, #dcecff 0%, #b0d2f7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.8rem;
+    }
+
+    .project-card {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 4rem 4rem 3rem 3rem;
+      box-shadow: 0 30px 50px -12px rgba(12, 44, 100, 0.40), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      padding: 2.6rem 2.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: linear-gradient(135deg, rgba(235, 247, 255, 0.80) 0%, rgba(185, 218, 255, 0.70) 100%);
+      transition: all 0.2s;
+    }
+
+    /* HEADER con título y objetivo */
+    .header-section {
+      margin-bottom: 2.2rem;
+      border-bottom: 2px dashed rgba(0, 80, 200, 0.20);
+      padding-bottom: 1.2rem;
+    }
+
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .main-title {
+      font-size: 3.6rem;
+      font-weight: 700;
+      background: linear-gradient(145deg, #003f8a, #1f7fe0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-shadow: 0 2px 12px rgba(0, 70, 180, 0.15);
+    }
+
+    .main-title i {
+      background: linear-gradient(145deg, #0066cc, #3b8cff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 3.2rem;
+      filter: drop-shadow(0 4px 10px rgba(0, 60, 180, 0.20));
+    }
+
+    .objective-box {
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      border-left: 8px solid #1f7ae0;
+      box-shadow: 0 6px 16px rgba(20, 70, 160, 0.12);
+    }
+
+    .objective-box i {
+      font-size: 2.2rem;
+      color: #0960c0;
+      filter: drop-shadow(0 2px 6px rgba(0, 70, 190, 0.25));
+    }
+
+    .objective-text {
+      font-size: 1.6rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #04316b, #1a6dd4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .objective-text small {
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: #14529b;
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      margin-left: 0.3rem;
+    }
+
+    /* NUEVA SECCIÓN: GRÁFICO + FUNCIONES EXTRA */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      margin: 1.5rem 0 1.8rem;
+    }
+
+    /* tarjeta del gráfico */
+    .chart-card {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 2.5rem;
+      padding: 1.2rem 1.2rem 0.8rem;
+      box-shadow: 0 12px 28px -8px rgba(18, 56, 120, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(200, 224, 255, 0.4));
+    }
+
+    .chart-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.4rem;
+      color: #01409c;
+      margin-left: 0.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .chart-card h3 i {
+      color: #1f7ae0;
+    }
+
+    #myChart {
+      max-height: 210px;
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    /* panel de funciones extra (más funciones) */
+    .extra-functions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .function-item {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 1.2rem 1.4rem;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 18px -6px rgba(20, 60, 130, 0.12);
+      transition: all 0.2s;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(200, 222, 255, 0.40));
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .function-item:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 14px 24px -8px #1f5faf33;
+    }
+
+    .function-icon {
+      font-size: 2.6rem;
+      background: linear-gradient(145deg, #0066dd, #4090ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      min-width: 3.2rem;
+      text-align: center;
+    }
+
+    .function-content {
+      flex: 1;
+    }
+    .function-content h4 {
+      font-size: 1.25rem;
+      color: #04316b;
+      font-weight: 600;
+    }
+    .function-content p {
+      font-size: 0.95rem;
+      color: #1f4f8a;
+      opacity: 0.9;
+    }
+
+    .badge-func {
+      background: linear-gradient(90deg, #1f6fd0, #5a9cff);
+      color: white;
+      border-radius: 40px;
+      padding: 0.2rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-left: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .feature-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 1.8rem 1rem 1.5rem;
+      border-radius: 2.5rem;
+      text-align: center;
+      box-shadow: 0 10px 22px -8px rgba(19, 56, 123, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(195, 222, 255, 0.45));
+      transition: 0.2s;
+    }
+    .feature-item:hover {
+      transform: translateY(-6px);
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 20px 30px -10px #1f5faf44;
+    }
+    .feature-icon {
+      font-size: 3.2rem;
+      margin-bottom: 0.3rem;
+      background: linear-gradient(145deg, #0066dd, #4090ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 6px 12px rgba(0, 80, 200, 0.2));
+    }
+    .feature-item h3 {
+      font-size: 1.6rem;
+      color: #053682;
+    }
+    .feature-item p {
+      color: #12448b;
+      font-size: 1rem;
+    }
+    .feature-item .highlight {
+      display: inline-block;
+      background: linear-gradient(90deg, #2b7be0, #72b0ff);
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .footer-note {
+      margin-top: 2.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      color: #1755a0;
+      border-top: 1px solid rgba(0, 80, 200, 0.15);
+      padding-top: 1.2rem;
+    }
+    .footer-note i {
+      color: #1f7ae0;
+      font-size: 1.3rem;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .feature-grid-3 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .main-title { font-size: 2.8rem; }
+      .objective-text { font-size: 1.3rem; }
+      .project-card { padding: 1.8rem; }
+    }
+    @media (max-width: 550px) {
+      .feature-grid-3 { grid-template-columns: 1fr; }
+      .main-title { font-size: 2.2rem; }
+      .objective-box { padding: 0.6rem 1.2rem; }
+      .project-card { padding: 1.2rem; border-radius: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="project-card">
+  <!-- HEADER: Título + OBJETIVO PRINCIPAL debajo -->
+  <div class="header-section">
+    <div class="title-wrapper">
+      <h1 class="main-title">
+        <i class="fas fa-code"></i> Proyecto Nexus
+      </h1>
+      <span style="margin-left: auto; font-size: 2rem; opacity: 0.3;"><i class="fas fa-arrow-trend-up" style="color: #0070e0;"></i></span>
+    </div>
+    <div class="objective-box">
+      <i class="fas fa-bullseye"></i>
+      <span class="objective-text">
+        Objetivo Principal · <small>acelerar la innovación digital con diseño centrado en las personas</small>
+        <i class="fas fa-rocket" style="font-size: 1.5rem; margin-left: 0.3rem; color: #0066dd;"></i>
+      </span>
+    </div>
+  </div>
+
+  <!-- GRÁFICO + FUNCIONES EXTRA (nuevo) -->
+  <div class="dashboard-grid">
+    <!-- gráfico -->
+    <div class="chart-card">
+      <h3><i class="fas fa-chart-line"></i> Progreso mensual <span style="font-size: 0.9rem; font-weight: 400; color: #1f5faf;">+140%</span></h3>
+      <canvas id="myChart" width="300" height="170"></canvas>
+    </div>
+
+    <!-- más funciones (4 funciones extra) -->
+    <div class="extra-functions">
+      <div class="function-item">
+        <div class="function-icon"><i class="fas fa-robot"></i></div>
+        <div class="function-content">
+          <h4>Asistente IA <span class="badge-func">nuevo</span></h4>
+          <p>Respuestas inteligentes y predicciones en tiempo real.</p>
+        </div>
+      </div>
+      <div class="function-item">
+        <div class="function-icon"><i class="fas fa-bolt"></i></div>
+        <div class="function-content">
+          <h4>Modo Turbo <span class="badge-func">+40%</span></h4>
+          <p>Ejecución optimizada con caché y paralelismo.</p>
+        </div>
+      </div>
+      <div class="function-item">
+        <div class="function-icon"><i class="fas fa-cloud-sun"></i></div>
+        <div class="function-content">
+          <h4>Sync híbrido <span class="badge-func">multi-nube</span></h4>
+          <p>Sincronización continua entre entornos.</p>
+        </div>
+      </div>
+      <div class="function-item">
+        <div class="function-icon"><i class="fas fa-shield-halved"></i></div>
+        <div class="function-content">
+          <h4>Auditoría pro <span class="badge-func">seguro</span></h4>
+          <p>Traza completa y alertas automáticas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 características (ya existentes, las mantenemos) -->
+  <div class="feature-grid-3">
+    <div class="feature-item">
+      <div class="feature-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+      <h3>Integración ágil</h3>
+      <p>Conecta servicios y datos en tiempo real.</p>
+      <span class="highlight"><i class="fas fa-bolt"></i> +140% rendimiento</span>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon"><i class="fas fa-palette"></i></div>
+      <h3>Diseño simpático</h3>
+      <p>Degradados azules, iconos y microinteracciones.</p>
+      <span class="highlight"><i class="fas fa-smile"></i> 100% amigable</span>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3>Seguridad nativa</h3>
+      <p>Cifrado y buenas prácticas desde el inicio.</p>
+      <span class="highlight"><i class="fas fa-lock"></i> confianza total</span>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer-note">
+    <span><i class="fas fa-microchip"></i> v2.6 · diseñado con <i class="fas fa-heart" style="color: #0f6ad0;"></i> y 20+ años de experiencia</span>
+    <span><i class="fas fa-code"></i> <i class="fas fa-chart-simple"></i> gráfico interactivo</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // degradado para el fondo del gráfico (azul simpático)
+    const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+    gradient.addColorStop(0, 'rgba(40, 120, 255, 0.35)');
+    gradient.addColorStop(0.5, 'rgba(70, 160, 255, 0.15)');
+    gradient.addColorStop(1, 'rgba(100, 180, 255, 0.02)');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Métrica clave',
+          data: [22, 35, 48, 62, 78, 95],
+          backgroundColor: gradient,
+          borderColor: '#1f7ae0',
+          borderWidth: 3,
+          pointBackgroundColor: '#ffffff',
+          pointBorderColor: '#1f7ae0',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 7,
+          tension: 0.25,
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            backgroundColor: 'rgba(30, 80, 180, 0.85)',
+            titleColor: '#fff',
+            bodyColor: '#e6f0ff',
+            cornerRadius: 16,
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(30, 100, 200, 0.08)',
+            },
+            ticks: {
+              color: '#1250a0',
+              font: { size: 11, weight: '500' }
+            }
+          },
+          x: {
+            grid: {
+              display: false,
+            },
+            ticks: {
+              color: '#1250a0',
+              font: { size: 11, weight: '500' }
+            }
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

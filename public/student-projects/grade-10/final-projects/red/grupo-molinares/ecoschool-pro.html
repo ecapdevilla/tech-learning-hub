@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSchool Pro · CODE FOR CHANGE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e7a6b;
+            --primary-light: #6a9b8a;
+            --primary-dark: #2d4d42;
+            --secondary: #8eac94;
+            --accent: #f0b429;
+            --bg: #d6d1bd;
+            --card-bg: #fcf9f1;
+            --text-dark: #1a2e24;
+            --text-medium: #3d5a4c;
+            --text-light: #6b8a7a;
+            --border: #c5bfaa;
+            --shadow: 0 12px 40px rgba(30, 40, 20, 0.15);
+            --shadow-hover: 0 20px 60px rgba(30, 40, 20, 0.22);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 24px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(78, 122, 107, 0.08) 0%, transparent 60%);
+        }
+
+        .app-wrapper { max-width: 1440px; margin: 0 auto; }
+
+        .app-header {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 28px 36px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(78, 122, 107, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .header-title .subtitle {
+            font-size: 14px;
+            color: var(--text-medium);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .header-badge {
+            background: linear-gradient(135deg, #f0b429, #f59e0b);
+            color: #1a2e24;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(240, 180, 41, 0.25);
+        }
+
+        .app-purpose {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: 16px 24px;
+            margin-bottom: 28px;
+            border-left: 6px solid var(--primary);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .app-purpose i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .app-purpose .purpose-text {
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .app-purpose .purpose-text strong {
+            color: var(--primary-dark);
+        }
+
+        .team-banner {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .team-banner .team-label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team-members {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            padding: 6px 16px 6px 12px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(78, 122, 107, 0.2);
+        }
+
+        .team-member .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .team-member .avatar.moli { background: linear-gradient(135deg, #3b82f6, #6366f1); }
+        .team-member .avatar.mariana { background: linear-gradient(135deg, #ec4899, #f472b6); }
+        .team-member .avatar.kiara { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+
+        .team-member .name { font-weight: 500; font-size: 14px; color: var(--text-dark); }
+        .team-member .role { font-size: 11px; color: var(--text-light); font-weight: 400; }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            margin-left: 4px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 22px 24px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-top: 4px;
+        }
+
+        .stat-card .stat-value .unit {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-left: 4px;
+        }
+
+        .stat-card .stat-icon {
+            float: right;
+            font-size: 28px;
+            color: var(--secondary);
+            opacity: 0.7;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 28px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 28px 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .card:hover { box-shadow: var(--shadow-hover); }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i { color: var(--primary); }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-bottom: 6px;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            transition: var(--transition);
+            background: var(--bg);
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(78, 122, 107, 0.15);
+            background: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 14px;
+        }
+
+        @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            box-shadow: 0 4px 16px rgba(78, 122, 107, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(78, 122, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text-medium);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            border-color: var(--primary);
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-danger:hover { background: #fecaca; }
+
+        .btn-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .btn-success:hover { background: #a7f3d0; }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-group .btn { flex: 1; min-width: 100px; }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .list-header .list-actions { display: flex; gap: 8px; }
+        .list-header .list-actions .btn { padding: 8px 16px; font-size: 13px; }
+
+        .residuo-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            gap: 12px;
+        }
+
+        .residuo-item:hover {
+            background: #e4e0cd;
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .residuo-item .tipo {
+            font-weight: 500;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .residuo-item .tipo .tipo-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(78, 122, 107, 0.15);
+            color: var(--primary);
+        }
+
+        .residuo-item .cantidad {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 16px;
+        }
+
+        .residuo-item .tratamiento {
+            font-size: 12px;
+            color: var(--text-medium);
+            background: rgba(78, 122, 107, 0.08);
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .residuo-item .acciones { display: flex; gap: 6px; }
+
+        .residuo-item .acciones button {
+            background: none;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .residuo-item .acciones button:hover {
+            background: rgba(0,0,0,0.05);
+            color: var(--primary);
+        }
+
+        .residuo-item .acciones button.delete:hover {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--border);
+            margin-bottom: 16px;
+        }
+
+        .empty-state p { font-size: 16px; }
+
+        .analytics-section {
+            margin-top: 28px;
+            padding: 24px 30px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .analytics-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+        }
+
+        .analytics-item .label {
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .analytics-item .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-top: 4px;
+        }
+
+        .analytics-item .bar {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .analytics-item .bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+
+        .activity-log {
+            margin-top: 28px;
+            padding: 20px 24px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .activity-log .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .activity-log .log-header h3 {
+            font-size: 16px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-log .log-header h3 i { color: var(--primary); }
+
+        .log-entries {
+            max-height: 80px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .log-entry {
+            font-size: 13px;
+            color: var(--text-medium);
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-entry .time {
+            color: var(--text-light);
+            font-size: 11px;
+            font-weight: 500;
+            min-width: 60px;
+        }
+
+        .log-entry .user {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .log-entry .action { color: var(--text-dark); }
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            color: white;
+            font-weight: 500;
+            box-shadow: var(--shadow-hover);
+            animation: slideIn 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toast.success { background: linear-gradient(135deg, #065f46, #0d7a5a); }
+        .toast.error { background: linear-gradient(135deg, #991b1b, #dc2626); }
+        .toast.info { background: linear-gradient(135deg, #1e40af, #3b82f6); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .app-header { padding: 20px; }
+            .header-title h1 { font-size: 20px; }
+            .header-badge { font-size: 11px; padding: 6px 14px; }
+            .card { padding: 20px; }
+            .dashboard-grid { grid-template-columns: 1fr 1fr; }
+            .stat-card .stat-value { font-size: 24px; }
+            .team-banner { flex-direction: column; align-items: stretch; text-align: center; }
+            .team-members { justify-content: center; }
+            .residuo-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                text-align: center;
+            }
+            .residuo-item .acciones { justify-content: center; }
+            .residuo-item .tratamiento { white-space: normal; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .btn-group .btn { flex: 1 1 100%; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        .ods-banner {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: 16px 24px;
+            margin-top: 28px;
+            border-left: 4px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            box-shadow: var(--shadow);
+        }
+
+        .ods-banner i { font-size: 28px; color: #3b82f6; }
+        .ods-banner .ods-text { font-size: 14px; color: var(--text-dark); }
+        .ods-banner .ods-text strong { color: var(--primary-dark); }
+
+        /* Tooltip para tratamiento */
+        .tratamiento-tooltip {
+            position: relative;
+            cursor: help;
+        }
+        .tratamiento-tooltip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-dark);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            max-width: 300px;
+            white-space: normal;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="header-title">
+                    <h1>EcoSchool Pro</h1>
+                    <div class="subtitle">
+                        <i class="fas fa-robot" style="color: var(--primary);"></i>
+                        Gestión inteligente de residuos · CODE FOR CHANGE
+                    </div>
+                </div>
+            </div>
+            <div class="header-badge">
+                <i class="fas fa-check-circle"></i> MVP · Producción
+            </div>
+        </header>
+
+        <!-- OBJETIVO -->
+        <div class="app-purpose">
+            <i class="fas fa-bullseye"></i>
+            <div class="purpose-text">
+                <strong>🎯 Objetivo:</strong> Promover la gestión sostenible de residuos en la comunidad escolar,
+                facilitando el registro, seguimiento y análisis de los desechos generados para fomentar el reciclaje
+                y la reducción del impacto ambiental.
+            </div>
+        </div>
+
+        <!-- TEAM -->
+        <div class="team-banner">
+            <div class="team-label">
+                <i class="fas fa-users"></i>
+                <span>Equipo desarrollador</span>
+            </div>
+            <div class="team-members">
+                <div class="team-member">
+                    <div class="avatar moli">M</div>
+                    <div>
+                        <span class="name">Moli Molinares</span>
+                        <span class="role">· Lead Developer</span>
+                    </div>
+                    <span class="online-indicator"></span>
+                </div>
+                <div class="team-member">
+                    <div class="avatar mariana">B</div>
+                    <div>
+                        <span class="name">Mariana Buendia</span>
+                        <span class="role">· UI/UX & Tester</span>
+                    </div>
+                    <span class="online-indicator"></span>
+                </div>
+                <div class="team-member">
+                    <div class="avatar kiara">K</div>
+                    <div>
+                        <span class="name">Kiara Guerrero</span>
+                        <span class="role">· Data Analyst</span>
+                    </div>
+                    <span class="online-indicator"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <section class="dashboard-grid">
+            <div class="stat-card">
+                <i class="fas fa-weight-hanging stat-icon"></i>
+                <div class="stat-label">Total residuos</div>
+                <div class="stat-value" id="totalKgDisplay">0.0 <span class="unit">kg</span></div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-boxes stat-icon"></i>
+                <div class="stat-label">Registros</div>
+                <div class="stat-value" id="totalRegistrosDisplay">0</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-recycle stat-icon"></i>
+                <div class="stat-label">Tipos diferentes</div>
+                <div class="stat-value" id="tiposDiferentesDisplay">0</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chart-line stat-icon"></i>
+                <div class="stat-label">Promedio por registro</div>
+                <div class="stat-value" id="promedioDisplay">0.0 <span class="unit">kg</span></div>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- COLUMNA REGISTRO -->
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-plus-circle"></i> Registrar residuo
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoResiduo"><i class="fas fa-tag"></i> Tipo de residuo</label>
+                    <select id="tipoResiduo">
+                        <option value="Papel">📄 Papel</option>
+                        <option value="Plástico">🧴 Plástico</option>
+                        <option value="Vidrio">🍾 Vidrio</option>
+                        <option value="Orgánico">🍂 Orgánico</option>
+                        <option value="Electrónico">💻 Electrónico</option>
+                        <option value="Textil">👕 Textil</option>
+                        <option value="Metal">⚙️ Metal</option>
+                        <option value="Peligroso">☣️ Peligroso</option>
+                        <option value="Otro">📦 Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cantidadResiduo"><i class="fas fa-weight-scale"></i> Cantidad (kg)</label>
+                        <input type="number" id="cantidadResiduo" placeholder="0.0" step="0.1" min="0.1" value="1.0">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: flex-end;">
+                        <button class="btn btn-primary" id="btnAgregar">
+                            <i class="fas fa-plus"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="btnCargarEjemplo">
+                        <i class="fas fa-database"></i> Cargar ejemplo
+                    </button>
+                    <button class="btn btn-danger" id="btnLimpiarTodo">
+                        <i class="fas fa-trash-alt"></i> Limpiar todo
+                    </button>
+                </div>
+            </div>
+
+            <!-- COLUMNA LISTA -->
+            <div class="card">
+                <div class="list-header">
+                    <div class="card-title" style="margin-bottom: 0;">
+                        <i class="fas fa-list"></i> Registros
+                        <span style="font-size: 14px; font-weight: 400; color: var(--text-light); margin-left: 4px;">
+                            (<span id="contadorRegistros">0</span>)
+                        </span>
+                    </div>
+                    <div class="list-actions">
+                        <button class="btn btn-secondary" id="btnExportar" style="padding: 6px 14px; font-size: 12px;">
+                            <i class="fas fa-file-export"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="listaResiduos">
+                    <!-- Renderizado dinámico -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ANÁLISIS -->
+        <div class="analytics-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-chart-pie" style="color: var(--primary); font-size: 20px;"></i>
+                    <span style="font-weight: 600; color: var(--primary-dark);">Distribución por tipo</span>
+                </div>
+                <span style="font-size: 13px; color: var(--text-light);">
+                    <i class="fas fa-sync-alt" id="analyticsRefresh" style="cursor: pointer;"></i>
+                    Actualizado en tiempo real
+                </span>
+            </div>
+            <div class="analytics-grid" id="analyticsContainer">
+                <!-- Renderizado dinámico -->
+            </div>
+        </div>
+
+        <!-- ACTIVITY LOG -->
+        <div class="activity-log">
+            <div class="log-header">
+                <h3><i class="fas fa-clock"></i> Actividad reciente</h3>
+                <span style="font-size: 12px; color: var(--text-light);">últimas acciones</span>
+            </div>
+            <div class="log-entries" id="logEntries">
+                <!-- Renderizado dinámico -->
+            </div>
+        </div>
+
+        <!-- ODS BANNER -->
+        <div class="ods-banner">
+            <i class="fas fa-globe-americas"></i>
+            <div class="ods-text">
+                <strong>🌱 ODS 12 · Producción y Consumo Responsables</strong>
+                <span style="margin-left: 12px;">
+                    Esta aplicación promueve la gestión sostenible de residuos en la comunidad escolar,
+                    fomentando la conciencia ambiental y el reciclaje.
+                </span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="margin-top: 28px; text-align: center; color: var(--text-light); font-size: 13px; padding: 16px 0;">
+            <i class="fas fa-code"></i> Desarrollado por <strong>Moli Molinares</strong>, <strong>Mariana Buendia</strong> & <strong>Kiara Guerrero</strong> ·
+            <i class="fas fa-heart" style="color: #ef4444;"></i> para el ODS 12 ·
+            <span id="fechaActual"></span>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // CONFIGURACIÓN - Tratamiento específico para cada residuo
+            // ============================================================
+            const TRATAMIENTOS = {
+                'Papel': '♻️ Reciclaje: Llevar a centro de acopio de papel y cartón. No mezclar con alimentos.',
+                'Plástico': '♻️ Reciclaje: Separar por tipo (PET, PEAD, etc.). Lavar y compactar antes de reciclar.',
+                'Vidrio': '♻️ Reciclaje: Depositar en contenedor verde. No romper, reciclar por color.',
+                'Orgánico': '🌱 Compostaje: Transformar en abono orgánico. No mezclar con plásticos.',
+                'Electrónico': '⚠️ Disposición especial: Llevar a puntos de recolección de RAEE. No tirar a la basura común.',
+                'Textil': '♻️ Reutilización: Donar o llevar a contenedores de ropa. Fibra puede reciclarse.',
+                'Metal': '♻️ Reciclaje: Separar por tipo (aluminio, acero). Compactar para facilitar transporte.',
+                'Peligroso': '☣️ Manejo especial: Contactar con autoridad ambiental. No manipular sin protección.',
+                'Otro': '📦 Clasificar según material. Consultar guía local de residuos.'
+            };
+
+            const TIPO_ICONOS = {
+                'Papel': 'fa-file-alt',
+                'Plástico': 'fa-bottle-water',
+                'Vidrio': 'fa-wine-bottle',
+                'Orgánico': 'fa-seedling',
+                'Electrónico': 'fa-laptop',
+                'Textil': 'fa-tshirt',
+                'Metal': 'fa-gear',
+                'Peligroso': 'fa-skull',
+                'Otro': 'fa-box'
+            };
+
+            const TIPO_COLORS = {
+                'Papel': '#3b82f6',
+                'Plástico': '#f59e0b',
+                'Vidrio': '#10b981',
+                'Orgánico': '#8b5cf6',
+                'Electrónico': '#ef4444',
+                'Textil': '#ec4899',
+                'Metal': '#6b7280',
+                'Peligroso': '#dc2626',
+                'Otro': '#8b8b8b'
+            };
+
+            const STORAGE_KEY = 'ecoschool_residuos';
+            const LOG_KEY = 'ecoschool_log';
+            const TEAM_MEMBERS = ['Moli Molinares', 'Mariana Buendia', 'Kiara Guerrero'];
+
+            // ============================================================
+            // ESTADO
+            // ============================================================
+            let residuos = [];
+            let activityLog = [];
+
+            // ============================================================
+            // DOM REFS
+            // ============================================================
+            const $ = id => document.getElementById(id);
+            const selectTipo = $('tipoResiduo');
+            const inputCantidad = $('cantidadResiduo');
+            const btnAgregar = $('btnAgregar');
+            const listaContainer = $('listaResiduos');
+            const totalKgDisplay = $('totalKgDisplay');
+            const totalRegistrosDisplay = $('totalRegistrosDisplay');
+            const tiposDiferentesDisplay = $('tiposDiferentesDisplay');
+            const promedioDisplay = $('promedioDisplay');
+            const contadorRegistros = $('contadorRegistros');
+            const btnEjemplo = $('btnCargarEjemplo');
+            const btnLimpiar = $('btnLimpiarTodo');
+            const btnExportar = $('btnExportar');
+            const analyticsContainer = $('analyticsContainer');
+            const logEntries = $('logEntries');
+            const toastContainer = $('toastContainer');
+            const fechaActual = $('fechaActual');
+
+            // ============================================================
+            // TOAST SYSTEM
+            // ============================================================
+            function showToast(message, type = 'success', duration = 3000) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+                toastContainer.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 400);
+                }, duration);
+            }
+
+            // ============================================================
+            // LOG SYSTEM
+            // ============================================================
+            function addLogEntry(action, user = 'Usuario') {
+                const now = new Date();
+                const time = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                activityLog.unshift({ time, user, action });
+                if (activityLog.length > 50) activityLog.pop();
+                saveLog();
+                renderLog();
+            }
+
+            function renderLog() {
+                if (activityLog.length === 0) {
+                    logEntries.innerHTML = `<div class="log-entry" style="color: var(--text-light);">No hay actividad reciente</div>`;
+                    return;
+                }
+                logEntries.innerHTML = activityLog.slice(0, 10).map(entry =>
+                    `<div class="log-entry">
+                        <span class="time">${entry.time}</span>
+                        <span class="user">${entry.user}</span>
+                        <span class="action">${entry.action}</span>
+                    </div>`
+                ).join('');
+            }
+
+            // ============================================================
+            // PERSISTENCIA
+            // ============================================================
+            function loadData() {
+                try {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    residuos = stored ? JSON.parse(stored) : [];
+                    const storedLog = localStorage.getItem(LOG_KEY);
+                    activityLog = storedLog ? JSON.parse(storedLog) : [];
+                } catch (e) {
+                    residuos = [];
+                    activityLog = [];
+                }
+            }
+
+            function saveData() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(residuos));
+            }
+
+            function saveLog() {
+                localStorage.setItem(LOG_KEY, JSON.stringify(activityLog));
+            }
+
+            // ============================================================
+            // FUNCIONES DE NEGOCIO - CRUD CORREGIDAS
+            // ============================================================
+            function agregarResiduo(tipo, cantidad) {
+                // Validación robusta
+                if (!tipo || tipo.trim() === '') {
+                    showToast('❌ Selecciona un tipo de residuo', 'error');
+                    return false;
+                }
+
+                if (isNaN(cantidad) || cantidad <= 0) {
+                    showToast('❌ La cantidad debe ser mayor a 0', 'error');
+                    return false;
+                }
+
+                const nuevo = {
+                    id: Date.now() + Math.random() * 1000,
+                    tipo: tipo.trim(),
+                    cantidad: parseFloat(cantidad.toFixed(2)),
+                    fecha: new Date().toISOString()
+                };
+
+                residuos.push(nuevo);
+                saveData();
+                renderAll();
+
+                const user = TEAM_MEMBERS[Math.floor(Math.random() * TEAM_MEMBERS.length)];
+                const tratamiento = TRATAMIENTOS[tipo] || 'Consultar guía local';
+                addLogEntry(`Agregó ${cantidad.toFixed(2)} kg de ${tipo} (${tratamiento})`, user);
+                showToast(`✅ ${cantidad.toFixed(2)} kg de ${tipo} registrado correctamente`, 'success');
+                return true;
+            }
+
+            function eliminarResiduo(id) {
+                const idx = residuos.findIndex(r => r.id === id);
+                if (idx === -1) return;
+                const eliminado = residuos[idx];
+                residuos.splice(idx, 1);
+                saveData();
+                renderAll();
+                const user = TEAM_MEMBERS[Math.floor(Math.random() * TEAM_MEMBERS.length)];
+                addLogEntry(`Eliminó ${eliminado.cantidad.toFixed(2)} kg de ${eliminado.tipo}`, user);
+                showToast(`🗑️ Registro de ${eliminado.tipo} eliminado`, 'info');
+            }
+
+            function limpiarTodo() {
+                if (residuos.length === 0) {
+                    showToast('No hay registros para limpiar', 'info');
+                    return;
+                }
+                const total = residuos.reduce((acc, r) => acc + r.cantidad, 0);
+                const count = residuos.length;
+                residuos = [];
+                saveData();
+                renderAll();
+                const user = TEAM_MEMBERS[Math.floor(Math.random() * TEAM_MEMBERS.length)];
+                addLogEntry(`Limpió todos los registros (${count} items, ${total.toFixed(2)} kg)`, user);
+                showToast(`🧹 ${count} registros eliminados (${total.toFixed(2)} kg)`, 'info');
+            }
+
+            function cargarEjemplo() {
+                const ejemplos = [
+                    { tipo: 'Papel', cantidad: 2.5 },
+                    { tipo: 'Plástico', cantidad: 1.8 },
+                    { tipo: 'Vidrio', cantidad: 0.9 },
+                    { tipo: 'Orgánico', cantidad: 3.2 },
+                    { tipo: 'Electrónico', cantidad: 0.5 },
+                    { tipo: 'Textil', cantidad: 1.2 },
+                    { tipo: 'Metal', cantidad: 0.7 },
+                    { tipo: 'Peligroso', cantidad: 0.3 },
+                    { tipo: 'Otro', cantidad: 0.4 }
+                ];
+                ejemplos.forEach(e => {
+                    residuos.push({
+                        id: Date.now() + Math.random() * 10000 + Math.random() * 1000,
+                        tipo: e.tipo,
+                        cantidad: e.cantidad,
+                        fecha: new Date().toISOString()
+                    });
+                });
+                saveData();
+                renderAll();
+                const user = TEAM_MEMBERS[Math.floor(Math.random() * TEAM_MEMBERS.length)];
+                addLogEntry(`Cargó datos de ejemplo (${ejemplos.length} registros)`, user);
+                showToast(`📊 ${ejemplos.length} registros de ejemplo cargados`, 'success');
+            }
+
+            function exportarCSV() {
+                if (residuos.length === 0) {
+                    showToast('No hay datos para exportar', 'error');
+                    return;
+                }
+                let csv = 'Tipo,Cantidad (kg),Tratamiento,Fecha\n';
+                residuos.forEach(r => {
+                    const tratamiento = TRATAMIENTOS[r.tipo] || 'Consultar guía local';
+                    csv += `${r.tipo},${r.cantidad.toFixed(2)},"${tratamiento}",${new Date(r.fecha).toLocaleDateString()}\n`;
+                });
+                const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `ecoschool_residuos_${new Date().toISOString().slice(0,10)}.csv`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+                const user = TEAM_MEMBERS[Math.floor(Math.random() * TEAM_MEMBERS.length)];
+                addLogEntry(`Exportó datos (${residuos.length} registros)`, user);
+                showToast(`📥 ${residuos.length} registros exportados`, 'success');
+            }
+
+            // ============================================================
+            // RENDER - UI
+            // ============================================================
+            function renderLista() {
+                if (residuos.length === 0) {
+                    listaContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <p>No hay residuos registrados. ¡Comienza agregando uno!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                listaContainer.innerHTML = residuos.map(r => {
+                    const tratamiento = TRATAMIENTOS[r.tipo] || 'Consultar guía local';
+                    const icon = TIPO_ICONOS[r.tipo] || 'fa-box';
+                    const color = TIPO_COLORS[r.tipo] || '#6b7280';
+                    return `
+                        <div class="residuo-item" data-id="${r.id}">
+                            <div class="tipo">
+                                <i class="fas ${icon}" style="color: ${color};"></i>
+                                ${r.tipo}
+                                <span class="tipo-badge">${r.tipo}</span>
+                            </div>
+                            <div class="cantidad">${r.cantidad.toFixed(2)} kg</div>
+                            <div class="tratamiento tratamiento-tooltip" data-tip="${tratamiento}">
+                                <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+                                ${tratamiento.length > 30 ? tratamiento.substring(0, 30) + '...' : tratamiento}
+                            </div>
+                            <div class="acciones">
+                                <button class="delete" data-id="${r.id}" title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Eventos para eliminar
+                document.querySelectorAll('.residuo-item .delete').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseFloat(btn.dataset.id);
+                        eliminarResiduo(id);
+                    });
+                });
+            }
+
+            function renderDashboard() {
+                const totalKg = residuos.reduce((acc, r) => acc + r.cantidad, 0);
+                const totalReg = residuos.length;
+                const tiposSet = new Set(residuos.map(r => r.tipo));
+                const promedio = totalReg > 0 ? totalKg / totalReg : 0;
+
+                totalKgDisplay.innerHTML = `${totalKg.toFixed(1)} <span class="unit">kg</span>`;
+                totalRegistrosDisplay.textContent = totalReg;
+                tiposDiferentesDisplay.textContent = tiposSet.size;
+                promedioDisplay.innerHTML = `${promedio.toFixed(1)} <span class="unit">kg</span>`;
+                contadorRegistros.textContent = totalReg;
+            }
+
+            function renderAnalytics() {
+                const tipos = {};
+                residuos.forEach(r => {
+                    tipos[r.tipo] = (tipos[r.tipo] || 0) + r.cantidad;
+                });
+
+                const total = Object.values(tipos).reduce((a, b) => a + b, 0);
+
+                if (Object.keys(tipos).length === 0) {
+                    analyticsContainer.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; color: var(--text-light); padding: 20px;">
+                            <i class="fas fa-chart-simple" style="font-size: 32px; margin-bottom: 8px; display: block;"></i>
+                            No hay datos para mostrar
+                        </div>
+                    `;
+                    return;
+                }
+
+                analyticsContainer.innerHTML = Object.entries(tipos).map(([tipo, cantidad]) => {
+                    const percentage = total > 0 ? (cantidad / total) * 100 : 0;
+                    const color = TIPO_COLORS[tipo] || '#6b7280';
+                    const icon = TIPO_ICONOS[tipo] || 'fa-box';
+                    return `
+                        <div class="analytics-item">
+                            <span class="label"><i class="fas ${icon}"></i> ${tipo}</span>
+                            <span class="value">${cantidad.toFixed(1)} kg</span>
+                            <div class="bar">
+                                <div class="fill" style="width: ${percentage}%; background: ${color};"></div>
+                            </div>
+                            <span style="font-size: 11px; color: var(--text-light); margin-top: 4px;">${percentage.toFixed(1)}%</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function renderAll() {
+                renderLista();
+                renderDashboard();
+                renderAnalytics();
+                renderLog();
+            }
+
+            // ============================================================
+            // INICIALIZACIÓN
+            // ============================================================
+            function init() {
+                // Fecha actual
+                const now = new Date();
+                fechaActual.textContent = now.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Cargar datos
+                loadData();
+                renderAll();
+
+                // ============================================================
+                // EVENTOS - TODOS FUNCIONALES
+                // ============================================================
+
+                // Agregar residuo (clic)
+                btnAgregar.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tipo = selectTipo.value;
+                    const cantidad = parseFloat(inputCantidad.value);
+                    if (isNaN(cantidad) || cantidad <= 0) {
+                        showToast('❌ Ingresa una cantidad válida mayor a 0', 'error');
+                        return;
+                    }
+                    const success = agregarResiduo(tipo, cantidad);
+                    if (success) {
+                        inputCantidad.value = '1.0';
+                    }
+                });
+
+                // Agregar con Enter
+                inputCantidad.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        btnAgregar.click();
+                    }
+                });
+
+                // Cargar ejemplo
+                btnEjemplo.addEventListener('click', cargarEjemplo);
+
+                // Limpiar todo
+                btnLimpiar.addEventListener('click', limpiarTodo);
+
+                // Exportar CSV
+                btnExportar.addEventListener('click', exportarCSV);
+
+                // Actualizar analytics
+                document.getElementById('analyticsRefresh').addEventListener('click', function() {
+                    renderAnalytics();
+                    showToast('📊 Análisis actualizado', 'info', 1500);
+                });
+
+                // Mensaje de bienvenida
+                setTimeout(() => {
+                    showToast('🌿 Bienvenido a EcoSchool Pro', 'success', 2500);
+                }, 400);
+
+                // Log inicial
+                if (activityLog.length === 0) {
+                    addLogEntry('Inició sesión', 'Sistema');
+                }
+
+                console.log('✅ EcoSchool Pro inicializado correctamente');
+                console.log(`📦 ${residuos.length} registros cargados`);
+                console.log(`♻️ Tipos disponibles: ${Object.keys(TRATAMIENTOS).join(', ')}`);
+            }
+
+            // Ejecutar
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+</body>
+</html>

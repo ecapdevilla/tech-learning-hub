@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoHuella · Objetivo General · Code for Change</title>
+    <style>
+        /* ===== RESET Y BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: radial-gradient(circle at 20% 20%, #0f0620, #06020e);
+            background-attachment: fixed;
+        }
+
+        /* ===== TARJETA PRINCIPAL ===== */
+        .card {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(30, 12, 50, 0.65);
+            backdrop-filter: blur(18px) saturate(200%);
+            -webkit-backdrop-filter: blur(18px) saturate(200%);
+            border-radius: 3.5rem 3.5rem 2.8rem 2.8rem;
+            padding: 2.8rem 3rem 3rem;
+            border: 1px solid rgba(180, 80, 255, 0.2);
+            box-shadow: 0 40px 80px -20px rgba(120, 0, 255, 0.5), 0 0 0 1px rgba(200, 120, 255, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(150, 50, 255, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .card * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem 1.5rem;
+            border-bottom: 2px solid rgba(180, 80, 255, 0.25);
+            padding-bottom: 0.9rem;
+            margin-bottom: 1.8rem;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #e8d0ff;
+            text-shadow: 0 0 20px rgba(180, 80, 255, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .header h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            background: rgba(130, 30, 200, 0.4);
+            padding: 0.1rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(180, 100, 255, 0.2);
+            color: #c7afff;
+            letter-spacing: 0.3px;
+        }
+        .badge-ods {
+            background: rgba(80, 30, 140, 0.4);
+            border: 1px solid rgba(180, 100, 255, 0.2);
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            color: #d4bcff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+        .badge-ods span {
+            color: #b68aff;
+        }
+
+        /* ===== EQUIPO ===== */
+        .team-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem 1.4rem;
+            background: rgba(50, 18, 90, 0.3);
+            backdrop-filter: blur(6px);
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            margin-bottom: 1.8rem;
+            border: 1px solid rgba(170, 100, 255, 0.15);
+            font-size: 0.9rem;
+            color: #c9b3f0;
+        }
+        .team-bar .label {
+            opacity: 0.7;
+            font-weight: 300;
+        }
+        .team-bar .name {
+            color: #f0e3ff;
+            font-weight: 500;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            background: rgba(130, 50, 200, 0.2);
+            border: 1px solid rgba(180, 100, 255, 0.1);
+        }
+
+        /* ===== CONTENIDO ===== */
+        .content {
+            padding: 0.5rem 0;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #e8d0ff;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.01em;
+            border-left: 4px solid #7a3bcb;
+            padding-left: 1rem;
+        }
+
+        .objetivo-box {
+            background: rgba(20, 6, 40, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 2rem 2.2rem;
+            border: 1px solid rgba(170, 90, 255, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(200, 120, 255, 0.05) inset;
+            margin-bottom: 1.8rem;
+        }
+
+        .objetivo-text {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            color: #d4bcff;
+            font-weight: 300;
+            text-align: justify;
+        }
+
+        .objetivo-text strong {
+            color: #f0e3ff;
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: #b27aff;
+            font-weight: 500;
+        }
+
+        /* ===== DESGLOSE ===== */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin: 1.2rem 0;
+        }
+        @media (max-width: 700px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .item-card {
+            background: rgba(20, 6, 40, 0.3);
+            backdrop-filter: blur(6px);
+            border-radius: 1.6rem;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(170, 90, 255, 0.08);
+        }
+        .item-card .num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #b27aff;
+            opacity: 0.6;
+            margin-right: 0.5rem;
+        }
+        .item-card h3 {
+            color: #e8d0ff;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline;
+        }
+        .item-card p {
+            color: #b69bdf;
+            font-size: 0.9rem;
+            margin-top: 0.4rem;
+            line-height: 1.5;
+            padding-left: 0.2rem;
+        }
+
+        /* ===== TABLA ===== */
+        .table-wrap {
+            background: rgba(20, 6, 40, 0.3);
+            border-radius: 1.6rem;
+            overflow: hidden;
+            border: 1px solid rgba(170, 90, 255, 0.08);
+            margin: 1rem 0;
+        }
+        .table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-wrap th {
+            background: rgba(40, 12, 80, 0.4);
+            color: #c7afff;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.8rem 1.2rem;
+            text-align: left;
+        }
+        .table-wrap td {
+            padding: 0.7rem 1.2rem;
+            color: #d4bcff;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(170, 90, 255, 0.05);
+        }
+        .table-wrap tr:last-child td {
+            border-bottom: none;
+        }
+        .table-wrap td strong {
+            color: #f0e3ff;
+        }
+
+        /* ===== MÉTRICAS ===== */
+        .metricas-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 600px) {
+            .metricas-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .metrica-item {
+            background: rgba(10, 2, 20, 0.3);
+            padding: 0.8rem 1rem;
+            border-radius: 1.2rem;
+            text-align: center;
+            border: 1px solid rgba(170, 90, 255, 0.06);
+        }
+        .metrica-item .num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #b27aff;
+            display: block;
+        }
+        .metrica-item .label {
+            font-size: 0.7rem;
+            color: #8f78b5;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== EQUIPO ===== */
+        .equipo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin: 0.8rem 0;
+        }
+        .equipo-item {
+            background: rgba(20, 6, 40, 0.3);
+            padding: 0.6rem 1.4rem;
+            border-radius: 60px;
+            border: 1px solid rgba(170, 90, 255, 0.08);
+            color: #d4bcff;
+            font-size: 0.9rem;
+        }
+        .equipo-item strong {
+            color: #f0e3ff;
+        }
+
+        /* ===== BOTÓN DESCARGAR ===== */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.8rem;
+            justify-content: center;
+        }
+        .btn {
+            background: rgba(40, 12, 70, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(170, 100, 255, 0.2);
+            padding: 0.8rem 2.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #ddccff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: #7a3bcb;
+            border: 1px solid #b27aff;
+            color: white;
+            box-shadow: 0 6px 20px rgba(120, 40, 200, 0.4);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary:hover {
+            background: #8f4ee0;
+            transform: scale(1.02);
+            border-color: #c79aff;
+            box-shadow: 0 8px 30px rgba(140, 60, 220, 0.6);
+        }
+        .btn-secondary {
+            background: rgba(60, 20, 100, 0.3);
+        }
+        .btn-secondary:hover {
+            background: rgba(80, 30, 130, 0.5);
+            border-color: #b07aff;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #6a5080;
+            text-align: center;
+            border-top: 1px solid rgba(150, 80, 210, 0.08);
+            padding-top: 1.2rem;
+            letter-spacing: 0.4px;
+        }
+        .footer strong {
+            color: #a88ac0;
+            font-weight: 400;
+        }
+
+        .ods-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 1.2rem;
+            background: rgba(50, 18, 90, 0.25);
+            backdrop-filter: blur(6px);
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #c9b3f0;
+            border: 1px solid rgba(170, 100, 255, 0.08);
+            margin-top: 1.6rem;
+        }
+        .ods-bar span {
+            background: rgba(120, 40, 200, 0.2);
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            border: 1px solid rgba(180, 100, 255, 0.1);
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7a3bcb;
+            border-radius: 10px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .card {
+                padding: 1.5rem 1.2rem;
+                border-radius: 2rem;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .header h1 small {
+                font-size: 0.7rem;
+                padding: 0.1rem 0.8rem;
+            }
+            .objetivo-text {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+            .objetivo-box {
+                padding: 1.2rem 1.2rem;
+            }
+            .table-wrap th,
+            .table-wrap td {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>
+                ⚡ EcoHuella
+                <small>v3.0 · Objetivo</small>
+            </h1>
+            <span class="badge-ods">🌍 <span>ODS 9</span> · <span>ODS 11</span> · <span>ODS 13</span></span>
+        </div>
+
+        <!-- EQUIPO -->
+        <div class="team-bar">
+            <span class="label">🧑‍💻 equipo desarrollo</span>
+            <span class="name">Loren Linero</span>
+            <span class="name">Maria Cuello</span>
+            <span class="name">Gabriela Cuentas</span>
+            <span style="opacity:0.4; margin-left:0.2rem;">|</span>
+            <span style="opacity:0.6; font-size:0.8rem;">Code for Change · 2026</span>
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="content">
+
+            <!-- OBJETIVO GENERAL -->
+            <h2 class="section-title">🎯 Objetivo General</h2>
+
+            <div class="objetivo-box">
+                <p class="objetivo-text">
+                    <strong>Desarrollar una herramienta digital interactiva de cálculo de huella de carbono personalizada</strong>
+                    que permita a los usuarios <span class="highlight">medir, visualizar y comprender</span> su impacto ambiental diario,
+                    promoviendo la adopción de hábitos sostenibles mediante <span class="highlight">recomendaciones personalizadas</span>
+                    y datos comparativos alineados con los <strong>Objetivos de Desarrollo Sostenible (ODS) 9, 11 y 13</strong>.
+                </p>
+            </div>
+
+            <!-- DESGLOSE -->
+            <div style="margin: 1.5rem 0 0.8rem;">
+                <h3 style="color:#b69bdf; font-weight:400; font-size:0.9rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:0.6rem;">└── Desglose del objetivo</h3>
+            </div>
+
+            <div class="grid-2col">
+                <div class="item-card">
+                    <span class="num">01</span><h3>Medición Cuantitativa</h3>
+                    <p>Calcular la huella de carbono diaria y anual en kg CO₂e, descomponiendo el impacto por categorías (transporte, energía, dieta, vuelos, consumo) y traduciéndolo a métricas comprensibles como árboles necesarios o consumo de agua.</p>
+                </div>
+                <div class="item-card">
+                    <span class="num">02</span><h3>Visualización Interactiva</h3>
+                    <p>Interfaz futurista y atractiva con gráficos comparativos frente a promedios locales, globales y metas ODS 2030, mostrando estadísticas detalladas en tiempo real.</p>
+                </div>
+                <div class="item-card">
+                    <span class="num">03</span><h3>Educación y Concientización</h3>
+                    <p>Consejos personalizados según el perfil del usuario, recomendaciones específicas para reducir la huella, e integración de los ODS como marco de referencia global.</p>
+                </div>
+                <div class="item-card">
+                    <span class="num">04</span><h3>Persistencia y Seguimiento</h3>
+                    <p>Historial de cálculos almacenado localmente, capacidad de exportar datos y seguimiento de la evolución del usuario en el tiempo.</p>
+                </div>
+            </div>
+
+            <!-- ALCANCE -->
+            <h2 class="section-title" style="margin-top:1.2rem;">📋 Alcance del Proyecto</h2>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Aspecto</th><th>Detalle</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Plataforma</strong></td><td>Web (HTML/CSS/JS)</td></tr>
+                        <tr><td><strong>Público objetivo</strong></td><td>Público general interesado en sostenibilidad</td></tr>
+                        <tr><td><strong>Modelo de cálculo</strong></td><td>Basado en factores promedio validados por estándares internacionales</td></tr>
+                        <tr><td><strong>Almacenamiento</strong></td><td>LocalStorage (navegador)</td></tr>
+                        <tr><td><strong>Idioma</strong></td><td>Español</td></tr>
+                        <tr><td><strong>ODS vinculados</strong></td><td>ODS 9 (Innovación) · ODS 11 (Ciudades Sostenibles) · ODS 13 (Acción Climática)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- MÉTRICAS DE ÉXITO -->
+            <h2 class="section-title" style="margin-top:1.2rem;">📊 Métricas de Éxito</h2>
+
+            <div class="metricas-grid">
+                <div class="metrica-item">
+                    <span class="num">&lt;15%</span>
+                    <span class="label">Precisión del cálculo</span>
+                </div>
+                <div class="metrica-item">
+                    <span class="num">&lt;3 min</span>
+                    <span class="label">Tiempo de interacción</span>
+                </div>
+                <div class="metrica-item">
+                    <span class="num">Alta</span>
+                    <span class="label">Retención de usuarios</span>
+                </div>
+                <div class="metrica-item">
+                    <span class="num">+</span>
+                    <span class="label">Percepción de aprendizaje</span>
+                </div>
+            </div>
+
+            <!-- EQUIPO DE DESARROLLO -->
+            <h2 class="section-title" style="margin-top:1.2rem;">🧑‍💻 Equipo de Desarrollo</h2>
+
+            <div class="equipo-grid">
+                <div class="equipo-item"><strong>Loren Linero</strong> · Desarrollador Frontend</div>
+                <div class="equipo-item"><strong>Maria Cuello</strong> · Diseñadora UI/UX</div>
+                <div class="equipo-item"><strong>Gabriela Cuentas</strong> · Analista de Datos</div>
+                <div class="equipo-item" style="border-color:#7a3bcb; background:rgba(122,59,203,0.15);">
+                    <strong style="color:#b27aff;">Code for Change</strong> · Tecnología 10° · 2026
+                </div>
+            </div>
+
+            <!-- RESUMEN EJECUTIVO -->
+            <div style="margin: 1.8rem 0 0.4rem; background:rgba(122,59,203,0.08); border-radius:1.6rem; padding:1.2rem 1.8rem; border-left:4px solid #7a3bcb;">
+                <p style="color:#c9b3f0; font-size:0.95rem; line-height:1.6;">
+                    <strong style="color:#e8d0ff;">📌 Resumen Ejecutivo</strong><br>
+                    <span style="color:#b69bdf;">EcoHuella</span> es una herramienta web interactiva que calcula la huella de carbono personalizada de los usuarios a través de 5 categorías de consumo (transporte, energía, dieta, vuelos, bienes), ofreciendo visualizaciones comparativas con promedios globales y recomendaciones personalizadas para reducir el impacto ambiental, todo bajo el marco de los <strong style="color:#d4bcff;">ODS 9, 11 y 13</strong>.
+                </p>
+            </div>
+
+            <!-- BOTONES DE DESCARGA -->
+            <div class="btn-group">
+                <button class="btn btn-primary" id="downloadHTMLBtn">
+                    ⬇️ Descargar documento (HTML)
+                </button>
+                <button class="btn btn-secondary" id="downloadMDBtn">
+                    ⬇️ Descargar en Markdown
+                </button>
+                <button class="btn btn-secondary" id="copyBtn">
+                    📋 Copiar al portapapeles
+                </button>
+            </div>
+        </div>
+
+        <!-- ODS + FOOTER -->
+        <div class="ods-bar">
+            🌱 <span>ODS 9</span> innovación · <span>ODS 11</span> comunidades sostenibles · <span>ODS 13</span> acción climática
+            <span style="background:#7a3bcb; border-color:#b27aff;">⚡ +</span> tecnología para el cambio
+        </div>
+        <div class="footer">
+            <strong>Loren Linero · Maria Cuello · Gabriela Cuentas</strong> · proyecto CODE FOR CHANGE · Tecnología 10° · 2026
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ===== CONTENIDO DEL DOCUMENTO =====
+            const contenidoHTML = document.querySelector('.card').cloneNode(true);
+            // Eliminar botones del clon
+            const btnGroup = contenidoHTML.querySelector('.btn-group');
+            if (btnGroup) btnGroup.remove();
+
+            const contenidoTexto = contenidoHTML.textContent;
+
+            const markdownContent = `# EcoHuella · Objetivo General
+
+## 🎯 Objetivo General
+
+**Desarrollar una herramienta digital interactiva de cálculo de huella de carbono personalizada** que permita a los usuarios medir, visualizar y comprender su impacto ambiental diario, promoviendo la adopción de hábitos sostenibles mediante recomendaciones personalizadas y datos comparativos alineados con los Objetivos de Desarrollo Sostenible (ODS) 9, 11 y 13.
+
+---
+
+### Desglose del Objetivo
+
+**01 | Medición Cuantitativa**
+Calcular la huella de carbono diaria y anual en kg CO₂e, descomponiendo el impacto por categorías (transporte, energía, dieta, vuelos, consumo) y traduciéndolo a métricas comprensibles como árboles necesarios o consumo de agua.
+
+**02 | Visualización Interactiva**
+Interfaz futurista y atractiva con gráficos comparativos frente a promedios locales, globales y metas ODS 2030, mostrando estadísticas detalladas en tiempo real.
+
+**03 | Educación y Concientización**
+Consejos personalizados según el perfil del usuario, recomendaciones específicas para reducir la huella, e integración de los ODS como marco de referencia global.
+
+**04 | Persistencia y Seguimiento**
+Historial de cálculos almacenado localmente, capacidad de exportar datos y seguimiento de la evolución del usuario en el tiempo.
+
+---
+
+### 📋 Alcance del Proyecto
+
+| Aspecto | Detalle |
+|---------|---------|
+| Plataforma | Web (HTML/CSS/JS) |
+| Público objetivo | Público general interesado en sostenibilidad |
+| Modelo de cálculo | Basado en factores promedio validados por estándares internacionales |
+| Almacenamiento | LocalStorage (navegador) |
+| Idioma | Español |
+| ODS vinculados | ODS 9 (Innovación) · ODS 11 (Ciudades Sostenibles) · ODS 13 (Acción Climática) |
+
+---
+
+### 📊 Métricas de Éxito
+
+- **Precisión del cálculo:** margen de error < 15%
+- **Tiempo de interacción:** < 3 minutos para primer cálculo
+- **Retención:** usuarios que regresan a consultar el historial
+- **Educación:** percepción de aprendizaje sobre huella de carbono
+
+---
+
+### 🧑‍💻 Equipo de Desarrollo
+
+| Rol | Nombre |
+|-----|--------|
+| Desarrollador Frontend | Loren Linero |
+| Diseñadora UI/UX | Maria Cuello |
+| Analista de Datos | Gabriela Cuentas |
+
+**Proyecto:** Code for Change · Tecnología 10° · 2026
+
+---
+
+### 📌 Resumen Ejecutivo
+
+**EcoHuella** es una herramienta web interactiva que calcula la huella de carbono personalizada de los usuarios a través de 5 categorías de consumo (transporte, energía, dieta, vuelos, bienes), ofreciendo visualizaciones comparativas con promedios globales y recomendaciones personalizadas para reducir el impacto ambiental, todo bajo el marco de los ODS 9, 11 y 13.
+
+---
+
+*Documento preparado para la planificación y ejecución del proyecto EcoHuella v3.0*
+`;
+
+            // ===== DESCARGAR HTML =====
+            document.getElementById('downloadHTMLBtn').addEventListener('click', function() {
+                const html = `<!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>EcoHuella · Objetivo General</title>
+            <style>
+                * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter','Segoe UI',system-ui,sans-serif; }
+                body { min-height:100vh; display:flex; justify-content:center; align-items:center; padding:2rem; background:radial-gradient(circle at 20% 20%, #0f0620, #06020e); background-attachment:fixed; }
+                .card { max-width:1000px; width:100%; background:rgba(30,12,50,0.65); backdrop-filter:blur(18px) saturate(200%); -webkit-backdrop-filter:blur(18px) saturate(200%); border-radius:3.5rem 3.5rem 2.8rem 2.8rem; padding:2.8rem 3rem 3rem; border:1px solid rgba(180,80,255,0.2); box-shadow:0 40px 80px -20px rgba(120,0,255,0.5),0 0 0 1px rgba(200,120,255,0.1) inset; position:relative; overflow:hidden; }
+                .card::before { content:''; position:absolute; top:-50%; left:-30%; width:200%; height:200%; background:radial-gradient(circle at 30% 40%, rgba(150,50,255,0.08), transparent 70%); pointer-events:none; z-index:0; }
+                .card * { position:relative; z-index:1; }
+                .header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:0.8rem 1.5rem; border-bottom:2px solid rgba(180,80,255,0.25); padding-bottom:0.9rem; margin-bottom:1.8rem; }
+                .header h1 { font-size:2.8rem; font-weight:700; letter-spacing:-0.03em; color:#e8d0ff; text-shadow:0 0 20px rgba(180,80,255,0.4); display:flex; align-items:center; gap:0.4rem; }
+                .header h1 small { font-size:1rem; font-weight:400; background:rgba(130,30,200,0.4); padding:0.1rem 1.2rem; border-radius:60px; border:1px solid rgba(180,100,255,0.2); color:#c7afff; letter-spacing:0.3px; }
+                .badge-ods { background:rgba(80,30,140,0.4); border:1px solid rgba(180,100,255,0.2); padding:0.3rem 1.2rem; border-radius:60px; color:#d4bcff; font-size:0.75rem; font-weight:600; letter-spacing:0.5px; backdrop-filter:blur(4px); }
+                .badge-ods span { color:#b68aff; }
+                .team-bar { display:flex; flex-wrap:wrap; align-items:center; gap:0.6rem 1.4rem; background:rgba(50,18,90,0.3); backdrop-filter:blur(6px); padding:0.6rem 1.8rem; border-radius:60px; margin-bottom:1.8rem; border:1px solid rgba(170,100,255,0.15); font-size:0.9rem; color:#c9b3f0; }
+                .team-bar .label { opacity:0.7; font-weight:300; }
+                .team-bar .name { color:#f0e3ff; font-weight:500; padding:0.1rem 0.8rem; border-radius:30px; background:rgba(130,50,200,0.2); border:1px solid rgba(180,100,255,0.1); }
+                .section-title { font-size:1.6rem; font-weight:600; color:#e8d0ff; margin-bottom:1.2rem; letter-spacing:-0.01em; border-left:4px solid #7a3bcb; padding-left:1rem; }
+                .objetivo-box { background:rgba(20,6,40,0.5); backdrop-filter:blur(8px); border-radius:2rem; padding:2rem 2.2rem; border:1px solid rgba(170,90,255,0.15); box-shadow:0 8px 24px rgba(0,0,0,0.4),0 0 0 1px rgba(200,120,255,0.05) inset; margin-bottom:1.8rem; }
+                .objetivo-text { font-size:1.25rem; line-height:1.7; color:#d4bcff; font-weight:300; text-align:justify; }
+                .objetivo-text strong { color:#f0e3ff; font-weight:600; }
+                .highlight { color:#b27aff; font-weight:500; }
+                .grid-2col { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin:1.2rem 0; }
+                @media (max-width:700px) { .grid-2col { grid-template-columns:1fr; } }
+                .item-card { background:rgba(20,6,40,0.3); backdrop-filter:blur(6px); border-radius:1.6rem; padding:1.2rem 1.5rem; border:1px solid rgba(170,90,255,0.08); }
+                .item-card .num { font-size:1.8rem; font-weight:700; color:#b27aff; opacity:0.6; margin-right:0.5rem; }
+                .item-card h3 { color:#e8d0ff; font-size:1rem; font-weight:600; display:inline; }
+                .item-card p { color:#b69bdf; font-size:0.9rem; margin-top:0.4rem; line-height:1.5; padding-left:0.2rem; }
+                .table-wrap { background:rgba(20,6,40,0.3); border-radius:1.6rem; overflow:hidden; border:1px solid rgba(170,90,255,0.08); margin:1rem 0; }
+                .table-wrap table { width:100%; border-collapse:collapse; }
+                .table-wrap th { background:rgba(40,12,80,0.4); color:#c7afff; font-weight:600; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.5px; padding:0.8rem 1.2rem; text-align:left; }
+                .table-wrap td { padding:0.7rem 1.2rem; color:#d4bcff; font-size:0.9rem; border-bottom:1px solid rgba(170,90,255,0.05); }
+                .table-wrap tr:last-child td { border-bottom:none; }
+                .table-wrap td strong { color:#f0e3ff; }
+                .metricas-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0.8rem; margin:1rem 0; }
+                @media (max-width:600px) { .metricas-grid { grid-template-columns:1fr 1fr; } }
+                .metrica-item { background:rgba(10,2,20,0.3); padding:0.8rem 1rem; border-radius:1.2rem; text-align:center; border:1px solid rgba(170,90,255,0.06); }
+                .metrica-item .num { font-size:1.6rem; font-weight:700; color:#b27aff; display:block; }
+                .metrica-item .label { font-size:0.7rem; color:#8f78b5; text-transform:uppercase; letter-spacing:0.3px; }
+                .equipo-grid { display:flex; flex-wrap:wrap; gap:1.2rem; margin:0.8rem 0; }
+                .equipo-item { background:rgba(20,6,40,0.3); padding:0.6rem 1.4rem; border-radius:60px; border:1px solid rgba(170,90,255,0.08); color:#d4bcff; font-size:0.9rem; }
+                .equipo-item strong { color:#f0e3ff; }
+                .footer { margin-top:2rem; font-size:0.7rem; color:#6a5080; text-align:center; border-top:1px solid rgba(150,80,210,0.08); padding-top:1.2rem; letter-spacing:0.4px; }
+                .footer strong { color:#a88ac0; font-weight:400; }
+                .ods-bar { display:flex; flex-wrap:wrap; gap:0.4rem 1.2rem; background:rgba(50,18,90,0.25); backdrop-filter:blur(6px); padding:0.6rem 1.8rem; border-radius:60px; justify-content:center; font-size:0.8rem; color:#c9b3f0; border:1px solid rgba(170,100,255,0.08); margin-top:1.6rem; }
+                .ods-bar span { background:rgba(120,40,200,0.2); padding:0.1rem 0.8rem; border-radius:30px; font-weight:600; font-size:0.7rem; border:1px solid rgba(180,100,255,0.1); }
+                @media (max-width:600px) { .card { padding:1.5rem 1.2rem; border-radius:2rem; } .header h1 { font-size:1.8rem; } .header h1 small { font-size:0.7rem; padding:0.1rem 0.8rem; } .objetivo-text { font-size:1rem; } .section-title { font-size:1.2rem; } .objetivo-box { padding:1.2rem 1.2rem; } .table-wrap th, .table-wrap td { padding:0.5rem 0.8rem; font-size:0.75rem; } }
+            </style>
+        </head>
+        <body>
+            ${contenidoHTML.outerHTML}
+        </body>
+        </html>`;
+
+                const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Objetivo_General_EcoHuella.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // ===== DESCARGAR MARKDOWN =====
+            document.getElementById('downloadMDBtn').addEventListener('click', function() {
+                const blob = new Blob([markdownContent], { type: 'text/markdown;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Objetivo_General_EcoHuella.md';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // ===== COPIAR AL PORTAPAPELES =====
+            document.getElementById('copyBtn').addEventListener('click', async function() {
+                try {
+                    await navigator.clipboard.writeText(markdownContent);
+                    const original = this.textContent;
+                    this.textContent = '✅ ¡Copiado!';
+                    setTimeout(() => { this.textContent = original; }, 2000);
+                } catch (_) {
+                    // Fallback
+                    const textarea = document.createElement('textarea');
+                    textarea.value = markdownContent;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    const original = this.textContent;
+                    this.textContent = '✅ ¡Copiado!';
+                    setTimeout(() => { this.textContent = original; }, 2000);
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

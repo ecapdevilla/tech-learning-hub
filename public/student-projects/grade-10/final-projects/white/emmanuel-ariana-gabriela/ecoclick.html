@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♻️ EcoClick 2.0 · Reciclador Veloz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     ECOCLICK 2.0 · SISTEMA DE DISEÑO
+     Paleta: verde bosque profundo + acentos por categoría
+     Tipografía: Fredoka (display, redondeada/amigable) + Work Sans (texto)
+     Firma visual: banda transportadora que trae cada residuo hacia
+     tres contenedores de planta de clasificación real.
+     ============================================================ */
+  :root{
+    --bg-1:#0a1a12;
+    --bg-2:#173626;
+    --panel:rgba(255,255,255,.055);
+    --panel-strong:rgba(0,0,0,.32);
+    --borde:rgba(255,255,255,.09);
+    --texto:#eaf5ee;
+    --texto-sub:#a9c9b8;
+    --verde:#3ddc84;
+    --verde-fuerte:#1f9d5c;
+    --azul:#4fb0e8;
+    --azul-fuerte:#1f7fb8;
+    --rojo:#f2665a;
+    --rojo-fuerte:#b6392f;
+    --oro:#f4c453;
+    --ods4:#C5192D;
+    --ods9:#FD6925;
+    --ods11:#FD9D24;
+    --radio-xl:34px;
+    --radio-lg:22px;
+    --radio-md:14px;
+    --sombra:0 24px 60px rgba(0,0,0,.55);
+    --fuente-display:'Fredoka',system-ui,sans-serif;
+    --fuente-texto:'Work Sans',system-ui,sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    min-height:100vh;
+    font-family:var(--fuente-texto);
+    color:var(--texto);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(61,220,132,.10), transparent 45%),
+      radial-gradient(circle at 90% 85%, rgba(79,176,232,.10), transparent 40%),
+      linear-gradient(160deg,var(--bg-1),var(--bg-2) 60%,#0d2318);
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:28px 16px 60px;
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s !important; animation-iteration-count:1 !important; transition-duration:.001s !important;}
+  }
+
+  button{font-family:inherit;}
+  button:focus-visible, .bin:focus-visible, .chip-dificultad:focus-visible{
+    outline:3px solid var(--oro);
+    outline-offset:3px;
+  }
+
+  .app{
+    width:100%;
+    max-width:960px;
+    background:var(--panel);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid var(--borde);
+    border-radius:var(--radio-xl);
+    box-shadow:var(--sombra);
+    overflow:hidden;
+  }
+
+  /* Firma visual: franja tricolor con los colores oficiales de los
+     ODS que persigue el proyecto (4, 9 y 11). Aparece una sola vez,
+     arriba de todo, como sello institucional del objetivo. */
+  .franja-ods-firma{
+    height:6px;
+    width:100%;
+    background:linear-gradient(90deg,
+      var(--ods4) 0% 33.33%,
+      var(--ods9) 33.33% 66.66%,
+      var(--ods11) 66.66% 100%);
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:relative;
+    padding:26px 30px 18px;
+    border-bottom:1px solid var(--borde);
+    text-align:center;
+    overflow:hidden;
+  }
+  header::before{
+    content:'♻';
+    position:absolute;
+    top:-38px; right:-24px;
+    font-size:9rem;
+    color:rgba(255,255,255,.035);
+    line-height:1;
+    pointer-events:none;
+    animation:girar-marca-agua 60s linear infinite;
+  }
+  @keyframes girar-marca-agua{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .marca{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .marca h1{
+    font-family:var(--fuente-display);
+    font-weight:700;
+    font-size:clamp(1.5rem,4vw,2.1rem);
+    letter-spacing:.3px;
+    background:linear-gradient(120deg,#d9f7e4,var(--verde) 70%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .franja{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-top:8px;
+    font-size:.82rem;
+    color:var(--texto-sub);
+    letter-spacing:.4px;
+  }
+  .credito-equipo{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    background:var(--panel-strong);
+    padding:5px 16px;
+    border-radius:80px;
+    border:1px solid var(--borde);
+  }
+  .credito-equipo b{color:#dff5e6;font-weight:600;}
+
+  .badges-ods-mini{
+    position:relative;z-index:1;
+    display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+    margin-top:10px;
+  }
+  .badge-ods{
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.3px;
+    color:#fff;
+    background:var(--c,#666);
+    padding:3px 12px;
+    border-radius:40px;
+    box-shadow:0 4px 10px rgba(0,0,0,.25);
+  }
+  .linea-ods-resultados{
+    text-align:center;font-size:.76rem;color:var(--texto-sub);
+    letter-spacing:.4px;margin:18px 0 8px;
+  }
+  .badges-resultados{margin-top:0;margin-bottom:22px;}
+
+  /* ---------- BARRA DE SONIDO / PAUSA (persistente) ---------- */
+  .barra-superior{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    padding:10px 20px 0;
+  }
+  .icono-btn{
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    color:var(--texto);
+    width:38px;height:38px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .icono-btn:hover{background:rgba(255,255,255,.12);transform:scale(1.06);}
+  .icono-btn:active{transform:scale(.92);}
+
+  main{padding:6px 26px 30px;}
+  .pantalla{display:none;}
+  .pantalla.activa{display:block;animation:aparecer .35s ease;}
+  @keyframes aparecer{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  /* =====================================================
+     PANTALLA: INICIO
+     ===================================================== */
+  #pantalla-inicio{text-align:center;padding:14px 6px 4px;}
+  .intro-emoji{font-size:3.4rem;margin-bottom:6px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.4));}
+  #pantalla-inicio h2{
+    font-family:var(--fuente-display);
+    font-size:1.5rem;
+    margin-bottom:8px;
+    color:#eafff2;
+  }
+  #pantalla-inicio p.lead{
+    color:var(--texto-sub);
+    max-width:520px;
+    margin:0 auto 22px;
+    line-height:1.5;
+    font-size:.95rem;
+  }
+  .bloque-titulo-seccion{
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:1.6px;
+    color:var(--texto-sub);
+    margin:22px 0 10px;
+    font-weight:600;
+  }
+  .dificultades{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .chip-dificultad{
+    background:var(--panel-strong);
+    border:2px solid var(--borde);
+    color:var(--texto);
+    padding:14px 22px;
+    border-radius:var(--radio-lg);
+    cursor:pointer;
+    min-width:150px;
+    transition:.15s;
+    text-align:left;
+  }
+  .chip-dificultad:hover{border-color:var(--verde);transform:translateY(-3px);}
+  .chip-dificultad.activa{border-color:var(--oro);background:rgba(244,196,83,.12);}
+  .chip-dificultad strong{display:block;font-family:var(--fuente-display);font-size:1.05rem;margin-bottom:3px;}
+  .chip-dificultad span{font-size:.78rem;color:var(--texto-sub);}
+
+  .leyenda-canecas{
+    display:flex;
+    gap:14px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin:22px 0 6px;
+  }
+  .leyenda-item{
+    display:flex;align-items:center;gap:8px;
+    background:var(--panel-strong);
+    padding:8px 16px;
+    border-radius:80px;
+    font-size:.82rem;
+    border-left:4px solid var(--c,#fff);
+  }
+  .punto{width:12px;height:12px;border-radius:50%;background:var(--c,#fff);flex-shrink:0;}
+
+  .btn-jugar{
+    margin-top:26px;
+    background:linear-gradient(135deg,var(--verde-fuerte),var(--verde));
+    border:none;
+    color:#052d16;
+    font-weight:700;
+    font-family:var(--fuente-display);
+    font-size:1.15rem;
+    padding:16px 52px;
+    border-radius:80px;
+    cursor:pointer;
+    box-shadow:0 14px 30px rgba(31,157,92,.35);
+    transition:.18s;
+  }
+  .btn-jugar:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 18px 36px rgba(31,157,92,.45);}
+  .btn-jugar:active{transform:scale(.96);}
+
+  .top-mini{
+    margin-top:26px;
+    font-size:.8rem;
+    color:var(--texto-sub);
+  }
+  .top-mini b{color:var(--oro);}
+
+  .fila-botones-inicio{
+    display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px;
+  }
+  .fila-botones-inicio .btn-jugar{margin-top:0;}
+  .fila-botones-inicio .btn-secundario{font-size:1rem;padding:14px 28px;}
+
+  .link-objetivo{
+    display:inline-block;
+    margin-top:20px;
+    background:none;border:none;
+    color:var(--texto-sub);
+    font-size:.8rem;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    cursor:pointer;
+  }
+  .link-objetivo:hover{color:var(--verde);}
+  .panel-objetivo{
+    max-width:520px;
+    margin:14px auto 0;
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    border-radius:var(--radio-md);
+    padding:16px 20px;
+    text-align:left;
+    font-size:.85rem;
+    color:#dfeee6;
+    line-height:1.55;
+  }
+  .panel-objetivo .lista-ods{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+  .panel-objetivo .lista-ods li{
+    display:flex;align-items:center;gap:10px;
+    padding:8px 12px 8px 8px;
+    border-radius:12px;
+    background:rgba(0,0,0,.22);
+  }
+  .panel-objetivo .lista-ods li::before{
+    content:attr(data-num);
+    flex-shrink:0;
+    width:28px;height:28px;
+    border-radius:8px;
+    background:var(--c);
+    color:#fff;
+    font-family:var(--fuente-display);
+    font-weight:700;
+    font-size:.85rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .panel-objetivo b{color:#bdf7d4;}
+
+  /* =====================================================
+     PANTALLA: PREGÚNTALE A ECOCLICK
+     ===================================================== */
+  .btn-volver{margin-bottom:14px;}
+  .pregunta-header{text-align:center;margin-bottom:18px;}
+  .pregunta-header .intro-emoji{font-size:2.4rem;}
+  .pregunta-header h2{font-family:var(--fuente-display);font-size:1.4rem;margin:4px 0 6px;}
+  .pregunta-header .lead{color:var(--texto-sub);font-size:.9rem;max-width:520px;margin:0 auto;line-height:1.5;}
+
+  .caja-busqueda{
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;
+  }
+  .caja-busqueda input{
+    flex:1;min-width:220px;max-width:420px;
+    background:rgba(0,0,0,.35);
+    border:1px solid var(--borde);
+    color:var(--texto);
+    padding:12px 18px;
+    border-radius:80px;
+    font-size:.92rem;
+  }
+  .caja-busqueda input:focus{outline:2px solid var(--verde);}
+  .caja-busqueda button{
+    background:var(--verde-fuerte);
+    color:#052d16;border:none;font-weight:700;
+    padding:12px 24px;border-radius:80px;cursor:pointer;
+    transition:.15s;
+  }
+  .caja-busqueda button:hover{transform:translateY(-1px);}
+
+  .etiqueta-chips{
+    text-align:center;font-size:.76rem;color:var(--texto-sub);
+    letter-spacing:.4px;margin-bottom:8px;
+  }
+  .chips-rapidas{
+    display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;
+  }
+  .chip-residuo{
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    color:var(--texto);
+    padding:7px 15px;
+    border-radius:80px;
+    font-size:.82rem;
+    cursor:pointer;
+    transition:.15s;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .chip-residuo:hover{border-color:var(--verde);background:rgba(61,220,132,.14);transform:translateY(-1px);}
+  .chip-residuo.pequena{font-size:.76rem;padding:5px 12px;}
+
+  .chat-respuesta{
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    border-radius:var(--radio-lg);
+    padding:18px 18px 8px;
+    min-height:110px;
+    max-height:400px;
+    overflow-y:auto;
+    margin-bottom:16px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .chat-placeholder{
+    text-align:center;color:var(--texto-sub);font-size:.88rem;
+    margin:auto;padding:14px 0;
+  }
+  .burbuja{
+    max-width:82%;
+    padding:11px 17px;
+    border-radius:20px;
+    font-size:.88rem;
+    line-height:1.5;
+    animation:aparecer .3s ease;
+  }
+  .burbuja-nino{
+    align-self:flex-end;
+    background:linear-gradient(120deg,var(--azul-fuerte),var(--azul));
+    color:#04202e;
+    border-bottom-right-radius:6px;
+    font-weight:600;
+  }
+  .burbuja-eco{
+    align-self:flex-start;
+    background:rgba(255,255,255,.08);
+    border:1px solid var(--borde);
+    border-bottom-left-radius:6px;
+  }
+  .burbuja-eco .etiqueta-caneca{
+    display:inline-block;
+    font-weight:700;
+    padding:2px 12px;
+    border-radius:40px;
+    font-size:.76rem;
+    margin-bottom:6px;
+  }
+  .burbuja-eco.verde .etiqueta-caneca{background:rgba(61,220,132,.22);color:#a9f5c6;}
+  .burbuja-eco.azul .etiqueta-caneca{background:rgba(79,176,232,.22);color:#a9dcf5;}
+  .burbuja-eco.negro .etiqueta-caneca{background:rgba(242,102,90,.22);color:#f7b9b0;}
+  .burbuja-eco.info .etiqueta-caneca{background:rgba(244,196,83,.22);color:#ffe6ac;}
+  .burbuja-eco p{margin:0;color:#e6f3ec;}
+  .burbuja-eco .sugerencias-inline{
+    display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;
+  }
+
+  .catalogo-completo{
+    margin-top:14px;
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    border-radius:var(--radio-lg);
+    padding:16px 18px;
+  }
+  .catalogo-grupo{margin-bottom:14px;}
+  .catalogo-grupo:last-child{margin-bottom:0;}
+  .catalogo-grupo h4{
+    font-family:var(--fuente-display);
+    font-size:.88rem;
+    margin-bottom:8px;
+  }
+  .catalogo-grupo.verde h4{color:var(--verde);}
+  .catalogo-grupo.azul h4{color:var(--azul);}
+  .catalogo-grupo.negro h4{color:var(--rojo);}
+  .catalogo-items{display:flex;flex-wrap:wrap;gap:7px;}
+
+  /* =====================================================
+     HUD (durante el juego)
+     ===================================================== */
+  .hud{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--panel-strong);
+    padding:12px 22px;
+    border-radius:80px;
+    margin:14px 0 12px;
+    border:1px solid var(--borde);
+    flex-wrap:wrap;
+    gap:8px 16px;
+  }
+  .hud-item{display:flex;align-items:center;gap:8px;font-weight:500;font-size:.98rem;}
+  .hud-item .valor{
+    font-weight:700;color:#bdf7d4;
+    background:rgba(0,0,0,.28);
+    padding:2px 13px;border-radius:40px;min-width:34px;text-align:center;
+  }
+  .hud-item.tiempo .valor{color:#fff;}
+  .hud-item.tiempo.urgente .valor{color:#ffb3a7;background:rgba(180,40,25,.35);animation:pulso .6s infinite;}
+  @keyframes pulso{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+  .combo-tag{
+    font-size:.78rem;
+    background:linear-gradient(120deg,var(--oro),#ffe19a);
+    color:#402c00;
+    padding:3px 12px;
+    border-radius:40px;
+    font-weight:700;
+    opacity:0;
+    transform:scale(.7);
+    transition:.25s;
+  }
+  .combo-tag.mostrar{opacity:1;transform:scale(1);}
+
+  .barra-ods-contenedor{
+    background:rgba(0,0,0,.42);
+    border-radius:80px;
+    height:16px;
+    overflow:hidden;
+    box-shadow:inset 0 2px 5px rgba(0,0,0,.5);
+  }
+  #barra-ods{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,#6fe5a0,var(--verde-fuerte));
+    display:flex;align-items:center;justify-content:flex-end;padding-right:9px;
+    font-size:.58rem;font-weight:700;color:#04331b;
+    transition:width .35s ease;
+  }
+  .etiqueta-ods{
+    text-align:center;font-size:.72rem;color:var(--texto-sub);
+    margin:6px 0 14px;letter-spacing:.6px;
+  }
+
+  /* ---------- ESCENA: BANDA TRANSPORTADORA ---------- */
+  .banda-escena{
+    position:relative;
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    border-radius:var(--radio-lg);
+    padding:26px 20px 34px;
+    overflow:hidden;
+    min-height:150px;
+  }
+  .banda-fondo{
+    position:absolute;
+    left:0;right:0;bottom:26px;
+    height:14px;
+    background:
+      repeating-linear-gradient(90deg,#2b2118 0 26px,#3a2c20 26px 52px);
+    background-size:52px 100%;
+    animation:mover-banda 1.1s linear infinite;
+    box-shadow:inset 0 2px 4px rgba(0,0,0,.5);
+    border-radius:6px;
+  }
+  @keyframes mover-banda{from{background-position:0 0;}to{background-position:-52px 0;}}
+
+  .residuo-pista{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    animation:entrar-residuo .45s cubic-bezier(.2,.9,.3,1.2);
+  }
+  @keyframes entrar-residuo{
+    from{opacity:0;transform:translateX(-40px) scale(.85);}
+    to{opacity:1;transform:translateX(0) scale(1);}
+  }
+  .residuo-icono{
+    font-size:3.6rem;
+    filter:drop-shadow(0 10px 14px rgba(0,0,0,.4));
+    line-height:1;
+  }
+  .residuo-icono.dorado{
+    filter:drop-shadow(0 0 16px rgba(244,196,83,.85));
+    animation:brillo-dorado 1s ease-in-out infinite;
+  }
+  @keyframes brillo-dorado{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+  #nombre-residuo{
+    font-family:var(--fuente-display);
+    font-size:1.25rem;
+    font-weight:600;
+    color:#f4fff7;
+    text-align:center;
+  }
+  .etiqueta-bonus{
+    font-size:.68rem;
+    background:var(--oro);
+    color:#402c00;
+    padding:2px 10px;
+    border-radius:40px;
+    font-weight:700;
+    letter-spacing:.4px;
+  }
+
+  .avatar-linea{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:14px;
+  }
+  .avatar{font-size:1.9rem;transition:transform .2s;}
+  .avatar.feliz{transform:scale(1.15) rotate(-6deg);}
+  .avatar.triste{transform:scale(.92) rotate(6deg);}
+  #estado-texto{font-size:.85rem;color:var(--texto-sub);}
+
+  /* ---------- DESCRIPCIÓN ---------- */
+  .descripcion-residuo{
+    background:var(--panel-strong);
+    border-left:3px solid var(--oro);
+    border-radius:var(--radio-md);
+    padding:12px 20px;
+    margin:14px 0;
+    min-height:46px;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+  }
+  #descripcion-texto{font-size:.9rem;color:#dfeee6;line-height:1.5;}
+
+  .instruccion{
+    text-align:center;
+    color:var(--texto-sub);
+    font-size:.82rem;
+    letter-spacing:.6px;
+    margin:6px 0 12px;
+  }
+
+  /* ---------- CONTENEDORES ---------- */
+  .canecas{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin:6px 0 16px;
+  }
+  .bin{
+    position:relative;
+    background:var(--panel-strong);
+    border:2px solid var(--borde);
+    border-radius:var(--radio-lg) var(--radio-lg) 10px 10px;
+    padding:18px 10px 14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    color:var(--texto);
+    font-family:var(--fuente-texto);
+    transition:.15s;
+  }
+  .bin .tapa{
+    font-size:1.9rem;
+    transition:transform .18s;
+  }
+  .bin .nombre-bin{font-weight:700;font-size:.92rem;}
+  .bin .sub-bin{font-size:.68rem;color:var(--texto-sub);}
+  .bin.verde{border-color:rgba(61,220,132,.4);} 
+  .bin.verde:hover, .bin.verde.arrastrando-encima{background:rgba(31,157,92,.28);border-color:var(--verde);}
+  .bin.azul{border-color:rgba(79,176,232,.4);}
+  .bin.azul:hover, .bin.azul.arrastrando-encima{background:rgba(31,127,184,.28);border-color:var(--azul);}
+  .bin.rojo{border-color:rgba(242,102,90,.4);}
+  .bin.rojo:hover, .bin.rojo.arrastrando-encima{background:rgba(182,57,47,.28);border-color:var(--rojo);}
+  .bin:active .tapa{transform:rotate(-18deg) translateY(-3px);}
+  .bin:active{transform:scale(.96);}
+  .bin .tecla{
+    position:absolute;top:8px;right:10px;
+    font-size:.65rem;color:var(--texto-sub);
+    background:rgba(0,0,0,.3);
+    padding:1px 7px;border-radius:6px;
+  }
+  .bin.correcto-flash{animation:flash-ok .5s;}
+  .bin.error-flash{animation:flash-err .45s;}
+  @keyframes flash-ok{0%{box-shadow:0 0 0 0 rgba(61,220,132,.6);}100%{box-shadow:0 0 0 22px rgba(61,220,132,0);}}
+  @keyframes flash-err{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+
+  .retro{
+    text-align:center;
+    background:var(--panel-strong);
+    border-radius:80px;
+    padding:10px 20px;
+    font-size:.9rem;
+    color:#d3efe0;
+    border-left:3px solid var(--verde);
+  }
+
+  /* ---------- CAPA DE PARTÍCULAS ---------- */
+  .capa-particulas{
+    position:fixed;inset:0;pointer-events:none;z-index:9999;
+  }
+  .particula{
+    position:absolute;
+    width:8px;height:8px;
+    border-radius:2px;
+    opacity:1;
+  }
+
+  /* ---------- TOAST LOGROS ---------- */
+  .toast-logro{
+    position:fixed;
+    top:22px;left:50%;
+    transform:translate(-50%,-140%);
+    background:linear-gradient(120deg,#1f9d5c,#12723f);
+    border:1px solid rgba(255,255,255,.2);
+    color:#fff;
+    padding:12px 22px;
+    border-radius:80px;
+    display:flex;align-items:center;gap:10px;
+    font-size:.88rem;
+    box-shadow:0 14px 34px rgba(0,0,0,.4);
+    z-index:10000;
+    transition:transform .4s cubic-bezier(.2,.9,.25,1.2);
+  }
+  .toast-logro.mostrar{transform:translate(-50%,0);}
+  .toast-logro .icono-logro{font-size:1.3rem;}
+
+  /* =====================================================
+     PANTALLA: PAUSA
+     ===================================================== */
+  #pantalla-pausa{text-align:center;padding:40px 10px;}
+  #pantalla-pausa h2{font-family:var(--fuente-display);font-size:1.6rem;margin-bottom:6px;}
+  #pantalla-pausa p{color:var(--texto-sub);margin-bottom:22px;}
+  .fila-botones{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn-secundario{
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    color:var(--texto);
+    padding:12px 26px;
+    border-radius:80px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .btn-secundario:hover{background:rgba(255,255,255,.1);}
+
+  /* =====================================================
+     PANTALLA: RESULTADOS
+     ===================================================== */
+  #pantalla-resultados{text-align:center;padding:12px 4px 4px;}
+  #pantalla-resultados h2{
+    font-family:var(--fuente-display);
+    font-size:2rem;
+    color:#c7f7d8;
+    margin-bottom:4px;
+  }
+  #titulo-desempeno{color:var(--texto-sub);font-size:.92rem;margin-bottom:20px;}
+  .grid-stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:12px;
+    max-width:640px;
+    margin:0 auto 22px;
+  }
+  .stat-card{
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    border-radius:var(--radio-md);
+    padding:16px 10px;
+  }
+  .stat-card .num{font-family:var(--fuente-display);font-size:1.5rem;color:#bdf7d4;}
+  .stat-card .lbl{font-size:.72rem;color:var(--texto-sub);margin-top:2px;letter-spacing:.4px;}
+
+  .logros-obtenidos{
+    display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+    max-width:640px;margin:0 auto 22px;
+  }
+  .logro-pill{
+    background:rgba(244,196,83,.14);
+    border:1px solid rgba(244,196,83,.4);
+    color:#ffe6ac;
+    padding:6px 14px;
+    border-radius:80px;
+    font-size:.78rem;
+    display:flex;align-items:center;gap:6px;
+  }
+
+  .panel-ranking{
+    max-width:420px;margin:0 auto 24px;
+    background:var(--panel-strong);
+    border:1px solid var(--borde);
+    border-radius:var(--radio-lg);
+    padding:18px 20px;
+  }
+  .panel-ranking h3{
+    font-family:var(--fuente-display);
+    font-size:1rem;margin-bottom:10px;color:#eafff2;
+  }
+  .fila-ranking{
+    display:flex;justify-content:space-between;
+    font-size:.86rem;padding:6px 4px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .fila-ranking:last-child{border-bottom:none;}
+  .fila-ranking.nuevo{color:var(--oro);font-weight:700;}
+  .fila-ranking .pos{color:var(--texto-sub);width:22px;display:inline-block;}
+
+  .form-nombre{
+    display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;
+  }
+  .form-nombre input{
+    background:rgba(0,0,0,.35);
+    border:1px solid var(--borde);
+    color:var(--texto);
+    padding:11px 16px;
+    border-radius:80px;
+    font-size:.9rem;
+    width:200px;
+    max-width:60vw;
+  }
+  .form-nombre input:focus{outline:2px solid var(--verde);}
+  .form-nombre button{
+    background:var(--verde-fuerte);
+    color:#052d16;
+    border:none;
+    font-weight:700;
+    padding:11px 22px;
+    border-radius:80px;
+    cursor:pointer;
+  }
+
+  footer.sr-nota{
+    text-align:center;
+    font-size:.7rem;
+    color:rgba(169,201,184,.55);
+    padding:10px 26px 24px;
+  }
+
+  @media (max-width:640px){
+    .app{border-radius:26px;}
+    main{padding:4px 14px 22px;}
+    .canecas{grid-template-columns:1fr;}
+    .grid-stats{grid-template-columns:repeat(2,1fr);}
+    .dificultades{flex-direction:column;align-items:stretch;}
+    .chip-dificultad{min-width:0;}
+    .badges-ods-mini{gap:6px;}
+    .badge-ods{font-size:.62rem;padding:3px 9px;}
+    header::before{font-size:6.5rem;top:-24px;right:-16px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="franja-ods-firma" aria-hidden="true"></div>
+  <header>
+    <div class="marca">
+      <h1>♻️ EcoClick 2.0 · Reciclador Veloz</h1>
+    </div>
+    <div class="franja">
+      <span>Code for Change · ODS 4 · 9 · 11</span>
+      <span class="credito-equipo">👥 <b>Emmanuel Torres</b> · <b>Ariana Castro</b> · <b>Gabriela Carreño</b> — Colegio Biffi La Salle</span>
+    </div>
+    <div class="badges-ods-mini" aria-hidden="true">
+      <span class="badge-ods" style="--c:var(--ods4)">4 · Educación de calidad</span>
+      <span class="badge-ods" style="--c:var(--ods9)">9 · Industria e innovación</span>
+      <span class="badge-ods" style="--c:var(--ods11)">11 · Ciudades sostenibles</span>
+    </div>
+  </header>
+
+  <div class="barra-superior">
+    <button class="icono-btn" id="btn-sonido" title="Silenciar / activar sonido" aria-label="Alternar sonido">🔊</button>
+    <button class="icono-btn oculto" id="btn-pausa" title="Pausar" aria-label="Pausar juego">⏸️</button>
+  </div>
+
+  <main>
+
+    <!-- =========================================================
+         PANTALLA 1: INICIO
+         ========================================================= -->
+    <section id="pantalla-inicio" class="pantalla activa">
+      <div class="intro-emoji">🌍♻️</div>
+      <h2>Clasifica rápido. Aprende reciclando.</h2>
+      <p class="lead">
+        Los residuos avanzan por la banda transportadora. Elige el contenedor correcto antes de que
+        se acabe el tiempo. Cada acierto suma puntos y racha; cada error cuesta una vida.
+        Toca un contenedor, arrástralo o usa las teclas <b>1</b>, <b>2</b> y <b>3</b>.
+      </p>
+
+      <div class="leyenda-canecas">
+        <span class="leyenda-item" style="--c:var(--verde)"><span class="punto"></span>🟢 Orgánicos</span>
+        <span class="leyenda-item" style="--c:var(--azul)"><span class="punto"></span>🔵 Aprovechables</span>
+        <span class="leyenda-item" style="--c:var(--rojo)"><span class="punto"></span>🔴 No aprovechables</span>
+      </div>
+
+      <p class="bloque-titulo-seccion">Elige tu dificultad</p>
+      <div class="dificultades" id="selector-dificultad" role="radiogroup" aria-label="Dificultad">
+        <button class="chip-dificultad" data-dif="facil" role="radio" aria-checked="false">
+          <strong>🌱 Fácil</strong>
+          <span>60s · banda lenta · 4 vidas</span>
+        </button>
+        <button class="chip-dificultad activa" data-dif="normal" role="radio" aria-checked="true">
+          <strong>🌿 Normal</strong>
+          <span>50s · banda media · 3 vidas</span>
+        </button>
+        <button class="chip-dificultad" data-dif="dificil" role="radio" aria-checked="false">
+          <strong>🔥 Difícil</strong>
+          <span>40s · banda rápida · 2 vidas</span>
+        </button>
+      </div>
+
+      <div class="fila-botones-inicio">
+        <button class="btn-jugar" id="btn-jugar">▶ Empezar misión</button>
+        <button class="btn-secundario" id="btn-preguntar">❓ Pregúntale a EcoClick</button>
+      </div>
+
+      <p class="top-mini" id="mejor-puntaje-inicio">🏅 Mejor puntaje guardado: <b>0</b> pts</p>
+
+      <button class="link-objetivo" id="btn-objetivo" aria-expanded="false">🎯 ¿Cuál es el objetivo de este proyecto?</button>
+      <div class="panel-objetivo oculto" id="panel-objetivo">
+        <p>
+          Este proyecto busca <b>promover la educación ambiental, la innovación tecnológica y el
+          desarrollo sostenible</b> en la comunidad del <b>Colegio Biffi La Salle</b>, alineado con
+          los Objetivos de Desarrollo Sostenible:
+        </p>
+        <ul class="lista-ods">
+          <li style="--c:var(--ods4)" data-num="4"><span><b>Educación de calidad</b> — el juego enseña a clasificar residuos de forma práctica y memorable.</span></li>
+          <li style="--c:var(--ods9)" data-num="9"><span><b>Industria, innovación e infraestructura</b> — una app propia, construida por estudiantes, como solución tecnológica.</span></li>
+          <li style="--c:var(--ods11)" data-num="11"><span><b>Ciudades y comunidades sostenibles</b> — hábitos de reciclaje que mejoran la gestión de residuos del colegio y el barrio.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PANTALLA 2: JUEGO
+         ========================================================= -->
+    <section id="pantalla-juego" class="pantalla">
+      <div class="hud">
+        <div class="hud-item">🏆 <span class="valor" id="puntaje">0</span></div>
+        <div class="hud-item">❤️ <span class="valor" id="vidas">3</span></div>
+        <div class="hud-item tiempo" id="hud-tiempo">⏱️ <span class="valor" id="tiempo">50</span>s</div>
+        <div class="combo-tag" id="combo-tag">🔥 Combo x1</div>
+      </div>
+
+      <div class="barra-ods-contenedor">
+        <div id="barra-ods">0%</div>
+      </div>
+      <p class="etiqueta-ods">Progreso hacia la meta ODS de la ronda</p>
+
+      <div class="banda-escena" aria-live="polite">
+        <div class="banda-fondo"></div>
+        <div class="residuo-pista" id="pista-residuo">
+          <div class="residuo-icono" id="residuo-icono">🍌</div>
+          <h2 id="nombre-residuo">Cargando...</h2>
+          <span class="etiqueta-bonus oculto" id="etiqueta-bonus">⭐ BONUS x2</span>
+        </div>
+      </div>
+
+      <div class="avatar-linea">
+        <span class="avatar neutro" id="avatar">🧑‍🎓</span>
+        <span id="estado-texto">Esperando...</span>
+      </div>
+
+      <div class="descripcion-residuo">
+        <p id="descripcion-texto">🌍 Conoce el impacto de cada residuo y aprende a reciclar correctamente.</p>
+      </div>
+
+      <p class="instruccion">⚡ Toca, arrastra o pulsa 1 · 2 · 3 para elegir el contenedor correcto</p>
+
+      <div class="canecas" id="canecas">
+        <button class="bin verde" data-tipo="verde" draggable="false" aria-label="Contenedor verde, orgánicos">
+          <span class="tecla">1</span>
+          <span class="tapa">🟢</span>
+          <span class="nombre-bin">Orgánicos</span>
+          <span class="sub-bin">Compostables</span>
+        </button>
+        <button class="bin azul" data-tipo="azul" draggable="false" aria-label="Contenedor azul, aprovechables">
+          <span class="tecla">2</span>
+          <span class="tapa">🔵</span>
+          <span class="nombre-bin">Aprovechables</span>
+          <span class="sub-bin">Papel, plástico, metal, vidrio</span>
+        </button>
+        <button class="bin rojo" data-tipo="negro" draggable="false" aria-label="Contenedor rojo, no aprovechables">
+          <span class="tecla">3</span>
+          <span class="tapa">🔴</span>
+          <span class="nombre-bin">No aprovechables</span>
+          <span class="sub-bin">Desecho especial</span>
+        </button>
+      </div>
+
+      <div class="retro">
+        <p id="mensaje-ods">🌱 Selecciona la caneca correcta</p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PANTALLA 3: PAUSA
+         ========================================================= -->
+    <section id="pantalla-pausa" class="pantalla">
+      <h2>⏸️ Juego en pausa</h2>
+      <p>Tómate un respiro. El tiempo está congelado.</p>
+      <div class="fila-botones">
+        <button class="btn-jugar" id="btn-reanudar">▶ Reanudar</button>
+        <button class="btn-secundario" id="btn-salir-pausa">🏠 Salir al inicio</button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PANTALLA 4: RESULTADOS
+         ========================================================= -->
+    <section id="pantalla-resultados" class="pantalla">
+      <h2 id="titulo-resultado">🏁 ¡Misión cumplida!</h2>
+      <p id="titulo-desempeno">Buen trabajo clasificando residuos.</p>
+
+      <div class="grid-stats">
+        <div class="stat-card"><div class="num" id="res-puntos">0</div><div class="lbl">PUNTOS</div></div>
+        <div class="stat-card"><div class="num" id="res-precision">0%</div><div class="lbl">PRECISIÓN</div></div>
+        <div class="stat-card"><div class="num" id="res-aciertos">0</div><div class="lbl">ACIERTOS</div></div>
+        <div class="stat-card"><div class="num" id="res-combo">x1</div><div class="lbl">MEJOR COMBO</div></div>
+      </div>
+
+      <div class="logros-obtenidos" id="logros-obtenidos"></div>
+
+      <p class="linea-ods-resultados">🎯 Cada partida aporta a:</p>
+      <div class="badges-ods-mini badges-resultados" aria-hidden="true">
+        <span class="badge-ods" style="--c:var(--ods4)">4 · Educación de calidad</span>
+        <span class="badge-ods" style="--c:var(--ods9)">9 · Industria e innovación</span>
+        <span class="badge-ods" style="--c:var(--ods11)">11 · Ciudades sostenibles</span>
+      </div>
+
+      <div class="panel-ranking">
+        <h3>🏅 Mejores puntajes</h3>
+        <div class="form-nombre" id="form-nombre">
+          <input type="text" id="input-nombre" maxlength="16" placeholder="Tu nombre para el ranking">
+          <button id="btn-guardar-ranking">Guardar</button>
+        </div>
+        <div id="lista-ranking"></div>
+      </div>
+
+      <div class="fila-botones">
+        <button class="btn-jugar" id="btn-reiniciar">🔄 Jugar de nuevo</button>
+        <button class="btn-secundario" id="btn-cambiar-dificultad">⚙️ Cambiar dificultad</button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PANTALLA 5: PREGÚNTALE A ECOCLICK
+         Los niños escriben o eligen un residuo y reciben la
+         respuesta de a qué contenedor pertenece y por qué.
+         ========================================================= -->
+    <section id="pantalla-pregunta" class="pantalla">
+      <button class="btn-secundario btn-volver" id="btn-volver-inicio-pregunta">⟵ Volver al inicio</button>
+
+      <div class="pregunta-header">
+        <div class="intro-emoji">🧑‍🎓💬♻️</div>
+        <h2>Pregúntale a EcoClick</h2>
+        <p class="lead">Escribe el nombre de un residuo, o toca una sugerencia, y descubre en qué
+          contenedor va y por qué.</p>
+      </div>
+
+      <form class="caja-busqueda" id="form-busqueda">
+        <input type="text" id="input-pregunta" list="lista-residuos-datalist" autocomplete="off"
+          placeholder="Ej: botella de plástico, pilas, cáscara de huevo...">
+        <datalist id="lista-residuos-datalist"></datalist>
+        <button type="submit" id="btn-preguntar-buscar">Preguntar</button>
+      </form>
+
+      <p class="etiqueta-chips">✨ Prueba con:</p>
+      <div class="chips-rapidas" id="chips-rapidas"></div>
+
+      <div class="chat-respuesta" id="chat-respuesta" aria-live="polite">
+        <p class="chat-placeholder" id="chat-placeholder">🌍 Escribe un residuo arriba, o toca una
+          sugerencia, para empezar la conversación.</p>
+      </div>
+
+      <button class="btn-secundario" id="btn-ver-catalogo" aria-expanded="false">📚 Ver catálogo completo de residuos</button>
+      <div class="catalogo-completo oculto" id="catalogo-completo"></div>
+    </section>
+
+  </main>
+
+  <footer class="sr-nota">EcoClick 2.0 — Proyecto educativo de clasificación de residuos. Datos y puntajes se guardan solo en este navegador.</footer>
+</div>
+
+<div class="capa-particulas" id="capa-particulas"></div>
+<div class="toast-logro" id="toast-logro"><span class="icono-logro">🏅</span><span id="toast-texto">Logro desbloqueado</span></div>
+
+<script>
+/* ==========================================================================
+   OBJETIVO PRINCIPAL DEL PROYECTO:
+   Diseñar, desarrollar y documentar una aplicación web interactiva (juego)
+   utilizando HTML, CSS y JavaScript para promover la educación ambiental,
+   la innovación tecnológica y el desarrollo sostenible (ODS 4, 9 y 11)
+   en la comunidad del Colegio Biffi La Salle.
+   ========================================================================== */
+(function(){
+"use strict";
+
+/* ================================================================
+   ECOCLICK 2.0 · MOTOR DE JUEGO
+   Arquitectura: un único objeto "Juego" con estado centralizado,
+   render declarativo por pantalla, gestor de audio sintetizado
+   (Web Audio API, sin archivos externos) y persistencia en
+   localStorage para ranking y mejor puntaje.
+   Equipo: Emmanuel Torres · Ariana Castro · Gabriela Carreño
+   ================================================================ */
+
+/* ---------------------- CATÁLOGO DE RESIDUOS ---------------------- */
+const CATALOGO_RESIDUOS = [
+  // ORGÁNICOS (verde)
+  { nombre:'Cáscara de plátano', icono:'🍌', tipo:'verde', desc:'🌱 Orgánico. Se descompone en semanas y es ideal para abono casero.' },
+  { nombre:'Restos de verduras', icono:'🥬', tipo:'verde', desc:'🥬 Orgánico. En compostaje reduce el metano que generan los vertederos.' },
+  { nombre:'Cáscara de huevo', icono:'🥚', tipo:'verde', desc:'🥚 Orgánico. Aporta calcio al abono y neutraliza la acidez del suelo.' },
+  { nombre:'Posos de café', icono:'☕', tipo:'verde', desc:'☕ Orgánico. Excelente fertilizante natural, rico en nitrógeno.' },
+  { nombre:'Restos de fruta', icono:'🍎', tipo:'verde', desc:'🍎 Orgánico. Se composta rápido y alimenta la tierra de tu huerta.' },
+  { nombre:'Hojas secas', icono:'🍂', tipo:'verde', desc:'🍂 Orgánico. Perfectas para compost junto con restos de cocina.' },
+  { nombre:'Pan duro', icono:'🍞', tipo:'verde', desc:'🍞 Orgánico. Se descompone con facilidad, no lo mezcles con plástico.' },
+  { nombre:'Cáscara de naranja', icono:'🍊', tipo:'verde', desc:'🍊 Orgánico. Aporta aceites naturales útiles en compostaje casero.' },
+
+  // APROVECHABLES (azul)
+  { nombre:'Papel de oficina', icono:'📄', tipo:'azul', desc:'📄 Aprovechable. Se recicla hasta 7 veces; una tonelada salva 17 árboles.' },
+  { nombre:'Botella de plástico', icono:'🧴', tipo:'azul', desc:'🧴 Aprovechable. El PET tarda 500 años en degradarse: ¡recíclalo!' },
+  { nombre:'Lata de aluminio', icono:'🥫', tipo:'azul', desc:'🥫 Aprovechable. Reciclar aluminio ahorra el 95% de la energía de producirlo.' },
+  { nombre:'Cartón', icono:'📦', tipo:'azul', desc:'📦 Aprovechable. Se transforma en nuevo papel y ahorra agua y árboles.' },
+  { nombre:'Botella de vidrio', icono:'🍾', tipo:'azul', desc:'🍾 Aprovechable. El vidrio es 100% reciclable, infinitas veces, sin perder calidad.' },
+  { nombre:'Periódico', icono:'📰', tipo:'azul', desc:'📰 Aprovechable. Fibra de papel reutilizable en nuevas publicaciones.' },
+  { nombre:'Envase de tetrapak', icono:'🧃', tipo:'azul', desc:'🧃 Aprovechable. Se separa en cartón, plástico y aluminio para reciclarse.' },
+  { nombre:'Revista', icono:'📖', tipo:'azul', desc:'📖 Aprovechable. Papel de calidad que puede volver a fabricarse en fibra nueva.' },
+
+  // NO APROVECHABLES (rojo/negro)
+  { nombre:'Pilas usadas', icono:'🔋', tipo:'negro', desc:'⚠️ No aprovechable. Llévalas a puntos especiales: contienen metales pesados.' },
+  { nombre:'Medicamentos caducados', icono:'💊', tipo:'negro', desc:'💊 No aprovechable. Contaminan el agua; devuélvelos en la farmacia.' },
+  { nombre:'Aceite de cocina usado', icono:'🛢️', tipo:'negro', desc:'🛢️ No aprovechable. Un litro contamina 1.000 litros de agua si se bota al drenaje.' },
+  { nombre:'Envoltura de dulce', icono:'🍬', tipo:'negro', desc:'🍬 No aprovechable. Su plástico multicapa no es reciclable actualmente.' },
+  { nombre:'Colilla de cigarro', icono:'🚬', tipo:'negro', desc:'🚬 No aprovechable. Tarda hasta 10 años en degradarse y libera toxinas.' },
+  { nombre:'Pañal usado', icono:'🍼', tipo:'negro', desc:'🍼 No aprovechable. Por higiene va siempre al contenedor de no aprovechables.' },
+  { nombre:'Chicle masticado', icono:'🫧', tipo:'negro', desc:'🫧 No aprovechable. No es biodegradable ni reciclable.' },
+  { nombre:'Foco fundido', icono:'💡', tipo:'negro', desc:'💡 No aprovechable. Puede contener mercurio: llévalo a un punto limpio.' },
+];
+
+const NOMBRES_TIPO = { verde:'🟢 Orgánicos', azul:'🔵 Aprovechables', negro:'🔴 No aprovechables' };
+const CLAVE_TECLA = { '1':'verde', '2':'azul', '3':'negro' };
+
+const DIFICULTADES = {
+  facil:   { etiqueta:'Fácil',   tiempoTotal:60, vidas:4, velocidadBanda:1.6, probBonus:.10 },
+  normal:  { etiqueta:'Normal',  tiempoTotal:50, vidas:3, velocidadBanda:1.1, probBonus:.14 },
+  dificil: { etiqueta:'Difícil', tiempoTotal:40, vidas:2, velocidadBanda:.75, probBonus:.18 },
+};
+
+const LOGROS = [
+  { id:'racha5',    icono:'🔥', nombre:'Racha de 5',        cond:e => e.mejorCombo >= 5 },
+  { id:'racha10',   icono:'⚡', nombre:'Racha imparable x10', cond:e => e.mejorCombo >= 10 },
+  { id:'precision', icono:'🎯', nombre:'Precisión perfecta', cond:e => e.intentos >= 8 && e.fallos === 0 },
+  { id:'cienpts',   icono:'💯', nombre:'100 puntos en una ronda', cond:e => e.puntos >= 100 },
+  { id:'bonus3',    icono:'⭐', nombre:'Cazador de bonus',   cond:e => e.bonusAcertados >= 3 },
+  { id:'maestro',   icono:'🌍', nombre:'Maestro del reciclaje', cond:e => e.puntos >= 150 && e.fallos <= 1 },
+];
+
+const CLAVE_STORAGE_RECORD = 'ecoclick2_record';
+const CLAVE_STORAGE_RANKING = 'ecoclick2_ranking';
+
+/* ---------------------- AUDIO SINTETIZADO ---------------------- */
+const Audio2 = (() => {
+  let ctx = null;
+  let activo = true;
+  function obtenerCtx(){
+    if (!ctx) {
+      try { ctx = new (window.AudioContext || window.webkitAudioContext)(); }
+      catch(e){ ctx = null; }
+    }
+    return ctx;
+  }
+  function tono(frecuencia, duracion, tipo='sine', volumen=.08, retardo=0){
+    if (!activo) return;
+    const c = obtenerCtx();
+    if (!c) return;
+    const t0 = c.currentTime + retardo;
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.type = tipo;
+    osc.frequency.setValueAtTime(frecuencia, t0);
+    gain.gain.setValueAtTime(0, t0);
+    gain.gain.linearRampToValueAtTime(volumen, t0 + .01);
+    gain.gain.exponentialRampToValueAtTime(.0001, t0 + duracion);
+    osc.connect(gain).connect(c.destination);
+    osc.start(t0);
+    osc.stop(t0 + duracion + .02);
+  }
+  return {
+    alternar(){ activo = !activo; return activo; },
+    estaActivo(){ return activo; },
+    acierto(){ tono(660,.12,'triangle',.09); tono(880,.14,'triangle',.08,.07); },
+    error(){ tono(180,.22,'sawtooth',.08); },
+    bonus(){ tono(880,.1,'square',.07); tono(1180,.12,'square',.07,.06); tono(1480,.16,'square',.06,.12); },
+    logro(){ tono(520,.1,'sine',.07); tono(780,.12,'sine',.07,.09); tono(1040,.18,'sine',.06,.18); },
+    tic(){ tono(340,.05,'square',.03); },
+    finJuego(){ tono(440,.15,'triangle',.07); tono(330,.2,'triangle',.07,.15); tono(220,.3,'triangle',.06,.3); },
+  };
+})();
+
+/* ---------------------- PARTÍCULAS ---------------------- */
+function lanzarParticulas(x, y, color, cantidad=16){
+  const capa = document.getElementById('capa-particulas');
+  for (let i=0;i<cantidad;i++){
+    const p = document.createElement('div');
+    p.className = 'particula';
+    p.style.left = x+'px';
+    p.style.top = y+'px';
+    p.style.background = color;
+    const angulo = (Math.PI*2*i)/cantidad + Math.random()*.5;
+    const distancia = 60 + Math.random()*70;
+    const dx = Math.cos(angulo)*distancia;
+    const dy = Math.sin(angulo)*distancia;
+    p.animate([
+      { transform:'translate(0,0) scale(1)', opacity:1 },
+      { transform:`translate(${dx}px, ${dy}px) scale(.3)`, opacity:0 }
+    ], { duration: 650+Math.random()*300, easing:'cubic-bezier(.2,.8,.3,1)' });
+    capa.appendChild(p);
+    setTimeout(()=>p.remove(), 1000);
+  }
+}
+
+/* ---------------------- ESTADO DEL JUEGO ---------------------- */
+function estadoInicial(){
+  return {
+    dificultad:'normal',
+    puntos:0, vidas:3, tiempo:50, tiempoTotal:50,
+    combo:0, mejorCombo:0,
+    aciertos:0, fallos:0, intentos:0,
+    bonusAcertados:0,
+    residuoActual:null,
+    activo:false,
+    pausado:false,
+    logrosGanados:new Set(),
+    idTemporizador:null,
+  };
+}
+let estado = estadoInicial();
+
+/* ---------------------- REFERENCIAS DOM ---------------------- */
+const $ = id => document.getElementById(id);
+const dom = {
+  pantallas:{
+    inicio:$('pantalla-inicio'), juego:$('pantalla-juego'),
+    pausa:$('pantalla-pausa'), resultados:$('pantalla-resultados'),
+    pregunta:$('pantalla-pregunta'),
+  },
+  selectorDificultad:$('selector-dificultad'),
+  btnJugar:$('btn-jugar'),
+  mejorPuntajeInicio:$('mejor-puntaje-inicio'),
+  btnSonido:$('btn-sonido'),
+  btnPausa:$('btn-pausa'),
+  btnReanudar:$('btn-reanudar'),
+  btnSalirPausa:$('btn-salir-pausa'),
+  btnObjetivo:$('btn-objetivo'), panelObjetivo:$('panel-objetivo'),
+
+  btnPreguntar:$('btn-preguntar'),
+  btnVolverInicioPregunta:$('btn-volver-inicio-pregunta'),
+  formBusqueda:$('form-busqueda'), inputPregunta:$('input-pregunta'),
+  listaResiduosDatalist:$('lista-residuos-datalist'),
+  chipsRapidas:$('chips-rapidas'),
+  chatRespuesta:$('chat-respuesta'), chatPlaceholder:$('chat-placeholder'),
+  btnVerCatalogo:$('btn-ver-catalogo'), catalogoCompleto:$('catalogo-completo'),
+
+  puntaje:$('puntaje'), vidas:$('vidas'), tiempo:$('tiempo'),
+  hudTiempo:$('hud-tiempo'), comboTag:$('combo-tag'),
+  barraOds:$('barra-ods'),
+  pistaResiduo:$('pista-residuo'), residuoIcono:$('residuo-icono'),
+  nombreResiduo:$('nombre-residuo'), etiquetaBonus:$('etiqueta-bonus'),
+  avatar:$('avatar'), estadoTexto:$('estado-texto'),
+  descripcionTexto:$('descripcion-texto'),
+  canecas:$('canecas'),
+  mensajeOds:$('mensaje-ods'),
+
+  tituloResultado:$('titulo-resultado'),
+  tituloDesempeno:$('titulo-desempeno'),
+  resPuntos:$('res-puntos'), resPrecision:$('res-precision'),
+  resAciertos:$('res-aciertos'), resCombo:$('res-combo'),
+  logrosObtenidos:$('logros-obtenidos'),
+  inputNombre:$('input-nombre'), btnGuardarRanking:$('btn-guardar-ranking'),
+  listaRanking:$('lista-ranking'), formNombre:$('form-nombre'),
+  btnReiniciar:$('btn-reiniciar'), btnCambiarDificultad:$('btn-cambiar-dificultad'),
+
+  toast:$('toast-logro'), toastTexto:$('toast-texto'),
+};
+
+/* ---------------------- NAVEGACIÓN DE PANTALLAS ---------------------- */
+function mostrarPantalla(nombre){
+  Object.entries(dom.pantallas).forEach(([clave, el]) => {
+    el.classList.toggle('activa', clave === nombre);
+  });
+  dom.btnPausa.classList.toggle('oculto', nombre !== 'juego');
+}
+
+/* ---------------------- PERSISTENCIA ---------------------- */
+function leerRecord(){
+  try { return parseInt(localStorage.getItem(CLAVE_STORAGE_RECORD)) || 0; }
+  catch(e){ return 0; }
+}
+function guardarRecord(valor){
+  try { localStorage.setItem(CLAVE_STORAGE_RECORD, String(valor)); } catch(e){}
+}
+function leerRanking(){
+  try { return JSON.parse(localStorage.getItem(CLAVE_STORAGE_RANKING)) || []; }
+  catch(e){ return []; }
+}
+function guardarRanking(lista){
+  try { localStorage.setItem(CLAVE_STORAGE_RANKING, JSON.stringify(lista)); } catch(e){}
+}
+
+/* ---------------------- INICIO: SELECCIÓN DE DIFICULTAD ---------------------- */
+dom.selectorDificultad.addEventListener('click', (ev) => {
+  const chip = ev.target.closest('.chip-dificultad');
+  if (!chip) return;
+  [...dom.selectorDificultad.children].forEach(c => {
+    c.classList.remove('activa');
+    c.setAttribute('aria-checked','false');
+  });
+  chip.classList.add('activa');
+  chip.setAttribute('aria-checked','true');
+  estado.dificultad = chip.dataset.dif;
+});
+
+function actualizarMejorPuntajeInicio(){
+  dom.mejorPuntajeInicio.innerHTML = `🏅 Mejor puntaje guardado: <b>${leerRecord()}</b> pts`;
+}
+
+/* ---------------------- INICIAR RONDA ---------------------- */
+dom.btnJugar.addEventListener('click', iniciarJuego);
+dom.btnReiniciar.addEventListener('click', iniciarJuego);
+dom.btnCambiarDificultad.addEventListener('click', () => mostrarPantalla('inicio'));
+
+function iniciarJuego(){
+  const cfg = DIFICULTADES[estado.dificultad];
+  estado = estadoInicial();
+  estado.dificultad = document.querySelector('.chip-dificultad.activa')?.dataset.dif || 'normal';
+  const cfgActual = DIFICULTADES[estado.dificultad];
+  estado.vidas = cfgActual.vidas;
+  estado.tiempo = cfgActual.tiempoTotal;
+  estado.tiempoTotal = cfgActual.tiempoTotal;
+  estado.activo = true;
+
+  document.documentElement.style.setProperty('--vel-banda', cfgActual.velocidadBanda+'s');
+
+  actualizarHUD();
+  dom.comboTag.classList.remove('mostrar');
+  mostrarPantalla('juego');
+  siguienteResiduo();
+
+  clearInterval(estado.idTemporizador);
+  estado.idTemporizador = setInterval(tick, 1000);
+}
+
+function tick(){
+  if (!estado.activo || estado.pausado) return;
+  estado.tiempo--;
+  if (estado.tiempo <= 5 && estado.tiempo > 0) Audio2.tic();
+  actualizarHUD();
+  if (estado.tiempo <= 0 || estado.vidas <= 0){
+    terminarJuego();
+  }
+}
+
+/* ---------------------- HUD ---------------------- */
+function actualizarHUD(){
+  dom.puntaje.textContent = estado.puntos;
+  dom.vidas.textContent = '❤️'.repeat(Math.max(0, estado.vidas));
+  dom.tiempo.textContent = Math.max(0, estado.tiempo);
+  dom.hudTiempo.classList.toggle('urgente', estado.tiempo <= 8);
+
+  const progreso = Math.min(100, Math.round((estado.puntos/120)*100));
+  dom.barraOds.style.width = progreso+'%';
+  dom.barraOds.textContent = progreso+'%';
+
+  const nivelCombo = nivelDeCombo(estado.combo);
+  dom.comboTag.textContent = `🔥 Combo x${nivelCombo.toFixed(1)}`;
+  dom.comboTag.classList.toggle('mostrar', estado.combo >= 2);
+}
+
+function nivelDeCombo(combo){
+  if (combo >= 9) return 3;
+  if (combo >= 6) return 2;
+  if (combo >= 3) return 1.5;
+  return 1;
+}
+
+/* ---------------------- RESIDUOS ---------------------- */
+function elegirResiduoAleatorio(){
+  const item = CATALOGO_RESIDUOS[Math.floor(Math.random()*CATALOGO_RESIDUOS.length)];
+  const cfg = DIFICULTADES[estado.dificultad];
+  const esBonus = Math.random() < cfg.probBonus;
+  return { ...item, esBonus };
+}
+
+function siguienteResiduo(){
+  if (!estado.activo) return;
+  const residuo = elegirResiduoAleatorio();
+  estado.residuoActual = residuo;
+
+  dom.residuoIcono.textContent = residuo.icono;
+  dom.residuoIcono.classList.toggle('dorado', residuo.esBonus);
+  dom.nombreResiduo.textContent = residuo.nombre;
+  dom.descripcionTexto.textContent = residuo.desc;
+  dom.etiquetaBonus.classList.toggle('oculto', !residuo.esBonus);
+
+  // Reinicia animación de entrada
+  dom.pistaResiduo.style.animation = 'none';
+  void dom.pistaResiduo.offsetWidth;
+  dom.pistaResiduo.style.animation = '';
+
+  setAvatar('neutro');
+  dom.estadoTexto.textContent = '🤔 ¿Dónde va este residuo?';
+  dom.mensajeOds.textContent = 'Selecciona la caneca correcta';
+  dom.mensajeOds.style.color = '';
+}
+
+function setAvatar(tipo){
+  const mapa = { neutro:'🧑\u200d🎓', feliz:'😃', triste:'😢' };
+  dom.avatar.textContent = mapa[tipo] || mapa.neutro;
+  dom.avatar.className = 'avatar ' + tipo;
+}
+
+/* ---------------------- INTERACCIÓN: CONTENEDORES ---------------------- */
+dom.canecas.addEventListener('click', (ev) => {
+  const bin = ev.target.closest('.bin');
+  if (!bin) return;
+  procesarRespuesta(bin.dataset.tipo, bin);
+});
+
+document.addEventListener('keydown', (ev) => {
+  if (dom.pantallas.juego.classList.contains('activa') && !estado.pausado){
+    const tipo = CLAVE_TECLA[ev.key];
+    if (tipo){
+      const bin = dom.canecas.querySelector(`.bin[data-tipo="${tipo}"]`);
+      if (bin) procesarRespuesta(tipo, bin);
+    }
+  }
+  if (ev.key === 'Escape'){
+    if (dom.pantallas.juego.classList.contains('activa')) alternarPausa(true);
+    else if (dom.pantallas.pausa.classList.contains('activa')) alternarPausa(false);
+  }
+});
+
+// Arrastrar y soltar (mejora de escritorio; el click sigue funcionando siempre)
+[...dom.canecas.children].forEach(bin => {
+  bin.addEventListener('dragover', ev => { ev.preventDefault(); bin.classList.add('arrastrando-encima'); });
+  bin.addEventListener('dragleave', () => bin.classList.remove('arrastrando-encima'));
+  bin.addEventListener('drop', ev => {
+    ev.preventDefault();
+    bin.classList.remove('arrastrando-encima');
+    procesarRespuesta(bin.dataset.tipo, bin);
+  });
+});
+dom.pistaResiduo.setAttribute('draggable','true');
+dom.pistaResiduo.addEventListener('dragstart', ev => {
+  ev.dataTransfer.setData('text/plain', 'residuo');
+});
+
+function procesarRespuesta(tipoSeleccionado, elementoBin){
+  if (!estado.activo || estado.pausado || !estado.residuoActual) return;
+
+  estado.intentos++;
+  const residuo = estado.residuoActual;
+  const correcto = tipoSeleccionado === residuo.tipo;
+  const rect = elementoBin.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+
+  if (correcto){
+    estado.combo++;
+    estado.mejorCombo = Math.max(estado.mejorCombo, estado.combo);
+    estado.aciertos++;
+    const multiplicador = nivelDeCombo(estado.combo);
+    let puntosGanados = Math.round(10 * multiplicador);
+    if (residuo.esBonus){
+      puntosGanados *= 2;
+      estado.bonusAcertados++;
+      Audio2.bonus();
+      lanzarParticulas(cx, cy, 'var(--oro)', 22);
+    } else {
+      Audio2.acierto();
+      lanzarParticulas(cx, cy, 'var(--verde)', 16);
+    }
+    estado.puntos += puntosGanados;
+    setAvatar('feliz');
+    dom.estadoTexto.textContent = '✅ ¡Bien hecho!';
+    dom.mensajeOds.style.color = '#b9f5d0';
+    dom.mensajeOds.textContent = `+${puntosGanados} pts · ${residuo.nombre} es ${NOMBRES_TIPO[residuo.tipo]}`;
+    elementoBin.classList.remove('correcto-flash');
+    void elementoBin.offsetWidth;
+    elementoBin.classList.add('correcto-flash');
+    verificarLogros();
+  } else {
+    estado.combo = 0;
+    estado.vidas--;
+    estado.fallos++;
+    Audio2.error();
+    setAvatar('triste');
+    dom.estadoTexto.textContent = '❌ Intenta de nuevo';
+    dom.mensajeOds.style.color = '#f7b0a0';
+    dom.mensajeOds.textContent = `❌ "${residuo.nombre}" va en ${NOMBRES_TIPO[residuo.tipo]}`;
+    elementoBin.classList.remove('error-flash');
+    void elementoBin.offsetWidth;
+    elementoBin.classList.add('error-flash');
+  }
+
+  actualizarHUD();
+
+  if (estado.vidas <= 0){
+    setTimeout(terminarJuego, 500);
+    return;
+  }
+  setTimeout(siguienteResiduo, 550);
+}
+
+/* ---------------------- LOGROS ---------------------- */
+function verificarLogros(){
+  LOGROS.forEach(logro => {
+    if (!estado.logrosGanados.has(logro.id) && logro.cond(estado)){
+      estado.logrosGanados.add(logro.id);
+      mostrarToastLogro(logro);
+    }
+  });
+}
+
+let temporizadorToast = null;
+function mostrarToastLogro(logro){
+  Audio2.logro();
+  dom.toast.querySelector('.icono-logro').textContent = logro.icono;
+  dom.toastTexto.textContent = `Logro desbloqueado: ${logro.nombre}`;
+  dom.toast.classList.add('mostrar');
+  clearTimeout(temporizadorToast);
+  temporizadorToast = setTimeout(() => dom.toast.classList.remove('mostrar'), 2600);
+}
+
+/* ---------------------- PAUSA ---------------------- */
+dom.btnPausa.addEventListener('click', () => alternarPausa(true));
+dom.btnReanudar.addEventListener('click', () => alternarPausa(false));
+dom.btnSalirPausa.addEventListener('click', () => {
+  estado.activo = false;
+  clearInterval(estado.idTemporizador);
+  mostrarPantalla('inicio');
+});
+
+function alternarPausa(pausar){
+  estado.pausado = pausar;
+  mostrarPantalla(pausar ? 'pausa' : 'juego');
+}
+
+/* ---------------------- SONIDO ---------------------- */
+dom.btnSonido.addEventListener('click', () => {
+  const activo2 = Audio2.alternar();
+  dom.btnSonido.textContent = activo2 ? '🔊' : '🔇';
+});
+
+/* ---------------------- FIN DE JUEGO ---------------------- */
+function terminarJuego(){
+  estado.activo = false;
+  clearInterval(estado.idTemporizador);
+  Audio2.finJuego();
+
+  const precision = estado.intentos ? Math.round((estado.aciertos/estado.intentos)*100) : 0;
+  const record = leerRecord();
+  const esNuevoRecord = estado.puntos > record;
+  if (esNuevoRecord) guardarRecord(estado.puntos);
+
+  dom.tituloResultado.textContent = estado.vidas <= 0 ? '💔 ¡Sin vidas! Misión interrumpida' : '🏁 ¡Tiempo cumplido!';
+  dom.tituloDesempeno.textContent = esNuevoRecord
+    ? '🎉 ¡Nuevo récord personal!'
+    : (precision >= 80 ? 'Excelente clasificación, sigue así.' : 'Buen intento, repasa las categorías y mejora tu marca.');
+
+  dom.resPuntos.textContent = estado.puntos;
+  dom.resPrecision.textContent = precision + '%';
+  dom.resAciertos.textContent = `${estado.aciertos}/${estado.intentos}`;
+  dom.resCombo.textContent = 'x' + nivelDeCombo(estado.mejorCombo).toFixed(1);
+
+  dom.logrosObtenidos.innerHTML = '';
+  if (estado.logrosGanados.size === 0){
+    dom.logrosObtenidos.innerHTML = '<span class="logro-pill">Sin logros esta ronda — ¡inténtalo de nuevo!</span>';
+  } else {
+    estado.logrosGanados.forEach(id => {
+      const logro = LOGROS.find(l => l.id === id);
+      if (logro){
+        const pill = document.createElement('span');
+        pill.className = 'logro-pill';
+        pill.innerHTML = `${logro.icono} ${logro.nombre}`;
+        dom.logrosObtenidos.appendChild(pill);
+      }
+    });
+  }
+
+  renderizarRanking();
+  dom.formNombre.classList.remove('oculto');
+  dom.inputNombre.value = '';
+  actualizarMejorPuntajeInicio();
+  mostrarPantalla('resultados');
+}
+
+/* ---------------------- RANKING LOCAL ---------------------- */
+function renderizarRanking(lista){
+  const ranking = (lista || leerRanking()).slice(0,5);
+  dom.listaRanking.innerHTML = '';
+  if (ranking.length === 0){
+    dom.listaRanking.innerHTML = '<p style="color:var(--texto-sub);font-size:.82rem;">Aún no hay puntajes guardados.</p>';
+    return;
+  }
+  ranking.forEach((entrada, i) => {
+    const fila = document.createElement('div');
+    fila.className = 'fila-ranking' + (entrada.nuevo ? ' nuevo' : '');
+    fila.innerHTML = `<span><span class="pos">${i+1}.</span>${escaparHtml(entrada.nombre)}</span><span>${entrada.puntos} pts</span>`;
+    dom.listaRanking.appendChild(fila);
+  });
+}
+
+function escaparHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+dom.btnGuardarRanking.addEventListener('click', guardarEnRanking);
+dom.inputNombre.addEventListener('keydown', ev => { if (ev.key === 'Enter') guardarEnRanking(); });
+
+function guardarEnRanking(){
+  const nombre = (dom.inputNombre.value || 'Jugador').trim().slice(0,16) || 'Jugador';
+  const ranking = leerRanking();
+  ranking.push({ nombre, puntos: estado.puntos, nuevo:true });
+  ranking.sort((a,b) => b.puntos - a.puntos);
+  const top5 = ranking.slice(0,5);
+  guardarRanking(top5.map(e => ({ nombre:e.nombre, puntos:e.puntos })));
+  renderizarRanking(top5);
+  dom.formNombre.classList.add('oculto');
+}
+
+/* ---------------------- PANEL DEL OBJETIVO ---------------------- */
+dom.btnObjetivo.addEventListener('click', () => {
+  const abierto = !dom.panelObjetivo.classList.contains('oculto');
+  dom.panelObjetivo.classList.toggle('oculto');
+  dom.btnObjetivo.setAttribute('aria-expanded', String(!abierto));
+});
+
+/* ================================================================
+   MÓDULO: "PREGÚNTALE A ECOCLICK"
+   Un buscador conversacional pensado para que sean los propios
+   niños quienes escriban o elijan un residuo y reciban, en forma
+   de chat, la respuesta de a qué contenedor pertenece y por qué.
+   No depende del modo de juego cronometrado: se puede usar como
+   material de consulta libre, ideal para el aula.
+   ================================================================ */
+
+function quitarAcentos(texto){
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function normalizar(texto){
+  return quitarAcentos(String(texto || '').toLowerCase().trim());
+}
+
+// Rellena el <datalist> con todos los nombres del catálogo (autocompletado nativo)
+function inicializarDatalist(){
+  dom.listaResiduosDatalist.innerHTML = CATALOGO_RESIDUOS
+    .map(r => `<option value="${r.nombre}">`).join('');
+}
+
+// Muestra unas cuantas sugerencias fijas (2 por categoría) para inspirar la pregunta
+function inicializarChipsRapidas(){
+  const porCategoria = { verde:[], azul:[], negro:[] };
+  CATALOGO_RESIDUOS.forEach(r => porCategoria[r.tipo].push(r));
+  const sugeridos = [
+    ...porCategoria.verde.slice(0,2),
+    ...porCategoria.azul.slice(0,2),
+    ...porCategoria.negro.slice(0,2),
+  ];
+  dom.chipsRapidas.innerHTML = '';
+  sugeridos.forEach(r => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'chip-residuo';
+    chip.innerHTML = `${r.icono} ${r.nombre}`;
+    chip.addEventListener('click', () => hacerPregunta(r.nombre));
+    dom.chipsRapidas.appendChild(chip);
+  });
+}
+
+// Construye el catálogo completo navegable, agrupado por contenedor
+function inicializarCatalogoCompleto(){
+  const grupos = [
+    { tipo:'verde', titulo:'🟢 Orgánicos' },
+    { tipo:'azul',  titulo:'🔵 Aprovechables' },
+    { tipo:'negro', titulo:'🔴 No aprovechables' },
+  ];
+  dom.catalogoCompleto.innerHTML = '';
+  grupos.forEach(g => {
+    const items = CATALOGO_RESIDUOS.filter(r => r.tipo === g.tipo);
+    const bloque = document.createElement('div');
+    bloque.className = `catalogo-grupo ${g.tipo}`;
+    const contenedorItems = items.map(r =>
+      `<button type="button" class="chip-residuo pequena" data-nombre="${r.nombre}">${r.icono} ${r.nombre}</button>`
+    ).join('');
+    bloque.innerHTML = `<h4>${g.titulo}</h4><div class="catalogo-items">${contenedorItems}</div>`;
+    dom.catalogoCompleto.appendChild(bloque);
+  });
+  dom.catalogoCompleto.querySelectorAll('.chip-residuo').forEach(btn => {
+    btn.addEventListener('click', () => hacerPregunta(btn.dataset.nombre));
+  });
+}
+
+// Busca coincidencias del texto escrito dentro del catálogo (tolerante a acentos/mayúsculas)
+function buscarResiduos(consultaOriginal){
+  const consulta = normalizar(consultaOriginal);
+  if (!consulta) return [];
+  // 1) Coincidencia exacta de nombre
+  const exacta = CATALOGO_RESIDUOS.filter(r => normalizar(r.nombre) === consulta);
+  if (exacta.length) return exacta;
+  // 2) El nombre del residuo contiene la consulta, o la consulta contiene el nombre
+  const parciales = CATALOGO_RESIDUOS.filter(r => {
+    const nombreNorm = normalizar(r.nombre);
+    return nombreNorm.includes(consulta) || consulta.includes(nombreNorm);
+  });
+  if (parciales.length) return parciales;
+  // 3) Coincidencia por palabra suelta (ej: "plastico" encuentra "botella de plástico")
+  const palabras = consulta.split(/\s+/).filter(p => p.length > 2);
+  if (palabras.length){
+    const porPalabra = CATALOGO_RESIDUOS.filter(r => {
+      const nombreNorm = normalizar(r.nombre);
+      return palabras.some(p => nombreNorm.includes(p));
+    });
+    if (porPalabra.length) return porPalabra;
+  }
+  return [];
+}
+
+function crearBurbuja(texto, clase){
+  const burbuja = document.createElement('div');
+  burbuja.className = 'burbuja ' + clase;
+  burbuja.innerHTML = texto;
+  return burbuja;
+}
+
+function limpiarPlaceholderChat(){
+  if (dom.chatPlaceholder && dom.chatPlaceholder.isConnected){
+    dom.chatPlaceholder.remove();
+  }
+}
+
+function desplazarChatAbajo(){
+  dom.chatRespuesta.scrollTop = dom.chatRespuesta.scrollHeight;
+}
+
+// Punto de entrada principal: el niño "pregunta" un residuo (texto libre o clic en chip)
+function hacerPregunta(textoConsulta){
+  const consultaLimpia = String(textoConsulta || '').trim();
+  if (!consultaLimpia) return;
+
+  limpiarPlaceholderChat();
+
+  // Burbuja de la pregunta del niño
+  const nombreCapitalizado = consultaLimpia.charAt(0).toUpperCase() + consultaLimpia.slice(1);
+  dom.chatRespuesta.appendChild(
+    crearBurbuja(`🙋 ¿Dónde va: <b>${escaparHtml(nombreCapitalizado)}</b>?`, 'burbuja-nino')
+  );
+
+  const coincidencias = buscarResiduos(consultaLimpia);
+
+  if (coincidencias.length === 1){
+    responderConResiduo(coincidencias[0]);
+  } else if (coincidencias.length > 1){
+    responderConOpciones(coincidencias);
+  } else {
+    responderSinCoincidencias(consultaLimpia);
+  }
+
+  desplazarChatAbajo();
+  if (dom.inputPregunta) dom.inputPregunta.value = '';
+  Audio2.acierto();
+}
+
+function responderConResiduo(residuo){
+  const burbuja = crearBurbuja('', `burbuja-eco ${residuo.tipo}`);
+  burbuja.innerHTML = `
+    <span class="etiqueta-caneca">${residuo.icono} ${NOMBRES_TIPO[residuo.tipo]}</span>
+    <p>${residuo.nombre} va en el contenedor <b>${NOMBRES_TIPO[residuo.tipo].replace(/^[^ ]+ /,'')}</b>. ${residuo.desc}</p>
+  `;
+  dom.chatRespuesta.appendChild(burbuja);
+}
+
+function responderConOpciones(lista){
+  const burbuja = crearBurbuja('', 'burbuja-eco info');
+  const chipsHtml = lista.slice(0,6).map(r =>
+    `<button type="button" class="chip-residuo pequena" data-nombre="${r.nombre}">${r.icono} ${r.nombre}</button>`
+  ).join('');
+  burbuja.innerHTML = `
+    <span class="etiqueta-caneca">🤔 Varias coincidencias</span>
+    <p>Encontré más de un residuo parecido. ¿Cuál de estos buscas?</p>
+    <div class="sugerencias-inline">${chipsHtml}</div>
+  `;
+  dom.chatRespuesta.appendChild(burbuja);
+  burbuja.querySelectorAll('.chip-residuo').forEach(btn => {
+    btn.addEventListener('click', () => hacerPregunta(btn.dataset.nombre));
+  });
+}
+
+function responderSinCoincidencias(consulta){
+  const burbuja = crearBurbuja('', 'burbuja-eco info');
+  const azar = [...CATALOGO_RESIDUOS].sort(() => Math.random()-.5).slice(0,4);
+  const chipsHtml = azar.map(r =>
+    `<button type="button" class="chip-residuo pequena" data-nombre="${r.nombre}">${r.icono} ${r.nombre}</button>`
+  ).join('');
+  burbuja.innerHTML = `
+    <span class="etiqueta-caneca">🔎 Sin resultados</span>
+    <p>Todavía no tengo "<b>${escaparHtml(consulta)}</b>" en mi catálogo. Revisa la ortografía o prueba con alguno de estos:</p>
+    <div class="sugerencias-inline">${chipsHtml}</div>
+  `;
+  dom.chatRespuesta.appendChild(burbuja);
+  burbuja.querySelectorAll('.chip-residuo').forEach(btn => {
+    btn.addEventListener('click', () => hacerPregunta(btn.dataset.nombre));
+  });
+}
+
+/* ---------------------- NAVEGACIÓN DEL MÓDULO DE PREGUNTAS ---------------------- */
+dom.btnPreguntar.addEventListener('click', () => mostrarPantalla('pregunta'));
+dom.btnVolverInicioPregunta.addEventListener('click', () => mostrarPantalla('inicio'));
+
+dom.formBusqueda.addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  hacerPregunta(dom.inputPregunta.value);
+});
+
+dom.btnVerCatalogo.addEventListener('click', () => {
+  const abierto = !dom.catalogoCompleto.classList.contains('oculto');
+  dom.catalogoCompleto.classList.toggle('oculto');
+  dom.btnVerCatalogo.setAttribute('aria-expanded', String(!abierto));
+});
+
+/* ---------------------- ARRANQUE ---------------------- */
+actualizarMejorPuntajeInicio();
+renderizarRanking();
+inicializarDatalist();
+inicializarChipsRapidas();
+inicializarCatalogoCompleto();
+mostrarPantalla('inicio');
+
+})();
+</script>
+</body>
+</html>

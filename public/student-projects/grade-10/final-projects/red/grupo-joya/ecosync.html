@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoSync · Gestión de residuos inteligente</title>
+  <!-- Font Awesome (íconos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ===== RESET Y VARIABLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0b3b3c;
+      --primary-light: #1e5f5f;
+      --secondary: #e6b91e;
+      --accent: #f1c40f;
+      --bg-light: #f4f7f6;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --shadow: 0 20px 40px -12px rgba(0, 20, 20, 0.35);
+      --radius: 28px;
+      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: linear-gradient(145deg, #d4e9e6 0%, #b8d5d1 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      margin: 0;
+    }
+
+    /* ===== TARJETA PRINCIPAL ===== */
+    .app-wrapper {
+      max-width: 1100px;
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 2rem 2.5rem;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* ===== ENCABEZADO ===== */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 2px solid rgba(11, 59, 60, 0.15);
+      padding-bottom: 1.2rem;
+    }
+
+    .brand h1 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .brand h1 i {
+      color: var(--secondary);
+      font-size: 2.2rem;
+    }
+
+    .brand .sub {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #2d5f5e;
+      margin-top: 0.1rem;
+      letter-spacing: 0.3px;
+      opacity: 0.8;
+    }
+
+    .team-badge {
+      background: var(--primary);
+      padding: 0.6rem 1.4rem;
+      border-radius: 60px;
+      color: #f0f9f7;
+      font-weight: 500;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(11, 59, 60, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .team-badge i {
+      color: var(--secondary);
+      font-size: 1rem;
+    }
+
+    .team-badge span {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+    }
+
+    /* ===== PROBLEMÁTICA ===== */
+    .problem-section {
+      background: rgba(11, 59, 60, 0.04);
+      border-radius: 20px;
+      padding: 1.2rem 1.8rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border-left: 6px solid var(--secondary);
+    }
+
+    .problem-section p {
+      font-size: 1rem;
+      color: #1a3e3d;
+      font-weight: 500;
+    }
+
+    .problem-section p i {
+      color: var(--primary-light);
+      margin-right: 0.6rem;
+    }
+
+    .problem-section .badge-problem {
+      background: var(--primary);
+      color: white;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ===== OBJETIVO ===== */
+    .objective-section {
+      background: rgba(230, 185, 30, 0.10);
+      border-radius: 20px;
+      padding: 1.2rem 1.8rem;
+      margin-bottom: 2rem;
+      border-left: 6px solid var(--primary-light);
+    }
+
+    .objective-section h3 {
+      color: var(--primary);
+      margin-bottom: 0.45rem;
+      font-size: 1.05rem;
+    }
+
+    .objective-section p {
+      color: #1a3e3d;
+      line-height: 1.6;
+      font-size: 0.96rem;
+    }
+
+    /* ===== CUADRO DE CONTROL ===== */
+    .control-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 720px) {
+      .control-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    /* ===== PANEL DE ENTRADA ===== */
+    .input-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 1.8rem 1.8rem 2rem;
+      box-shadow: 0 8px 24px rgba(0, 30, 30, 0.08);
+    }
+
+    .input-panel h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 500;
+      color: #1a4a49;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .input-group input, 
+    .input-group select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid #dce8e6;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      background: #fbfdfd;
+      transition: var(--transition);
+      outline: none;
+      font-weight: 400;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 4px rgba(30, 95, 95, 0.12);
+      background: white;
+    }
+
+    .input-group select {
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%231e5f5f" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1.2rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 0.9rem 1.6rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 12px rgba(11, 59, 60, 0.25);
+    }
+
+    .btn-primary i {
+      font-size: 1.1rem;
+    }
+
+    .btn-primary:hover {
+      background: #0a4f4f;
+      transform: scale(1.01);
+      box-shadow: 0 8px 20px rgba(11, 59, 60, 0.35);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-secondary {
+      background: #eef4f3;
+      border: 1px solid #cbdad7;
+      color: var(--primary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-secondary:hover {
+      background: #dce8e6;
+      border-color: var(--primary-light);
+    }
+
+    .action-row {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    /* ===== ESTADÍSTICAS / RESULTADOS ===== */
+    .stats-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 1.8rem;
+      box-shadow: 0 8px 24px rgba(0, 30, 30, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stats-panel h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .stat-item {
+      background: #f6fbfa;
+      border-radius: 18px;
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid var(--secondary);
+    }
+
+    .stat-item .label {
+      font-weight: 500;
+      color: #1f4b4a;
+    }
+
+    .stat-item .value {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.2rem;
+      background: white;
+      padding: 0.1rem 0.9rem;
+      border-radius: 40px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+    }
+
+    .stat-total {
+      background: var(--primary);
+      color: white;
+      border-left-color: var(--secondary);
+      margin-top: 0.5rem;
+    }
+
+    .stat-total .label {
+      color: #e3f3f0;
+    }
+
+    .stat-total .value {
+      background: rgba(255,255,255,0.12);
+      color: white;
+    }
+
+    .empty-message {
+      color: #5b7e7c;
+      font-style: italic;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* ===== TABLA DE REGISTROS ===== */
+    .table-section {
+      margin-top: 1.2rem;
+      border-top: 2px dashed rgba(11, 59, 60, 0.15);
+      padding-top: 1.8rem;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .table-header h4 {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 20px;
+      background: white;
+      padding: 0.1rem 0.1rem 0.1rem 0.1rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      min-width: 360px;
+    }
+
+    th {
+      text-align: left;
+      padding: 1rem 0.8rem 0.8rem 1.2rem;
+      background: #f2f8f7;
+      color: #12403e;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 0.7rem 0.8rem 0.7rem 1.2rem;
+      border-bottom: 1px solid #e6efed;
+      color: #1f3f3e;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge-type {
+      background: var(--primary-light);
+      color: white;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #b53b3b;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: var(--transition);
+      padding: 0.2rem 0.6rem;
+      border-radius: 40px;
+    }
+
+    .delete-btn:hover {
+      background: #fde8e8;
+      color: #a12727;
+      transform: scale(1.1);
+    }
+
+    .footer-note {
+      margin-top: 1.8rem;
+      text-align: right;
+      font-size: 0.75rem;
+      color: #4d7270;
+      opacity: 0.7;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-note i {
+      margin-right: 0.2rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .app-wrapper { padding: 1.2rem; }
+      .brand h1 { font-size: 1.6rem; }
+      .team-badge { font-size: 0.7rem; padding: 0.4rem 1rem; }
+      .problem-section { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-wrapper" id="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <h1><i class="fas fa-leaf"></i> EcoSync</h1>
+      <div class="sub"><i class="fas fa-recycle" style="margin-right: 0.3rem;"></i> gestión de residuos inteligente</div>
+    </div>
+    <div class="team-badge">
+      <i class="fas fa-users"></i> equipo
+      <span>Karol Joya</span>
+      <span>Valentina Ruiz</span>
+    </div>
+  </header>
+
+  <!-- PROBLEMÁTICA -->
+  <div class="problem-section">
+    <p><i class="fas fa-exclamation-triangle" style="color: var(--secondary);"></i> <strong>Problemática:</strong> acumulación de residuos electrónicos y orgánicos en zonas urbanas · falta de trazabilidad.</p>
+    <span class="badge-problem"><i class="fas fa-microchip"></i> e-waste + orgánico</span>
+  </div>
+
+  <!-- OBJETIVO -->
+  <section class="objective-section">
+    <h3><i class="fas fa-bullseye" style="color: var(--secondary);"></i> Objetivo</h3>
+    <p>Desarrollar una aplicación web llamada <strong>EcoSync</strong> que permita registrar, clasificar y llevar un control básico del peso de los residuos, especialmente electrónicos y orgánicos, facilitando su seguimiento y promoviendo una gestión más organizada y responsable de los desechos.</p>
+  </section>
+
+  <!-- CUERPO PRINCIPAL -->
+  <div class="control-grid">
+    <!-- PANEL DE ENTRADA -->
+    <div class="input-panel">
+      <h3><i class="fas fa-pen-alt" style="color: var(--secondary);"></i> Registrar residuo</h3>
+      <div class="input-group">
+        <label for="materialInput"><i class="fas fa-box"></i> Material</label>
+        <input type="text" id="materialInput" placeholder="ej. Placa base, restos de comida..." />
+      </div>
+      <div class="input-group">
+        <label for="typeSelect"><i class="fas fa-tag"></i> Tipo</label>
+        <select id="typeSelect">
+          <option value="electrónico">Electrónico</option>
+          <option value="orgánico">Orgánico</option>
+          <option value="plástico">Plástico</option>
+          <option value="vidrio">Vidrio</option>
+          <option value="papel">Papel / cartón</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="weightInput"><i class="fas fa-weight-hanging"></i> Peso (kg)</label>
+        <input type="number" id="weightInput" placeholder="0.5" min="0.01" step="0.01" value="1.0" />
+      </div>
+      <button class="btn-primary" id="addBtn"><i class="fas fa-plus-circle"></i> Agregar registro</button>
+      <div class="action-row">
+        <button class="btn-secondary" id="clearBtn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
+        <button class="btn-secondary" id="sampleBtn"><i class="fas fa-database"></i> Cargar muestra</button>
+      </div>
+    </div>
+
+    <!-- PANEL DE ESTADÍSTICAS -->
+    <div class="stats-panel">
+      <h3><i class="fas fa-chart-pie" style="color: var(--secondary);"></i> Resumen</h3>
+      <div id="statsContainer">
+        <div class="stat-item"><span class="label"><i class="fas fa-cubes"></i> Total registros</span><span class="value" id="totalCount">0</span></div>
+        <div class="stat-item"><span class="label"><i class="fas fa-recycle"></i> Electrónicos</span><span class="value" id="electronicCount">0</span></div>
+        <div class="stat-item"><span class="label"><i class="fas fa-apple-alt"></i> Orgánicos</span><span class="value" id="organicCount">0</span></div>
+        <div class="stat-item stat-total"><span class="label"><i class="fas fa-weight-hanging"></i> Peso total</span><span class="value" id="totalWeight">0 kg</span></div>
+      </div>
+      <div style="margin-top: 0.6rem; font-size: 0.8rem; color: #3f6b69;">
+        <i class="fas fa-info-circle"></i> Última actualización automática
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA DE REGISTROS -->
+  <div class="table-section">
+    <div class="table-header">
+      <h4><i class="fas fa-list-ul" style="color: var(--secondary);"></i> Historial de residuos</h4>
+      <span style="font-size: 0.75rem; background: #e6efed; padding: 0.2rem 1rem; border-radius: 40px; color: #12403e;">
+        <i class="far fa-clock"></i> en tiempo real
+      </span>
+    </div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr><th>Material</th><th>Tipo</th><th>Peso (kg)</th><th style="text-align: center;">Acción</th></tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="4" style="text-align: center; padding: 1.8rem; color: #5b7e7c;"><i class="fas fa-inbox"></i> No hay registros aún</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="footer-note">
+    <i class="fas fa-code"></i> desarrollado por Karol Joya & Valentina Ruiz · v1.6
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ===== ESTADO =====
+    let records = [];
+
+    // ===== DOM REFS =====
+    const materialInput = document.getElementById('materialInput');
+    const typeSelect = document.getElementById('typeSelect');
+    const weightInput = document.getElementById('weightInput');
+    const addBtn = document.getElementById('addBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const tableBody = document.getElementById('tableBody');
+    const totalCount = document.getElementById('totalCount');
+    const electronicCount = document.getElementById('electronicCount');
+    const organicCount = document.getElementById('organicCount');
+    const totalWeight = document.getElementById('totalWeight');
+
+    // ===== FUNCIONES =====
+
+    // Renderizar tabla y estadísticas
+    function render() {
+      // Limpiar tabla
+      tableBody.innerHTML = '';
+
+      if (records.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 1.8rem; color: #5b7e7c;"><i class="fas fa-inbox"></i> No hay registros aún</td></tr>`;
+      } else {
+        records.forEach((rec, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><i class="fas fa-${rec.tipo === 'electrónico' ? 'microchip' : rec.tipo === 'orgánico' ? 'apple-alt' : 'box'}" style="margin-right: 0.4rem; color: var(--primary-light);"></i> ${rec.material}</td>
+            <td><span class="badge-type">${rec.tipo}</span></td>
+            <td>${rec.peso.toFixed(2)}</td>
+            <td style="text-align: center;">
+              <button class="delete-btn" data-index="${index}" title="Eliminar"><i class="fas fa-times-circle"></i></button>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+
+        // Eventos de eliminación
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            const idx = parseInt(this.getAttribute('data-index'), 10);
+            if (!isNaN(idx)) {
+              records.splice(idx, 1);
+              render();
+            }
+          });
+        });
+      }
+
+      // Estadísticas
+      const total = records.length;
+      const electronic = records.filter(r => r.tipo === 'electrónico').length;
+      const organic = records.filter(r => r.tipo === 'orgánico').length;
+      const weightSum = records.reduce((acc, r) => acc + r.peso, 0);
+
+      totalCount.textContent = total;
+      electronicCount.textContent = electronic;
+      organicCount.textContent = organic;
+      totalWeight.textContent = weightSum.toFixed(2) + ' kg';
+    }
+
+    // Agregar registro
+    function addRecord() {
+      const material = materialInput.value.trim();
+      const tipo = typeSelect.value;
+      const peso = parseFloat(weightInput.value);
+
+      if (!material) {
+        alert('Por favor, escribe un material.');
+        materialInput.focus();
+        return;
+      }
+
+      if (isNaN(peso) || peso <= 0) {
+        alert('Ingresa un peso válido (mayor a 0).');
+        weightInput.focus();
+        return;
+      }
+
+      records.push({
+        material: material,
+        tipo: tipo,
+        peso: peso
+      });
+
+      // Limpiar campo material y peso (opcional)
+      materialInput.value = '';
+      weightInput.value = '1.0';
+      materialInput.focus();
+      render();
+    }
+
+    // Cargar muestra de datos
+    function loadSample() {
+      const sample = [
+        { material: 'Placa base', tipo: 'electrónico', peso: 1.2 },
+        { material: 'Cáscaras de naranja', tipo: 'orgánico', peso: 0.8 },
+        { material: 'Botella PET', tipo: 'plástico', peso: 0.3 },
+        { material: 'Monitor LCD', tipo: 'electrónico', peso: 3.5 },
+        { material: 'Restos de verduras', tipo: 'orgánico', peso: 1.5 },
+        { material: 'Vidrio transparente', tipo: 'vidrio', peso: 0.7 },
+        { material: 'Caja de cartón', tipo: 'papel', peso: 0.4 },
+        { material: 'CPU', tipo: 'electrónico', peso: 2.1 },
+      ];
+      records = records.concat(sample);
+      render();
+    }
+
+    // Limpiar todos los registros
+    function clearAll() {
+      if (records.length === 0) return;
+      if (confirm('¿Eliminar todos los registros?')) {
+        records = [];
+        render();
+      }
+    }
+
+    // ===== EVENT LISTENERS =====
+    addBtn.addEventListener('click', addRecord);
+
+    clearBtn.addEventListener('click', clearAll);
+
+    sampleBtn.addEventListener('click', loadSample);
+
+    // Enter en campo material o peso
+    materialInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        weightInput.focus();
+      }
+    });
+    weightInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addRecord();
+      }
+    });
+
+    // ===== INICIALIZAR CON DATOS DE MUESTRA (para mostrar solución) =====
+    // Cargar muestra automáticamente al inicio (experiencia enriquecida)
+    loadSample();
+
+    // Y además dejamos el foco en el campo material
+    materialInput.focus();
+
+  })();
+</script>
+</body>
+</html>

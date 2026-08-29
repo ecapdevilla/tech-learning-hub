@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🕹️ Tech Arcade · ODS 9</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ========== ESTILOS (igual que antes, pero completo) ========== */
+        :root {
+            --arcade-bg: #0f0e1a;
+            --arcade-card: #1a1a2e;
+            --arcade-border: #2d2d44;
+            --neon-pink: #ff2d75;
+            --neon-blue: #00d4ff;
+            --neon-green: #39ff14;
+            --neon-yellow: #ffe600;
+            --neon-purple: #b026ff;
+            --neon-orange: #ff6a00;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            --shadow-neon: 0 0 30px rgba(0, 212, 255, 0.2);
+            --font-arcade: 'Press Start 2P', cursive;
+            --font-body: 'Inter', sans-serif;
+            --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--arcade-bg);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 16px;
+            background-image: radial-gradient(circle at 20% 30%, rgba(255,45,117,0.05) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 70%, rgba(0,212,255,0.05) 0%, transparent 50%);
+        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--arcade-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: var(--radius-full); box-shadow: 0 0 20px rgba(0,212,255,0.3); }
+        .app-wrapper { max-width: 1400px; margin: 0 auto; }
+        .app-header {
+            background: linear-gradient(135deg, #1a1a2e, #2d1b3d);
+            border: 3px solid var(--neon-blue);
+            border-radius: var(--radius-lg);
+            padding: 16px 24px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-neon);
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .app-header .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .app-header .brand .logo-icon { font-size: 2.4rem; animation: float 2s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .app-header .brand h1 {
+            font-family: var(--font-arcade);
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+        .app-header .brand .subtitle { font-size: 0.65rem; opacity: 0.7; display: block; -webkit-text-fill-color: #9ca3af; }
+        .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .header-actions .ods-badge {
+            font-family: var(--font-arcade);
+            font-size: 0.5rem;
+            background: rgba(57,255,20,0.1);
+            border: 2px solid var(--neon-green);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            color: var(--neon-green);
+            text-shadow: 0 0 20px rgba(57,255,20,0.3);
+        }
+        .btn-arcade {
+            font-family: var(--font-arcade);
+            font-size: 0.5rem;
+            padding: 6px 14px;
+            border: 2px solid var(--neon-blue);
+            background: rgba(0,212,255,0.05);
+            color: var(--neon-blue);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all 0.3s var(--transition-bounce);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-arcade:hover { background: var(--neon-blue); color: #0f0e1a; box-shadow: 0 0 30px rgba(0,212,255,0.4); transform: scale(1.05); }
+        .btn-arcade-pink { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .btn-arcade-pink:hover { background: var(--neon-pink); color: #0f0e1a; box-shadow: 0 0 30px rgba(255,45,117,0.4); }
+        .objetivo-compacto {
+            background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(255,45,117,0.05));
+            border: 2px solid var(--neon-yellow);
+            border-radius: var(--radius-md);
+            padding: 10px 18px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .objetivo-compacto .obj-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .objetivo-compacto .obj-text { font-size: 0.8rem; color: #d1d5db; flex: 1; }
+        .objetivo-compacto .obj-text strong { color: var(--neon-blue); font-weight: 700; }
+        .objetivo-compacto .obj-tag {
+            font-family: var(--font-arcade);
+            font-size: 0.45rem;
+            color: var(--neon-yellow);
+            background: rgba(255,230,0,0.1);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255,230,0,0.2);
+            white-space: nowrap;
+        }
+        .card-arcade {
+            background: var(--arcade-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 2px solid var(--arcade-border);
+            margin-bottom: 16px;
+            transition: all 0.3s var(--transition-bounce);
+        }
+        .card-arcade:hover { border-color: var(--neon-blue); box-shadow: var(--shadow-neon); transform: translateY(-3px); }
+        .card-arcade .card-title {
+            font-family: var(--font-arcade);
+            font-size: 0.7rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--neon-blue);
+            flex-wrap: wrap;
+        }
+        .card-arcade .card-title .title-icon { font-size: 1.3rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+        @media (max-width: 1024px) { .grid-2, .grid-3, .grid-4, .grid-5, .grid-6 { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 640px) { .grid-2, .grid-3, .grid-4, .grid-5, .grid-6 { grid-template-columns: 1fr; } }
+        .kpi-arcade {
+            text-align: center;
+            padding: 16px;
+            background: var(--arcade-bg);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--arcade-border);
+            transition: all 0.3s var(--transition-bounce);
+        }
+        .kpi-arcade:hover { border-color: var(--neon-blue); transform: scale(1.02); }
+        .kpi-arcade .kpi-number {
+            font-family: var(--font-arcade);
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .kpi-arcade .kpi-label { font-size: 0.6rem; color: #9ca3af; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-arcade .form-group { margin-bottom: 12px; }
+        .form-arcade label {
+            font-family: var(--font-arcade);
+            font-size: 0.5rem;
+            display: block;
+            margin-bottom: 4px;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .form-arcade .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--arcade-bg);
+            border: 2px solid var(--arcade-border);
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+        .form-arcade .form-control:focus { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0,212,255,0.1); }
+        .form-arcade .form-control::placeholder { color: #4b5563; }
+        .form-arcade select.form-control { appearance: none; cursor: pointer; }
+        .btn-interactivo {
+            font-family: var(--font-arcade);
+            font-size: 0.5rem;
+            padding: 10px 14px;
+            border: 2px solid var(--neon-yellow);
+            background: rgba(255,230,0,0.05);
+            color: var(--neon-yellow);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s var(--transition-bounce);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+        }
+        .btn-interactivo:hover { background: var(--neon-yellow); color: #0f0e1a; box-shadow: 0 0 40px rgba(255,230,0,0.3); transform: scale(1.03); }
+        .btn-interactivo:active { transform: scale(0.95); }
+        .btn-interactivo-blue { border-color: var(--neon-blue); color: var(--neon-blue); }
+        .btn-interactivo-blue:hover { background: var(--neon-blue); color: #0f0e1a; box-shadow: 0 0 40px rgba(0,212,255,0.3); }
+        .btn-interactivo-pink { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .btn-interactivo-pink:hover { background: var(--neon-pink); color: #0f0e1a; box-shadow: 0 0 40px rgba(255,45,117,0.3); }
+        .btn-interactivo-green { border-color: var(--neon-green); color: var(--neon-green); }
+        .btn-interactivo-green:hover { background: var(--neon-green); color: #0f0e1a; box-shadow: 0 0 40px rgba(57,255,20,0.3); }
+        .btn-interactivo-purple { border-color: var(--neon-purple); color: var(--neon-purple); }
+        .btn-interactivo-purple:hover { background: var(--neon-purple); color: #0f0e1a; box-shadow: 0 0 40px rgba(176,38,255,0.3); }
+        .btn-interactivo-orange { border-color: var(--neon-orange); color: var(--neon-orange); }
+        .btn-interactivo-orange:hover { background: var(--neon-orange); color: #0f0e1a; box-shadow: 0 0 40px rgba(255,106,0,0.3); }
+        .btn-arcade-primary {
+            font-family: var(--font-arcade);
+            font-size: 0.6rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: #0f0e1a;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-bounce);
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-arcade-primary:hover { transform: scale(1.02); box-shadow: 0 0 40px rgba(0,212,255,0.3); }
+        .btn-arcade-success { background: linear-gradient(135deg, var(--neon-green), #00b894); color: #0f0e1a; }
+        .btn-arcade-success:hover { box-shadow: 0 0 40px rgba(57,255,20,0.3); }
+        .btn-arcade-pink-full { background: linear-gradient(135deg, var(--neon-pink), #ff6b9d); color: #0f0e1a; }
+        .btn-arcade-pink-full:hover { box-shadow: 0 0 40px rgba(255,45,117,0.3); }
+        .btn-arcade-yellow { background: linear-gradient(135deg, var(--neon-yellow), #ffaa00); color: #0f0e1a; }
+        .btn-arcade-yellow:hover { box-shadow: 0 0 40px rgba(255,230,0,0.3); }
+        .log-container {
+            max-height: 120px;
+            overflow-y: auto;
+            font-size: 0.75rem;
+            padding: 10px;
+            background: var(--arcade-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--arcade-border);
+        }
+        .log-entry { padding: 3px 0; border-bottom: 1px solid var(--arcade-border); display: flex; gap: 8px; align-items: center; }
+        .log-entry:last-child { border-bottom: none; }
+        .log-entry .log-time { color: var(--neon-blue); font-size: 0.5rem; font-family: var(--font-arcade); white-space: nowrap; }
+        .log-entry .log-text { color: #d1d5db; font-size: 0.75rem; }
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 2000;
+        }
+        .toast {
+            background: var(--arcade-card);
+            border: 2px solid var(--neon-blue);
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: var(--font-body);
+            animation: slideUp 0.4s var(--transition-bounce);
+            box-shadow: var(--shadow-neon);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 250px;
+            font-size: 0.85rem;
+        }
+        .toast-success { border-color: var(--neon-green); }
+        .toast-error { border-color: var(--neon-pink); }
+        .toast-warning { border-color: var(--neon-yellow); }
+        @keyframes slideUp { from { opacity:0; transform: translateY(40px) scale(0.9); } to { opacity:1; transform: translateY(0) scale(1); } }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--arcade-bg);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--arcade-border);
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            transition: width 0.5s ease;
+            border-radius: var(--radius-full);
+        }
+        /* Juegos */
+        .clasificacion-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: var(--arcade-bg);
+            border: 2px solid var(--arcade-border);
+            border-radius: var(--radius-md);
+            margin-bottom: 6px;
+            cursor: grab;
+            transition: all 0.3s;
+        }
+        .clasificacion-item:hover { border-color: var(--neon-blue); }
+        .clasificacion-item.dragging { opacity: 0.5; }
+        .clasificacion-item .item-icon { font-size: 1.4rem; margin-right: 10px; }
+        .clasificacion-item .item-name { flex: 1; font-weight: 500; font-size: 0.85rem; }
+        .clasificacion-item .item-category {
+            font-family: var(--font-arcade);
+            font-size: 0.4rem;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+        }
+        .cat-hardware { background: rgba(0,212,255,0.15); color: var(--neon-blue); border: 1px solid rgba(0,212,255,0.3); }
+        .cat-software { background: rgba(57,255,20,0.15); color: var(--neon-green); border: 1px solid rgba(57,255,20,0.3); }
+        .cat-pendiente { background: rgba(255,230,0,0.15); color: var(--neon-yellow); border: 1px solid rgba(255,230,0,0.3); }
+        .drop-zone {
+            min-height: 80px;
+            padding: 12px;
+            border: 3px dashed var(--arcade-border);
+            border-radius: var(--radius-md);
+            transition: all 0.3s;
+        }
+        .drop-zone.drag-over { border-color: var(--neon-yellow); background: rgba(255,230,0,0.05); }
+        .drop-zone .drop-label {
+            font-family: var(--font-arcade);
+            font-size: 0.4rem;
+            color: #6b7280;
+            text-align: center;
+            display: block;
+            padding: 20px 0;
+        }
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        .memory-card {
+            aspect-ratio: 1;
+            background: var(--arcade-bg);
+            border: 2px solid var(--arcade-border);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-bounce);
+            min-height: 70px;
+            user-select: none;
+        }
+        .memory-card:hover { border-color: var(--neon-blue); transform: scale(1.05); }
+        .memory-card.flipped { border-color: var(--neon-yellow); background: rgba(255,230,0,0.05); }
+        .memory-card.matched { border-color: var(--neon-green); background: rgba(57,255,20,0.05); cursor: default; }
+        .pregunta-opcion {
+            padding: 12px 16px;
+            background: var(--arcade-bg);
+            border: 2px solid var(--arcade-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .pregunta-opcion:hover { border-color: var(--neon-blue); transform: translateX(6px); }
+        .pregunta-opcion.correct { border-color: var(--neon-green); background: rgba(57,255,20,0.1); }
+        .pregunta-opcion.wrong { border-color: var(--neon-pink); background: rgba(255,45,117,0.1); }
+        .pregunta-opcion.disabled { cursor: not-allowed; opacity: 0.6; }
+        .text-center { text-align: center; }
+        .mt-8 { margin-top: 8px; }
+        .mt-16 { margin-top: 16px; }
+        .mb-8 { margin-bottom: 8px; }
+        .mb-16 { margin-bottom: 16px; }
+        .flex { display: flex; }
+        .gap-8 { gap: 8px; }
+        .gap-12 { gap: 12px; }
+        .w-full { width: 100%; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .flex-wrap { flex-wrap: wrap; }
+        .text-neon-green { color: var(--neon-green); }
+        .text-neon-pink { color: var(--neon-pink); }
+        .text-neon-blue { color: var(--neon-blue); }
+        .text-neon-yellow { color: var(--neon-yellow); }
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            .app-header { padding: 12px 16px; }
+            .app-header .brand h1 { font-size: 0.9rem; }
+            .objetivo-compacto { padding: 8px 12px; }
+            .objetivo-compacto .obj-text { font-size: 0.7rem; }
+            .card-arcade { padding: 14px; }
+            .kpi-arcade .kpi-number { font-size: 1.6rem; }
+            .memory-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+            .memory-card { font-size: 1.4rem; min-height: 55px; }
+            .toast { min-width: 180px; font-size: 0.75rem; padding: 10px 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="brand">
+            <span class="logo-icon">🕹️</span>
+            <div>
+                <h1>Tech Arcade</h1>
+                <span class="subtitle">CODE FOR CHANGE · ODS 9 · Industria, Innovación e Infraestructura</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <span class="ods-badge">⚡ ODS 9</span>
+            <button class="btn-arcade" onclick="toggleTheme()"><i class="fas fa-moon"></i> Tema</button>
+            <button class="btn-arcade btn-arcade-pink" onclick="resetearDatos()"><i class="fas fa-trash"></i> Reset</button>
+        </div>
+        <div class="objetivo-compacto">
+            <span class="obj-icon">🎯</span>
+            <span class="obj-text">
+                <strong>Innovar</strong> y democratizar la tecnología mediante una plataforma educativa interactiva que fomente la <strong>reparación</strong>, el <strong>desarrollo</strong> de proyectos y la <strong>formación STEM</strong> para reducir la brecha digital.
+            </span>
+            <span class="obj-tag">ODS 9</span>
+        </div>
+    </header>
+
+    <!-- KPIs -->
+    <section>
+        <div class="grid-5">
+            <div class="kpi-arcade"><div class="kpi-number" id="proyectosCount">0</div><div class="kpi-label">🚀 Proyectos</div></div>
+            <div class="kpi-arcade"><div class="kpi-number" id="dispositivosCount">0</div><div class="kpi-label">🔧 Reparaciones</div></div>
+            <div class="kpi-arcade"><div class="kpi-number" id="horasCount">0</div><div class="kpi-label">⏰ Horas</div></div>
+            <div class="kpi-arcade"><div class="kpi-number" id="puntosCount">0</div><div class="kpi-label">⭐ Puntos XP</div></div>
+            <div class="kpi-arcade"><div class="kpi-number" id="nivelCount">1</div><div class="kpi-label">🏆 Nivel</div></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+        <p style="text-align:center;font-size:0.6rem;color:#6b7280;margin-top:4px;">Progreso hacia el siguiente nivel</p>
+    </section>
+
+    <!-- ACCIONES RÁPIDAS -->
+    <section>
+        <div class="card-arcade">
+            <div class="card-title"><span class="title-icon">🎮</span> Acciones Rápidas</div>
+            <div class="grid-3">
+                <button class="btn-interactivo" onclick="accionRapida('proyecto')"><i class="fas fa-rocket"></i> Nuevo Proyecto</button>
+                <button class="btn-interactivo btn-interactivo-blue" onclick="accionRapida('reparacion')"><i class="fas fa-tools"></i> Reparar</button>
+                <button class="btn-interactivo btn-interactivo-pink" onclick="accionRapida('curso')"><i class="fas fa-graduation-cap"></i> Curso</button>
+                <button class="btn-interactivo btn-interactivo-green" onclick="accionRapida('desafio')"><i class="fas fa-bolt"></i> Desafío</button>
+                <button class="btn-interactivo btn-interactivo-purple" onclick="accionRapida('logro')"><i class="fas fa-trophy"></i> Logros</button>
+                <button class="btn-interactivo btn-interactivo-orange" onclick="accionRapida('comunidad')"><i class="fas fa-users"></i> Comunidad</button>
+            </div>
+            <div id="accionesLog" class="log-container mt-8">
+                <div class="log-entry"><span class="log-time">🕹️</span><span class="log-text">¡Haz clic en un botón para comenzar tu aventura tech!</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section>
+        <div class="card-arcade">
+            <div class="card-title"><span class="title-icon">🚀</span> Laboratorio de Proyectos</div>
+            <div class="grid-2">
+                <div>
+                    <form class="form-arcade" id="formProyecto" onsubmit="registrarProyecto(event)">
+                        <div class="form-group">
+                            <label for="nombreProyecto">Nombre del Proyecto</label>
+                            <input type="text" id="nombreProyecto" class="form-control" placeholder="Ej: Robot Solar" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="categoriaProyecto">Categoría</label>
+                            <select id="categoriaProyecto" class="form-control">
+                                <option value="hardware">🔧 Hardware</option>
+                                <option value="software">💻 Software</option>
+                                <option value="iot">📡 IoT</option>
+                                <option value="ia">🧠 IA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="responsableProyecto">Responsable</label>
+                            <input type="text" id="responsableProyecto" class="form-control" placeholder="Tu nombre" required />
+                        </div>
+                        <button type="submit" class="btn-arcade-primary"><i class="fas fa-plus-circle"></i> Lanzar Proyecto</button>
+                    </form>
+                </div>
+                <div>
+                    <h4 style="font-family:var(--font-arcade);font-size:0.55rem;color:var(--neon-green);margin-bottom:10px;">
+                        📋 Mis Proyectos (<span id="proyectosTotal">0</span>)
+                    </h4>
+                    <div id="listaProyectos" style="max-height:220px;overflow-y:auto;">
+                        <p style="color:#6b7280;font-size:0.8rem;">Aún no hay proyectos. ¡Sé el primero!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REPARACIONES -->
+    <section>
+        <div class="card-arcade">
+            <div class="card-title"><span class="title-icon">🔧</span> Centro de Reparaciones</div>
+            <div class="grid-2">
+                <div>
+                    <form class="form-arcade" id="formReparacion" onsubmit="registrarReparacion(event)">
+                        <div class="form-group">
+                            <label for="tecnicoReparacion">Técnico</label>
+                            <input type="text" id="tecnicoReparacion" class="form-control" placeholder="Tu nombre" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="dispositivoReparacion">Dispositivo</label>
+                            <select id="dispositivoReparacion" class="form-control">
+                                <option value="laptop">💻 Laptop</option>
+                                <option value="celular">📱 Celular</option>
+                                <option value="tablet">📟 Tablet</option>
+                                <option value="consola">🎮 Consola</option>
+                                <option value="robot">🤖 Robot</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="horasReparacion">Horas invertidas</label>
+                            <input type="number" id="horasReparacion" class="form-control" min="0.5" step="0.5" placeholder="2" required />
+                        </div>
+                        <button type="submit" class="btn-arcade-success"><i class="fas fa-check-circle"></i> Registrar Reparación</button>
+                    </form>
+                </div>
+                <div>
+                    <h4 style="font-family:var(--font-arcade);font-size:0.55rem;color:var(--neon-pink);margin-bottom:10px;">
+                        📋 Reparaciones Recientes (<span id="reparacionesTotal">0</span>)
+                    </h4>
+                    <div id="listaReparaciones" style="max-height:220px;overflow-y:auto;">
+                        <p style="color:#6b7280;font-size:0.8rem;">Aún no hay reparaciones. ¡Repara algo!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== JUEGO 1: CLASIFICACIÓN HARDWARE vs SOFTWARE ========== -->
+    <section>
+        <div class="card-arcade">
+            <div class="card-title"><span class="title-icon">🧩</span> Juego 1: Clasifica Hardware vs Software</div>
+            <div class="grid-2">
+                <div>
+                    <h5 style="font-family:var(--font-arcade);font-size:0.5rem;color:var(--neon-yellow);margin-bottom:8px;">📦 Elementos para clasificar</h5>
+                    <div id="clasificacionItems" style="min-height:100px;"></div>
+                    <button class="btn-interactivo btn-interactivo-green mt-8" onclick="reiniciarClasificacion()"><i class="fas fa-redo"></i> Reiniciar Clasificación</button>
+                </div>
+                <div>
+                    <div class="grid-2" style="gap:12px;">
+                        <div>
+                            <h5 style="font-family:var(--font-arcade);font-size:0.4rem;color:var(--neon-blue);text-align:center;">🔧 Hardware</h5>
+                            <div id="dropHardware" class="drop-zone" ondrop="dropItem(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)">
+                                <span class="drop-label">⬇️ Suelta aquí</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 style="font-family:var(--font-arcade);font-size:0.4rem;color:var(--neon-green);text-align:center;">💻 Software</h5>
+                            <div id="dropSoftware" class="drop-zone" ondrop="dropItem(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)">
+                                <span class="drop-label">⬇️ Suelta aquí</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="clasificacionScore" class="mt-8 text-center" style="font-family:var(--font-arcade);font-size:0.6rem;color:var(--neon-yellow);">Clasificados: 0 / 8</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== JUEGO 2: MEMORIA TÉCNICA ========== -->
+    <section>
+        <div class="card-arcade">
+            <div class="card-title"><span class="title-icon">🎴</span> Juego 2: Memoria Técnica</div>
+            <div class="memory-grid" id="memoryGrid"></div>
+            <div class="text-center mt-8">
+                <span style="font-family:var(--font-arcade);font-size:0.5rem;color:var(--neon-yellow);" id="memoryStatus">🔍 Encuentra las parejas</span>
+                <button class="btn-interactivo btn-interactivo-blue mt-8" onclick="reiniciarMemoria()"><i class="fas fa-redo"></i> Reiniciar Memoria</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== JUEGO 3: PREGUNTAS TÉCNICAS ========== -->
+    <section>
+        <div class="card-arcade">
+            <div class="card-title"><span class="title-icon">❓</span> Juego 3: Preguntas Técnicas</div>
+            <div id="preguntaContainer">
+                <p style="font-family:var(--font-arcade);font-size:0.6rem;color:var(--neon-blue);margin-bottom:12px;" id="preguntaTexto">Cargando pregunta...</p>
+                <div id="preguntaOpciones"></div>
+                <div class="flex justify-between items-center mt-8">
+                    <span style="font-family:var(--font-arcade);font-size:0.4rem;color:#6b7280;" id="preguntaProgreso">0 / 10</span>
+                    <span style="font-family:var(--font-arcade);font-size:0.4rem;color:var(--neon-green);" id="preguntaPuntaje">⭐ 0 pts</span>
+                    <button class="btn-interactivo btn-interactivo-purple" onclick="reiniciarPreguntas()"><i class="fas fa-redo"></i> Reiniciar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div> <!-- fin .app-wrapper -->
+
+<!-- TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    // ========================================================================
+    // 1. DATOS GLOBALES Y ESTADO
+    // ========================================================================
+    let proyectos = [];
+    let reparaciones = [];
+    let puntosXP = 0;
+    let nivel = 1;
+    let totalHoras = 0;
+
+    // Para memoria
+    let memoryCards = [];
+    let memoryFlipped = [];
+    let memoryMatched = [];
+    let memoryLocked = false;
+
+    // Para preguntas
+    let preguntas = [];
+    let preguntaActual = 0;
+    let puntajePreguntas = 0;
+    let preguntasRespondidas = 0;
+
+    // Para clasificación
+    let itemsClasificacion = [
+        { id: 'cpu', nombre: 'CPU', icono: '🖥️', categoria: 'hardware' },
+        { id: 'ram', nombre: 'RAM', icono: '🧠', categoria: 'hardware' },
+        { id: 'disco', nombre: 'Disco Duro', icono: '💾', categoria: 'hardware' },
+        { id: 'teclado', nombre: 'Teclado', icono: '⌨️', categoria: 'hardware' },
+        { id: 'windows', nombre: 'Windows', icono: '🪟', categoria: 'software' },
+        { id: 'linux', nombre: 'Linux', icono: '🐧', categoria: 'software' },
+        { id: 'python', nombre: 'Python', icono: '🐍', categoria: 'software' },
+        { id: 'chrome', nombre: 'Chrome', icono: '🌐', categoria: 'software' }
+    ];
+    let clasificados = [];
+
+    // ========================================================================
+    // 2. FUNCIONES DE INICIALIZACIÓN
+    // ========================================================================
+    function init() {
+        // Cargar datos de localStorage si existen
+        const saved = localStorage.getItem('techArcadeData');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                proyectos = data.proyectos || [];
+                reparaciones = data.reparaciones || [];
+                puntosXP = data.puntosXP || 0;
+                nivel = data.nivel || 1;
+                totalHoras = data.totalHoras || 0;
+                // Restaurar listas visuales
+                actualizarKPIs();
+                renderizarProyectos();
+                renderizarReparaciones();
+                actualizarNivel();
+            } catch(e) {}
+        }
+        // Inicializar juegos
+        iniciarClasificacion();
+        iniciarMemoria();
+        iniciarPreguntas();
+        // Guardar cambios cada 10 segundos
+        setInterval(guardarDatos, 10000);
+    }
+
+    function guardarDatos() {
+        localStorage.setItem('techArcadeData', JSON.stringify({
+            proyectos, reparaciones, puntosXP, nivel, totalHoras
+        }));
+    }
+
+    // ========================================================================
+    // 3. PROYECTOS
+    // ========================================================================
+    function registrarProyecto(e) {
+        e.preventDefault();
+        const nombre = document.getElementById('nombreProyecto').value.trim();
+        const categoria = document.getElementById('categoriaProyecto').value;
+        const responsable = document.getElementById('responsableProyecto').value.trim();
+        if (!nombre || !responsable) return mostrarToast('Completa todos los campos', 'error');
+        const proyecto = { nombre, categoria, responsable, fecha: new Date().toLocaleDateString() };
+        proyectos.push(proyecto);
+        document.getElementById('formProyecto').reset();
+        renderizarProyectos();
+        sumarXP(10);
+        mostrarToast(`✅ Proyecto "${nombre}" lanzado`, 'success');
+        guardarDatos();
+    }
+
+    function renderizarProyectos() {
+        const cont = document.getElementById('listaProyectos');
+        const total = document.getElementById('proyectosTotal');
+        total.textContent = proyectos.length;
+        if (proyectos.length === 0) {
+            cont.innerHTML = '<p style="color:#6b7280;font-size:0.8rem;">Aún no hay proyectos. ¡Sé el primero!</p>';
+            return;
+        }
+        cont.innerHTML = proyectos.map((p, i) =>
+            `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--arcade-border);font-size:0.75rem;">
+                <span><strong>${p.nombre}</strong> (${p.categoria})</span>
+                <span style="color:#9ca3af;">${p.responsable} · ${p.fecha}</span>
+            </div>`
+        ).join('');
+        document.getElementById('proyectosCount').textContent = proyectos.length;
+    }
+
+    // ========================================================================
+    // 4. REPARACIONES
+    // ========================================================================
+    function registrarReparacion(e) {
+        e.preventDefault();
+        const tecnico = document.getElementById('tecnicoReparacion').value.trim();
+        const dispositivo = document.getElementById('dispositivoReparacion').value;
+        const horas = parseFloat(document.getElementById('horasReparacion').value);
+        if (!tecnico || !horas) return mostrarToast('Completa todos los campos', 'error');
+        const reparacion = { tecnico, dispositivo, horas, fecha: new Date().toLocaleDateString() };
+        reparaciones.push(reparacion);
+        totalHoras += horas;
+        document.getElementById('formReparacion').reset();
+        renderizarReparaciones();
+        sumarXP(15 + Math.floor(horas * 2));
+        mostrarToast(`🔧 Reparación de ${dispositivo} registrada (${horas}h)`, 'success');
+        guardarDatos();
+    }
+
+    function renderizarReparaciones() {
+        const cont = document.getElementById('listaReparaciones');
+        const total = document.getElementById('reparacionesTotal');
+        total.textContent = reparaciones.length;
+        if (reparaciones.length === 0) {
+            cont.innerHTML = '<p style="color:#6b7280;font-size:0.8rem;">Aún no hay reparaciones. ¡Repara algo!</p>';
+            return;
+        }
+        cont.innerHTML = reparaciones.map((r, i) =>
+            `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--arcade-border);font-size:0.75rem;">
+                <span>${r.dispositivo} · ${r.horas}h</span>
+                <span style="color:#9ca3af;">${r.tecnico} · ${r.fecha}</span>
+            </div>`
+        ).join('');
+        document.getElementById('dispositivosCount').textContent = reparaciones.length;
+        document.getElementById('horasCount').textContent = totalHoras.toFixed(1);
+    }
+
+    // ========================================================================
+    // 5. KPIs, XP, NIVEL, BARRA
+    // ========================================================================
+    function sumarXP(puntos) {
+        puntosXP += puntos;
+        document.getElementById('puntosCount').textContent = puntosXP;
+        actualizarNivel();
+        guardarDatos();
+    }
+
+    function actualizarNivel() {
+        const nuevoNivel = Math.floor(puntosXP / 100) + 1;
+        if (nuevoNivel !== nivel) {
+            nivel = nuevoNivel;
+            mostrarToast(`🎉 ¡Subiste al nivel ${nivel}!`, 'success');
+        }
+        document.getElementById('nivelCount').textContent = nivel;
+        const progreso = (puntosXP % 100) / 100 * 100;
+        document.getElementById('progressBar').style.width = progreso + '%';
+    }
+
+    function actualizarKPIs() {
+        document.getElementById('proyectosCount').textContent = proyectos.length;
+        document.getElementById('dispositivosCount').textContent = reparaciones.length;
+        document.getElementById('horasCount').textContent = totalHoras.toFixed(1);
+        document.getElementById('puntosCount').textContent = puntosXP;
+        document.getElementById('nivelCount').textContent = nivel;
+        document.getElementById('proyectosTotal').textContent = proyectos.length;
+        document.getElementById('reparacionesTotal').textContent = reparaciones.length;
+        const progreso = (puntosXP % 100) / 100 * 100;
+        document.getElementById('progressBar').style.width = progreso + '%';
+    }
+
+    // ========================================================================
+    // 6. ACCIONES RÁPIDAS
+    // ========================================================================
+    function accionRapida(tipo) {
+        const log = document.getElementById('accionesLog');
+        const mensajes = {
+            proyecto: '🚀 Has iniciado un nuevo proyecto. ¡A innovar!',
+            reparacion: '🔧 Has reparado un dispositivo. ¡Buen trabajo!',
+            curso: '📚 Has completado un curso STEM. +15 XP',
+            desafio: '⚡ Has superado un desafío técnico. +20 XP',
+            logro: '🏆 Has desbloqueado un logro. ¡Felicidades!',
+            comunidad: '👥 Has compartido conocimiento en la comunidad. +10 XP'
+        };
+        const puntos = { proyecto: 10, reparacion: 12, curso: 15, desafio: 20, logro: 25, comunidad: 10 };
+        const msg = mensajes[tipo] || 'Acción completada';
+        sumarXP(puntos[tipo] || 5);
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = `<span class="log-time">${new Date().toLocaleTimeString()}</span><span class="log-text">${msg}</span>`;
+        log.prepend(entry);
+        if (log.children.length > 20) log.removeChild(log.lastChild);
+        mostrarToast(`⭐ +${puntos[tipo] || 5} XP: ${msg}`, 'success');
+        guardarDatos();
+    }
+
+    // ========================================================================
+    // 7. JUEGO 1: CLASIFICACIÓN (Drag & Drop)
+    // ========================================================================
+    function iniciarClasificacion() {
+        clasificados = [];
+        const cont = document.getElementById('clasificacionItems');
+        cont.innerHTML = itemsClasificacion.map(item =>
+            `<div class="clasificacion-item" draggable="true" id="clas_${item.id}" data-id="${item.id}" data-categoria="${item.categoria}"
+                ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+                <span class="item-icon">${item.icono}</span>
+                <span class="item-name">${item.nombre}</span>
+                <span class="item-category cat-pendiente">⬜ Pendiente</span>
+            </div>`
+        ).join('');
+        document.getElementById('dropHardware').innerHTML = '<span class="drop-label">⬇️ Suelta aquí</span>';
+        document.getElementById('dropSoftware').innerHTML = '<span class="drop-label">⬇️ Suelta aquí</span>';
+        document.getElementById('clasificacionScore').textContent = 'Clasificados: 0 / ' + itemsClasificacion.length;
+    }
+
+    function reiniciarClasificacion() {
+        iniciarClasificacion();
+        mostrarToast('🔄 Clasificación reiniciada', 'warning');
+    }
+
+    function allowDrop(e) { e.preventDefault(); }
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        e.target.classList.add('dragging');
+    }
+    function dragEnd(e) { e.target.classList.remove('dragging'); }
+    function removeDragOver(e) { e.target.classList.remove('drag-over'); }
+
+    function dropItem(e) {
+        e.preventDefault();
+        const zone = e.target.closest('.drop-zone');
+        zone.classList.remove('drag-over');
+        const id = e.dataTransfer.getData('text/plain');
+        const element = document.getElementById(id);
+        if (!element) return;
+        const itemId = element.dataset.id;
+        const categoria = element.dataset.categoria;
+        const dropTarget = zone.id; // 'dropHardware' o 'dropSoftware'
+        const targetCategoria = dropTarget === 'dropHardware' ? 'hardware' : 'software';
+        if (categoria === targetCategoria) {
+            // Clasificación correcta
+            element.remove();
+            const label = document.createElement('span');
+            label.className = 'item-category ' + (categoria === 'hardware' ? 'cat-hardware' : 'cat-software');
+            label.textContent = categoria === 'hardware' ? '✅ Hardware' : '✅ Software';
+            // Mostrar en la zona de drop
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'clasificacion-item';
+            itemDiv.style.cursor = 'default';
+            itemDiv.innerHTML = `
+                <span class="item-icon">${element.querySelector('.item-icon').textContent}</span>
+                <span class="item-name">${element.querySelector('.item-name').textContent}</span>
+            `;
+            itemDiv.appendChild(label);
+            zone.appendChild(itemDiv);
+            clasificados.push(itemId);
+            // Puntos extra si se completa
+            const total = itemsClasificacion.length;
+            const score = document.getElementById('clasificacionScore');
+            score.textContent = `Clasificados: ${clasificados.length} / ${total}`;
+            if (clasificados.length === total) {
+                mostrarToast('🎉 ¡Clasificación perfecta! +30 XP', 'success');
+                sumarXP(30);
+            } else {
+                sumarXP(5);
+                mostrarToast('✅ ¡Bien clasificado! +5 XP', 'success');
+            }
+        } else {
+            mostrarToast('❌ Categoría incorrecta. Intenta de nuevo.', 'error');
+        }
+        guardarDatos();
+    }
+
+    // ========================================================================
+    // 8. JUEGO 2: MEMORIA TÉCNICA
+    // ========================================================================
+    const memoryPairs = [
+        { id: 1, nombre: 'CPU', icono: '🖥️' },
+        { id: 2, nombre: 'RAM', icono: '🧠' },
+        { id: 3, nombre: 'Disco', icono: '💾' },
+        { id: 4, nombre: 'Teclado', icono: '⌨️' },
+        { id: 5, nombre: 'Mouse', icono: '🖱️' },
+        { id: 6, nombre: 'Monitor', icono: '🖥️' },
+        { id: 7, nombre: 'Router', icono: '📡' },
+        { id: 8, nombre: 'Impresora', icono: '🖨️' }
+    ];
+
+    function iniciarMemoria() {
+        const grid = document.getElementById('memoryGrid');
+        grid.innerHTML = '';
+        // Crear pares duplicados y barajar
+        let deck = [];
+        memoryPairs.forEach(p => {
+            deck.push({ ...p, pairId: p.id, matched: false });
+            deck.push({ ...p, pairId: p.id, matched: false });
+        });
+        // Barajar
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
+        memoryCards = deck;
+        memoryFlipped = [];
+        memoryMatched = [];
+        memoryLocked = false;
+        renderMemoryCards();
+        document.getElementById('memoryStatus').textContent = '🔍 Encuentra las parejas';
+    }
+
+    function renderMemoryCards() {
+        const grid = document.getElementById('memoryGrid');
+        grid.innerHTML = memoryCards.map((card, index) => {
+            const isFlipped = memoryFlipped.includes(index) || card.matched;
+            const isMatched = card.matched;
+            return `<div class="memory-card ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''}" 
+                        data-index="${index}" onclick="flipCard(${index})">
+                        ${isFlipped ? card.icono : '❓'}
+                    </div>`;
+        }).join('');
+    }
+
+    function flipCard(index) {
+        if (memoryLocked) return;
+        if (memoryFlipped.includes(index)) return;
+        if (memoryCards[index].matched) return;
+        memoryFlipped.push(index);
+        renderMemoryCards();
+        if (memoryFlipped.length === 2) {
+            memoryLocked = true;
+            const idx1 = memoryFlipped[0];
+            const idx2 = memoryFlipped[1];
+            const card1 = memoryCards[idx1];
+            const card2 = memoryCards[idx2];
+            if (card1.pairId === card2.pairId && idx1 !== idx2) {
+                // Pareja correcta
+                card1.matched = true;
+                card2.matched = true;
+                memoryMatched.push(card1.pairId);
+                memoryFlipped = [];
+                memoryLocked = false;
+                renderMemoryCards();
+                sumarXP(10);
+                mostrarToast('🎯 ¡Pareja encontrada! +10 XP', 'success');
+                if (memoryMatched.length === memoryPairs.length) {
+                    mostrarToast('🏆 ¡Memoria completada! +50 XP extra', 'success');
+                    sumarXP(50);
+                    document.getElementById('memoryStatus').textContent = '🎉 ¡Completaste la memoria!';
+                }
+            } else {
+                // No coinciden
+                setTimeout(() => {
+                    memoryFlipped = [];
+                    memoryLocked = false;
+                    renderMemoryCards();
+                }, 800);
+            }
+        }
+        guardarDatos();
+    }
+
+    function reiniciarMemoria() {
+        iniciarMemoria();
+        mostrarToast('🔄 Memoria reiniciada', 'warning');
+    }
+
+    // ========================================================================
+    // 9. JUEGO 3: PREGUNTAS TÉCNICAS
+    // ========================================================================
+    const bancoPreguntas = [
+        { pregunta: '¿Qué significa "CPU"?', opciones: ['Unidad Central de Procesamiento', 'Control de Programa Universal', 'Computadora Personal Única', 'Ninguna'], correcta: 0 },
+        { pregunta: '¿Cuál es el sistema operativo de código abierto más conocido?', opciones: ['Windows', 'macOS', 'Linux', 'iOS'], correcta: 2 },
+        { pregunta: '¿Qué lenguaje se usa principalmente para desarrollo web frontend?', opciones: ['Python', 'Java', 'JavaScript', 'C++'], correcta: 2 },
+        { pregunta: '¿Qué dispositivo almacena datos de forma permanente?', opciones: ['RAM', 'Disco Duro', 'Caché', 'Registros'], correcta: 1 },
+        { pregunta: '¿Qué es una red de área local?', opciones: ['WAN', 'LAN', 'MAN', 'PAN'], correcta: 1 },
+        { pregunta: '¿Quién es considerado el padre de la computación moderna?', opciones: ['Alan Turing', 'Bill Gates', 'Steve Jobs', 'Linus Torvalds'], correcta: 0 },
+        { pregunta: '¿Qué protocolo se usa para enviar correos electrónicos?', opciones: ['HTTP', 'FTP', 'SMTP', 'TCP'], correcta: 2 },
+        { pregunta: '¿Cuál es el componente principal de una placa base?', opciones: ['CPU', 'RAM', 'Chipset', 'Disco Duro'], correcta: 2 },
+        { pregunta: '¿Qué empresa creó el sistema operativo Android?', opciones: ['Apple', 'Microsoft', 'Google', 'IBM'], correcta: 2 },
+        { pregunta: '¿Qué es la inteligencia artificial?', opciones: ['Simulación de procesos inteligentes', 'Un tipo de hardware', 'Un lenguaje de programación', 'Una red social'], correcta: 0 }
+    ];
+
+    function iniciarPreguntas() {
+        preguntas = bancoPreguntas.map(p => ({ ...p, respondida: false }));
+        preguntaActual = 0;
+        puntajePreguntas = 0;
+        preguntasRespondidas = 0;
+        mostrarPregunta();
+        document.getElementById('preguntaProgreso').textContent = `0 / ${preguntas.length}`;
+        document.getElementById('preguntaPuntaje').textContent = '⭐ 0 pts';
+    }
+
+    function mostrarPregunta() {
+        if (preguntaActual >= preguntas.length) {
+            document.getElementById('preguntaTexto').textContent = '🎉 ¡Has completado todas las preguntas!';
+            document.getElementById('preguntaOpciones').innerHTML = '';
+            return;
+        }
+        const p = preguntas[preguntaActual];
+        document.getElementById('preguntaTexto').textContent = `${preguntaActual + 1}. ${p.pregunta}`;
+        const cont = document.getElementById('preguntaOpciones');
+        cont.innerHTML = p.opciones.map((op, i) =>
+            `<div class="pregunta-opcion" data-idx="${i}" onclick="seleccionarOpcion(${i})">${op}</div>`
+        ).join('');
+        document.getElementById('preguntaProgreso').textContent = `${preguntasRespondidas} / ${preguntas.length}`;
+    }
+
+    function seleccionarOpcion(idx) {
+        const p = preguntas[preguntaActual];
+        if (p.respondida) return;
+        p.respondida = true;
+        const opciones = document.querySelectorAll('.pregunta-opcion');
+        opciones.forEach(el => el.classList.add('disabled'));
+        const correcta = p.correcta;
+        if (idx === correcta) {
+            opciones[idx].classList.add('correct');
+            puntajePreguntas += 10;
+            sumarXP(10);
+            mostrarToast('✅ ¡Correcto! +10 XP', 'success');
+        } else {
+            opciones[idx].classList.add('wrong');
+            opciones[correcta].classList.add('correct');
+            mostrarToast('❌ Incorrecto. La respuesta correcta era: ' + p.opciones[correcta], 'error');
+        }
+        preguntasRespondidas++;
+        document.getElementById('preguntaPuntaje').textContent = `⭐ ${puntajePreguntas} pts`;
+        document.getElementById('preguntaProgreso').textContent = `${preguntasRespondidas} / ${preguntas.length}`;
+        preguntaActual++;
+        setTimeout(mostrarPregunta, 1500);
+        guardarDatos();
+    }
+
+    function reiniciarPreguntas() {
+        iniciarPreguntas();
+        mostrarToast('🔄 Preguntas reiniciadas', 'warning');
+    }
+
+    // ========================================================================
+    // 10. TOASTS, TEMA, RESET
+    // ========================================================================
+    function mostrarToast(mensaje, tipo = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${tipo}`;
+        const iconos = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        toast.innerHTML = `<span>${iconos[tipo] || 'ℹ️'}</span> ${mensaje}`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            setTimeout(() => toast.remove(), 400);
+        }, 4000);
+    }
+
+    function toggleTheme() {
+        const html = document.documentElement;
+        const current = html.getAttribute('data-theme');
+        html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        // Ajustar colores según tema (simple)
+        if (current === 'dark') {
+            document.body.style.background = '#f0f0f0';
+            document.body.style.color = '#111';
+        } else {
+            document.body.style.background = '#0f0e1a';
+            document.body.style.color = '#e0e0e0';
+        }
+        mostrarToast(`Tema cambiado a ${current === 'dark' ? 'claro' : 'oscuro'}`, 'warning');
+    }
+
+    function resetearDatos() {
+        if (!confirm('¿Seguro que deseas resetear todos los datos?')) return;
+        proyectos = [];
+        reparaciones = [];
+        puntosXP = 0;
+        nivel = 1;
+        totalHoras = 0;
+        localStorage.removeItem('techArcadeData');
+        actualizarKPIs();
+        renderizarProyectos();
+        renderizarReparaciones();
+        iniciarClasificacion();
+        iniciarMemoria();
+        iniciarPreguntas();
+        document.getElementById('accionesLog').innerHTML = `
+            <div class="log-entry"><span class="log-time">🕹️</span><span class="log-text">Datos reiniciados. ¡Comienza de nuevo!</span></div>
+        `;
+        mostrarToast('🔄 Todos los datos han sido reiniciados', 'warning');
+    }
+
+    // ========================================================================
+    // 11. INICIO
+    // ========================================================================
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

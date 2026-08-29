@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚦 CruzaSeguro - Simulador Vial</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, #f0f6ff 0%, #e6edf9 100%);
+            min-height: 100vh;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 48px;
+            box-shadow: 0 30px 60px rgba(0, 20, 40, 0.20), 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .app-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            border-bottom: 2px solid rgba(0, 80, 200, 0.15);
+            padding-bottom: 18px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            font-size: 2.8rem;
+            line-height: 1;
+        }
+
+        .title-group h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #0b2545;
+            letter-spacing: -0.5px;
+        }
+
+        .title-group .sub {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #2a4d7a;
+            background: rgba(45, 95, 180, 0.10);
+            padding: 2px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .ods-badge {
+            background: #0b2545;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 40, 80, 0.15);
+        }
+
+        .ods-badge span {
+            background: #ffc107;
+            color: #0b2545;
+            border-radius: 40px;
+            padding: 0 10px;
+            font-size: 0.75rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 28px;
+        }
+
+        @media (max-width: 850px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 22px;
+            box-shadow: 0 8px 18px rgba(0, 20, 40, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: #f8fbff;
+            border-radius: 18px;
+            padding: 10px 4px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0b2545;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #3b5a7c;
+            font-weight: 600;
+        }
+
+        .heatmap-container {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 22px 22px;
+            box-shadow: 0 8px 18px rgba(0, 20, 40, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .map-sim {
+            background: #dce5f0;
+            border-radius: 24px;
+            height: 180px;
+            margin: 12px 0 6px;
+            position: relative;
+            background-image:
+                radial-gradient(circle at 20% 70%, rgba(220, 50, 50, 0.45) 60px, transparent 100px),
+                radial-gradient(circle at 65% 30%, rgba(220, 120, 30, 0.4) 70px, transparent 120px),
+                radial-gradient(circle at 88% 80%, rgba(40, 180, 70, 0.3) 60px, transparent 100px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 12px;
+            border: 2px dashed rgba(0, 0, 0, 0.08);
+        }
+
+        .map-legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #1e3a5f;
+        }
+
+        .legend-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 20px;
+            margin-right: 6px;
+        }
+
+        .danger-zone {
+            background: #c0392b;
+        }
+        .caution-zone {
+            background: #e67e22;
+        }
+        .safe-zone {
+            background: #27ae60;
+        }
+
+        .map-label {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #0b2545;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .report-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-report {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 10px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            background: white;
+            color: #0b2545;
+            box-shadow: 0 6px 14px rgba(0, 20, 40, 0.06);
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            width: 100%;
+        }
+
+        .btn-report:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 22px rgba(0, 20, 40, 0.12);
+        }
+
+        .btn-report:active {
+            transform: scale(0.95);
+        }
+
+        .btn-report.danger {
+            background: #fff0ee;
+            color: #b03a2e;
+            border-left: 6px solid #c0392b;
+        }
+        .btn-report.caution {
+            background: #fff6e7;
+            color: #a8641a;
+            border-left: 6px solid #e67e22;
+        }
+        .btn-report.info {
+            background: #e8f0fe;
+            color: #1a4d7a;
+            border-left: 6px solid #2c7be0;
+        }
+
+        .btn-report .emoji-big {
+            font-size: 1.6rem;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .log-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 22px;
+            box-shadow: 0 8px 18px rgba(0, 20, 40, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .log-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 12px 0 6px;
+            padding-right: 6px;
+        }
+
+        .log-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 6px;
+            border-bottom: 1px solid #ecf2f9;
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .log-item .time {
+            color: #3b5a7c;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .log-item .desc {
+            font-weight: 500;
+        }
+
+        .badge-risk {
+            font-size: 0.7rem;
+            padding: 2px 12px;
+            border-radius: 40px;
+            background: #ecf2f9;
+            font-weight: 600;
+        }
+
+        .badge-risk.alto {
+            background: #fadbd8;
+            color: #922b21;
+        }
+        .badge-risk.medio {
+            background: #fdebd0;
+            color: #935e38;
+        }
+        .badge-risk.bajo {
+            background: #d5f5e3;
+            color: #1a7a42;
+        }
+
+        .btn-confirm {
+            background: #0b2545;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 12px 22px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            width: 100%;
+            margin-top: 6px;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-confirm:hover {
+            background: #1a3a62;
+            transform: scale(1.01);
+        }
+
+        .btn-confirm:active {
+            transform: scale(0.97);
+        }
+
+        .simulator-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 22px;
+            box-shadow: 0 8px 18px rgba(0, 20, 40, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .sim-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .sim-controls input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 2px solid #dce5f0;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 500;
+            outline: none;
+            transition: 0.15s;
+            min-width: 120px;
+        }
+
+        .sim-controls input:focus {
+            border-color: #2c7be0;
+            box-shadow: 0 0 0 3px rgba(44, 123, 224, 0.15);
+        }
+
+        .sim-controls button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            background: #0b2545;
+            color: white;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .sim-controls button:hover {
+            background: #1a3a62;
+            transform: scale(1.02);
+        }
+
+        .sim-controls button:active {
+            transform: scale(0.95);
+        }
+
+        .sim-result {
+            padding: 12px 16px;
+            background: #f8fbff;
+            border-radius: 16px;
+            font-weight: 600;
+            color: #0b2545;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sim-result .level-badge {
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+        }
+
+        .level-low {
+            background: #d5f5e3;
+            color: #1a7a42;
+        }
+        .level-medium {
+            background: #fdebd0;
+            color: #935e38;
+        }
+        .level-high {
+            background: #fadbd8;
+            color: #922b21;
+        }
+
+        .footer-credits {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #2c4d74;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .footer-credits strong {
+            font-weight: 700;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0b2545;
+            color: white;
+            padding: 16px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 550px) {
+            .app-container {
+                padding: 16px;
+                border-radius: 32px;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .title-group h1 {
+                font-size: 1.4rem;
+            }
+            .ods-badge {
+                font-size: 0.7rem;
+                padding: 4px 12px;
+            }
+            .toast {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                text-align: center;
+                border-radius: 30px;
+                padding: 14px 20px;
+                font-size: 0.9rem;
+            }
+            .sim-controls {
+                flex-direction: column;
+            }
+            .sim-controls input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">🚦</span>
+                <div class="title-group">
+                    <h1>CruzaSeguro</h1>
+                    <span class="sub">🧭 Simulador Vial · Patrulla Escolar</span>
+                </div>
+            </div>
+            <div class="ods-badge">
+                🌍 ODS 11 · 9 · 4
+                <span>CODE FOR CHANGE</span>
+            </div>
+        </header>
+
+        <!-- DASHBOARD -->
+        <div class="dashboard">
+
+            <!-- LEFT PANEL -->
+            <div class="left-panel">
+
+                <!-- ESTADÍSTICAS -->
+                <div class="stat-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 700; color: #0b2545;">📊 Reportes de hoy</span>
+                        <span style="background: #eef3fa; padding: 2px 14px; border-radius: 40px; font-size:0.8rem;" id="reportCountDisplay">0</span>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="dangerCount">0</div>
+                            <div class="stat-label">🔴 Alto riesgo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="cautionCount">0</div>
+                            <div class="stat-label">🟠 Precaución</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="safeCount">0</div>
+                            <div class="stat-label">🟢 Seguro</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAPA DE CALOR -->
+                <div class="heatmap-container">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight: 700; color: #0b2545;">🗺️ Mapa de calor colaborativo</span>
+                        <span style="font-size:0.7rem; background:#eef3fa; padding:2px 12px; border-radius:40px;">en tiempo real</span>
+                    </div>
+                    <div class="map-sim">
+                        <span class="map-label">🏫 Escuela</span>
+                        <span class="map-label">🚸 Cruce peatonal</span>
+                        <span class="map-label">🚗 Zona vehicular</span>
+                    </div>
+                    <div class="map-legend">
+                        <span><span class="legend-dot danger-zone"></span> Alto</span>
+                        <span><span class="legend-dot caution-zone"></span> Medio</span>
+                        <span><span class="legend-dot safe-zone"></span> Bajo</span>
+                    </div>
+                </div>
+
+                <!-- BOTONES DE REPORTE -->
+                <div class="report-section">
+                    <button class="btn-report danger" id="reportDanger">
+                        <span class="emoji-big">🚨</span> Auto no frenó · Semáforo apagado
+                    </button>
+                    <button class="btn-report caution" id="reportCaution">
+                        <span class="emoji-big">⚠️</span> Falta señal · Mala visibilidad
+                    </button>
+                    <button class="btn-report info" id="reportSafe">
+                        <span class="emoji-big">✅</span> Zona segura · Señal clara
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+
+                <!-- BITÁCORA -->
+                <div class="log-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight: 700; color: #0b2545;">📋 Bitácora de incidentes</span>
+                        <span style="font-size:0.7rem; background:#eef3fa; padding:2px 12px; border-radius:40px;" id="logCount">0</span>
+                    </div>
+                    <div class="log-list" id="logList">
+                        <div style="text-align:center; color:#6b7f94; padding:20px 0; font-size:0.9rem;">
+                            🕊️ Sin incidentes reportados aún.<br><span style="font-size:0.75rem;">Usa los botones de reporte</span>
+                        </div>
+                    </div>
+                    <button class="btn-confirm" id="confirmReports">
+                        ✅ Verificar y enviar a autoridades
+                    </button>
+                </div>
+
+                <!-- NUEVO: SIMULADOR DE RIESGO VIAL -->
+                <div class="simulator-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight: 700; color: #0b2545;">🧪 Simulador de Riesgo Vial</span>
+                        <span style="font-size:0.7rem; background:#eef3fa; padding:2px 12px; border-radius:40px;">interactivo</span>
+                    </div>
+                    <div class="sim-controls">
+                        <input type="number" id="vehicleSpeed" placeholder="Velocidad (km/h)" value="45" min="0" max="120" />
+                        <input type="number" id="pedestrianCount" placeholder="Peatones" value="3" min="0" max="20" />
+                        <button id="simulateRisk">🔍 Calcular riesgo</button>
+                    </div>
+                    <div class="sim-result" id="simResult">
+                        <span>💡 Ingresa datos y presiona "Calcular riesgo"</span>
+                    </div>
+                </div>
+
+                <!-- EQUIPO -->
+                <div style="background: white; border-radius: 28px; padding: 16px 22px; box-shadow: 0 8px 18px rgba(0,20,40,0.06); border:1px solid rgba(255,255,255,0.8);">
+                    <div style="display:flex; flex-wrap:wrap; gap:6px 18px; font-size:0.85rem; color:#1e3a5f; align-items:center;">
+                        <span style="font-weight:700;">👩‍💻 Equipo Dev:</span>
+                        <span>M. Juliana R.</span> · <span>Isabela T.</span> · <span>Isabella R.</span> · <span>Sofía B.</span> · <span>Sara J.</span>
+                        <span style="margin-left:auto; background:#eef3fa; padding:2px 14px; border-radius:40px; font-size:0.7rem;">⭐ 20+ años</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-credits">
+            <span><strong>🚦 CruzaSeguro</strong> · Seguridad vial colaborativa</span>
+            <span>📌 ODS 11 · 9 · 4</span>
+            <span>🧩 JavaScript · HTML · CSS</span>
+            <span>🏆 Code For Change · 2026</span>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ========================================================== -->
+    <!-- JAVASCRIPT – INGENIERÍA COMPLETA CICLO 5                    -->
+    <!-- ========================================================== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // 1. VARIABLES – Estado global de la aplicación
+            // ============================================================
+            let incidentes = []; // Array principal (colección de objetos)
+            let totalReportes = 0; // Contador acumulado (variable numérica)
+
+            // ============================================================
+            // 2. ARRAY – Escenarios de riesgo para el simulador
+            //    (colección de objetos con umbrales)
+            // ============================================================
+            const escenariosRiesgo = [
+                { nivel: 'Bajo', maxSpeed: 30, maxPedestrians: 5, emoji: '🟢', clase: 'level-low' },
+                { nivel: 'Medio', maxSpeed: 50, maxPedestrians: 10, emoji: '🟠', clase: 'level-medium' },
+                { nivel: 'Alto', maxSpeed: Infinity, maxPedestrians: Infinity, emoji: '🔴', clase: 'level-high' }
+            ];
+
+            // ============================================================
+            // 3. FUNCIONES – Lógica reutilizable
+            // ============================================================
+
+            // Obtener hora formateada
+            function obtenerHora() {
+                const ahora = new Date();
+                const h = String(ahora.getHours()).padStart(2, '0');
+                const m = String(ahora.getMinutes()).padStart(2, '0');
+                return `${h}:${m}`;
+            }
+
+            // Agregar incidente al array
+            function agregarIncidente(tipo, descripcion, nivel) {
+                const nuevo = {
+                    id: Date.now() + Math.random() * 1000,
+                    tipo: tipo,
+                    descripcion: descripcion,
+                    nivel: nivel,
+                    hora: obtenerHora(),
+                    timestamp: Date.now()
+                };
+                incidentes.push(nuevo);
+                totalReportes++; // incrementamos variable contador
+
+                // Limitar tamaño del array (buena práctica)
+                if (incidentes.length > 50) {
+                    incidentes.shift();
+                }
+                return nuevo;
+            }
+
+            // ============================================================
+            // 4. FUNCIÓN con CICLO (for...of) + CONDICIONAL
+            //    Clasifica el nivel de riesgo según velocidad y peatones
+            // ============================================================
+            function clasificarRiesgo(velocidad, peatones) {
+                // Validación de entrada (condicionales)
+                if (velocidad < 0 || peatones < 0) {
+                    return { nivel: 'Datos inválidos', emoji: '❌', clase: '' };
+                }
+
+                // Ciclo for...of para recorrer los escenarios
+                for (const escenario of escenariosRiesgo) {
+                    // Condicional: compara con los umbrales del escenario
+                    if (velocidad <= escenario.maxSpeed && peatones <= escenario.maxPedestrians) {
+                        return {
+                            nivel: escenario.nivel,
+                            emoji: escenario.emoji,
+                            clase: escenario.clase,
+                            descripcion: `Vel: ${velocidad} km/h · ${peatones} peatones`
+                        };
+                    }
+                }
+                // Fallback (nunca debería ocurrir)
+                return { nivel: 'Alto', emoji: '🔴', clase: 'level-high', descripcion: 'Riesgo extremo' };
+            }
+
+            // ============================================================
+            // 5. FUNCIÓN – Renderiza la UI (actualiza DOM)
+            // ============================================================
+            function renderizarUI() {
+                // Contar por tipo usando filter (método de array)
+                const danger = incidentes.filter(i => i.tipo === 'danger').length;
+                const caution = incidentes.filter(i => i.tipo === 'caution').length;
+                const safe = incidentes.filter(i => i.tipo === 'safe').length;
+                const total = incidentes.length;
+
+                // Actualizar DOM con los valores
+                document.getElementById('dangerCount').textContent = danger;
+                document.getElementById('cautionCount').textContent = caution;
+                document.getElementById('safeCount').textContent = safe;
+                document.getElementById('reportCountDisplay').textContent = total;
+                document.getElementById('logCount').textContent = total;
+
+                // Renderizar lista de incidentes
+                const logContainer = document.getElementById('logList');
+                if (incidentes.length === 0) {
+                    logContainer.innerHTML = `
+                        <div style="text-align:center; color:#6b7f94; padding:20px 0; font-size:0.9rem;">
+                            🕊️ Sin incidentes reportados aún.<br><span style="font-size:0.75rem;">Usa los botones de reporte</span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Usamos ciclo map (internamente es un loop) para generar HTML
+                const items = incidentes.slice().reverse().map(inc => {
+                    let badgeClass = 'bajo';
+                    let badgeText = 'Bajo';
+                    if (inc.tipo === 'danger') {
+                        badgeClass = 'alto';
+                        badgeText = 'Alto';
+                    } else if (inc.tipo === 'caution') {
+                        badgeClass = 'medio';
+                        badgeText = 'Medio';
+                    }
+
+                    return `
+                        <div class="log-item">
+                            <span class="desc">${inc.descripcion}</span>
+                            <span style="display:flex; gap:10px; align-items:center;">
+                                <span class="badge-risk ${badgeClass}">${badgeText}</span>
+                                <span class="time">${inc.hora}</span>
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+
+                logContainer.innerHTML = items;
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+
+            // ============================================================
+            // 6. FUNCIÓN – Mostrar notificación (toast)
+            // ============================================================
+            function mostrarToast(mensaje, duracion = 2500) {
+                const toast = document.getElementById('toast');
+                toast.textContent = mensaje;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, duracion);
+            }
+
+            // ============================================================
+            // 7. FUNCIÓN – Reportar incidente (con evento integrado)
+            // ============================================================
+            function reportarIncidente(tipo) {
+                let descripcion = '';
+                let nivel = '';
+                let emoji = '';
+
+                // Condicionales para definir el tipo de reporte
+                if (tipo === 'danger') {
+                    descripcion = '🚨 Auto no frenó / Semáforo apagado';
+                    nivel = 'Alto';
+                    emoji = '🚨';
+                } else if (tipo === 'caution') {
+                    descripcion = '⚠️ Falta señal / Mala visibilidad';
+                    nivel = 'Medio';
+                    emoji = '⚠️';
+                } else if (tipo === 'safe') {
+                    descripcion = '✅ Zona segura / Señal clara';
+                    nivel = 'Bajo';
+                    emoji = '✅';
+                } else {
+                    return;
+                }
+
+                agregarIncidente(tipo, descripcion, nivel);
+                renderizarUI();
+
+                // Feedback visual del botón (animación)
+                const btnMap = {
+                    'danger': 'reportDanger',
+                    'caution': 'reportCaution',
+                    'safe': 'reportSafe'
+                };
+                const btn = document.getElementById(btnMap[tipo]);
+                if (btn) {
+                    btn.style.transform = 'scale(0.92)';
+                    btn.style.transition = 'transform 0.1s';
+                    setTimeout(() => {
+                        btn.style.transform = '';
+                    }, 150);
+                }
+
+                mostrarToast(`${emoji} Reporte registrado: ${descripcion}`, 2000);
+            }
+
+            // ============================================================
+            // 8. FUNCIÓN – Confirmar y enviar (limpia el array)
+            // ============================================================
+            function confirmarYEnviar() {
+                if (incidentes.length === 0) {
+                    mostrarToast('📭 No hay incidentes para verificar. ¡Reporta algo primero!', 3000);
+                    return;
+                }
+
+                // Usamos condicionales y contadores
+                const danger = incidentes.filter(i => i.tipo === 'danger').length;
+                const caution = incidentes.filter(i => i.tipo === 'caution').length;
+                const safe = incidentes.filter(i => i.tipo === 'safe').length;
+                const total = incidentes.length;
+
+                const mensaje = `📋 REPORTE VERIFICADO\n\n` +
+                    `🔴 Alto riesgo: ${danger}\n` +
+                    `🟠 Precaución: ${caution}\n` +
+                    `🟢 Seguro: ${safe}\n` +
+                    `📊 Total: ${total}\n\n` +
+                    `✅ Enviado a autoridades locales y dirección escolar.\n` +
+                    `📅 ${new Date().toLocaleDateString()} - ${obtenerHora()}`;
+
+                alert(mensaje);
+
+                // Limpiar el array (resetear estado)
+                incidentes = [];
+                renderizarUI();
+                mostrarToast('📤 Reportes enviados exitosamente. Bitácora reiniciada.', 3000);
+            }
+
+            // ============================================================
+            // 9. FUNCIÓN – Simular riesgo (integra todas las estructuras)
+            // ============================================================
+            function simularRiesgo() {
+                // Obtener valores del DOM (entrada del usuario)
+                const speedInput = document.getElementById('vehicleSpeed');
+                const pedestrianInput = document.getElementById('pedestrianCount');
+
+                // Parsear valores (conversión de string a número)
+                const velocidad = parseFloat(speedInput.value);
+                const peatones = parseFloat(pedestrianInput.value);
+
+                // Validación con condicionales
+                if (isNaN(velocidad) || isNaN(peatones)) {
+                    document.getElementById('simResult').innerHTML = `
+                        <span>❌ Por favor ingresa números válidos.</span>
+                    `;
+                    mostrarToast('⚠️ Datos inválidos. Ingresa números.', 2500);
+                    return;
+                }
+
+                // Llamar a la función de clasificación (usa loop + condicionales)
+                const resultado = clasificarRiesgo(velocidad, peatones);
+
+                // Actualizar el DOM con el resultado (feedback visual)
+                const simResult = document.getElementById('simResult');
+                simResult.innerHTML = `
+                    <span>${resultado.emoji} <strong>Nivel: ${resultado.nivel}</strong></span>
+                    <span class="level-badge ${resultado.clase}">${resultado.descripcion}</span>
+                    <span style="font-size:0.8rem; color:#3b5a7c; margin-left:auto;">
+                        ⚡ ${totalReportes} reportes totales
+                    </span>
+                `;
+
+                // Mostrar toast con el resultado
+                mostrarToast(`${resultado.emoji} Riesgo ${resultado.nivel} · ${resultado.descripcion}`, 2500);
+            }
+
+            // ============================================================
+            // 10. EVENTOS – Interacción del usuario (listeners)
+            // ============================================================
+
+            // Eventos para botones de reporte
+            document.getElementById('reportDanger').addEventListener('click', function() {
+                reportarIncidente('danger');
+            });
+
+            document.getElementById('reportCaution').addEventListener('click', function() {
+                reportarIncidente('caution');
+            });
+
+            document.getElementById('reportSafe').addEventListener('click', function() {
+                reportarIncidente('safe');
+            });
+
+            // Evento para confirmar y enviar
+            document.getElementById('confirmReports').addEventListener('click', function() {
+                confirmarYEnviar();
+            });
+
+            // Evento para el botón de simulación
+            document.getElementById('simulateRisk').addEventListener('click', function() {
+                simularRiesgo();
+            });
+
+            // Evento adicional: Enter en los inputs para simular
+            document.getElementById
