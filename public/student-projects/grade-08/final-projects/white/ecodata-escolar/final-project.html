@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)file:///C:/Users/BTO09-USER/Desktop/proyect%20ods%208/indexz.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>EcoData Escolar | Code for Change</title>
+
+  <style>
+
+    :root {
+      --verde: #16a34a;
+      --verde-oscuro: #14532d;
+      --verde-claro: #dcfce7;
+      --azul: #0ea5e9;
+      --amarillo: #facc15;
+      --fondo: #f0fdf4;
+      --blanco: #ffffff;
+      --texto: #17251b;
+      --gris: #64748b;
+      --borde: #dbe7df;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(20, 83, 45, 0.97);
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 15px rgba(0,0,0,.15);
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: var(--amarillo);
+    }
+
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      padding: 70px 8%;
+      color: white;
+      background:
+        linear-gradient(rgba(20,83,45,.9), rgba(6,78,59,.92));
+    }
+
+    .hero-content {
+      max-width: 950px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      padding: 8px 16px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.7rem, 6vw, 5rem);
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: #86efac;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 750px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 22px;
+      background: var(--amarillo);
+      color: #422006;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    section {
+      padding: 70px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 800px;
+      margin: auto auto 40px;
+    }
+
+    .section-title span {
+      color: var(--verde);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-title h2 {
+      font-size: 2.4rem;
+      margin: 8px 0;
+    }
+
+    .section-title p {
+      color: var(--gris);
+    }
+
+    .problem-grid,
+    .members,
+    .ods-grid,
+    .ai-grid,
+    .schedule {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card,
+    .member,
+    .week {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      border: 1px solid var(--borde);
+      box-shadow: 0 8px 25px rgba(20,83,45,.07);
+    }
+
+    .card:hover,
+    .member:hover,
+    .week:hover {
+      transform: translateY(-4px);
+      transition: .3s;
+    }
+
+    .icon {
+      font-size: 2.3rem;
+    }
+
+    .card h3,
+    .member h3 {
+      color: var(--verde-oscuro);
+      margin: 8px 0;
+    }
+
+    .card p,
+    .member p {
+      color: var(--gris);
+    }
+
+    .question {
+      background: linear-gradient(135deg, #14532d, #166534);
+      color: white;
+      text-align: center;
+    }
+
+    .question-box {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 20px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .avatar {
+      width: 75px;
+      height: 75px;
+      margin: auto;
+      border-radius: 50%;
+      background: var(--verde-claro);
+      color: var(--verde-oscuro);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .member {
+      text-align: center;
+    }
+
+    .ods {
+      background: #f8fafc;
+    }
+
+    .ods-card {
+      color: white;
+      padding: 25px;
+      border-radius: 18px;
+      min-height: 190px;
+    }
+
+    .ods4 { background: #c5192d; }
+    .ods9 { background: #fd6925; }
+    .ods11 { background: #f99d26; }
+    .ods13 { background: #3f7e44; }
+
+    .ods-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .timeline {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .step {
+      padding: 20px;
+      margin-bottom: 15px;
+      background: white;
+      border-left: 5px solid var(--verde);
+      border-radius: 10px;
+    }
+
+    .step h3 {
+      color: var(--verde-oscuro);
+    }
+
+    /* ENCUESTA */
+
+    .survey-section {
+      background: #ecfdf5;
+    }
+
+    .survey {
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.08);
+    }
+
+    .question-form {
+      margin-bottom: 25px;
+    }
+
+    .question-form label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: var(--verde-oscuro);
+    }
+
+    .question-form select,
+    .question-form input,
+    .question-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: white;
+    }
+
+    .question-form textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .survey-note {
+      background: #f0fdf4;
+      border-left: 4px solid var(--verde);
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      color: #365314;
+    }
+
+    .success {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: bold;
+    }
+
+    .data-section {
+      background: white;
+    }
+
+    .data-list {
+      max-width: 850px;
+      margin: auto;
+      list-style: none;
+    }
+
+    .data-list li {
+      background: #f8fafc;
+      margin-bottom: 12px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border-left: 4px solid var(--verde);
+    }
+
+    .ai {
+      background: linear-gradient(135deg, #0f172a, #164e63);
+      color: white;
+    }
+
+    .ai-card {
+      padding: 25px;
+      background: rgba(255,255,255,.08);
+      border-radius: 16px;
+    }
+
+    .ai-card h3 {
+      color: #7dd3fc;
+      margin-bottom: 10px;
+    }
+
+    .ethics {
+      background: #fff7ed;
+    }
+
+    .ethics-box {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .ethics-item {
+      background: white;
+      padding: 17px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border-left: 5px solid #f97316;
+    }
+
+    .conclusion {
+      text-align: center;
+      background: var(--verde-claro);
+    }
+
+    .conclusion-box {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    footer {
+      background: #052e16;
+      color: #bbf7d0;
+      text-align: center;
+      padding: 35px;
+    }
+
+    footer strong {
+      color: white;
+    }
+
+    @media(max-width:750px) {
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      section {
+        padding: 55px 6%;
+      }
+
+      .survey {
+        padding: 20px;
+      }
+    }
+
+  </style>
+
+<style>
+.tlh-project-bar{
+  max-width:1200px;margin:14px auto;display:flex;gap:10px;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;padding:0 16px;
+  font-family:Arial,Helvetica,sans-serif
+}
+.tlh-project-bar a,.tlh-project-authors{
+  border-radius:999px;padding:10px 16px;font-weight:800;text-decoration:none
+}
+.tlh-project-bar a{background:#14532d;color:#fff;border:1px solid #86efac}
+.tlh-project-authors{background:#dcfce7;color:#14532d;border:1px solid #bbf7d0;font-size:.9rem}
+</style>
+
+
+/* ===== DASHBOARD DE ANÁLISIS DE DATOS ===== */
+.analysis-dashboard{background:#f8fafc}
+.analysis-intro{max-width:900px;margin:0 auto 28px;text-align:center;color:#64748b}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;max-width:1100px;margin:0 auto 30px}
+.kpi{background:#fff;border:1px solid #dbe7df;border-radius:16px;padding:22px;box-shadow:0 8px 25px rgba(20,83,45,.07)}
+.kpi .num{font-size:2rem;font-weight:900;color:#14532d;display:block}
+.kpi .label{color:#64748b;font-size:.92rem}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;max-width:1100px;margin:auto}
+.chart-card{background:#fff;border:1px solid #dbe7df;border-radius:18px;padding:20px;box-shadow:0 8px 25px rgba(20,83,45,.06)}
+.chart-card h3{color:#14532d;margin-bottom:5px}
+.chart-card p{color:#64748b;font-size:.9rem;margin-bottom:16px}
+.chart-wrap{height:310px;position:relative}
+.chart-wrap canvas{width:100%;height:100%;display:block}
+.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1100px;margin:28px auto 0}
+.insight{background:#fff;border-radius:16px;padding:20px;border-left:5px solid #16a34a;box-shadow:0 8px 25px rgba(20,83,45,.06)}
+.insight.warning{border-left-color:#f59e0b}
+.insight h3{margin-bottom:7px;color:#14532d}
+.insight p{color:#475569}
+.proposal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;max-width:1100px;margin:auto}
+.proposal{background:#fff;border:1px solid #dbe7df;border-radius:16px;padding:21px}
+.proposal .tag{display:inline-block;padding:5px 9px;border-radius:999px;background:#dcfce7;color:#14532d;font-weight:800;font-size:.78rem;margin-bottom:10px}
+.proposal h3{color:#14532d;margin-bottom:7px}
+.proposal p{color:#64748b}
+.priority{background:linear-gradient(135deg,#14532d,#166534);color:#fff;border-radius:18px;padding:28px;max-width:1100px;margin:25px auto 0}
+.priority h3{margin-bottom:10px;color:#dcfce7}
+.priority ul{padding-left:20px}
+.conclusion-box.analysis-conclusion{text-align:left;background:#fff;border:1px solid #bbf7d0;border-radius:18px;padding:28px;box-shadow:0 8px 25px rgba(20,83,45,.06)}
+.data-method{max-width:900px;margin:0 auto 25px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:18px;color:#365314}
+.data-table-wrap{overflow:auto;max-width:1100px;margin:25px auto 0}
+.data-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+.data-table th,.data-table td{padding:11px 13px;border-bottom:1px solid #e2e8f0;text-align:left}
+.data-table th{background:#14532d;color:#fff}
+.data-table td:last-child,.data-table th:last-child{text-align:right}
+@media(max-width:600px){.chart-grid{grid-template-columns:1fr}.chart-wrap{height:280px}}
+
+</head>
+
+<body>
+<div class="tlh-project-bar">
+<a href="/students/grade/8/white">← 8th White Projects</a>
+<div class="tlh-project-authors">Created by: Lucía · José Ignacio · Jesús · Salomón · Samantha · Diego</div>
+</div>
+
+<nav>
+
+  <div class="logo">
+    🌱 EcoData Escolar
+  </div>
+
+  <ul>
+    <li><a href="#problema">Problema</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#encuesta">Encuesta</a></li>
+    <li><a href="#datos">Datos</a></li>
+    <li><a href="#analisis">Análisis</a></li>
+    <li><a href="#propuestas">Soluciones</a></li>
+    <li><a href="#ods">ODS</a></li>
+  </ul>
+
+</nav>
+
+
+<header class="hero">
+
+  <div class="hero-content">
+
+    <div class="badge">
+      💻 CODE FOR CHANGE · Ciencia de Datos + IA
+    </div>
+
+    <h1>
+      EcoData <span>Escolar</span>
+    </h1>
+
+    <p>
+      Ciencia de Datos e Inteligencia Artificial para conocer,
+      analizar y reducir los residuos que generamos en nuestra escuela.
+    </p>
+
+    <a href="#encuesta" class="btn">
+      📝 Responder encuesta
+    </a>
+
+  </div>
+
+</header>
+
+
+<section id="problema">
+
+  <div class="section-title">
+
+    <span>01 · Nuestro problema</span>
+
+    <h2>
+      ¿Cuántos residuos generamos?
+    </h2>
+
+    <p>
+      Queremos investigar qué tipo de basura generamos,
+      dónde se concentra y cuáles son nuestros hábitos de reciclaje.
+    </p>
+
+  </div>
+
+  <div class="problem-grid">
+
+    <div class="card">
+      <div class="icon">🗑️</div>
+      <h3>Generación</h3>
+      <p>
+        Mediremos qué cantidad de residuos se produce
+        durante la jornada escolar.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">♻️</div>
+      <h3>Reciclaje</h3>
+      <p>
+        Investigaremos qué porcentaje de estudiantes
+        separa correctamente los residuos.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>Ciencia de Datos</h3>
+      <p>
+        Convertiremos las respuestas en tablas,
+        porcentajes y gráficos.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🤖</div>
+      <h3>Inteligencia Artificial</h3>
+      <p>
+        Buscaremos patrones y posibles soluciones
+        utilizando herramientas de IA.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="question">
+
+  <div class="question-box">
+
+    <h2>❓ Pregunta orientadora</h2>
+
+    <br>
+
+    <p>
+      <strong>
+        ¿Cómo podemos utilizar la recolección, el análisis y
+        la visualización de datos, junto con herramientas de
+        Inteligencia Artificial, para identificar los principales
+        problemas de generación de residuos en nuestra escuela
+        y diseñar estrategias para reducirlos?
+      </strong>
+    </p>
+
+  </div>
+
+</section>
+
+
+<section id="equipo">
+
+  <div class="section-title">
+
+    <span>02 · Equipo</span>
+
+    <h2>
+      Nuestro equipo de investigación
+    </h2>
+
+  </div>
+
+  <div class="members">
+
+    <div class="member">
+      <div class="avatar">L</div>
+      <h3>Lucía</h3>
+      <p>📋 Recolección de datos</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">JI</div>
+      <h3>José Ignacio</h3>
+      <p>📊 Análisis de datos</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">J</div>
+      <h3>Jesús</h3>
+      <p>📈 Visualización</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">S</div>
+      <h3>Salomón</h3>
+      <p>🤖 Inteligencia Artificial</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">SA</div>
+      <h3>Samantha</h3>
+      <p>🎤 Presentación</p>
+    </div>
+
+    <div class="member">
+      <div class="avatar">DC</div>
+      <h3>Diego</h3>
+      <p>🔬 Ciencias Naturales y ODS</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ENCUESTA -->
+
+<section class="survey-section" id="encuesta">
+
+  <div class="section-title">
+
+    <span>03 · Recolección de datos</span>
+
+    <h2>
+      📝 Encuesta sobre residuos escolares
+    </h2>
+
+    <p>
+      Tus respuestas nos ayudarán a conocer los hábitos
+      ambientales de nuestra comunidad educativa.
+    </p>
+
+  </div>
+
+
+  <div class="survey">
+
+    <div class="survey-note">
+
+      🔐 <strong>Privacidad:</strong>
+      Esta encuesta no solicita nombres, contraseñas ni información
+      personal. Las respuestas serán utilizadas únicamente
+      para el proyecto escolar EcoData.
+
+    </div>
+
+
+    <!--
+      IMPORTANTE:
+
+      Reemplazar AQUI_VA_LA_URL_DE_APPS_SCRIPT
+      por la URL de implementación de Google Apps Script.
+    -->
+
+    <form id="surveyForm" onsubmit="return mostrarMensaje(event)">
+
+      <div class="question-form">
+
+        <label>
+          1. ¿En qué grado estás?
+        </label>
+
+        <select name="grado" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>6°</option>
+          <option>7°</option>
+          <option>8°</option>
+          <option>9°</option>
+          <option>10°</option>
+          <option>11°</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          2. ¿Con qué frecuencia separas los residuos?
+        </label>
+
+        <select name="separacion" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Siempre</option>
+          <option>Casi siempre</option>
+          <option>A veces</option>
+          <option>Nunca</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          3. ¿Qué tipo de residuo generas con mayor frecuencia?
+        </label>
+
+        <select name="residuo" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Plástico</option>
+          <option>Papel o cartón</option>
+          <option>Residuos orgánicos</option>
+          <option>Vidrio</option>
+          <option>Otro</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          4. ¿Conoces los puntos de reciclaje de la escuela?
+        </label>
+
+        <select name="puntos" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Sí</option>
+          <option>No</option>
+          <option>No estoy seguro/a</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          5. ¿Consideras que hay suficientes recipientes
+          para separar residuos?
+        </label>
+
+        <select name="recipientes" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Sí</option>
+          <option>No</option>
+          <option>Hay algunos, pero no son suficientes</option>
+          <option>No sé</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          6. ¿Qué tan importante consideras reciclar?
+        </label>
+
+        <select name="importancia" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Muy importante</option>
+          <option>Importante</option>
+          <option>Poco importante</option>
+          <option>Nada importante</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          7. ¿Qué haces normalmente con una botella plástica?
+        </label>
+
+        <select name="botella" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>La deposito en reciclaje</option>
+          <option>La reutilizo</option>
+          <option>La deposito en cualquier recipiente</option>
+          <option>La dejo donde la terminé de usar</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          8. ¿En qué lugar de la escuela observas más basura?
+        </label>
+
+        <select name="lugar" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Salones</option>
+          <option>Patio</option>
+          <option>Cafetería</option>
+          <option>Baños</option>
+          <option>Pasillos</option>
+          <option>Otro</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          9. ¿Cuál crees que es la principal causa
+          del exceso de residuos?
+        </label>
+
+        <select name="causa" required="">
+
+          <option value="">
+            Selecciona una opción
+          </option>
+
+          <option>Falta de educación ambiental</option>
+          <option>Pocos recipientes</option>
+          <option>Falta de reciclaje</option>
+          <option>Uso excesivo de plásticos</option>
+          <option>Falta de responsabilidad</option>
+          <option>Otro</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="question-form">
+
+        <label>
+          10. ¿Qué solución propondrías para reducir la basura?
+        </label>
+
+        <textarea name="solucion" placeholder="Escribe tu propuesta..." required=""></textarea>
+
+      </div>
+
+
+      <button class="btn" type="submit">
+        🚀 Enviar encuesta
+      </button>
+
+
+      <div class="success" id="mensaje">
+
+        ✅ ¡Respuesta enviada!
+        Gracias por contribuir al proyecto EcoData Escolar.
+
+      </div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<section id="datos" class="data-section">
+
+  <div class="section-title">
+
+    <span>04 · Datos</span>
+
+    <h2>
+      ¿Qué haremos con las respuestas?
+    </h2>
+
+    <p>
+      Cada respuesta llegará a Google Sheets y posteriormente
+      será analizada por nuestro equipo.
+    </p>
+
+  </div>
+
+  <ul class="data-list">
+
+    <li>📊 Calcular el porcentaje de estudiantes que reciclan.</li>
+
+    <li>♻️ Identificar el residuo más frecuente.</li>
+
+    <li>🏫 Identificar las zonas donde se produce más basura.</li>
+
+    <li>📈 Crear gráficos con los resultados.</li>
+
+    <li>🧮 Calcular promedios y porcentajes.</li>
+
+    <li>🤖 Utilizar IA para encontrar patrones.</li>
+
+    <li>💡 Diseñar soluciones basadas en evidencia.</li>
+
+  </ul>
+
+</section>
+
+
+<section class="ai">
+
+  <div class="section-title">
+
+    <span style="color:#7dd3fc">
+      05 · Inteligencia Artificial
+    </span>
+
+    <h2>
+      IA para transformar nuestros datos
+    </h2>
+
+    <p>
+      La inteligencia artificial será una herramienta
+      de apoyo para interpretar los resultados.
+    </p>
+
+  </div>
+
+  <div class="ai-grid">
+
+    <div class="ai-card">
+
+      <h3>🔎 Patrones</h3>
+
+      <p>
+        Identificaremos relaciones entre hábitos,
+        lugares y tipos de residuos.
+      </p>
+
+    </div>
+
+    <div class="ai-card">
+
+      <h3>📊 Análisis</h3>
+
+      <p>
+        Compararemos los resultados obtenidos
+        mediante tablas y gráficos.
+      </p>
+
+    </div>
+
+    <div class="ai-card">
+
+      <h3>💡 Soluciones</h3>
+
+      <p>
+        Evaluaremos propuestas para disminuir
+        la generación de residuos.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<section id="analisis" class="analysis-dashboard">
+  <div class="section-title">
+    <span>04 · Análisis de datos</span>
+    <h2>Resultados reales de la encuesta</h2>
+    <p>Dashboard construido a partir de las 15 respuestas registradas en la encuesta sobre residuos escolares.</p>
+  </div>
+
+  <div class="data-method">
+    <strong>📌 Metodología:</strong> se calcularon frecuencias y porcentajes por pregunta. Las respuestas abiertas se revisaron por temas para detectar propuestas repetidas. 
+    Los porcentajes se calculan sobre las respuestas registradas para cada pregunta; en la pregunta abierta hubo una respuesta sin dato.
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><span class="num">15</span><span class="label">Respuestas analizadas</span></div>
+    <div class="kpi"><span class="num">66.7%</span><span class="label">Separa siempre o casi siempre</span></div>
+    <div class="kpi"><span class="num">60.0%</span><span class="label">Identifica plástico como residuo principal</span></div>
+    <div class="kpi"><span class="num">80.0%</span><span class="label">Conoce los puntos de reciclaje</span></div>
+    <div class="kpi"><span class="num">86.7%</span><span class="label">Considera importante o muy importante reciclar</span></div>
+    <div class="kpi"><span class="num">80.0%</span><span class="label">Recicla o reutiliza botellas</span></div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Frecuencia de separación</h3>
+      <p>La práctica de separar residuos todavía no es constante.</p>
+      <div class="chart-wrap"><canvas id="chartSeparacion"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Tipo de residuo más frecuente</h3>
+      <p>El plástico representa la mayor proporción de residuos reportados.</p>
+      <div class="chart-wrap"><canvas id="chartResiduo"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Conocimiento de puntos de reciclaje</h3>
+      <p>La mayoría conoce los puntos, pero existe una minoría que necesita mayor orientación.</p>
+      <div class="chart-wrap"><canvas id="chartPuntos"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Suficiencia de recipientes</h3>
+      <p>La respuesta predominante fue “Tal vez”, lo que indica una percepción de insuficiencia o falta de claridad.</p>
+      <div class="chart-wrap"><canvas id="chartRecipientes"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Importancia del reciclaje</h3>
+      <p>Existe una valoración positiva del reciclaje entre los participantes.</p>
+      <div class="chart-wrap"><canvas id="chartImportancia"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>¿Qué hacen con una botella?</h3>
+      <p>La opción más frecuente es llevarla al reciclaje.</p>
+      <div class="chart-wrap"><canvas id="chartBotella"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>¿Dónde se observa más basura?</h3>
+      <p>Patio y salones aparecen empatados como los lugares con mayor frecuencia.</p>
+      <div class="chart-wrap"><canvas id="chartLugar"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Principales causas percibidas</h3>
+      <p>La falta de reciclaje y la educación ambiental concentran las respuestas.</p>
+      <div class="chart-wrap"><canvas id="chartCausa"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-grid">
+    <div class="insight">
+      <h3>🔎 Hallazgo 1 · Separación</h3>
+      <p><strong>66.7%</strong> respondió “Siempre” o “Casi siempre”, pero <strong>33.3%</strong> lo hace solo a veces. Esto muestra una oportunidad clara para convertir la intención en un hábito constante.</p>
+    </div>
+    <div class="insight">
+      <h3>♻️ Hallazgo 2 · Plástico</h3>
+      <p><strong>60.0%</strong> señaló el plástico como residuo generado con mayor frecuencia, frente a <strong>40.0%</strong> para papel o cartón.</p>
+    </div>
+    <div class="insight">
+      <h3>📍 Hallazgo 3 · Zonas críticas</h3>
+      <p>Patio y salones registraron <strong>5</strong> respuestas cada uno (33.3% por categoría), seguidos por cafetería con 4.</p>
+    </div>
+    <div class="insight warning">
+      <h3>⚠️ Hallazgo 4 · Infraestructura</h3>
+      <p>Solo <strong>40.0%</strong> considera que sí hay suficientes recipientes, mientras <strong>53.3%</strong> respondió “Tal vez”. Conviene revisar cantidad, ubicación y señalización.</p>
+    </div>
+  </div>
+</section>
+
+<section id="propuestas">
+  <div class="section-title">
+    <span>05 · Soluciones y propuestas</span>
+    <h2>Del análisis a la acción</h2>
+    <p>Propuestas priorizadas según los patrones encontrados en las respuestas.</p>
+  </div>
+
+  <div class="proposal-grid">
+    <div class="proposal">
+      <span class="tag">Prioridad alta</span>
+      <h3>♻️ Puntos de reciclaje visibles</h3>
+      <p>Reforzar los puntos de reciclaje con recipientes claramente identificados para plástico y papel/cartón, especialmente en patio, salones y cafetería.</p>
+    </div>
+    <div class="proposal">
+      <span class="tag">Prioridad alta</span>
+      <h3>🏫 Señalización sencilla</h3>
+      <p>Instalar carteles cerca de los recipientes con ejemplos concretos de dónde depositar cada residuo. Esto responde directamente a las propuestas de señalización de la encuesta.</p>
+    </div>
+    <div class="proposal">
+      <span class="tag">Prioridad alta</span>
+      <h3>📣 Campaña de educación ambiental</h3>
+      <p>Realizar una campaña corta por cursos sobre separación, reducción y reutilización, enfocada en transformar el conocimiento en acciones diarias.</p>
+    </div>
+    <div class="proposal">
+      <span class="tag">Prioridad media</span>
+      <h3>🧴 Reto de botellas</h3>
+      <p>Promover la reutilización y correcta disposición de botellas plásticas mediante una campaña por salones y seguimiento semanal.</p>
+    </div>
+    <div class="proposal">
+      <span class="tag">Prioridad media</span>
+      <h3>🧹 Monitoreo de zonas críticas</h3>
+      <p>Hacer observaciones semanales en patio y salones para comprobar si disminuye la cantidad de residuos después de aplicar las acciones.</p>
+    </div>
+    <div class="proposal">
+      <span class="tag">Prioridad media</span>
+      <h3>📊 Medición antes y después</h3>
+      <p>Repetir la encuesta y, si es posible, registrar durante varios días la cantidad de residuos por zona. Así se puede comprobar si las soluciones funcionan.</p>
+    </div>
+  </div>
+
+  <div class="priority">
+    <h3>🎯 Plan de acción recomendado</h3>
+    <ul>
+      <li><strong>Semana 1:</strong> ubicar y revisar los recipientes actuales.</li>
+      <li><strong>Semana 2:</strong> colocar señalización y reforzar los puntos de reciclaje.</li>
+      <li><strong>Semanas 3–4:</strong> realizar campaña educativa y reto de botellas.</li>
+      <li><strong>Semana 5:</strong> observar patio y salones y registrar resultados.</li>
+      <li><strong>Semana 6:</strong> comparar los nuevos datos con esta línea base de 15 respuestas.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="data-section">
+  <div class="section-title">
+    <span>06 · Resumen estadístico</span>
+    <h2>Datos clave para la presentación</h2>
+    <p>Indicadores que pueden utilizarse como evidencia del diagnóstico.</p>
+  </div>
+  <div class="data-table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Indicador</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>Respuestas analizadas</td><td>15</td></tr>
+        <tr><td>Grado predominante</td><td>8°: 0 (0.0%)</td></tr>
+        <tr><td>Separa siempre o casi siempre</td><td>10 (66.7%)</td></tr>
+        <tr><td>Residuo principal: plástico</td><td>9 (60.0%)</td></tr>
+        <tr><td>Conoce los puntos de reciclaje</td><td>12 (80.0%)</td></tr>
+        <tr><td>Considera suficientes los recipientes</td><td>6 (40.0%)</td></tr>
+        <tr><td>Reciclar es importante o muy importante</td><td>13 (86.7%)</td></tr>
+        <tr><td>Recicla o reutiliza la botella</td><td>12 (80.0%)</td></tr>
+        <tr><td>Zona con más respuestas</td><td>Patio y salones: 5 cada uno</td></tr>
+        <tr><td>Causa principal percibida</td><td>Falta de reciclaje: 5 (33.3%)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="conclusion">
+  <div class="section-title">
+    <span>07 · Conclusiones</span>
+    <h2>¿Qué nos dicen los datos?</h2>
+  </div>
+  <div class="conclusion-box analysis-conclusion">
+    <p><strong>Conclusión general:</strong> la encuesta muestra que existe una actitud favorable hacia el reciclaje, pero todavía hay dificultades para convertir esa disposición en una práctica constante. Aunque 86.7% considera importante o muy importante reciclar, solo 33.3% respondió que siempre separa los residuos.</p>
+    <br>
+    <p>El <strong>plástico</strong> es el residuo más frecuente (60.0%), mientras que <strong>patio y salones</strong> aparecen como las zonas donde más se observa basura. Además, la respuesta “Tal vez” sobre la suficiencia de recipientes (53.3%) sugiere que no basta con tener recipientes: también deben estar bien ubicados, identificados y ser fáciles de usar.</p>
+    <br>
+    <p>Por otra parte, 80.0% conoce los puntos de reciclaje y 80.0% afirma reciclar o reutilizar las botellas. Esto representa una base positiva sobre la cual se pueden construir nuevas acciones.</p>
+    <br>
+    <p><strong>Recomendación final:</strong> priorizar una estrategia combinada de <strong>infraestructura + señalización + educación + seguimiento de datos</strong>. De esta manera, el proyecto no se limita a identificar el problema, sino que permite medir si las soluciones realmente reducen los residuos.</p>
+    <br>
+    <p><strong>Limitación:</strong> se analizaron 15 respuestas, por lo que los resultados describen esta muestra y no deben interpretarse automáticamente como representación de toda la comunidad escolar.</p>
+  </div>
+</section>
+
+<section id="ods">
+
+  <div class="section-title">
+
+    <span>06 · ODS</span>
+
+    <h2>
+      Objetivos de Desarrollo Sostenible
+    </h2>
+
+  </div>
+
+  <div class="ods-grid">
+
+    <div class="ods-card ods4">
+
+      <div class="ods-number">04</div>
+
+      <h3>Educación de Calidad</h3>
+
+      <p>
+        Aprendemos utilizando ciencia,
+        tecnología y datos.
+      </p>
+
+    </div>
+
+    <div class="ods-card ods9">
+
+      <div class="ods-number">09</div>
+
+      <h3>Innovación</h3>
+
+      <p>
+        Utilizamos tecnología e IA para
+        encontrar soluciones.
+      </p>
+
+    </div>
+
+    <div class="ods-card ods11">
+
+      <div class="ods-number">11</div>
+
+      <h3>Comunidades Sostenibles</h3>
+
+      <p>
+        Buscamos una escuela más limpia
+        y sostenible.
+      </p>
+
+    </div>
+
+    <div class="ods-card ods13">
+
+      <div class="ods-number">13</div>
+
+      <h3>Acción por el Clima</h3>
+
+      <p>
+        Promovemos hábitos que reduzcan
+        nuestro impacto ambiental.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section>
+
+  <div class="section-title">
+
+    <span>07 · Cronograma</span>
+
+    <h2>
+      Plan de trabajo
+    </h2>
+
+    <p>
+      10 de julio – 1 de septiembre de 2026
+    </p>
+
+  </div>
+
+  <div class="timeline">
+
+    <div class="step">
+      <h3>Semana 1 · Identificar</h3>
+      <p>Definir problema, pregunta y ODS.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 2 · Investigar</h3>
+      <p>Diseñar encuesta y metodología.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 3 · Recolectar</h3>
+      <p>Aplicar encuesta y recoger información.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 4 · Organizar</h3>
+      <p>Limpiar y organizar los datos.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 5 · Analizar</h3>
+      <p>Calcular porcentajes, promedios y tendencias.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 6 · Visualizar</h3>
+      <p>Crear gráficos y tablero.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 7 · IA</h3>
+      <p>Buscar patrones y desarrollar propuestas.</p>
+    </div>
+
+    <div class="step">
+      <h3>Semana 8 · Presentar</h3>
+      <p>Presentación y conclusiones finales.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="ethics">
+
+  <div class="section-title">
+
+    <span>08 · Ética</span>
+
+    <h2>
+      Uso responsable de los datos
+    </h2>
+
+  </div>
+
+  <div class="ethics-box">
+
+    <div class="ethics-item">
+      🔐 No recopilaremos información personal innecesaria.
+    </div>
+
+    <div class="ethics-item">
+      📋 Las personas conocerán el propósito de la encuesta.
+    </div>
+
+    <div class="ethics-item">
+      📊 Los resultados serán presentados de forma honesta.
+    </div>
+
+    <div class="ethics-item">
+      🤖 Las respuestas generadas por IA serán verificadas.
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="conclusion">
+
+  <div class="conclusion-box">
+
+    <h2>
+      🌱 De los datos a la acción
+    </h2>
+
+    <p>
+      Nuestro objetivo es utilizar información real para comprender
+      el problema de los residuos y proponer soluciones que puedan
+      mejorar nuestra escuela y nuestra comunidad.
+    </p>
+
+  </div>
+
+</section>
+
+
+<footer>
+
+  <p>
+    <strong>🌱 EcoData Escolar</strong>
+  </p>
+
+  <p>
+    CODE FOR CHANGE · Ciencia de Datos e Inteligencia Artificial
+  </p>
+
+  <p>
+    Lucía · José Ignacio · Jesús · Salomón · Samantha · Diego
+  </p>
+
+  <p>
+    Proyecto escolar · 2026
+  </p>
+
+</footer>
+
+
+
+
+
+
+<script>
+function mostrarMensaje(event) {
+  event.preventDefault();
+  const mensaje = document.getElementById("mensaje");
+  mensaje.style.display = "block";
+  setTimeout(function() {
+    document.getElementById("surveyForm").reset();
+    mensaje.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 300);
+  return false;
+}
+
+const surveyData = {"separacion": [{"label": "A veces", "value": 5, "pct": 33.3}, {"label": "Siempre", "value": 5, "pct": 33.3}, {"label": "Casi siempre", "value": 5, "pct": 33.3}], "residuo": [{"label": "Plástico", "value": 9, "pct": 60.0}, {"label": "Papel o cartón", "value": 6, "pct": 40.0}], "puntos": [{"label": "Sí", "value": 12, "pct": 80.0}, {"label": "Hay algunos, pero no son suficientes", "value": 2, "pct": 13.3}, {"label": "No sé", "value": 1, "pct": 6.7}], "recipientes": [{"label": "Tal vez", "value": 8, "pct": 53.3}, {"label": "Sí", "value": 6, "pct": 40.0}, {"label": "No", "value": 1, "pct": 6.7}], "importancia": [{"label": "Muy importante", "value": 9, "pct": 60.0}, {"label": "Importante", "value": 4, "pct": 26.7}, {"label": "Poco importante", "value": 2, "pct": 13.3}], "botella": [{"label": "La deposito en el reciclaje", "value": 9, "pct": 60.0}, {"label": "La reutilizo", "value": 3, "pct": 20.0}, {"label": "La deposito en cualquier recipiente", "value": 3, "pct": 20.0}], "lugar": [{"label": "Patio", "value": 5, "pct": 33.3}, {"label": "Salones", "value": 5, "pct": 33.3}, {"label": "Cafetería", "value": 4, "pct": 26.7}, {"label": "Todos lados", "value": 1, "pct": 6.7}], "causa": [{"label": "Falta de reciclaje", "value": 5, "pct": 33.3}, {"label": "Falta de educación ambiental", "value": 4, "pct": 26.7}, {"label": "Uso excesivo de plástico", "value": 3, "pct": 20.0}, {"label": "Pocos recipientes", "value": 2, "pct": 13.3}, {"label": "Falta de responsabilidad", "value": 1, "pct": 6.7}]};
+
+function drawBarChart(id, rows, horizontal=false) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const W = Math.max(300, rect.width);
+  const H = Math.max(260, rect.height);
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+
+  const pad = {top:20,right:18,bottom:horizontal?18:62,left:horizontal?150:48};
+  const chartW = W-pad.left-pad.right;
+  const chartH = H-pad.top-pad.bottom;
+  const max = Math.max(...rows.map(r=>r.value),1);
+  const niceMax = Math.ceil(max/2)*2 || 1;
+
+  ctx.font = "12px Arial";
+  ctx.fillStyle = "#64748b";
+  ctx.strokeStyle = "#e2e8f0";
+  ctx.lineWidth = 1;
+
+  if (horizontal) {
+    const gap = 10;
+    const bh = Math.max(22, (chartH-gap*(rows.length-1))/rows.length);
+    rows.forEach((r,i)=>{
+      const y=pad.top+i*(bh+gap);
+      const bw=(r.value/niceMax)*chartW;
+      ctx.fillStyle="#16a34a";
+      ctx.fillRect(pad.left,y,bw,bh);
+      ctx.fillStyle="#334155";
+      ctx.textAlign="right";
+      ctx.textBaseline="middle";
+      ctx.fillText(r.label.slice(0,24),pad.left-8,y+bh/2);
+      ctx.textAlign="left";
+      ctx.fillText(r.value+" ("+r.pct+"%)",pad.left+bw+7,y+bh/2);
+    });
+  } else {
+    const gap = 14;
+    const bw = Math.max(24,(chartW-gap*(rows.length-1))/rows.length);
+    rows.forEach((r,i)=>{
+      const x=pad.left+i*(bw+gap);
+      const bh=(r.value/niceMax)*chartH;
+      const y=pad.top+chartH-bh;
+      ctx.fillStyle="#16a34a";
+      ctx.fillRect(x,y,bw,bh);
+      ctx.fillStyle="#334155";
+      ctx.textAlign="center";
+      ctx.textBaseline="bottom";
+      ctx.fillText(r.value+" ("+r.pct+"%)",x+bw/2,y-5);
+      ctx.save();
+      ctx.translate(x+bw/2,pad.top+chartH+12);
+      ctx.rotate(-Math.PI/5);
+      ctx.textAlign="right";
+      ctx.textBaseline="middle";
+      ctx.fillText(r.label.slice(0,22),0,0);
+      ctx.restore();
+    });
+    for(let t=0;t<=niceMax;t+=Math.max(1,Math.ceil(niceMax/4))) {
+      const y=pad.top+chartH-(t/niceMax)*chartH;
+      ctx.strokeStyle="#e2e8f0"; ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+chartW,y); ctx.stroke();
+      ctx.fillStyle="#64748b"; ctx.textAlign="right"; ctx.textBaseline="middle"; ctx.fillText(t,pad.left-8,y);
+    }
+  }
+}
+
+function drawDonut(id, rows) {
+  const canvas=document.getElementById(id);
+  if(!canvas) return;
+  const ctx=canvas.getContext("2d");
+  const rect=canvas.parentElement.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  const W=Math.max(300,rect.width), H=Math.max(260,rect.height);
+  canvas.width=W*dpr; canvas.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  const total=rows.reduce((a,r)=>a+r.value,0);
+  const cx=W*0.35, cy=H*0.48, R=Math.min(W*0.29,H*0.35);
+  const colors=["#16a34a","#0ea5e9","#f59e0b","#8b5cf6","#ef4444","#14b8a6"];
+  let a=-Math.PI/2;
+  rows.forEach((r,i)=>{
+    const slice=(r.value/total)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,R,a,a+slice); ctx.closePath();
+    ctx.fillStyle=colors[i%colors.length]; ctx.fill();
+    a+=slice;
+  });
+  ctx.beginPath(); ctx.arc(cx,cy,R*0.58,0,Math.PI*2); ctx.fillStyle="#fff"; ctx.fill();
+  ctx.fillStyle="#14532d"; ctx.font="900 22px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(total,cx,cy);
+  ctx.font="12px Arial"; ctx.fillStyle="#64748b"; ctx.fillText("respuestas",cx,cy+20);
+  rows.forEach((r,i)=>{
+    const y=25+i*28;
+    ctx.fillStyle=colors[i%colors.length]; ctx.fillRect(W*0.62,y,12,12);
+    ctx.fillStyle="#334155"; ctx.textAlign="left"; ctx.textBaseline="middle";
+    ctx.fillText(r.label.slice(0,26),W*0.62+19,y+6);
+    ctx.fillStyle="#64748b"; ctx.fillText(r.pct+"%",W*0.62+19,y+21);
+  });
+}
+
+function renderCharts(){
+  drawBarChart("chartSeparacion",surveyData.separacion);
+  drawDonut("chartResiduo",surveyData.residuo);
+  drawDonut("chartPuntos",surveyData.puntos);
+  drawBarChart("chartRecipientes",surveyData.recipientes);
+  drawBarChart("chartImportancia",surveyData.importancia);
+  drawBarChart("chartBotella",surveyData.botella,true);
+  drawBarChart("chartLugar",surveyData.lugar);
+  drawBarChart("chartCausa",surveyData.causa,true);
+}
+window.addEventListener("load",renderCharts);
+window.addEventListener("resize",()=>{ clearTimeout(window.__chartTimer); window.__chartTimer=setTimeout(renderCharts,150); });
+</script>
+
+
+
+
+
+
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="ecodata-escolar-analisis.html"
+  download="ecodata-escolar.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>
+</body></html>

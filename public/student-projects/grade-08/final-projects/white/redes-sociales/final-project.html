@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Análisis de datos de una encuesta sobre el uso de redes sociales en estudiantes de 8vo White.">
+<title>Análisis de datos | Uso de redes sociales</title>
+
+<style>
+:root{
+  --primary:#2563eb;
+  --primary-dark:#1e40af;
+  --secondary:#7c3aed;
+  --accent:#06b6d4;
+  --success:#16a34a;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --dark:#172033;
+  --muted:#64748b;
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --line:#e2e8f0;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--dark);
+  background:var(--bg);
+  line-height:1.55;
+}
+a{color:inherit}
+header{
+  color:white;
+  background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 45%,#7c3aed 100%);
+  padding:54px 20px 44px;
+  position:relative;
+  overflow:hidden;
+}
+header:before,header:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.10);
+}
+header:before{width:280px;height:280px;right:-90px;top:-120px}
+header:after{width:180px;height:180px;left:-80px;bottom:-100px}
+.hero{max-width:1120px;margin:auto;position:relative;z-index:1}
+.badge{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.22);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.3px;
+}
+header h1{
+  font-size:clamp(30px,5vw,52px);
+  line-height:1.08;
+  margin:16px 0 12px;
+}
+header p{margin:0;max-width:820px;font-size:18px;opacity:.95}
+.team{
+  margin-top:22px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+}
+.team span{
+  background:white;
+  color:#1e3a8a;
+  border-radius:10px;
+  padding:7px 11px;
+  font-size:13px;
+  font-weight:700;
+}
+nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1120px;margin:auto;padding:9px 18px;
+  display:flex;gap:7px;overflow-x:auto;
+}
+nav a{
+  text-decoration:none;
+  white-space:nowrap;
+  padding:8px 11px;
+  border-radius:9px;
+  font-size:13px;
+  color:#475569;
+}
+nav a:hover{background:#eff6ff;color:var(--primary)}
+
+main{max-width:1120px;margin:auto;padding:28px 18px 60px}
+.section{margin-top:30px;scroll-margin-top:70px}
+.section-title{margin-bottom:16px}
+.section-title h2{margin:0;font-size:27px}
+.section-title p{margin:5px 0 0;color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:21px;
+  box-shadow:var(--shadow);
+}
+.card h3{margin:0 0 5px;font-size:19px}
+.card p{margin:8px 0;color:#475569}
+.col-12{grid-column:span 12}
+.col-8{grid-column:span 8}
+.col-6{grid-column:span 6}
+.col-4{grid-column:span 4}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+}
+.kpi{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:17px;
+  box-shadow:var(--shadow);
+}
+.kpi .value{font-size:30px;font-weight:800;color:var(--primary);line-height:1.1}
+.kpi .label{font-size:13px;color:var(--muted);margin-top:6px}
+.kpi .note{font-size:12px;color:#475569;margin-top:8px}
+
+.chart{
+  height:280px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:25px;
+  flex-wrap:wrap;
+}
+.pie{
+  width:205px;height:205px;border-radius:50%;
+  position:relative;flex:none;
+  box-shadow:inset 0 0 0 1px rgba(15,23,42,.08);
+}
+.pie:after{
+  content:attr(data-total);
+  position:absolute;
+  width:72px;height:72px;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;font-weight:800;
+  box-shadow:0 3px 12px rgba(15,23,42,.10);
+}
+.legend{min-width:230px}
+.legend-item{
+  display:flex;align-items:center;gap:8px;
+  margin:8px 0;font-size:13px;
+}
+.dot{width:12px;height:12px;border-radius:3px;flex:none}
+.legend-item b{margin-left:auto}
+
+.bar-row{margin:15px 0}
+.bar-top{
+  display:flex;justify-content:space-between;gap:12px;
+  font-size:13px;margin-bottom:6px
+}
+.bar-bg{height:14px;border-radius:999px;background:#e8eef7;overflow:hidden}
+.bar-fill{
+  height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  transition:width 900ms ease;
+}
+
+.insight{
+  border-left:4px solid var(--primary);
+  background:#eff6ff;
+  border-radius:10px;
+  padding:13px 15px;
+  margin-top:15px;
+}
+.insight strong{display:block;margin-bottom:3px}
+.callout{
+  border:1px solid #bfdbfe;
+  background:#f8fbff;
+  border-radius:14px;
+  padding:17px;
+}
+.callout.warning{border-color:#fde68a;background:#fffbeb}
+.callout.success{border-color:#bbf7d0;background:#f0fdf4}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:#f8fafc;color:#334155}
+tr:last-child td{border-bottom:0}
+
+.solution-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:13px;
+}
+.solution{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  background:#fff;
+}
+.solution .number{
+  display:inline-flex;
+  width:30px;height:30px;border-radius:9px;
+  align-items:center;justify-content:center;
+  background:#dbeafe;color:#1d4ed8;font-weight:800;
+  margin-bottom:8px;
+}
+.solution h4{margin:0 0 5px;font-size:16px}
+.solution p{font-size:13px;margin:0;color:#64748b}
+.tag{
+  display:inline-block;margin-top:9px;
+  padding:4px 8px;border-radius:999px;
+  background:#f1f5f9;color:#475569;font-size:11px;font-weight:700
+}
+
+.quotes{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+blockquote{
+  margin:0;
+  padding:13px 15px;
+  background:#f8fafc;
+  border-left:4px solid #60a5fa;
+  border-radius:8px;
+  color:#334155;
+  font-size:13px;
+}
+
+.method{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px
+}
+.method div{
+  background:#f8fafc;border:1px solid var(--line);
+  border-radius:12px;padding:14px
+}
+.method strong{display:block;font-size:13px}
+.method span{font-size:12px;color:var(--muted)}
+
+button{
+  border:0;border-radius:10px;
+  padding:10px 15px;
+  background:var(--primary);color:white;
+  font-weight:700;cursor:pointer;
+}
+button:hover{background:var(--primary-dark)}
+.hidden{display:none}
+
+footer{
+  text-align:center;
+  padding:30px 18px 45px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@media(max-width:850px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .col-8,.col-6,.col-4{grid-column:span 12}
+  .solution-grid,.quotes{grid-template-columns:1fr}
+  .method{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  header{padding:42px 17px 35px}
+  main{padding:22px 13px 45px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi{padding:13px}
+  .kpi .value{font-size:24px}
+  .chart{height:auto;padding:10px 0}
+  .pie{width:180px;height:180px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="hero">
+    <span class="badge">ANÁLISIS DE DATOS · ENCUESTA ESCOLAR</span>
+    <h1>Uso de las redes sociales</h1>
+    <p>
+      Análisis descriptivo de las respuestas obtenidas para identificar hábitos de uso,
+      aplicaciones preferidas, posibles efectos académicos y propuestas de mejora.
+    </p>
+
+    <div class="team" aria-label="Integrantes del grupo">
+      <span>Santhiago Leal</span>
+      <span>María Brito</span>
+      <span>Victoria Sandoval</span>
+      <span>Jhon Manzaneda</span>
+      <span>José Real</span>
+      <span>8vo White</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#resumen">Resumen</a>
+    <a href="#tiempo">Tiempo</a>
+    <a href="#apps">Aplicaciones</a>
+    <a href="#uso">Propósito</a>
+    <a href="#momento">Momento</a>
+    <a href="#impacto">Impacto</a>
+    <a href="#propuestas">Soluciones</a>
+    <a href="#conclusion">Conclusiones</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="resumen" class="section">
+  <div class="section-title">
+    <h2>1. Resumen ejecutivo</h2>
+    <p>Principales hallazgos de las 13 respuestas analizadas.</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="value">13</div>
+      <div class="label">respuestas</div>
+      <div class="note">Tamaño de la muestra.</div>
+    </div>
+    <div class="kpi">
+      <div class="value">76.9%</div>
+      <div class="label">usa 2 horas o más</div>
+      <div class="note">10 de 13 estudiantes.</div>
+    </div>
+    <div class="kpi">
+      <div class="value">46.2%</div>
+      <div class="label">elige TikTok</div>
+      <div class="note">6 de 13 respuestas.</div>
+    </div>
+    <div class="kpi">
+      <div class="value">84.6%</div>
+      <div class="label">busca entretenimiento</div>
+      <div class="note">11 de 13 respuestas.</div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:18px">
+    <div class="card col-8">
+      <h3>Lectura general de los datos</h3>
+      <p>
+        La encuesta muestra que las redes sociales tienen una presencia importante en
+        la rutina de los estudiantes. El uso se concentra especialmente en la tarde y
+        el principal propósito es el entretenimiento. TikTok aparece como la aplicación
+        más frecuente.
+      </p>
+      <div class="insight">
+        <strong>Hallazgo clave</strong>
+        5 estudiantes (38.5%) reportaron más de 4 horas diarias y otros 5 (38.5%)
+        reportaron entre 2 y 3 horas. Esto indica que una parte considerable del grupo
+        tiene un uso diario prolongado.
+      </div>
+    </div>
+
+    <div class="card col-4">
+      <h3>Ficha técnica</h3>
+      <div class="method">
+        <div><strong>Muestra</strong><span>13 estudiantes</span></div>
+        <div><strong>Tipo</strong><span>Encuesta descriptiva</span></div>
+        <div><strong>Fuente</strong><span>Respuestas proporcionadas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tiempo" class="section">
+  <div class="section-title">
+    <h2>2. Tiempo diario de uso</h2>
+    <p>Distribución de las 13 respuestas.</p>
+  </div>
+
+  <div class="card">
+    <div class="chart">
+      <div class="pie" id="pieTiempo" data-total="13"></div>
+      <div class="legend" id="legendTiempo"></div>
+    </div>
+    <div class="insight">
+      <strong>Interpretación</strong>
+      10 de 13 estudiantes (76.9%) usan redes durante 2 horas o más al día.
+      Además, 5 estudiantes (38.5%) superan las 4 horas.
+    </div>
+  </div>
+</section>
+
+<section id="apps" class="section">
+  <div class="section-title">
+    <h2>3. Aplicaciones utilizadas con frecuencia</h2>
+    <p>La aplicación con mayor presencia en la muestra es TikTok.</p>
+  </div>
+
+  <div class="card">
+    <div class="chart">
+      <div class="pie" id="pieApps" data-total="13"></div>
+      <div class="legend" id="legendApps"></div>
+    </div>
+    <div class="insight">
+      <strong>Interpretación</strong>
+      TikTok representa 6 de las 13 respuestas (46.2%). WhatsApp ocupa el segundo
+      lugar con 3 respuestas (23.1%), seguido de Instagram con 2 (15.4%).
+    </div>
+  </div>
+</section>
+
+<section id="uso" class="section">
+  <div class="section-title">
+    <h2>4. ¿Para qué se usan principalmente las redes?</h2>
+    <p>El entretenimiento es claramente el propósito dominante en la muestra.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card col-8">
+      <div id="purposeBars"></div>
+    </div>
+    <div class="card col-4">
+      <h3>Hallazgo</h3>
+      <p>
+        11 de 13 estudiantes (84.6%) indicaron entretenimiento como principal uso.
+        Solo 2 (15.4%) señalaron comunicarse.
+      </p>
+      <div class="callout">
+        <strong>Oportunidad educativa:</strong>
+        aprovechar el interés por las plataformas digitales para promover contenidos
+        educativos, comunicación responsable y actividades de aprendizaje.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="momento" class="section">
+  <div class="section-title">
+    <h2>5. Momento del día con mayor uso</h2>
+    <p>Las respuestas disponibles se concentran en la tarde y la noche.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card col-8">
+      <div id="momentBars"></div>
+    </div>
+    <div class="card col-4">
+      <h3>Interpretación</h3>
+      <p>
+        9 estudiantes (69.2%) indicaron la tarde y 4 (30.8%) la noche.
+        No hubo respuestas registradas para la mañana.
+      </p>
+      <div class="callout warning">
+        <strong>Punto de atención:</strong>
+        si el uso se concentra después de la jornada escolar, conviene establecer
+        hábitos que protejan el tiempo de estudio, descanso y convivencia familiar.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="impacto" class="section">
+  <div class="section-title">
+    <h2>6. Impacto en bienestar y rendimiento escolar</h2>
+    <p>Análisis cualitativo de las respuestas abiertas.</p>
+  </div>
+
+  <div class="card">
+    <p>
+      En esta pregunta no se obtuvieron categorías numéricas cerradas, sino respuestas
+      abiertas. Por eso, para analizarlas se realizó una <strong>codificación cualitativa</strong>:
+      se agruparon las respuestas según si mencionaban distracción/afectación o si
+      indicaban que no había afectación o que dependía del uso.
+    </p>
+
+    <div id="impactBars"></div>
+
+    <div class="insight">
+      <strong>¿Qué significa?</strong>
+      Las respuestas muestran una percepción mixta. Algunos estudiantes reconocen
+      que las redes pueden distraerlos de los estudios, mientras otros consideran que
+      el efecto depende de la forma y el tiempo de uso. Por tratarse de respuestas
+      abiertas, esta agrupación debe entenderse como una síntesis del contenido y no
+      como una medición clínica o causal.
+    </div>
+
+    <button id="toggleQuotes" type="button" style="margin-top:15px">
+      Mostrar respuestas representativas
+    </button>
+
+    <div id="quotes" class="hidden" style="margin-top:15px">
+      <div class="quotes">
+        <blockquote>“No, todo depende de cómo sea usado.”</blockquote>
+        <blockquote>“A veces, porque puede distraerme.”</blockquote>
+        <blockquote>“Quizás sí porque me puedo distraer gracias a esto.”</blockquote>
+        <blockquote>“Sí, ya que muchos compañeros juegan en clase…”</blockquote>
+        <blockquote>“Sí, puede incluso distraerte de tus estudios.”</blockquote>
+        <blockquote>“Sí y no.”</blockquote>
+        <blockquote>“No me afecta.”</blockquote>
+        <blockquote>“Un poquito.”</blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="propuestas" class="section">
+  <div class="section-title">
+    <h2>7. Soluciones y propuestas</h2>
+    <p>Propuestas construidas a partir de las respuestas de los estudiantes.</p>
+  </div>
+
+  <div class="solution-grid">
+
+    <div class="solution">
+      <span class="number">1</span>
+      <h4>Educación para el uso responsable</h4>
+      <p>
+        Realizar charlas y talleres sobre privacidad, respeto, huella digital,
+        ciberacoso, desinformación y manejo responsable del tiempo.
+      </p>
+      <span class="tag">Prevención</span>
+    </div>
+
+    <div class="solution">
+      <span class="number">2</span>
+      <h4>Plan de desconexión durante el estudio</h4>
+      <p>
+        Recomendar bloques de estudio sin notificaciones y con el celular fuera del
+        alcance cuando no sea necesario para la actividad.
+      </p>
+      <span class="tag">Rendimiento académico</span>
+    </div>
+
+    <div class="solution">
+      <span class="number">3</span>
+      <h4>Actividades atractivas en los descansos</h4>
+      <p>
+        Crear juegos, deportes, espacios artísticos y actividades sociales para
+        ofrecer alternativas al uso constante del celular durante los descansos.
+      </p>
+      <span class="tag">Convivencia</span>
+    </div>
+
+    <div class="solution">
+      <span class="number">4</span>
+      <h4>Uso académico de las redes</h4>
+      <p>
+        Aprovechar plataformas digitales para compartir proyectos, campañas,
+        tutoriales, contenidos educativos y mensajes de convivencia.
+      </p>
+      <span class="tag">Aprendizaje</span>
+    </div>
+
+    <div class="solution">
+      <span class="number">5</span>
+      <h4>Acuerdos claros sobre celulares</h4>
+      <p>
+        Definir con estudiantes y docentes cuándo el celular puede utilizarse,
+        cuándo debe guardarse y qué excepciones existen para fines académicos.
+      </p>
+      <span class="tag">Normas escolares</span>
+    </div>
+
+    <div class="solution">
+      <span class="number">6</span>
+      <h4>Campaña “Redes con propósito”</h4>
+      <p>
+        Crear afiches, videos y publicaciones elaboradas por estudiantes para
+        promover un uso equilibrado, respetuoso y consciente de las redes.
+      </p>
+      <span class="tag">Participación estudiantil</span>
+    </div>
+
+    <div class="solution">
+      <span class="number">7</span>
+      <h4>Seguimiento del tiempo de pantalla</h4>
+      <p>
+        Invitar a los estudiantes a revisar semanalmente su tiempo de uso y plantear
+        una meta personal realista para reducir distracciones.
+      </p>
+      <span class="tag">Autocontrol</span>
+    </div>
+
+    <div class="solution">
+      <span class="number">8</span>
+      <h4>Protocolo contra chismes y agresiones</h4>
+      <p>
+        Promover canales de orientación y acuerdos para evitar usar redes para
+        difamar, excluir, molestar o perjudicar a otros compañeros.
+      </p>
+      <span class="tag">Bienestar y respeto</span>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>Plan de acción recomendado</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Acción</th>
+            <th>Responsables sugeridos</th>
+            <th>Frecuencia</th>
+            <th>Indicador</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Charlas sobre uso responsable</td>
+            <td>Docentes / orientación</td>
+            <td>Mensual</td>
+            <td>N.º de estudiantes participantes</td>
+          </tr>
+          <tr>
+            <td>Actividades alternativas en descansos</td>
+            <td>Estudiantes / docentes</td>
+            <td>Semanal</td>
+            <td>Participación en actividades</td>
+          </tr>
+          <tr>
+            <td>Campaña “Redes con propósito”</td>
+            <td>Grupo de estudiantes</td>
+            <td>Por proyecto</td>
+            <td>Publicaciones o materiales creados</td>
+          </tr>
+          <tr>
+            <td>Revisión del tiempo de pantalla</td>
+            <td>Cada estudiante</td>
+            <td>Semanal</td>
+            <td>Horas de uso reportadas</td>
+          </tr>
+          <tr>
+            <td>Acuerdos de uso del celular en clase</td>
+            <td>Docentes y estudiantes</td>
+            <td>Continuo</td>
+            <td>Reducción de distracciones reportadas</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="conclusion" class="section">
+  <div class="section-title">
+    <h2>8. Conclusiones</h2>
+    <p>Cierre del análisis.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card col-6">
+      <h3>Conclusión principal</h3>
+      <p>
+        Los datos muestran que las redes sociales tienen un papel importante en la
+        rutina de los estudiantes encuestados. El entretenimiento es el uso principal,
+        TikTok es la plataforma más frecuente y la mayor parte del uso ocurre durante
+        la tarde.
+      </p>
+    </div>
+
+    <div class="card col-6">
+      <h3>Conclusión sobre el tiempo</h3>
+      <p>
+        El 76.9% de la muestra reporta utilizar redes durante 2 horas o más al día.
+        Esto no demuestra por sí mismo un problema, pero sí señala la importancia de
+        desarrollar hábitos de autocontrol y equilibrio.
+      </p>
+    </div>
+
+    <div class="card col-6">
+      <h3>Conclusión académica</h3>
+      <p>
+        Las respuestas abiertas sugieren que la distracción es una preocupación para
+        algunos estudiantes. La solución no tiene que ser eliminar las redes, sino
+        aprender a utilizarlas de forma que no interfieran con el estudio, el descanso
+        ni la convivencia.
+      </p>
+    </div>
+
+    <div class="card col-6">
+      <h3>Conclusión propositiva</h3>
+      <p>
+        La escuela puede convertir esta situación en una oportunidad educativa:
+        enseñar ciudadanía digital, crear alternativas durante los descansos,
+        establecer acuerdos claros y aprovechar las plataformas para actividades
+        académicas y de convivencia.
+      </p>
+    </div>
+
+    <div class="card col-12" style="background:linear-gradient(135deg,#eff6ff,#f5f3ff)">
+      <h3>Conclusión final</h3>
+      <p style="font-size:16px;color:#334155">
+        <strong>Las redes sociales no son buenas ni malas por sí solas:</strong>
+        su impacto depende principalmente del propósito, el tiempo y la manera en que
+        se utilizan. Los resultados de esta encuesta invitan a buscar un equilibrio
+        entre la vida digital, los estudios, el descanso y las relaciones con los demás.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">
+    <h2>9. Consideraciones sobre los datos</h2>
+  </div>
+
+  <div class="card">
+    <ul>
+      <li>La muestra analizada es de 13 respuestas, por lo que los resultados describen a este grupo y no necesariamente a todos los estudiantes del colegio.</li>
+      <li>Las preguntas cerradas se presentan con cantidades y porcentajes calculados sobre 13 respuestas.</li>
+      <li>La pregunta sobre bienestar/rendimiento fue abierta; su agrupación es cualitativa y sirve para identificar tendencias en las opiniones.</li>
+      <li>Los resultados muestran asociaciones y percepciones de los estudiantes, pero la encuesta por sí sola no permite afirmar que las redes sociales causen un determinado rendimiento escolar.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <strong>8vo White · Análisis de datos</strong><br>
+  Santhiago Leal · María Brito · Victoria Sandoval · Jhon Manzaneda · José Real
+</footer>
+
+<script>
+// ================================
+// DATOS DE LA ENCUESTA
+// ================================
+
+const TOTAL = 13;
+
+const tiempo = [
+  {label:"Menos de 1 hora", value:1},
+  {label:"2–3 horas", value:5},
+  {label:"3–4 horas", value:2},
+  {label:"Más de 4 horas", value:5}
+];
+
+const apps = [
+  {label:"TikTok", value:6},
+  {label:"WhatsApp", value:3},
+  {label:"Instagram", value:2},
+  {label:"Todas", value:1},
+  {label:"Spotify", value:1}
+];
+
+const purpose = [
+  {label:"Entretenimiento", value:11},
+  {label:"Comunicarse", value:2}
+];
+
+const moments = [
+  {label:"Mañana", value:0},
+  {label:"Tarde", value:9},
+  {label:"Noche", value:4}
+];
+
+// Síntesis cualitativa de las 13 respuestas abiertas.
+// No representa una pregunta cerrada: es una codificación interpretativa.
+const impact = [
+  {label:"Mencionan distracción o alguna afectación", value:9},
+  {label:"No afecta / depende del uso", value:4}
+];
+
+const colors = [
+  "#2563eb","#ef4444","#f59e0b","#16a34a","#7c3aed","#06b6d4"
+];
+
+// ================================
+// FUNCIONES DE VISUALIZACIÓN
+// ================================
+
+function percentage(value,total=TOTAL){
+  return ((value/total)*100).toFixed(1);
+}
+
+function drawPie(pieId, legendId, data){
+  const total = data.reduce((sum,item)=>sum+item.value,0);
+  let start = 0;
+  const segments = [];
+
+  data.forEach((item,index)=>{
+    const end = start + (item.value/total)*360;
+    segments.push(
+      `${colors[index % colors.length]} ${start}deg ${end}deg`
+    );
+    start = end;
+  });
+
+  const pie = document.getElementById(pieId);
+  pie.style.background = `conic-gradient(${segments.join(",")})`;
+
+  const legend = document.getElementById(legendId);
+  legend.innerHTML = data.map((item,index)=>`
+    <div class="legend-item">
+      <span class="dot" style="background:${colors[index % colors.length]}"></span>
+      <span>${item.label}</span>
+      <b>${item.value} (${percentage(item.value,total)}%)</b>
+    </div>
+  `).join("");
+}
+
+function drawBars(elementId,data){
+  const max = Math.max(...data.map(item=>item.value),1);
+  const box = document.getElementById(elementId);
+
+  box.innerHTML = data.map(item=>{
+    const width = (item.value/max)*100;
+    return `
+      <div class="bar-row">
+        <div class="bar-top">
+          <span>${item.label}</span>
+          <strong>${item.value} (${percentage(item.value)}%)</strong>
+        </div>
+        <div class="bar-bg">
+          <div class="bar-fill" data-width="${width}%"></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  requestAnimationFrame(()=>{
+    box.querySelectorAll(".bar-fill").forEach(bar=>{
+      bar.style.width = bar.dataset.width;
+    });
+  });
+}
+
+// ================================
+// INTERACTIVIDAD
+// ================================
+
+document.getElementById("toggleQuotes").addEventListener("click",function(){
+  const quotes = document.getElementById("quotes");
+  const hidden = quotes.classList.toggle("hidden");
+  this.textContent = hidden
+    ? "Mostrar respuestas representativas"
+    : "Ocultar respuestas";
+});
+
+// ================================
+// RENDER INICIAL
+// ================================
+
+drawPie("pieTiempo","legendTiempo",tiempo);
+drawPie("pieApps","legendApps",apps);
+drawBars("purposeBars",purpose);
+drawBars("momentBars",moments);
+drawBars("impactBars",impact);
+</script>
+
+</body>
+</html>

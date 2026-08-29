@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code for Change - Análisis del Rendimiento Académico</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --bg: #f0fdf4;
+            --text: #0f172a;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 0.3rem 0;
+            font-size: 1.15rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .team-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .team-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .team-list li {
+            background: #f0fdf4;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            border: 1px solid #d1fae5;
+        }
+
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .step-header h3 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .step-content {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .badge {
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        button.toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary);
+            color: white;
+            margin-top: 3rem;
+        }
+
+        .survey-card {
+            margin: 0 0 2rem 0;
+            padding: 1.6rem;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #eff6ff, #ecfdf5);
+            border: 1px solid #bfdbfe;
+            box-shadow: 0 8px 24px rgba(30,58,138,.08);
+        }
+        .survey-card h2 { margin: 0 0 .45rem; color: var(--primary); }
+        .survey-card p { margin: .35rem 0 1rem; }
+        .survey-actions { display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
+        .survey-btn {
+            display:inline-flex; align-items:center; gap:.55rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color:#fff; text-decoration:none; font-weight:800;
+            padding:.85rem 1.15rem; border-radius:10px;
+            box-shadow:0 6px 16px rgba(30,58,138,.18);
+        }
+        .survey-note { font-size:.88rem; color:#cbd5e1; }
+        .tlh-project-bar{
+            max-width:1100px;margin:14px auto 0;padding:0 1rem;
+            display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap
+        }
+        .tlh-project-bar a,.tlh-authors{
+            border-radius:999px;padding:9px 14px;font-weight:700;text-decoration:none
+        }
+        .tlh-project-bar a{background:#1e3a8a;color:white}
+        .tlh-authors{background:#dbeafe;color:#1e3a8a;border:1px solid #bfdbfe;font-size:.88rem}
+
+
+        .analytics-section{margin:2rem 0}
+        .analytics-hero{background:linear-gradient(135deg,#0f2f70,#2563eb);color:#fff;border-radius:18px;padding:2rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;box-shadow:0 12px 30px rgba(30,58,138,.18)}
+        .analytics-hero h2{margin:.35rem 0;font-size:2rem}
+        .analytics-hero p{margin:.4rem 0;max-width:760px;opacity:.94}
+        .eyebrow{font-size:.75rem;font-weight:900;letter-spacing:1.4px;opacity:.8}
+        .sample-pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:.7rem 1rem;border-radius:999px;font-weight:800;white-space:nowrap}
+        .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+        .kpi{background:#fff;border:1px solid #e2e8f0;border-radius:15px;padding:1.1rem;box-shadow:0 5px 18px rgba(15,23,42,.06)}
+        .kpi span{font-size:1.4rem}.kpi strong{display:block;font-size:1.65rem;color:#1e3a8a}.kpi small{color:#a8b3c2}
+        .chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+        .chart-card{background:#fff;border:1px solid #e2e8f0;border-radius:15px;padding:1.25rem;box-shadow:0 5px 18px rgba(15,23,42,.05)}
+        .chart-card.wide{grid-column:span 2}
+        .chart-card h3{margin:0;color:#1e3a8a}.chart-sub{margin:.25rem 0 1rem;color:#a8b3c2;font-size:.9rem}
+        .bar-chart{height:330px;display:flex;align-items:flex-end;gap:clamp(10px,2vw,22px);padding:32px 16px 42px;border-bottom:2px solid #cbd5e1;border-left:2px solid #cbd5e1;position:relative;overflow:visible;background:repeating-linear-gradient(to top,rgba(148,163,184,.16) 0,rgba(148,163,184,.16) 1px,transparent 1px,transparent 25%)}
+        .bar-col{flex:1;min-width:55px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;position:relative}
+        .bar-col-value{font-weight:900;color:#1e3a8a;font-size:.95rem;line-height:1;min-height:18px}
+        .bar-col-fill{width:min(76px,72%);height:0;min-height:6px;border-radius:8px 8px 0 0;background:linear-gradient(180deg,#2563eb,#10b981);transition:height .7s ease;box-shadow:0 4px 10px rgba(37,99,235,.15)}
+        .bar-col-label{font-weight:700;font-size:.76rem;color:#cbd5e1;text-align:center;line-height:1.2;min-height:38px;display:flex;align-items:flex-start;justify-content:center;position:absolute;bottom:-39px;width:120px}
+        .chart-axis-note{position:absolute;left:8px;top:7px;font-size:.7rem;color:#a8b3c2;font-weight:700}
+        .comparison-table{overflow-x:auto}
+        .comparison-table table{width:100%;border-collapse:collapse;margin-top:.5rem}
+        .comparison-table th,.comparison-table td{padding:.7rem;text-align:center;border-bottom:1px solid #e2e8f0}
+        .comparison-table th{background:#eff6ff;color:#1e3a8a;font-weight:900}
+        .findings,.conclusion,.recommendations{margin-top:2rem;background:#fff;border:1px solid #e2e8f0;border-radius:15px;padding:1.25rem;box-shadow:0 5px 18px rgba(15,23,42,.05)}
+        .finding-grid,.recommendation-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+        .finding-grid>div,.recommendation-grid>div{padding:1rem;border-radius:12px;background:#111111;border:1px solid #e2e8f0}
+        @media(max-width:800px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}.chart-card.wide{grid-column:span 1}.analytics-hero{flex-direction:column;align-items:flex-start}.finding-grid,.recommendation-grid{grid-template-columns:1fr}}
+        @media(max-width:520px){.kpi-grid{grid-template-columns:1fr}.bar-chart{min-width:420px}.chart-card{overflow-x:auto}}
+
+    </style>
+
+<style id="visual-upgrade">
+:root{
+  --primary:#173b7a;
+  --secondary:#3978e8;
+  --accent:#16b47b;
+  --bg:#f4f7fb;
+  --text:#172033;
+  --muted:#64748b;
+  --card-bg:#000000;
+  --line:#2b2b2b;
+  --soft:#eef4ff;
+  --shadow:0 12px 35px rgba(23,59,122,.08);
+  --shadow-hover:0 18px 45px rgba(23,59,122,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 10% 0%,rgba(57,120,232,.09),transparent 28rem),
+    radial-gradient(circle at 90% 12%,rgba(22,180,123,.08),transparent 26rem),
+    var(--bg);
+  color:var(--text);
+}
+body:before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:-1;
+  background-image:linear-gradient(rgba(23,59,122,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(23,59,122,.025) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+.tlh-project-bar{
+  max-width:1180px!important;
+  margin:0 auto!important;
+  padding:16px 20px!important;
+}
+.tlh-project-bar a{
+  background:rgba(23,59,122,.95)!important;
+  box-shadow:0 7px 18px rgba(23,59,122,.16);
+  transition:.2s ease;
+}
+.tlh-project-bar a:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.tlh-authors{
+  background:rgba(0,0,0,.82)!important;
+  backdrop-filter:blur(8px);
+  border-color:#dce5f2!important;
+}
+header{
+  position:relative;
+  overflow:hidden;
+  margin:0;
+  padding:4.5rem 1rem 4.2rem!important;
+  background:linear-gradient(135deg,#102d63 0%,#235fc1 58%,#218f75 120%)!important;
+  box-shadow:0 18px 45px rgba(16,45,99,.18)!important;
+}
+header:before,header:after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+  background:rgba(255,255,255,.08);
+}
+header:before{width:330px;height:330px;right:-80px;top:-170px}
+header:after{width:240px;height:240px;left:-90px;bottom:-150px}
+header h1{font-size:clamp(2rem,5vw,3.25rem)!important;position:relative}
+header p{position:relative}
+.container{max-width:1180px!important;margin:2.2rem auto!important}
+.survey-card,.team-card,.step-card,.findings,.conclusion,.recommendations,.chart-card,.kpi{
+  border:1px solid var(--line)!important;
+  box-shadow:var(--shadow)!important;
+}
+.survey-card{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#fff,#f5f9ff 60%,#effbf7)!important;
+  border-radius:20px!important;
+}
+.survey-card:after{
+  content:"";position:absolute;width:150px;height:150px;border-radius:50%;
+  right:-55px;top:-55px;background:rgba(57,120,232,.09);
+}
+.survey-btn{transition:.2s ease!important}
+.survey-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(30,58,138,.24)!important}
+.team-card{
+  border-left:0!important;
+  border-top:4px solid var(--accent)!important;
+  border-radius:18px!important;
+}
+.team-card h3{font-size:1.25rem}
+.team-list li{
+  background:#f7fafc!important;
+  border:1px solid #e3eaf2!important;
+  transition:.2s ease;
+}
+.team-list li:hover{transform:translateY(-2px);background:#fff!important;box-shadow:0 7px 16px rgba(15,23,42,.06)}
+.analytics-section{margin-top:2.5rem!important}
+.analytics-hero{
+  position:relative;overflow:hidden;
+  border-radius:22px!important;
+  padding:2.25rem!important;
+  background:linear-gradient(135deg,#102d63,#2768d1 62%,#159b79)!important;
+  box-shadow:0 18px 42px rgba(23,59,122,.19)!important;
+}
+.analytics-hero:after{
+  content:"";position:absolute;width:280px;height:280px;border-radius:50%;
+  right:-100px;bottom:-180px;background:rgba(255,255,255,.09);
+}
+.sample-pill{backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.kpi-grid{gap:16px!important}
+.kpi{
+  position:relative;overflow:hidden;
+  border-radius:18px!important;
+  padding:1.25rem!important;
+  transition:.22s ease;
+}
+.kpi:after{
+  content:"";position:absolute;width:80px;height:80px;border-radius:50%;
+  right:-28px;bottom:-35px;background:rgba(57,120,232,.07);
+}
+.kpi:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)!important}
+.kpi span{display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border-radius:11px;background:#eef4ff}
+.kpi strong{font-size:1.8rem!important;margin-top:.25rem}
+.chart-grid{gap:20px!important}
+.chart-card{
+  border-radius:18px!important;
+  padding:1.4rem!important;
+  transition:.22s ease;
+}
+.chart-card:hover{box-shadow:var(--shadow-hover)!important;transform:translateY(-2px)}
+.chart-card h3{font-size:1.18rem}
+.chart-sub{color:var(--muted)!important}
+.bar-chart{
+  border-bottom:2px solid #c8d3e2!important;
+  border-left:2px solid #c8d3e2!important;
+  background:repeating-linear-gradient(to top,rgba(100,116,139,.11) 0,rgba(100,116,139,.11) 1px,transparent 1px,transparent 25%)!important;
+}
+.bar-col-fill{
+  background:linear-gradient(180deg,#3978e8,#16b47b)!important;
+  box-shadow:0 7px 16px rgba(57,120,232,.18)!important;
+}
+.bar-col-value{color:#173b7a!important}
+.comparison-table table{overflow:hidden;border:1px solid var(--line);border-radius:12px}
+.comparison-table th{background:#edf4ff!important}
+.comparison-table tr:hover td{background:#f8fbff}
+.findings,.conclusion,.recommendations{
+  border-radius:18px!important;
+  padding:1.45rem!important;
+}
+.finding-grid>div,.recommendation-grid>div{
+  background:linear-gradient(145deg,#fbfdff,#f5f8fc)!important;
+  border-color:#e3e9f1!important;
+  transition:.2s ease;
+}
+.finding-grid>div:hover,.recommendation-grid>div:hover{
+  transform:translateY(-2px);box-shadow:0 8px 20px rgba(15,23,42,.06);
+}
+.steps-container{gap:14px!important;margin-top:2.2rem}
+.step-card{
+  border-radius:16px!important;
+  transition:.22s ease!important;
+}
+.step-card:hover{transform:translateY(-3px)!important;box-shadow:var(--shadow-hover)!important}
+.step-header{padding:.15rem 0}
+.badge{
+  background:#e9f1ff!important;
+  color:#2457ad!important;
+  border:1px solid #d4e2fb;
+}
+button.toggle-btn{
+  width:40px;height:40px;border-radius:50%;
+  background:#eef4ff!important;
+  transition:.2s ease;
+}
+button.toggle-btn:hover{background:#dce9ff!important}
+.step-content{color:#cbd5e1}
+footer{
+  margin-top:4rem!important;
+  padding:2.8rem 1rem!important;
+  background:linear-gradient(135deg,#102d63,#173b7a)!important;
+}
+.tlh-download-working-copy{
+  background:linear-gradient(135deg,#173b7a,#218f75)!important;
+  box-shadow:0 12px 30px rgba(23,59,122,.22)!important;
+}
+@media(max-width:800px){
+  .container{padding:0 1rem!important}
+  .analytics-hero{padding:1.7rem!important}
+}
+@media(max-width:520px){
+  .tlh-project-bar{padding:12px 14px!important}
+  header{padding:3.2rem 1rem!important}
+  .survey-card,.team-card,.chart-card,.findings,.conclusion,.recommendations{padding:1.1rem!important}
+}
+</style>
+
+</head>
+<body>
+<div class="tlh-project-bar">
+<a href="/students/grade/8/white">← 8th White Projects</a>
+<div class="tlh-authors">Created by: Camilo · Dimas · Mathias · Mathias · Danna · Santi</div>
+</div>
+
+    <header>
+        <h1>📊 CODE FOR CHANGE</h1>
+        <p>📈 Ciencia de Datos e IA para Optimizar el Rendimiento Académico</p>
+        <p><strong>Cronograma:</strong> 10 de Julio al 1 de Septiembre de 2026</p>
+    </header>
+
+    <div class="container">
+        
+
+        <section class="survey-card" id="encuesta">
+            <h2>📝 Encuesta del Proyecto · Academic Performance Survey</h2>
+            <p>
+                Esta encuesta es parte de la fase de recolección de datos del proyecto.
+                Sus respuestas permitirán al equipo analizar hábitos de estudio,
+                rendimiento académico y posibles patrones para construir conclusiones basadas en evidencia.
+            </p>
+            <div class="survey-actions">
+                <a class="survey-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScoaZH8oBb2bu9fBAc3JqgP2SHZQFcIzsKj7GXMwAu7hkp5FQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">
+                    📊 Abrir encuesta en Google Forms ↗
+                </a>
+                <span class="survey-note">Se abrirá en una nueva pestaña.</span>
+            </div>
+        </section>
+
+        <!-- Tarjeta de Equipo -->
+        <div class="team-card">
+            <h3>👥 Equipo de Investigación: Analítica Educativa</h3>
+            <p><strong>Docente Guía:</strong> Estiben Capdevilla</p>
+            <p><strong>Integrantes del Equipo:</strong></p>
+            <ul class="team-list">
+                <li>📋 Camilo</li>
+                <li>📊 Dimas</li>
+                <li>📈 Mathias</li>
+                <li>📚 Mathias</li>
+                <li>🤖 Danna</li>
+                <li>🎤 Santi</li>
+            </ul>
+        </div>
+
+
+        <!-- DASHBOARD DE ANÁLISIS -->
+        <section class="analytics-section" id="analisis">
+            <div style="display:flex;align-items:center;gap:10px;margin:0 0 12px;color:#a8b3c2;font-size:.8rem;font-weight:900;letter-spacing:1.2px;">
+                <span style="width:9px;height:9px;border-radius:50%;background:#16b47b;display:inline-block;"></span>
+                PANEL DE DATOS · VISUALIZACIÓN Y ANÁLISIS
+            </div>
+            <div class="analytics-hero">
+                <div>
+                    <span class="eyebrow">RESULTADOS DE LA ENCUESTA</span>
+                    <h2>📊 Análisis del Rendimiento Académico</h2>
+                    <p>Resultados de <strong>15 estudiantes</strong> de los cursos White y Blue. Los gráficos se generan con JavaScript a partir de las respuestas proporcionadas.</p>
+                </div>
+                <div class="sample-pill">15 respuestas · 8 White · 7 Blue</div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi"><span>👥</span><strong>15</strong><small>estudiantes</small></div>
+                <div class="kpi"><span>📚</span><strong>9/15</strong><small>estudian 1–2 h o más</small></div>
+                <div class="kpi"><span>😴</span><strong>7/15</strong><small>duermen 7 h o más</small></div>
+                <div class="kpi"><span>📱</span><strong>15/15</strong><small>usan dispositivos 2 h o más</small></div>
+            </div>
+
+            <div class="chart-grid">
+                <article class="chart-card">
+                    <h3>Rendimiento académico</h3>
+                    <p class="chart-sub">Distribución de las respuestas.</p>
+                    <div class="bar-chart" id="performanceChart"></div>
+                </article>
+                <article class="chart-card">
+                    <h3>Horas de sueño</h3>
+                    <p class="chart-sub">Cantidad de estudiantes por rango.</p>
+                    <div class="bar-chart" id="sleepChart"></div>
+                </article>
+                <article class="chart-card">
+                    <h3>Tiempo de estudio</h3>
+                    <p class="chart-sub">Hábitos de estudio reportados.</p>
+                    <div class="bar-chart" id="studyChart"></div>
+                </article>
+                <article class="chart-card">
+                    <h3>Tiempo en dispositivos</h3>
+                    <p class="chart-sub">Uso diario declarado.</p>
+                    <div class="bar-chart" id="deviceChart"></div>
+                </article>
+                <article class="chart-card wide">
+                    <h3>Materias con mayor dificultad</h3>
+                    <p class="chart-sub">Se agruparon respuestas equivalentes de L. Arts/L castellana y Ciencias Naturales/ciencias naturales.</p>
+                    <div class="bar-chart" id="subjectChart"></div>
+                </article>
+                <article class="chart-card wide">
+                    <h3>Comparación White vs Blue</h3>
+                    <p class="chart-sub">Rendimiento académico según curso.</p>
+                    <div class="comparison-table" id="courseComparison"></div>
+                </article>
+            </div>
+
+            <section class="findings">
+                <h3>🔎 Hallazgos principales</h3>
+                <div class="finding-grid">
+                    <div><strong>Rendimiento</strong><p>7 estudiantes reportaron rendimiento <b>Bueno</b>, 6 <b>Regular</b> y 2 <b>Muy bueno</b>. No hubo respuestas de rendimiento Malo o Pésimo.</p></div>
+                    <div><strong>Estudio y rendimiento</strong><p>Las 4 respuestas de <b>2–3 horas</b> de estudio fueron Bueno o Muy bueno. Las 3 respuestas de <b>No estudio</b> fueron Regular.</p></div>
+                    <div><strong>Sueño</strong><p>5 estudiantes duermen menos de 6 horas y 4 de ellos reportan rendimiento Regular; entre quienes duermen 7–8 horas, 4 de 5 reportan rendimiento Bueno.</p></div>
+                    <div><strong>Dispositivos</strong><p>8 estudiantes reportan más de 4 horas de uso diario y 7 reportan 2–3 horas. El uso elevado aparece con frecuencia junto al rendimiento Regular, aunque también hay estudiantes con rendimiento Bueno.</p></div>
+                </div>
+            </section>
+
+            <section class="conclusion">
+                <span class="eyebrow">CONCLUSIÓN</span>
+                <h3>💡 ¿Qué nos dicen los datos?</h3>
+                <p>En esta muestra de 15 estudiantes, se observan patrones descriptivos entre hábitos de estudio, sueño, uso de dispositivos y rendimiento académico. Las respuestas con 2–3 horas de estudio se concentran en Bueno y Muy bueno, mientras que las respuestas de No estudio son todas Regular. También se observa una mayor presencia de rendimiento Regular entre quienes duermen menos de 6 horas.</p>
+                <p><strong>Importante:</strong> estos resultados describen esta muestra y permiten identificar patrones, pero no prueban que una variable sea la causa de otra. Para obtener conclusiones más sólidas sería necesario ampliar la cantidad de encuestados y contrastar estos resultados con calificaciones reales.</p>
+            </section>
+
+            <section class="recommendations">
+                <h3>🎯 Recomendaciones</h3>
+                <div class="recommendation-grid">
+                    <div>📖 Establecer rutinas de estudio de 1–2 horas al día.</div>
+                    <div>😴 Promover hábitos de descanso adecuados antes de las jornadas escolares.</div>
+                    <div>📱 Organizar el tiempo de uso de dispositivos para evitar que interfiera con el estudio.</div>
+                    <div>🧮 Reforzar especialmente Matemáticas y las áreas que aparecen con mayor dificultad.</div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Contenedor de Pasos -->
+        <div class="steps-container" id="stepsContainer">
+            <!-- Los pasos se inyectarán dinámicamente mediante JavaScript -->
+        </div>
+
+            </div>
+
+    <footer>
+        <p>Proyecto STEM enfocado en el análisis de datos académicos para la mejora continua 📚</p>
+    </footer>
+
+    <script>
+
+        // Datos reales proporcionados para el análisis: 15 estudiantes.
+        const encuestas = [
+          {curso:"White", sueno:"7-8", rendimiento:"Bueno", estudio:"1-2", materia:"Ciencias Naturales", dispositivos:"2-3"},
+          {curso:"White", sueno:"6-7", rendimiento:"Regular", estudio:"No estudio", materia:"Matemáticas", dispositivos:"+4"},
+          {curso:"White", sueno:"<6", rendimiento:"Regular", estudio:"<30", materia:"Matemáticas", dispositivos:"+4"},
+          {curso:"White", sueno:"<6", rendimiento:"Regular", estudio:"No estudio", materia:"Química", dispositivos:"+4"},
+          {curso:"White", sueno:"<6", rendimiento:"Bueno", estudio:"1-2", materia:"L. Arts", dispositivos:"2-3"},
+          {curso:"Blue", sueno:"7-8", rendimiento:"Bueno", estudio:"1-2", materia:"Matemáticas", dispositivos:"2-3"},
+          {curso:"Blue", sueno:"6-7", rendimiento:"Regular", estudio:"<30", materia:"L. Arts", dispositivos:"+4"},
+          {curso:"Blue", sueno:"+8", rendimiento:"Muy bueno", estudio:"2-3", materia:"L. castellana", dispositivos:"2-3"},
+          {curso:"Blue", sueno:"7-8", rendimiento:"Bueno", estudio:"2-3", materia:"Matemáticas", dispositivos:"+4"},
+          {curso:"Blue", sueno:"<6", rendimiento:"Regular", estudio:"No estudio", materia:"Ciencias Naturales", dispositivos:"+4"},
+          {curso:"Blue", sueno:"7-8", rendimiento:"Bueno", estudio:"1-2", materia:"Matemáticas", dispositivos:"2-3"},
+          {curso:"Blue", sueno:"6-7", rendimiento:"Regular", estudio:"<30", materia:"L. Arts", dispositivos:"+4"},
+          {curso:"White", sueno:"+8", rendimiento:"Muy bueno", estudio:"2-3", materia:"Ciencias Naturales", dispositivos:"2-3"},
+          {curso:"White", sueno:"7-8", rendimiento:"Bueno", estudio:"1-2", materia:"Matemáticas", dispositivos:"+4"},
+          {curso:"White", sueno:"6-7", rendimiento:"Regular", estudio:"No estudio", materia:"Ciencias Naturales", dispositivos:"+4"}
+        ];
+
+        const ordenes = {
+          rendimiento:["Muy bueno","Bueno","Regular","Malo","Pésimo"],
+          sueno:["<6","6-7","7-8","+8"],
+          estudio:["No estudio","<30","1-2","2-3"],
+          dispositivos:["2-3","+4"]
+        };
+
+        function contar(campo, orden){
+          return orden.map(k => ({
+            label:k,
+            value:encuestas.filter(x=>x[campo]===k).length
+          }));
+        }
+
+        function renderBars(id, items, labels={}){
+          const el=document.getElementById(id);
+          if(!el) return;
+
+          const max=Math.max(...items.map(x=>x.value),1);
+          el.innerHTML = '<span class="chart-axis-note">N.º de estudiantes</span>' +
+            items.map(x=>`
+              <div class="bar-col" title="${labels[x.label]||x.label}: ${x.value} estudiante(s)">
+                <div class="bar-col-value">${x.value}</div>
+                <div class="bar-col-fill" style="height:${x.value === 0 ? 6 : Math.max(8,x.value/max*78)}%"></div>
+                <div class="bar-col-label">${labels[x.label]||x.label}</div>
+              </div>
+            `).join("");
+        }
+
+        function renderSubjects(){
+          const groups=[
+            ["Matemáticas", encuestas.filter(x=>x.materia==="Matemáticas").length],
+            ["Ciencias Naturales", encuestas.filter(x=>x.materia.toLowerCase()==="ciencias naturales").length],
+            ["L. Arts / L. castellana", encuestas.filter(x=>["L. Arts","L. castellana"].includes(x.materia)).length],
+            ["Química", encuestas.filter(x=>x.materia==="Química").length]
+          ];
+          renderBars("subjectChart", groups.map(([label,value])=>({label,value})));
+        }
+
+        function pct(n,d){ return d ? Math.round(n/d*100) : 0; }
+
+        function renderComparison(){
+          const levels=["Muy bueno","Bueno","Regular","Malo","Pésimo"];
+          const cursos=["White","Blue"];
+          const totals={White:encuestas.filter(x=>x.curso==="White").length,
+                        Blue:encuestas.filter(x=>x.curso==="Blue").length};
+
+          let rows=levels.map(level=>{
+            const w=encuestas.filter(x=>x.curso==="White"&&x.rendimiento===level).length;
+            const b=encuestas.filter(x=>x.curso==="Blue"&&x.rendimiento===level).length;
+            return `<tr><td>${level}</td><td>${w} (${pct(w,totals.White)}%)</td><td>${b} (${pct(b,totals.Blue)}%)</td></tr>`;
+          }).join("");
+
+          document.getElementById("courseComparison").innerHTML=`<table>
+            <thead><tr><th>Rendimiento</th><th>White (${totals.White})</th><th>Blue (${totals.Blue})</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>`;
+        }
+
+        // Renderizar después de cargar el DOM.
+        function renderDashboard(){
+          renderBars("performanceChart", contar("rendimiento", ordenes.rendimiento), {
+            "Muy bueno":"Muy bueno","Bueno":"Bueno","Regular":"Regular","Malo":"Malo","Pésimo":"Pésimo"
+          });
+          renderBars("sleepChart", contar("sueno", ordenes.sueno), {
+            "<6":"Menos de 6 h","6-7":"6–7 h","7-8":"7–8 h","+8":"Más de 8 h"
+          });
+          renderBars("studyChart", contar("estudio", ordenes.estudio), {
+            "No estudio":"No estudio","<30":"Menos de 30 min","1-2":"1–2 h","2-3":"2–3 h"
+          });
+          renderBars("deviceChart", contar("dispositivos", ordenes.dispositivos), {
+            "2-3":"2–3 h","+4":"Más de 4 h"
+          });
+          renderSubjects();
+          renderComparison();
+        }
+
+        if(document.readyState === "loading"){
+          document.addEventListener("DOMContentLoaded", renderDashboard);
+        } else {
+          renderDashboard();
+        }
+
+        const pasosData = [
+            {
+                step: "Paso 1",
+                title: "Identificar el Problema y Pregunta Orientadora",
+                content: "<strong>Enfoque ODS 4 (Educación de Calidad).</strong> Investigamos las causas directas e indirectas de la variación en el rendimiento académico escolar mediante analítica de datos.<br><br><em>Pregunta Orientadora:</em> ¿Cómo podemos usar la recolección de datos educativos, su análisis estadístico y modelos de inteligencia artificial para identificar los factores que afectan el rendimiento académico y proponer soluciones basadas en evidencia?"
+            },
+            {
+                step: "Paso 2",
+                title: "Formar los Equipos de Investigación",
+                content: "Organización de roles y responsabilidades de los investigadores:<br><ul><li><strong>Camilo:</strong> Recolector de Datos (Diseño de encuestas y recopilación de notas/hábitos).</li><li><strong>Dimas:</strong> Analista de Datos (Limpieza, filtrado y modelado en hojas de cálculo).</li><li><strong>Mathias:</strong> Visualizador (Creación de gráficos de correlación y tableros).</li><li><strong>Mathias:</strong> Co-analista e infraestructura de datos (Validación de fuentes secundarias y registros).</li><li><strong>Danna:</strong> Investigadora de IA (Modelado predictivo básico y detección de patrones).</li><li><strong>Santi:</strong> Presentador (Liderazgo de exposición, pitch y defensa del proyecto).</li></ul>"
+            },
+            {
+                step: "Paso 3",
+                title: "Investigar y Planificar",
+                content: "Indagación teórica sobre métricas académicas, estadística descriptiva, funciones avanzadas en hojas de cálculo, aprendizaje automático básico para educación y pautas éticas para el resguardo de la privacidad estudiantil."
+            },
+            {
+                step: "Paso 4",
+                title: "Diseñar el Plan de Recolección de Datos",
+                content: "Diseño de formularios en Google Forms orientados a registrar hábitos de estudio, horas de sueño, materias de mayor dificultad y métodos de aprendizaje, estableciendo el tamaño de la muestra representativa."
+            },
+            {
+                step: "Paso 5",
+                title: "Recolectar, Organizar y Analizar Datos",
+                content: "Aplicación de encuestas a la comunidad escolar, estructuración de bases de datos en Excel o Google Sheets, depuración de anomalías, cálculo de promedios ponderados, modas y medianas del rendimiento."
+            },
+            {
+                step: "Paso 6",
+                title: "Crear Tableros y Visualizaciones",
+                content: "Construcción de tableros interactivos (dashboards) conectando gráficos de barras, dispersión y líneas para evidenciar de manera visual el impacto de los hábitos de estudio en las calificaciones finales."
+            },
+            {
+                step: "Paso 7",
+                title: "Aplicar Inteligencia Artificial",
+                content: "Uso de herramientas de IA (ChatGPT o Gemini) para consultar tendencias sobre rendimiento educativo, procesar lenguaje natural en respuestas abiertas y experimentar con clasificación de datos."
+            },
+            {
+                step: "Paso 8",
+                title: "Proponer una Solución",
+                content: "Diseño de una propuesta estratégica basada en los hallazgos numéricos (por ejemplo, un programa focalizado de tutorías o talleres de optimización del tiempo de estudio) alineada de forma directa con el ODS 4."
+            },
+            {
+                step: "Paso 9",
+                title: "Preparar la Presentación del Proyecto",
+                content: "Elaboración de recursos visuales en Canva/PowerPoint, ensayo de la demostración del tablero analítico interactivo y preparación del pitch de 2 minutos para resumir la investigación."
+            },
+            {
+                step: "Paso 10",
+                title: "Feria STEM de Datos e Innovación",
+                content: "Exhibición final del proyecto bajo la supervisión del profesor Estiben Capdevilla en la Feria Code for Change, compartiendo los resultados analíticos y las soluciones educativas con toda la comunidad."
+            }
+        ];
+
+        const container = document.getElementById('stepsContainer');
+
+        pasosData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'step-card';
+            
+            card.innerHTML = `
+                <div class="step-header" onclick="toggleStep(${index})">
+                    <div>
+                        <span class="badge">${item.step}</span>
+                        <h3 style="display:inline-block; margin-left:10px;">${item.title}</h3>
+                    </div>
+                    <button class="toggle-btn" id="btn-${index}" aria-expanded="false" aria-controls="content-${index}" title="Mostrar u ocultar información">▼</button>
+                </div>
+                <div class="step-content" id="content-${index}">
+                    <p>${item.content}</p>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        });
+
+        function toggleStep(index) {
+            const content = document.getElementById(`content-${index}`);
+            const btn = document.getElementById(`btn-${index}`);
+            
+            content.classList.toggle('active');
+            if (content.classList.contains('active')) {
+                btn.textContent = '▲';
+            } else {
+                btn.textContent = '▼';
+            }
+        }
+    </script>
+
+<!-- TLH-DOWNLOAD-WORKING-COPY -->
+<style>
+.tlh-download-working-copy{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#102b46,#17628e);
+  color:#fff !important;
+  text-decoration:none !important;
+  font:800 13px 'Segoe UI',Arial,sans-serif;
+  box-shadow:0 10px 30px rgba(16,43,70,.28);
+  border:1px solid rgba(255,255,255,.18);
+}
+.tlh-download-working-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(16,43,70,.34);
+}
+@media(max-width:600px){
+  .tlh-download-working-copy{
+    right:10px;
+    bottom:10px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+}
+@media print{
+  .tlh-download-working-copy{display:none !important}
+}
+</style>
+<a
+  class="tlh-download-working-copy"
+  href="index.html"
+  download="analitica-educativa.html"
+  title="Download this editable HTML project"
+>
+  ⬇ Download HTML
+</a>
+</body>
+</html>
