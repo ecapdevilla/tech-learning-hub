@@ -18,4 +18,5 @@ export type StudentProject = {
   coverImage?: string;
   reflection?: string;
   published: boolean;
+  gradeScale?: { min: number; max: number; feedback: string };
 };

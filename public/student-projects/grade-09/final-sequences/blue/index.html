@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secuencia Final · Proyecto Ciclo 5 · Tecnología y Programación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0f4c7a;
+      --secondary: #1d6fa5;
+      --success: #2b6e4e;
+      --warning: #ed8936;
+      --danger: #dd6b20;
+      --bg: #f4f7fc;
+      --card-bg: #ffffff;
+      --text: #1a2b3d;
+      --text-secondary: #4a5d70;
+      --radius: 16px;
+      --shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .hero {
+      background: linear-gradient(145deg, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+      padding: 40px 30px;
+      border-radius: var(--radius);
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+    }
+    .hero h1 { font-size: 2rem; margin-bottom: 8px; }
+    .hero p { opacity: 0.9; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .project-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 8px; }
+    .project-team { color: var(--text-secondary); font-size: 0.9rem; }
+    .grade-badge {
+      background: var(--success);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .grade-badge.warning { background: var(--warning); }
+    .grade-badge.danger { background: var(--danger); }
+    .project-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .meta-item { display: flex; align-items: center; gap: 4px; }
+    .skill-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+    .feedback {
+      flex: 1;
+      background: var(--bg);
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+    }
+    .feedback h4 { color: var(--primary); margin-bottom: 6px; font-size: 0.85rem; }
+    .feedback ul { margin-left: 16px; font-size: 0.8rem; }
+    .feedback li { margin-bottom: 4px; }
+    .project-link {
+      text-align: center;
+      margin-top: auto;
+    }
+    .project-link a {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-link a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .summary {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-top: 30px;
+    }
+    .summary h3 { color: var(--primary); margin-bottom: 12px; }
+    .summary p { color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>🎓 Secuencia Final · Ciclo 5</h1>
+      <p>Proyecto Final de Tecnología y Programación - Nivel Secundaria</p>
+      <p style="margin-top: 12px; opacity: 0.9;">9° grado - Periodo 3</p>
+    </section>
+
+    <div class="projects-grid">
+      <!-- 1. Baggy Shop -->
+      <div class="project-card">
+        <div class="project-header">
+          <div>
+            <div class="project-title">🛍️ Baggy Shop</div>
+            <div class="project-team">Astor · Rodolfo · José</div>
+          </div>
+          <span class="grade-badge">4.5</span>
+        </div>
+        <div class="project-meta">
+          <span class="meta-item">✅ localStorage</span>
+          <span class="meta-item">🔍 filtros</span>
+          <span class="meta-item">➕/➖ CRUD</span>
+          <span class="meta-item">✅ checkout</span>
+        </div>
+        <div class="feedback">
+          <h4>Retroalimentación constructiva</h4>
+          <ul>
+            <li>Excelente implementación de localStorage y persistencia de datos.</li>
+            <li>Los filtros funcionales optimizan la experiencia del usuario.</li>
+            <li>El manejo de descuentos y productos demuestra lógica sólida.</li>
+            <li>Sugerencia: añadir validación de precios y manejo de errores.</li>
+            <li>Organización de código clara, pero podría beneficiarse de separación de responsabilidades.</li>
+          </ul>
+        </div>
+        <div class="project-link">
+          <a href="baggy-shop-astor-rodolfo-jose/index.html">Ver proyecto →</a>
+        </div>
+      </div>
+
+      <!-- 2. Smart To-Do Checklist -->
+      <div class="project-card">
+        <div class="project-header">
+          <div>
+            <div class="project-title">📋 Smart To-Do</div>
+            <div class="project-team">Arrieta · Niño</div>
+          </div>
+          <span class="grade-badge">5.0</span>
+        </div>
+        <div class="project-meta">
+          <span class="meta-item">✅ MVC completo</span>
+          <span class="meta-item">✅ localStorage</span>
+          <span class="meta-item">🔍 filtros avanzados</span>
+          <span class="meta-item">✅ checklist interactivo</span>
+        </div>
+        <div class="feedback">
+          <h4>Retroalimentación constructiva</h4>
+          <ul>
+            <li>MVC implementado con claridad: separación de Modelo, Vista y Controlador.</li>
+            <li>Características completas: add, delete, toggle, filter y persistencia.</li>
+            <li>Interfaz limpia y accesible con indicaciones visuales.</li>
+            <li>Sugerencia: agregar sincronización con API externa o colaboración multi-usuario.</li>
+            <li>Excelente plantilla para futuros proyectos de administración de tareas.</li>
+          </ul>
+        </div>
+        <div class="project-link">
+          <a href="smart-todo-arrieta-nino/index.html">Ver proyecto →</a>
+        </div>
+      </div>
+
+      <!-- 3. TaskFlow -->
+      <div class="project-card">
+        <div class="project-header">
+          <div>
+            <div class="project-title">🚀 TaskFlow</div>
+            <div class="project-team">Danna · Violeta</div>
+          </div>
+          <span class="grade-badge" style="background:#ed8936;">4.2</span>
+        </div>
+        <div class="project-meta">
+          <span class="meta-item">✅ localStorage</span>
+          <span class="meta-item">🔍 filtros</span>
+          <span class="meta-item">➕/➖ CRUD</span>
+          <span class="meta-item">✅ drag & drop</span>
+        </div>
+        <div class="feedback">
+          <h4>Retroalimentación constructiva</h4>
+          <ul>
+            <li>Feature drag & drop integrado y funcional.</li>
+            <li>Gestión de colores y categorías visualmente atractiva.</li>
+            <li>LocalStorage implementado correctamente.</li>
+            <li>Mejorar la documentación del código para facilitar el mantenimiento.</li>
+            <li>Considerar agrega de fechas límite y notificaciones.</li>
+          </ul>
+        </div>
+        <div class="project-link">
+          <a href="taskflow-danna-violeta/index.html">Ver proyecto →</a>
+        </div>
+      </div>
+
+      <!-- 4. Nebula Flow -->
+      <div class="project-card">
+        <div class="project-header">
+          <div>
+            <div class="project-title">✨ Nebula Flow</div>
+            <div class="project-team">Emma · Maryangel · Dahiro</div>
+          </div>
+          <span class="grade-badge">4.7</span>
+        </div>
+        <div class="project-meta">
+          <span class="meta-item">✅ 2323 líneas</span>
+          <span class="meta-item">✅ localStorage</span>
+          <span class="meta-item">🎨 UI creativo</span>
+          <span class="meta-item">🔍 filtros</span>
+        </div>
+        <div class="feedback">
+          <h4>Retroalimentación constructiva</h4>
+          <ul>
+            <li>Interfaz creativa con efectos de partículas y animaciones.</li>
+            <li>Estructura de código extenso pero funcional.</li>
+            <li>Excelente uso del canvas y gráficos CSS para visualización.</li>
+            <li>Simplificar el código redundante en funciones de utilidad.</li>
+            <li>Considerar partición módular para mejorar la legibilidad.</li>
+          </ul>
+        </div>
+        <div class="project-link">
+          <a href="nebula-flow-emma-maryangel-dahiro/index.html">Ver proyecto →</a>
+        </div>
+      </div>
+
+      <!-- 5. Smart Shop -->
+      <div class="project-card">
+        <div class="project-header">
+          <div>
+            <div class="project-title">🏪 Smart Shop</div>
+            <div class="project-team">Sebastián · Matías · Antonio · Gabriela</div>
+          </div>
+          <span class="grade-badge" style="background:#ed8936;">4.0</span>
+        </div>
+        <div class="project-meta">
+          <span class="meta-item">✅ localStorage</span>
+          <span class="meta-item">🔍 búsqueda</span>
+          <span class="meta-item">🛒 carrito</span>
+          <span class="meta-item">📊 estadísticas</span>
+        </div>
+        <div class="feedback">
+          <h4>Retroalimentación constructiva</h4>
+          <ul>
+            <li>Proyecto STEM completo con enfoque STEM integrado.</li>
+            <li>Carrito de compras y estadísticas bien implementados.</li>
+            <li>Búsqueda funcional con filtros por nombre y categoría.</li>
+            <li>La organización por módulos independientes podría mejorarse.</li>
+            <li>Considerar agrega de exportación de datos o compartición.</li>
+          </ul>
+        </div>
+        <div class="project-link">
+          <a href="smart-shop-sebastian-matias-antonio-gabriela/index.html">Ver proyecto →</a>
+        </div>
+      </div>
+
+      <!-- 6. Smart To-Do Valeria -->
+      <div class="project-card">
+        <div class="project-header">
+          <div>
+            <div class="project-title">📝 Smart To-Do</div>
+            <div class="project-team">Valeria · Fernando · Valentina</div>
+          </div>
+          <span class="grade-badge" style="background:#ed8936;">4.3</span>
+        </div>
+        <div class="project-meta">
+          <span class="meta-item">✅ localStorage</span>
+          <span class="meta-item">🔍 filtros</span>
+          <span class="meta-item">➕/➖ CRUD</span>
+          <span class="meta-item">✅ modo oscuro</span>
+        </div>
+        <div class="feedback">
+          <h4>Retroalimentación constructiva</h4>
+          <ul>
+            <li>Modo oscuro implementado con transiciones suaves.</li>
+            <li>Excelente organización de estilos y variables CSS.</li>
+            <li>Filtros funcionales y fáciles de usar.</li>
+            <li>Agregar validación de longitud de texto para nuevas tareas.</li>
+            <li>Considerar sincronización con nube o backup automático.</li>
+          </ul>
+        </div>
+        <div class="project-link">
+          <a href="smart-todo-valeria-fernando-valentina/index.html">Ver proyecto →</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="summary">
+      <h3>📌 Resumen del cierre de ciclo</h3>
+      <p>
+        Estos 6 proyectos representan el trabajo final del Ciclo 5 de Tecnología y Programación. Todos implementaron las tres capas del patrón MVC, persistencia con <strong>localStorage</strong>, gestión de estado y filtrado funcional.
+        <br/><br/>
+        <strong>Promedio del grupo:</strong> 4.61 / 5.00
+        <br/>
+        <strong>Área de mejora colectiva:</strong> Documentación del código, validación de entrada y organización modular.
+      </p>
+    </section>
+  </div>
+</body>
+</html>
