@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoTask · MVC + ODS</title>
+  <!-- Chart.js CDN para gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: #f2f8f5;
+      color: #1c2e26;
+      line-height: 1.5;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(145deg, #1b5e3f, #3a8b5e);
+      color: white;
+      padding: 2rem 1.5rem 1.8rem;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 40, 20, 0.2);
+      border-bottom: 4px solid #b8d9b0;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header .subhead {
+      font-size: 1.15rem;
+      opacity: 0.9;
+      margin-top: 6px;
+      font-weight: 300;
+    }
+
+    header .meta {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.15);
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* OBJETIVO PRINCIPAL (nuevo) */
+    .objetivo-principal {
+      background: #e1f0e6;
+      border-left: 8px solid #1b5e3f;
+      border-radius: 20px;
+      padding: 18px 28px;
+      margin: 25px auto 30px;
+      max-width: 1000px;
+      box-shadow: 0 4px 12px rgba(0, 40, 20, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .objetivo-principal span {
+      background: #1b5e3f;
+      color: white;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      letter-spacing: 0.4px;
+    }
+
+    .objetivo-principal p {
+      font-weight: 500;
+      color: #0f2b1f;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
+    /* CARDS */
+    .card {
+      background: #ffffffdd;
+      backdrop-filter: blur(2px);
+      background: white;
+      padding: 1.5rem 1.8rem;
+      border-radius: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(0, 30, 15, 0.06);
+      border: 1px solid rgba(90, 140, 110, 0.12);
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 12px 32px rgba(0, 40, 20, 0.08);
+    }
+
+    h2 {
+      color: #1b5e3f;
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      align-items: end;
+    }
+
+    input, select, button {
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid #d4e2da;
+      font-size: 0.95rem;
+      background: white;
+      transition: 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: #2f7a54;
+      outline: 2px solid #b0d5c2;
+      outline-offset: 2px;
+    }
+
+    button {
+      background: #1b5e3f;
+      color: white;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(20, 80, 50, 0.15);
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    button:hover {
+      background: #134b32;
+      transform: scale(0.97);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    button.delete {
+      background: #b53b3b;
+    }
+    button.delete:hover { background: #962e2e; }
+
+    button.complete {
+      background: #c9922b;
+    }
+    button.complete:hover { background: #b07d22; }
+
+    /* Tareas */
+    .task {
+      border-left: 7px solid #3b8b62;
+      padding: 16px 18px;
+      margin: 14px 0;
+      background: #f6fbf8;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(0,30,10,0.04);
+      transition: 0.1s;
+    }
+
+    .task.done {
+      opacity: 0.7;
+      text-decoration: line-through;
+      background: #eef5f0;
+      border-left-color: #9bb8a8;
+    }
+
+    .task strong {
+      font-size: 1.25rem;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #deede4;
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1b4a33;
+      margin-right: 6px;
+    }
+
+    .actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Estadísticas + gráfico */
+    .stats-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .stats-numbers {
+      display: flex;
+      flex: 1 1 200px;
+      justify-content: space-around;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      background: #eaf3ee;
+      padding: 12px 24px;
+      border-radius: 40px;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .stat b {
+      font-size: 2rem;
+      color: #1b5e3f;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .stat p {
+      font-size: 0.85rem;
+      color: #2f4f3e;
+      margin-top: 2px;
+    }
+
+    .chart-box {
+      flex: 2 1 280px;
+      min-width: 200px;
+      max-width: 380px;
+      height: 170px;
+      position: relative;
+    }
+
+    /* ODS */
+    .ods-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .ods-card {
+      background: #ecf6ef;
+      padding: 22px 20px;
+      border-radius: 24px;
+      border-bottom: 6px solid #2a7a53;
+    }
+
+    .ods-card h3 {
+      color: #12442d;
+      margin-bottom: 6px;
+    }
+
+    /* Integrantes */
+    .integrantes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      background: #eaf3ec;
+      padding: 14px 22px;
+      border-radius: 60px;
+      justify-content: center;
+      font-weight: 500;
+      color: #12442d;
+    }
+
+    .integrantes span {
+      background: white;
+      padding: 3px 18px;
+      border-radius: 40px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 10px 18px;
+      color: #3f5c4d;
+      border-top: 1px solid #d0e2d6;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .ods-grid { grid-template-columns: 1fr; }
+      .stats-wrapper { flex-direction: column; align-items: stretch; }
+      .chart-box { max-width: 100%; height: 160px; }
+      header h1 { font-size: 2rem; }
+      .objetivo-principal { flex-direction: column; align-items: flex-start; }
+      .integrantes { border-radius: 30px; padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌱 EcoTask</h1>
+  <div class="subhead">Organiza · Aprende · Sostén</div>
+  <div class="meta">Proyecto STEM · MVC · ODS 4 + ODS 12</div>
+</header>
+
+<main class="container">
+
+  <!-- OBJETIVO PRINCIPAL (arriba) -->
+  <div class="objetivo-principal">
+    <span>🎯 OBJETIVO</span>
+    <p>Fortalecer la organización académica y el consumo responsable mediante el seguimiento de tareas sostenibles.</p>
+  </div>
+
+  <!-- INTEGRANTES (nuevo) -->
+  <div class="card" style="padding: 12px 20px; background: #f0f9f3;">
+    <div class="integrantes">
+      <span>👩‍💻 Carolina Garcia</span>
+      <span>👩‍💻 Valentine Salas</span>
+      <span>👩‍💻 Mariangel Pereira</span>
+      <span>👩‍💻 Isabella Mayans</span>
+    </div>
+  </div>
+
+  <!-- Usuario -->
+  <section class="card">
+    <h2>👤 Usuario</h2>
+    <div class="form-grid">
+      <input id="nombreUsuario" placeholder="Nombre del estudiante">
+      <button onclick="app.guardarUsuario()">Guardar usuario</button>
+    </div>
+    <p id="usuario" style="margin-top: 12px; font-weight: 500;"></p>
+  </section>
+
+  <!-- Nueva tarea -->
+  <section class="card">
+    <h2>➕ Nueva tarea</h2>
+    <div class="form-grid">
+      <input id="titulo" placeholder="Nombre de la tarea">
+      <select id="categoria">
+        <option value="Académica">📚 Académica</option>
+        <option value="Reciclaje">♻️ Reciclaje</option>
+        <option value="Ahorro">💧 Ahorro de recursos</option>
+        <option value="Comunidad">🤝 Comunidad</option>
+      </select>
+      <input id="fecha" type="date">
+      <button onclick="app.agregarTarea()">Agregar tarea</button>
+    </div>
+  </section>
+
+  <!-- Filtro -->
+  <section class="card">
+    <h2>🔎 Filtrar tareas</h2>
+    <div style="max-width: 300px;">
+      <select id="filtro" onchange="app.mostrarTareas()" style="width:100%;">
+        <option value="Todas">Todas</option>
+        <option value="Pendientes">Pendientes</option>
+        <option value="Completadas">Completadas</option>
+        <option value="Académica">Académicas</option>
+        <option value="Reciclaje">Reciclaje</option>
+        <option value="Ahorro">Ahorro</option>
+        <option value="Comunidad">Comunidad</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Lista de tareas -->
+  <section class="card">
+    <h2>📋 Mis tareas</h2>
+    <div id="lista"></div>
+  </section>
+
+  <!-- Estadísticas + gráfico -->
+  <section class="card">
+    <h2>📊 Estadísticas</h2>
+    <div class="stats-wrapper">
+      <div class="stats-numbers">
+        <div class="stat"><b id="total">0</b><p>Total</p></div>
+        <div class="stat"><b id="pendientes">0</b><p>Pendientes</p></div>
+        <div class="stat"><b id="completadas">0</b><p>Completadas</p></div>
+      </div>
+      <div class="chart-box">
+        <canvas id="chartTasks"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ODS -->
+  <section class="card">
+    <h2>🌍 ODS integrados</h2>
+    <div class="ods-grid">
+      <div class="ods-card">
+        <h3>📚 ODS 4 · Educación de calidad</h3>
+        <p>EcoTask ayuda a los estudiantes a organizar sus actividades, cumplir responsabilidades y mejorar sus hábitos de estudio.</p>
+      </div>
+      <div class="ods-card">
+        <h3>♻️ ODS 12 · Producción y consumo responsables</h3>
+        <p>Las categorías de reciclaje y ahorro permiten registrar actividades relacionadas con el cuidado responsable de los recursos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problemática y solución -->
+  <section class="card">
+    <h2>💡 Problemática y solución</h2>
+    <p><strong>Problemática:</strong> muchos estudiantes tienen dificultades para organizar sus tareas y, al mismo tiempo, no llevan un seguimiento de acciones relacionadas con el cuidado del medio ambiente.</p><br>
+    <p><strong>Solución:</strong> EcoTask permite organizar tareas escolares y actividades sostenibles en una misma plataforma.</p><br>
+    <p><strong>Impacto:</strong> se busca mejorar la organización académica y fomentar hábitos responsables frente al consumo y uso de recursos.</p>
+  </section>
+
+  <!-- MVC -->
+  <section class="card">
+    <h2>🏗️ Arquitectura MVC</h2>
+    <p><strong>Modelo:</strong> Usuario, Tarea y Categoría almacenan y gestionan los datos.</p>
+    <p><strong>Vista:</strong> HTML y CSS muestran formularios, tareas, estadísticas y ODS.</p>
+    <p><strong>Controlador:</strong> JavaScript controla eventos, datos, filtros y actualización de la vista.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p>🌱 EcoTask · Proyecto STEM · MVC · ODS 4 + ODS 12</p>
+  <p style="font-size:0.85rem; opacity:0.7;">Carolina Garcia · Valentine Salas · Mariangel Pereira · Isabella Mayans</p>
+</footer>
+
+<script>
+  // ===================== MODELO =====================
+  class Usuario {
+    constructor(nombre) { this.nombre = nombre; }
+  }
+
+  class Categoria {
+    constructor(nombre) { this.nombre = nombre; }
+  }
+
+  class Tarea {
+    constructor(titulo, categoria, fecha) {
+      this.id = Date.now();
+      this.titulo = titulo;
+      this.categoria = categoria;
+      this.fecha = fecha;
+      this.completada = false;
+    }
+  }
+
+  class Modelo {
+    constructor() {
+      this.tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+      this.usuario = JSON.parse(localStorage.getItem("usuario")) || null;
+    }
+
+    guardar() {
+      localStorage.setItem("tareas", JSON.stringify(this.tareas));
+      localStorage.setItem("usuario", JSON.stringify(this.usuario));
+    }
+
+    agregar(tarea) {
+      this.tareas.push(tarea);
+      this.guardar();
+    }
+
+    eliminar(id) {
+      this.tareas = this.tareas.filter(t => t.id !== id);
+      this.guardar();
+    }
+
+    completar(id) {
+      const tarea = this.tareas.find(t => t.id === id);
+      if (tarea) {
+        tarea.completada = !tarea.completada;
+        this.guardar();
+      }
+    }
+  }
+
+  // ===================== VISTA =====================
+  class Vista {
+    mostrarUsuario(usuario) {
+      const el = document.getElementById("usuario");
+      el.innerHTML = usuario ? `👋 Bienvenido/a <strong>${usuario.nombre}</strong>` : "";
+    }
+
+    mostrarTareas(tareas) {
+      const lista = document.getElementById("lista");
+      if (!tareas.length) {
+        lista.innerHTML = "<p style='padding:8px 0;'>📭 No hay tareas para mostrar.</p>";
+        return;
+      }
+      lista.innerHTML = "";
+      tareas.forEach(t => {
+        const div = document.createElement("div");
+        div.className = "task " + (t.completada ? "done" : "");
+        div.innerHTML = `
+          <strong>${t.titulo}</strong><br>
+          <span class="badge">🏷️ ${t.categoria}</span>
+          <span class="badge">📅 ${t.fecha || "Sin fecha"}</span>
+          <div class="actions">
+            <button class="complete" onclick="app.completar(${t.id})">
+              ${t.completada ? "↩️ Pendiente" : "✅ Completar"}
+            </button>
+            <button class="delete" onclick="app.eliminar(${t.id})">🗑️ Eliminar</button>
+          </div>
+        `;
+        lista.appendChild(div);
+      });
+    }
+
+    mostrarEstadisticas(tareas) {
+      const total = tareas.length;
+      const completadas = tareas.filter(t => t.completada).length;
+      const pendientes = total - completadas;
+      document.getElementById("total").textContent = total;
+      document.getElementById("completadas").textContent = completadas;
+      document.getElementById("pendientes").textContent = pendientes;
+
+      // actualizar gráfico
+      if (window.chartInstance) {
+        window.chartInstance.data.datasets[0].data = [pendientes, completadas];
+        window.chartInstance.update();
+      }
+    }
+  }
+
+  // ===================== CONTROLADOR =====================
+  class TareaController {
+    constructor(modelo, vista) {
+      this.modelo = modelo;
+      this.vista = vista;
+      this.vista.mostrarUsuario(this.modelo.usuario);
+      this.mostrarTareas();
+      this.iniciarGrafico();
+    }
+
+    guardarUsuario() {
+      const nombre = document.getElementById("nombreUsuario").value.trim();
+      if (!nombre) { alert("Escribe tu nombre."); return; }
+      this.modelo.usuario = new Usuario(nombre);
+      this.modelo.guardar();
+      this.vista.mostrarUsuario(this.modelo.usuario);
+      document.getElementById("nombreUsuario").value = "";
+      alert("Usuario guardado ✅");
+    }
+
+    agregarTarea() {
+      const titulo = document.getElementById("titulo").value.trim();
+      const categoria = document.getElementById("categoria").value;
+      const fecha = document.getElementById("fecha").value;
+      if (!titulo) { alert("Escribe el nombre de la tarea."); return; }
+      const tarea = new Tarea(titulo, categoria, fecha);
+      this.modelo.agregar(tarea);
+      document.getElementById("titulo").value = "";
+      document.getElementById("fecha").value = "";
+      this.mostrarTareas();
+    }
+
+    eliminar(id) {
+      if (confirm("¿Eliminar esta tarea?")) {
+        this.modelo.eliminar(id);
+        this.mostrarTareas();
+      }
+    }
+
+    completar(id) {
+      this.modelo.completar(id);
+      this.mostrarTareas();
+    }
+
+    mostrarTareas() {
+      const filtro = document.getElementById("filtro").value;
+      let tareas = [...this.modelo.tareas];
+      if (filtro === "Pendientes") tareas = tareas.filter(t => !t.completada);
+      else if (filtro === "Completadas") tareas = tareas.filter(t => t.completada);
+      else if (["Académica", "Reciclaje", "Ahorro", "Comunidad"].includes(filtro)) {
+        tareas = tareas.filter(t => t.categoria === filtro);
+      }
+      this.vista.mostrarTareas(tareas);
+      this.vista.mostrarEstadisticas(this.modelo.tareas);
+    }
+
+    iniciarGrafico() {
+      const ctx = document.getElementById('chartTasks').getContext('2d');
+      const total = this.modelo.tareas.length;
+      const completadas = this.modelo.tareas.filter(t => t.completada).length;
+      const pendientes = total - completadas;
+
+      window.chartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pendientes', 'Completadas'],
+          datasets: [{
+            data: [pendientes, completadas],
+            backgroundColor: ['#d6a23a', '#2a7a53'],
+            borderColor: '#ffffff',
+            borderWidth: 2,
+            borderRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+          },
+          cutout: '60%',
+        }
+      });
+    }
+  }
+
+  // ===================== INICIO =====================
+  const modelo = new Modelo();
+  const vista = new Vista();
+  const app = new TareaController(modelo, vista);
+</script>
+
+</body>
+</html>
